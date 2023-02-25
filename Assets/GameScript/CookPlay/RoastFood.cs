@@ -1,14 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
 using GameScript.CookPlay;
 using UniRx;
-using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
+
 
 public class RoastFood : MonoBehaviour
 {
@@ -192,7 +186,7 @@ public class RoastFood : MonoBehaviour
         int index = _currentFace ? 1: 0;
         
         _heatValue[index] += heat;
-        _heatValue[index] = Mathf.Clamp(_heatValue[index], 0,FoodData.SpecificHeatCapacity);
+        _heatValue[index] = Mathf.Clamp(_heatValue[index], 0,FoodData.MaxHeatCapacity);
 
         var progressImg = _currentFace ? frontProgressImage : backProgressImage;
 
@@ -207,7 +201,7 @@ public class RoastFood : MonoBehaviour
         else
         {
             var overheatProgress = (_heatValue[index] - FoodData.MediumHeatCapactiy) / 
-                                   (FoodData.SpecificHeatCapacity - FoodData.MediumHeatCapactiy);
+                                   (FoodData.MaxHeatCapacity - FoodData.MediumHeatCapactiy);
             overheatProgress = Mathf.Clamp01(overheatProgress);
             progressImg.color = FoodData.OverCookedProgressColor;
             progressImg.fillAmount = overheatProgress;

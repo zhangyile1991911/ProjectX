@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class PanSimulator : MonoBehaviour
 {
     public Slider heatSlider;
+    public Transform panHandle;
+    public Transform firePoint;
+    [InspectorName("距离热度比例")]
+    public AnimationCurve heatCurve;
+    
     public float friction = 1.0f;
     public float edgeBounce = 50.0f;
     public float maxVelocity = 10f;
-    public Transform panHandle;
-    public Transform firePoint;
-    public AnimationCurve heatCurve;
-    public float maxHeatSpeed;
+    public float maxHeatSpeed = 200f;
     
     private Camera _mainCamera;
     private Vector3 _panMoveDir;
@@ -98,7 +100,8 @@ public class PanSimulator : MonoBehaviour
         var position = transform.position;
         float distance = Vector2.Distance(position, _previousPosition);
 
-        _velocity = distance / Time.fixedDeltaTime;
+        // _velocity = distance / Time.fixedDeltaTime;
+        _velocity = distance;
         _velocity = Mathf.Clamp(_velocity, 0f, maxVelocity);
 
         _panMoveDir = (position - _previousPosition).normalized;
@@ -171,7 +174,7 @@ public class PanSimulator : MonoBehaviour
                         reverseDirection.x = Random.Range(-1f,1f);
                         reverseDirection.y = Random.Range(-1f, 1f);
                     }
-                    float newpower = (1 + (1 - distance / 0.2f)) * otherFood.bounce*0.5f;
+                    float newpower = (1 + (1 - distance / 0.2f)) * otherFood.data.bounce*0.5f;
                     onefood.AddVelocityAndDirection(newpower, reverseDirection);
                     count++;
                 }
@@ -189,9 +192,14 @@ public class PanSimulator : MonoBehaviour
     {
         var distance = Vector2.Distance(transform.position, firePoint.position);
         _curHeatSpeed += heatCurve.Evaluate(distance);
+        _curHeatSpeed -= _velocity*3;
         var percent = _curHeatSpeed / maxHeatSpeed;
         percent = Mathf.Clamp01(percent);
         heatSlider.value = percent;
+        foreach (var oneFood in _foodList)
+        {
+            oneFood.Heat(_curHeatSpeed);
+        }
     }
 
 }

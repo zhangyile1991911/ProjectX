@@ -14,7 +14,7 @@ namespace GameScript.CookPlay
         public TileBase Placeable;
         public TileBase Obstacle;
 
-        [FormerlySerializedAs("HeatCurve")] [InspectorName("距离热度比例")]
+        [InspectorName("距离热度比例")]
         public AnimationCurve heatCurve;
 
         private HashSet<Vector3Int> _occupiedGrid;

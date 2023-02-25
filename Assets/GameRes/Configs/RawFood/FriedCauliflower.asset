@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a92da4698b6f0e468e3b1a1138c761b, type: 3}
-  m_Name: grape
+  m_Script: {fileID: 11500000, guid: 26289174ced5cb745834855b70042e14, type: 3}
+  m_Name: FriedCauliflower
   m_EditorClassIdentifier: 
-  CookingProgressColor: {r: 0, g: 1, b: 0.12997723, a: 1}
-  OverCookedProgressColor: {r: 0.9811321, g: 0.041651815, b: 0.041651815, a: 1}
   CookedHeatCapacity: 200
   MediumHeatCapactiy: 300
-  SpecificHeatCapacity: 500
+  MaxHeatCapacity: 400
+  friction: 1
+  bounce: 1

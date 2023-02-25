@@ -6,12 +6,14 @@ using UnityEngine;
 public class FoodSimulator : MonoBehaviour
 {
     public PanSimulator panSimulator;
-    public float friction;
-    public float bounce;
+    public FriedFooData data;
+    
     private Vector2 _previousCircleDirection;
     private Vector3 _direction;
 
     private float _velocity;
+
+    private float _curHeatVal;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,13 +22,14 @@ public class FoodSimulator : MonoBehaviour
 
     void Init()
     {
-        Observable.EveryFixedUpdate().Subscribe(Simulator);
-        Observable.EveryUpdate().Subscribe(Move);
+        Observable.EveryFixedUpdate().Subscribe(Simulator).AddTo(gameObject);
+        Observable.EveryUpdate().Subscribe(Move).AddTo(gameObject);
+        _curHeatVal = 0;
     }
 
     void Simulator(long param)
     {
-        _velocity -= (panSimulator.friction+friction)*Time.fixedDeltaTime;
+        _velocity -= (panSimulator.friction+data.friction)*Time.fixedDeltaTime;
         _previousCircleDirection = transform.localPosition.normalized;
     }
 
@@ -48,5 +51,11 @@ public class FoodSimulator : MonoBehaviour
         _velocity = Mathf.Clamp(_velocity,0,panSimulator.maxVelocity);
 
         _direction *= _velocity;
+    }
+
+    public void Heat(float val)
+    {
+        _curHeatVal += val;
+        _curHeatVal = Mathf.Clamp(_curHeatVal, 0, data.MaxHeatCapacity);
     }
 }
