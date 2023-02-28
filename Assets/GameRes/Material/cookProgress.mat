@@ -74,7 +74,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - _low: 0.26
+    - _low: 0.3
     - _medium: 0.7
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

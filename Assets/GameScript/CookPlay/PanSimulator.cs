@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PanSimulator : MonoBehaviour
 {
-    public Slider heatSlider;
+    // public Slider heatSlider;
     public Transform panHandle;
-    public Transform firePoint;
-    [InspectorName("距离热度比例")]
-    public AnimationCurve heatCurve;
-    
+    // public Transform firePoint;
+    // [InspectorName("距离热度比例")]
+    // public AnimationCurve heatCurve;
+    public float velocity => _velocity;
     public float friction = 1.0f;
     public float edgeBounce = 50.0f;
     public float maxVelocity = 10f;
-    public float maxHeatSpeed = 200f;
     
     private Camera _mainCamera;
     private Vector3 _panMoveDir;
@@ -29,10 +29,10 @@ public class PanSimulator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Init();
+        // Init();
     }
 
-    void Init()
+    public void Init()
     {
         _mainCamera = Camera.main;
         
@@ -54,8 +54,9 @@ public class PanSimulator : MonoBehaviour
             new List<FoodSimulator>(),
             new List<FoodSimulator>()
         };
-        Observable.EveryFixedUpdate().Subscribe(UpdatePan);
-        Observable.EveryUpdate().Subscribe(HeatFood);
+        // Observable.EveryFixedUpdate().Subscribe(UpdatePan);
+        // this.FixedUpdateAsObservable().Subscribe(UpdatePan);
+        // Observable.EveryUpdate().Subscribe(HeatFood);
     }
 
     Vector3 ScreenToWorld(Vector3 mousePos, Transform targetTransform)
@@ -91,7 +92,7 @@ public class PanSimulator : MonoBehaviour
         }
     }
     
-    void UpdatePan(long param)
+    public void UpdatePan(Unit param)
     {
         DragHandle();
 
@@ -188,18 +189,12 @@ public class PanSimulator : MonoBehaviour
         
     }
 
-    void HeatFood(long param)
-    {
-        var distance = Vector2.Distance(transform.position, firePoint.position);
-        _curHeatSpeed += heatCurve.Evaluate(distance);
-        _curHeatSpeed -= _velocity*3;
-        var percent = _curHeatSpeed / maxHeatSpeed;
-        percent = Mathf.Clamp01(percent);
-        heatSlider.value = percent;
-        foreach (var oneFood in _foodList)
-        {
-            oneFood.Heat(_curHeatSpeed);
-        }
-    }
+    // public void HeatFood(float heatSpeed)
+    // {
+    //     foreach (var oneFood in _foodList)
+    //     {
+    //         oneFood.Heat(heatSpeed);
+    //     }
+    // }
 
 }

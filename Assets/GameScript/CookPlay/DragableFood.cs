@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -28,19 +29,19 @@ public class DragableFood : MonoBehaviour
     {
         _mainCamera = Camera.main;
         
-        Observable.EveryUpdate()
+        this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButtonDown(0))
             .Subscribe(CheckHit);
-        Observable.EveryUpdate()
+        this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButton(0) && _isDrag)
             .Subscribe(MoveFood);
-        Observable.EveryUpdate()
+        this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButtonUp(0) && _isDrag)
             .Subscribe(PutFood);
        
     }
     
-    private void CheckHit(long param)
+    private void CheckHit(Unit param)
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit;
@@ -60,7 +61,7 @@ public class DragableFood : MonoBehaviour
         }
     }
     
-    private void MoveFood(long param)
+    private void MoveFood(Unit param)
     {
         // Debug.Log($"{name} MoveFood is Moving");
         Vector3 camToObjDir = transform.position - _mainCamera.transform.position;
@@ -73,7 +74,7 @@ public class DragableFood : MonoBehaviour
         _dragTopic?.OnNext(Unit.Default);
     }
     
-    private void PutFood(long param)
+    private void PutFood(Unit param)
     {
         _isDrag = false;
         _putTopic?.OnNext(Unit.Default);

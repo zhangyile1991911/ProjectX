@@ -7,7 +7,9 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "大排档",menuName="大排档/菜谱")]
 public class Recipe : ScriptableObject
 {
-    public float lowTemperature;
-    public float mediumTemperature;
+    public Vector2 temperatureArea;
+    public float maxTemperature;
+    public float finishValue;
+    public float addValue;
 
 }

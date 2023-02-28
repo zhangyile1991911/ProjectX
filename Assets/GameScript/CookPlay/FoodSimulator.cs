@@ -53,9 +53,9 @@ public class FoodSimulator : MonoBehaviour
         _direction *= _velocity;
     }
 
-    public void Heat(float val)
-    {
-        _curHeatVal += val;
-        _curHeatVal = Mathf.Clamp(_curHeatVal, 0, data.MaxHeatCapacity);
-    }
+    // public void Heat(float val)
+    // {
+    //     _curHeatVal += val;
+    //     _curHeatVal = Mathf.Clamp(_curHeatVal, 0, data.MaxHeatCapacity);
+    // }
 }

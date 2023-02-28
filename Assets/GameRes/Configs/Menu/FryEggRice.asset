@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e729a43c7e3f59049900f5ced7b81276, type: 3}
-  m_Name: FriedRiceWithEgg
+  m_Name: FryEggRice
   m_EditorClassIdentifier: 
-  lowTemperature: 0.4
-  mediumTemperature: 0.7
+  temperatureArea: {x: 0.4, y: 0.7}
+  maxTemperature: 10
+  finishValue: 100
+  addValue: 3
