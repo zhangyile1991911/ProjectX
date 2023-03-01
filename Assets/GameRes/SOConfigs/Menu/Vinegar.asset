@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e729a43c7e3f59049900f5ced7b81276, type: 3}
-  m_Name: FryEggRice
+  m_Script: {fileID: 11500000, guid: ab5fe93bba8918e4d9783246e86d789a, type: 3}
+  m_Name: Vinegar
   m_EditorClassIdentifier: 
-  temperatureArea: {x: 0.4, y: 0.7}
-  maxTemperature: 10
-  finishValue: 100
-  addValue: 3
+  progress: 0.3
+  action: 2
+  pressKey: 97

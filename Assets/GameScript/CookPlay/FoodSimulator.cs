@@ -13,7 +13,7 @@ public class FoodSimulator : MonoBehaviour
 
     private float _velocity;
 
-    private float _curHeatVal;
+    // private float _curHeatVal;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +24,7 @@ public class FoodSimulator : MonoBehaviour
     {
         Observable.EveryFixedUpdate().Subscribe(Simulator).AddTo(gameObject);
         Observable.EveryUpdate().Subscribe(Move).AddTo(gameObject);
-        _curHeatVal = 0;
+        // _curHeatVal = 0;
     }
 
     void Simulator(long param)
