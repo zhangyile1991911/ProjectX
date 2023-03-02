@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using Cysharp.Text;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using YooAsset;
 
@@ -32,12 +29,14 @@ public class FryModule : MonoBehaviour
     private float _curTemperature;
     private float _curProgress;
     private bool _start;
-    private IDisposable _temperatureDisposal;
-    private IDisposable _gameFinishDisposal;
-    private IDisposable _progressValueDisposal;
+    // private IDisposable _temperatureDisposal;
+    // private IDisposable _gameFinishDisposal;
+    // private IDisposable _progressValueDisposal;
     private Subject<bool> progressTopic;
     private Subject<bool> timeUpTopic;
     private List<QTEComponent> components;
+    private CompositeDisposable handler;
+    private List<bool> qteRecords;
     private void Start()
     {
         Init();
@@ -47,15 +46,9 @@ public class FryModule : MonoBehaviour
     {
         pan.Init();
         
-        this.FixedUpdateAsObservable()
-            .Where(_ => _start)
-            .Subscribe(pan.UpdatePan)
-            .AddTo(gameObject);
+        handler?.Clear();
+        handler ??= new CompositeDisposable();
         
-        this.UpdateAsObservable()
-            .Where(_ => _start)
-            .Subscribe(CalculateHeat)
-            .AddTo(gameObject);
         _start = false;
         
         progressTopic = new Subject<bool>();
@@ -93,23 +86,33 @@ public class FryModule : MonoBehaviour
 
     public void StartFry()
     {
+        handler?.Clear();
         _curTemperature = 0;
         _curProgress = 0;
         _start = true;
         
+        qteRecords?.Clear();
+        qteRecords ??= new List<bool>();
+        for (int i = 0; i < _currentRecipe.qteList.Count; i++)
+        {
+            qteRecords.Add(false);
+        }
+        
         var min = _currentRecipe.temperatureArea.x * _currentRecipe.maxTemperature;
         var max = _currentRecipe.temperatureArea.y * _currentRecipe.maxTemperature;
         
-        _temperatureDisposal?.Dispose();
-        _temperatureDisposal = this.UpdateAsObservable()
+        
+        this.UpdateAsObservable()
             .Where(_=>_start&&(_curTemperature >= min && _curTemperature <= max))
             // .Where(_=>)
             .Subscribe(HeatFood).AddTo(gameObject);
 
 
-        var gameCounter = Observable.Timer(TimeSpan.FromSeconds(_currentRecipe.duration)).Select(_ => false);
-        _gameFinishDisposal?.Dispose();
-        _gameFinishDisposal = Observable.Amb(
+        var gameCounter = Observable.
+            Timer(TimeSpan.FromSeconds(_currentRecipe.duration))
+            .Select(_ => false);
+        
+        Observable.Amb(
             progressTopic,
             gameCounter
             ).Subscribe(_ =>
@@ -117,13 +120,28 @@ public class FryModule : MonoBehaviour
             Debug.Log("GameOver");
             _start = false;
             gameOverText.gameObject.SetActive(true);
-        });
-        
-        _progressValueDisposal?.Dispose();
-        _progressValueDisposal = progressSlider.OnValueChangedAsObservable()
+            handler.Clear();
+        }).AddTo(handler);
+
+        progressSlider.OnValueChangedAsObservable()
             .Subscribe(ListenProgress)
-            .AddTo(gameObject);
+            .AddTo(handler);
         
+        this.FixedUpdateAsObservable()
+            .Where(_ => _start)
+            .Subscribe(pan.UpdatePan)
+            .AddTo(handler);
+        
+        this.UpdateAsObservable()
+            .Where(_ => _start)
+            .Subscribe(CalculateHeat)
+            .AddTo(handler);
+
+        this.UpdateAsObservable()
+            .Where(_ => _start && Input.anyKeyDown)
+            .Subscribe(ListenQTE)
+            .AddTo(handler);
+
         gameOverText.gameObject.SetActive(false);
     }
 
@@ -141,13 +159,15 @@ public class FryModule : MonoBehaviour
     
     private void CalculateHeat(Unit param)
     {
+        //todo 考虑取消 根据距离的远近 加热速度不同 这种做法 太复杂了
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
         var add = heatCurve.Evaluate(distance)*Time.deltaTime;
         // Debug.Log($"distance = {distance} add = {add}");
+        // var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         // Debug.Log($"velocity = {pan.velocity} sub = {sub}");
-        _curTemperature += (add-sub);
-        Debug.Log($"distance = {distance} add = {add} sub = {sub} _curTemperature = {_curTemperature}");
+        _curTemperature += (add+sub);
+        // Debug.Log($"distance = {distance} add = {add} sub = {sub} _curTemperature = {_curTemperature}");
         
         _curTemperature = Mathf.Clamp(_curTemperature, 0, _currentRecipe.maxTemperature);
         temperatureSlider.value = _curTemperature;
@@ -157,10 +177,27 @@ public class FryModule : MonoBehaviour
         _curProgress += _currentRecipe.addValue * Time.deltaTime;
         _curProgress = Mathf.Clamp(_curProgress, 0, _currentRecipe.finishValue);
         progressSlider.value = _curProgress;
-        Debug.Log($"HeatFood!!!!! {_curProgress}");
+        // Debug.Log($"HeatFood!!!!! {_curProgress}");
         if (_curProgress >= _currentRecipe.finishValue)
         {
             progressTopic.OnNext(true);
+        }
+    }
+
+    private void ListenQTE(Unit param)
+    {
+        for (int i = 0; i < _currentRecipe.qteList.Count; i++)
+        {
+            var one = _currentRecipe.qteList[i];
+            var curProgress = _curProgress / _currentRecipe.finishValue;
+            if (curProgress >= one.progress && !qteRecords[i])
+            {
+                if (Input.GetKeyDown(one.pressKey))
+                {
+                    qteRecords[i] = true;
+                    Debug.Log($"进度 {curProgress*100}% 按下了 {one.pressKey}");
+                }
+            }
         }
     }
 }

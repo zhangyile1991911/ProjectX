@@ -12,4 +12,5 @@ public class FriedFoodQTE : ScriptableObject
     public float progress;
     public QTEAction action;
     public KeyCode pressKey;
+    public string desc;
 }
