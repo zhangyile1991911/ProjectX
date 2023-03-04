@@ -3,7 +3,7 @@ Shader "Unlit/cookProgress"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _low("low",float) = 0.3
+        _low("_low",float) = 0.3
         _medium("_medium",float) = 0.6
     }
     SubShader

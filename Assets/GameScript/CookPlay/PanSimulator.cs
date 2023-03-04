@@ -9,6 +9,8 @@ public class PanSimulator : MonoBehaviour
 {
     // public Slider heatSlider;
     public Transform panHandle;
+
+    public Transform animNode;
     // public Transform firePoint;
     // [InspectorName("距离热度比例")]
     // public AnimationCurve heatCurve;

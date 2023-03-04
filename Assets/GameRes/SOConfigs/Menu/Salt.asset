@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5fe93bba8918e4d9783246e86d789a, type: 3}
   m_Name: Salt
   m_EditorClassIdentifier: 
-  progress: 0.6
-  action: 0
   pressKey: 115
+  score: 0
   desc: "\u52A0\u76D0"
+  anim: {fileID: 2929184647157447269, guid: 313c58d6f989c364596cfd809f120dd6, type: 3}

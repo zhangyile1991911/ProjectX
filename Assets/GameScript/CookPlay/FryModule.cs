@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Text;
 using TMPro;
 using UniRx;
@@ -37,6 +38,8 @@ public class FryModule : MonoBehaviour
     private List<QTEComponent> components;
     private CompositeDisposable handler;
     private List<bool> qteRecords;
+    private List<int> qteKeys;
+    private List<Animation> qteAnimations;
     private void Start()
     {
         Init();
@@ -60,7 +63,7 @@ public class FryModule : MonoBehaviour
         
         var min = _currentRecipe.temperatureArea.x;
         var max = _currentRecipe.temperatureArea.y;
-        sliderBgMat.SetFloat("low",min);
+        sliderBgMat.SetFloat("_low",min);
         sliderBgMat.SetFloat("_medium",max);
 
         temperatureSlider.maxValue = _currentRecipe.maxTemperature;
@@ -70,17 +73,30 @@ public class FryModule : MonoBehaviour
         
         components?.Clear();
         components ??= new List<QTEComponent>(5);
-        for (int i = 0; i < _currentRecipe.qteList.Count; i++)
+        qteKeys = _currentRecipe.SortQTEKey();
+        for(int  i = 0;i < qteKeys.Count;i++)
         {
-            var one = _currentRecipe.qteList[i];
             var handle = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/QTENode.prefab");
             var node = handle.InstantiateSync(qteArea);
             var comp = node.GetComponent<QTEComponent>();
-            float y = qteArea.rect.height * one.progress;
+            var progress = (float)qteKeys[i] / _currentRecipe.finishValue;
+            float y = qteArea.rect.height * progress;
             comp.self.anchoredPosition = new Vector3(0,y,0);
-            comp.tips.text = ZString.Concat("Press ",one.pressKey.ToString());
+            comp.tips.text = ZString.Concat("Press ",_currentRecipe.qteDict[qteKeys[i]].pressKey.ToString());
             comp.gameObject.SetActive(false);
             components.Add(comp);
+        }
+        
+        qteAnimations?.Clear();
+        qteAnimations ??= new List<Animation>(5);
+        for (int i = 0; i < qteKeys.Count; i++)
+        {
+            int key = qteKeys[i];
+            var go = Instantiate(_currentRecipe.qteDict[key].anim,pan.animNode);
+            go.gameObject.SetActive(false);
+            var ani = go.GetComponent<Animation>();
+            ani.clip.legacy = true;
+            qteAnimations.Add(ani);
         }
     }
 
@@ -93,7 +109,7 @@ public class FryModule : MonoBehaviour
         
         qteRecords?.Clear();
         qteRecords ??= new List<bool>();
-        for (int i = 0; i < _currentRecipe.qteList.Count; i++)
+        for (int i = 0; i < qteKeys.Count; i++)
         {
             qteRecords.Add(false);
         }
@@ -141,16 +157,15 @@ public class FryModule : MonoBehaviour
             .Where(_ => _start && Input.anyKeyDown)
             .Subscribe(ListenQTE)
             .AddTo(handler);
-
+        
         gameOverText.gameObject.SetActive(false);
     }
 
     private void ListenProgress(float param)
     {
-        for (int i = 0;i < _currentRecipe.qteList.Count;i++)
+        for(int i = 0;i < qteKeys.Count;i++)
         {
-            var qte = _currentRecipe.qteList[i];
-            if (param >= qte.progress*_currentRecipe.finishValue)
+            if (param >= qteKeys[i])
             {
                 components[i].gameObject.SetActive(true);    
             }
@@ -159,7 +174,6 @@ public class FryModule : MonoBehaviour
     
     private void CalculateHeat(Unit param)
     {
-        //todo 考虑取消 根据距离的远近 加热速度不同 这种做法 太复杂了
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
         var add = heatCurve.Evaluate(distance)*Time.deltaTime;
         // Debug.Log($"distance = {distance} add = {add}");
@@ -186,16 +200,24 @@ public class FryModule : MonoBehaviour
 
     private void ListenQTE(Unit param)
     {
-        for (int i = 0; i < _currentRecipe.qteList.Count; i++)
+        for (int i = 0; i < qteKeys.Count(); i++)
         {
-            var one = _currentRecipe.qteList[i];
-            var curProgress = _curProgress / _currentRecipe.finishValue;
-            if (curProgress >= one.progress && !qteRecords[i])
+            var p = qteKeys[i];
+            if (_curProgress >= p && !qteRecords[i])
             {
-                if (Input.GetKeyDown(one.pressKey))
+                var kc = _currentRecipe.qteDict[p].pressKey;
+                if (Input.GetKeyDown(kc))
                 {
                     qteRecords[i] = true;
-                    Debug.Log($"进度 {curProgress*100}% 按下了 {one.pressKey}");
+                    Debug.Log($"进度 {p} 按下了 {kc}");
+                    var one = qteAnimations[i];
+                    one.gameObject.SetActive(true);
+                    one.Play();
+                    var duration = one.clip.length;
+                    Observable.Timer(TimeSpan.FromSeconds(duration)).Subscribe(_ =>
+                    {
+                        one.gameObject.SetActive(false);
+                    }).AddTo(handler);
                 }
             }
         }

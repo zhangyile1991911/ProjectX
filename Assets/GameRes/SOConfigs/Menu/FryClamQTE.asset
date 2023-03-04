@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab5fe93bba8918e4d9783246e86d789a, type: 3}
-  m_Name: Vinegar
+  m_Script: {fileID: 11500000, guid: 47e7685e4bbe5e54d86a6b0550a7fa1a, type: 3}
+  m_Name: FryClamQTE
   m_EditorClassIdentifier: 
-  pressKey: 97
-  score: 0
-  desc: "\u52A0\u918B"
-  anim: {fileID: 2929184647157447269, guid: 313c58d6f989c364596cfd809f120dd6, type: 3}
+  keys:
+  - 40
+  - 100
+  values:
+  - {fileID: 11400000, guid: d1ca372785f50904ea7f4ade496961ca, type: 2}
+  - {fileID: 11400000, guid: caa702de99b47bc4da2bab06223b3df1, type: 2}

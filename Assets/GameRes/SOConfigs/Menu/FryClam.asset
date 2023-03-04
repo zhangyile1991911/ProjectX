@@ -14,11 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FriedFoodRecipt
   recipeId: 0
   recipeName: "\u7092\u82B1\u86E4"
-  temperatureArea: {x: 0.2, y: 0.8}
+  temperatureArea: {x: 0.1, y: 0.9}
   maxTemperature: 10
-  finishValue: 100
+  finishValue: 200
   addValue: 2
   duration: 100
-  qteList:
-  - {fileID: 11400000, guid: caa702de99b47bc4da2bab06223b3df1, type: 2}
-  - {fileID: 11400000, guid: d1ca372785f50904ea7f4ade496961ca, type: 2}
+  qteDict: {fileID: 11400000, guid: f6a1d42f3559fc1478a20cf70f334c06, type: 2}

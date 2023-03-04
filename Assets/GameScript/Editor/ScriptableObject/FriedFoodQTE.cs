@@ -5,12 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "大排档",menuName="大排档/炒菜/QTE")]
 public class FriedFoodQTE : ScriptableObject
 {
-    public enum QTEAction
-    {
-        Salt,Oil,Vinegar
-    }
-    public float progress;
-    public QTEAction action;
+    // public enum QTEAction
+    // {
+    //     Salt,Oil,Vinegar
+    // }
+    // public float progress;
+    // public QTEAction action;
     public KeyCode pressKey;
+    public int score;
     public string desc;
+    public GameObject anim;
 }
