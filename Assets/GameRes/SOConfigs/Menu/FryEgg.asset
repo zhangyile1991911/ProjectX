@@ -17,7 +17,7 @@ MonoBehaviour:
   temperatureArea: {x: 0.1, y: 0.45}
   maxTemperature: 10
   finishValue: 100
-  addValue: 2
+  addValue: 3
   duration: 15
   qteList:
   - {fileID: 11400000, guid: a819856d4f8c06241a2e059a3cfdcee9, type: 2}
