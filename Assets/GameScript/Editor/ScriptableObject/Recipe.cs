@@ -8,4 +8,5 @@ public class Recipe : ScriptableObject
 {
    public int recipeId;
    public string recipeName;
+   public float duration;
 }

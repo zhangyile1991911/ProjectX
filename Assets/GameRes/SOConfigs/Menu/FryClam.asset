@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FriedFoodRecipt
   recipeId: 0
   recipeName: "\u7092\u82B1\u86E4"
+  duration: 100
   temperatureArea: {x: 0.1, y: 0.9}
   maxTemperature: 10
   finishValue: 200
   addValue: 2
-  duration: 100
+  rawFoodDictionary: {fileID: 11400000, guid: c0390a939f1f5854aab6db815ef42407, type: 2}
   qteDict: {fileID: 11400000, guid: f6a1d42f3559fc1478a20cf70f334c06, type: 2}

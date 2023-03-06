@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a92da4698b6f0e468e3b1a1138c761b, type: 3}
   m_Name: RoastGrape
   m_EditorClassIdentifier: 
-  CookedHeatCapacity: 200
-  MediumHeatCapactiy: 300
-  MaxHeatCapacity: 500
+  CookedHeatCapacity: 100
+  MaxHeatCapacity: 200
   CookingProgressColor: {r: 0, g: 1, b: 0.12997723, a: 1}
   OverCookedProgressColor: {r: 0.9811321, g: 0.041651815, b: 0.041651815, a: 1}

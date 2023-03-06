@@ -5,6 +5,6 @@ using UnityEngine;
 public class FoodDataBase : ScriptableObject
 {
     public float CookedHeatCapacity;
-    public float MediumHeatCapactiy;
+    // public float MediumHeatCapactiy;
     public float MaxHeatCapacity;
 }
