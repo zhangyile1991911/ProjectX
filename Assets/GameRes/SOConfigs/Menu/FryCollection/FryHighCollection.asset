@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b0eaa914b0cb346bb4e5b6626aa1bb, type: 3}
+  m_Name: FryHighCollection
+  m_EditorClassIdentifier: 
+  keys: 040000000600000008000000
+  values:
+  - {fileID: 1569933416341984449, guid: d0c3c9174f418004cb6735ae3964e81f, type: 3}
+  - {fileID: 1569933416341984449, guid: 09b41896d9880874d8cf1a0aaf01b7fd, type: 3}
+  - {fileID: 1569933416341984449, guid: 8d394d5ee87c70f4d9129a0326237025, type: 3}

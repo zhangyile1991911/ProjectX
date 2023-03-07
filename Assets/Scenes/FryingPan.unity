@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startButton: {fileID: 1736663741}
   module: {fileID: 541262784}
-  recipe: {fileID: 11400000, guid: 61a6aedc8980c0e40b832111d32a74f6, type: 2}
+  recipe: {fileID: 11400000, guid: 2dbbbbde2be645040b99ddc279a47cd4, type: 2}
 --- !u!1 &38801199
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,8 +549,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0.4093933, y: 0}
+  m_SizeDelta: {x: -2.2876, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &375888084
 GameObject:
@@ -971,7 +971,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 5
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -979,8 +979,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 10
-      value: -1.5
+      time: 3
+      value: -0.2
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -1003,8 +1003,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 3
-      value: -50
+      time: 2
+      value: -20
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -1062,7 +1062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 114, y: 0}
+  m_AnchoredPosition: {x: 1400, y: 40}
   m_SizeDelta: {x: 80, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &736276993
@@ -1101,7 +1101,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 201, y: 0}
+  m_AnchoredPosition: {x: 1400, y: 40}
   m_SizeDelta: {x: 640, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &736276995
@@ -1766,8 +1766,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: -0.5148926, y: 0}
+  m_SizeDelta: {x: 0.2082, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2010644928
 MonoBehaviour:
