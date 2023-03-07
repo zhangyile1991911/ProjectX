@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -169,7 +169,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 6
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -178,7 +178,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 4.6
-      value: 1
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -1647,7 +1647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startBtn: {fileID: 257452845}
   module: {fileID: 33131146}
-  recipe: {fileID: 11400000, guid: 5d56d7b3db5a69e4bb121047a0d01a95, type: 2}
+  recipe: {fileID: 11400000, guid: dd3961101c12dab4084666be38edde15, type: 2}
 --- !u!4 &1070762185
 Transform:
   m_ObjectHideFlags: 0
