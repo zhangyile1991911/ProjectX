@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CookedHeatCapacity: 10
   MaxHeatCapacity: 15
-  CookingProgressColor: {r: 0.3254902, g: 1, b: 0, a: 0}
-  OverCookedProgressColor: {r: 0, g: 0, b: 0, a: 0}
+  CookingProgressColor: {r: 0.3254902, g: 1, b: 0, a: 1}
+  OverCookedProgressColor: {r: 0.9811321, g: 0.19900322, b: 0.19900322, a: 1}

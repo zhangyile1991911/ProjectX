@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b0eaa914b0cb346bb4e5b6626aa1bb, type: 3}
   m_Name: FryClamRawCollection
   m_EditorClassIdentifier: 
-  keys: 030000000400000005000000
+  keys: 050000000500000005000000
   values:
   - {fileID: 1569933416341984449, guid: d0c3c9174f418004cb6735ae3964e81f, type: 3}
   - {fileID: 1569933416341984449, guid: 8d394d5ee87c70f4d9129a0326237025, type: 3}

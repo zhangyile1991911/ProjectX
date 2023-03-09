@@ -20,27 +20,26 @@ public class DragableFood : MonoBehaviour
     private Subject<Unit> _dragTopic = new Subject<Unit>();
     private Subject<Unit> _putTopic = new Subject<Unit>();
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     public void Init()
     {
         _mainCamera = Camera.main;
-        
+    }
+
+    public void Begin(CompositeDisposable handler)
+    {
         this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButtonDown(0))
-            .Subscribe(CheckHit);
+            .Subscribe(CheckHit)
+            .AddTo(handler);
         this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButton(0) && _isDrag)
-            .Subscribe(MoveFood);
+            .Subscribe(MoveFood)
+            .AddTo(handler);
         this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButtonUp(0) && _isDrag)
-            .Subscribe(PutFood);
-       
+            .Subscribe(PutFood)
+            .AddTo(handler);
     }
-    
     private void CheckHit(Unit param)
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);

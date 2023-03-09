@@ -25,6 +25,7 @@ public class SteamedFoodController : MonoBehaviour
     private DragableFood _dragableFood;
     private SpriteRenderer _spriteRenderer;
 
+    private CompositeDisposable _handler;
     public Bounds Bounds
     {
         get
@@ -40,13 +41,6 @@ public class SteamedFoodController : MonoBehaviour
 
             return _edgeCollider2D.bounds;
         }
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     public void Init()
@@ -70,24 +64,28 @@ public class SteamedFoodController : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _dragableFood = GetComponent<DragableFood>();
         _dragableFood.Init();
-        
+
+        _handler ??= new CompositeDisposable();
+
+    }
+
+    public void Begin(CompositeDisposable handler)
+    {
         _dragableFood.OnClick.Subscribe(_=>
         {
             _onClick.OnNext(this);
             _spriteRenderer.sortingOrder = 6;
-        }).AddTo(gameObject);
+        }).AddTo(handler);
         _dragableFood.OnDrag.Subscribe(_=>
         {
             _onDrag.OnNext(this);
-        }).AddTo(gameObject);
+        }).AddTo(handler);
         _dragableFood.OnPut.Subscribe(_=>
         {
             _spriteRenderer.sortingOrder = 5;
             _onPut.OnNext(this);
-        }).AddTo(gameObject);
-        // _collider2D.bounds.Intersects();
-        // var circle = GetComponent<CircleCollider2D>();
-        // circle.bounds.Intersects();
+        }).AddTo(handler);
+        
     }
 
     public void ChangeColor(Color color)

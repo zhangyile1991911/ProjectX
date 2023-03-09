@@ -85,11 +85,21 @@ namespace GameScript.CookPlay
         {
             var go = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/RoastGrape.prefab").AssetObject as GameObject;
             var ins = Instantiate(go,FoodGroup);
-            var x = Random.Range(4.0f, 7.0f);
-            ins.transform.localPosition = new Vector3(x, 0, 0);
             var rf = ins.GetComponent<RoastFood>();
-            rf.Module = this;
-            _roastFoods.Add(rf);
+            AddRoastFood(rf);
+            // var x = Random.Range(4.0f, 7.0f);
+            // ins.transform.localPosition = new Vector3(x, 0, 0);
+            // var rf = ins.GetComponent<RoastFood>();
+            // rf.Module = this;
+            // _roastFoods.Add(rf);
+        }
+
+        public void AddRoastFood(RoastFood food)
+        {
+            var x = Random.Range(4.0f, 7.0f);
+            food.transform.localPosition = new Vector3(x, 0, 0);
+            food.Module = this;
+            _roastFoods.Add(food);
         }
         
         public void StartBarbecue()

@@ -5,16 +5,25 @@ using UnityEngine;
 
 public class SteamedModule : MonoBehaviour
 {
-    public List<SteamedFoodController> foods;
+    private List<SteamedFoodController> _foods;
+
+    private CompositeDisposable _handle;
     // Start is called before the first frame update
     void Start()
     {
-        foreach (var one in foods)
+        
+    }
+
+    void StartGame()
+    {
+        _handle ??= new CompositeDisposable();
+        _handle.Clear();
+        foreach (var one in _foods)
         {
             one.Init();
-            one.OnClick.Subscribe(click).AddTo(gameObject);
-            one.OnDrag.Subscribe(move).AddTo(gameObject);
-            one.OnPut.Subscribe(put).AddTo(gameObject);
+            one.OnClick.Subscribe(click).AddTo(_handle);
+            one.OnDrag.Subscribe(move).AddTo(_handle);
+            one.OnPut.Subscribe(put).AddTo(_handle);
             
             one.transform.position = Random.insideUnitCircle*3f;
         }
@@ -29,9 +38,9 @@ public class SteamedModule : MonoBehaviour
     {
         // Debug.Log($"move {controller.name}");
         bool intersects = false;
-        for (int y = 0; y < foods.Count; y++)
+        for (int y = 0; y < _foods.Count; y++)
         {
-            var staticFood = foods[y];
+            var staticFood = _foods[y];
             if(staticFood.gameObject == controller.gameObject) continue;
             Debug.Log($"staticFood = {staticFood.name}");
             intersects = staticFood.Bounds.Intersects(controller.Bounds);
@@ -50,9 +59,5 @@ public class SteamedModule : MonoBehaviour
     {
         
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
