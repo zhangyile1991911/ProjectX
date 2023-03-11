@@ -79,20 +79,24 @@ namespace GameScript.CookPlay
             _curRecipe = recipe;
             _roastFoods?.Clear();
             _roastFoods ??= new List<RoastFood>(10);
+            foreach (var set in recipe.Sets)
+            {
+                for (int i = 0; i < set.Key; i++)
+                {
+                    var ins = Instantiate(set.Value,FoodGroup);
+                    var rf = ins.GetComponent<RoastFood>();
+                    AddRoastFood(rf);    
+                }
+            }
         }
 
-        public void AddRoastFood(int fid)
-        {
-            var go = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/RoastGrape.prefab").AssetObject as GameObject;
-            var ins = Instantiate(go,FoodGroup);
-            var rf = ins.GetComponent<RoastFood>();
-            AddRoastFood(rf);
-            // var x = Random.Range(4.0f, 7.0f);
-            // ins.transform.localPosition = new Vector3(x, 0, 0);
-            // var rf = ins.GetComponent<RoastFood>();
-            // rf.Module = this;
-            // _roastFoods.Add(rf);
-        }
+        // public void AddRoastFood(int fid)
+        // {
+        //     var go = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/RoastGrape.prefab").AssetObject as GameObject;
+        //     var ins = Instantiate(go,FoodGroup);
+        //     var rf = ins.GetComponent<RoastFood>();
+        //     AddRoastFood(rf);
+        // }
 
         public void AddRoastFood(RoastFood food)
         {

@@ -25,7 +25,8 @@ public class SteamedFoodController : MonoBehaviour
     private DragableFood _dragableFood;
     private SpriteRenderer _spriteRenderer;
 
-    private CompositeDisposable _handler;
+    public bool Overlap => _isOverlap;
+    private bool _isOverlap;
     public Bounds Bounds
     {
         get
@@ -64,13 +65,11 @@ public class SteamedFoodController : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _dragableFood = GetComponent<DragableFood>();
         _dragableFood.Init();
-
-        _handler ??= new CompositeDisposable();
-
     }
 
     public void Begin(CompositeDisposable handler)
     {
+        _dragableFood.Begin(handler);
         _dragableFood.OnClick.Subscribe(_=>
         {
             _onClick.OnNext(this);
@@ -85,11 +84,11 @@ public class SteamedFoodController : MonoBehaviour
             _spriteRenderer.sortingOrder = 5;
             _onPut.OnNext(this);
         }).AddTo(handler);
-        
     }
 
-    public void ChangeColor(Color color)
+    public void SetOverlap(bool overlap)
     {
-        _spriteRenderer.color = color;
+        _isOverlap = overlap;
+        _spriteRenderer.color = overlap ? Color.white : Color.red;
     }
 }

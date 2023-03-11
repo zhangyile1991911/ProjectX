@@ -30,15 +30,7 @@ public class BarbecueEnter : MonoBehaviour
     {
         initYooAsset = success;
         module.SetBarbecueFood(recipe);
-        foreach (var set in recipe.Sets)
-        {
-            for (int i = 0; i < set.Key; i++)
-            {
-                var ins = Instantiate(set.Value);
-                var rf = ins.GetComponent<RoastFood>();
-                module.AddRoastFood(rf);    
-            }
-        }
+        
         
             
         
