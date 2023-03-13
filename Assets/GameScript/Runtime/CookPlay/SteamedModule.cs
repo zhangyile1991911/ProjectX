@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Security;
 using Cysharp.Text;
 using UniRx;
 using UniRx.Triggers;
@@ -10,7 +12,9 @@ using Random = UnityEngine.Random;
 
 public class SteamedModule : MonoBehaviour
 {
+    public Transform FoodRoot;
     public Transform SteamShelf;
+    
     private List<SteamedFoodController> _foods;
     private CompositeDisposable _handle;
     private List<List<SteamedFoodController>> _quadtree;
@@ -20,6 +24,8 @@ public class SteamedModule : MonoBehaviour
     private Subject<bool> _completeTopic;
 
     private SteamedFoodController _curDragFood;
+
+    private CircleCollider2D _boundary;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +41,8 @@ public class SteamedModule : MonoBehaviour
         _quadtree.Add(new List<SteamedFoodController>());
         _start = false;
         _handle ??= new CompositeDisposable();
+        
+        _boundary = SteamShelf.GetComponent<CircleCollider2D>();
     }
 
     public void SetRecipe(SteamedRecipe recipe)
@@ -44,7 +52,7 @@ public class SteamedModule : MonoBehaviour
         {
             for (int i = 0; i < one.Key; i++)
             {
-                var go = Instantiate(one.Value,SteamShelf);
+                var go = Instantiate(one.Value,FoodRoot);
                 var controller = go.GetComponent<SteamedFoodController>();
                 AddSteamedFood(controller);
             }
@@ -58,8 +66,8 @@ public class SteamedModule : MonoBehaviour
         food.Init();
         
         food.OnClick.Where(_=>_start && null ==_curDragFood).Subscribe(click).AddTo(_handle);
-        food.OnDrag.Where(_=>_start && _curDragFood != null).Subscribe(move).AddTo(_handle);
-        food.OnPut.Where(_=>_start &&  _curDragFood != null).Subscribe(put).AddTo(_handle);
+        food.OnDrag.Where(_=>_start && null != _curDragFood).Subscribe(move).AddTo(_handle);
+        food.OnPut.Where(_=>_start &&  null != _curDragFood).Subscribe(put).AddTo(_handle);
         
         var position = Random.insideUnitCircle*3f;
         food.transform.position = position;
@@ -68,17 +76,7 @@ public class SteamedModule : MonoBehaviour
         _foods.Add(food);
         food.name = ZString.Format("{0}", _foods.Count);
         InsertQuardTree(food);
-        // var tree = InWhichTree(position);
-        // if (tree==null)
-        // {
-        //     Debug.LogError($"{position} InWhichTree return null");
-        // }
-        // else
-        // {
-        //     // Debug.Log($"{food.name} local position = {position} 加入第{tree.Count}象限");
-        //     food.name = ZString.Format("position={0}",position);
-        //     tree.Add(food);    
-        // }
+
     }
 
     #region 四叉树
@@ -115,9 +113,9 @@ public class SteamedModule : MonoBehaviour
             controller.QuadTree.Add(index);
         }
 
-        if (SteamedFoodController.ColliderType.Variable == controller.ColType)
+        if (SteamedFoodController.ColliderType.Polygon == controller.ColType)
         {
-            foreach (var one in controller.EdgeCollider2D.points)
+            foreach (var one in controller.PolygonCollider2D.points)
             {
                 var transform1 = controller.transform;
                 var index = InWhichTreeIndex(new Vector2(
@@ -127,7 +125,11 @@ public class SteamedModule : MonoBehaviour
                 controller.QuadTree.Add(index);
             }
         }
-        Debug.Log($"判断当前食物{controller.name} 在 {controller.QuadTree.Count}个象限");
+        foreach(var one in controller.QuadTree)
+        {
+            Debug.Log($"判断当前食物{controller.name} 在 {one}象限");    
+        }
+        
     }
     
     private void InsertQuardTree(SteamedFoodController controller)
@@ -140,22 +142,19 @@ public class SteamedModule : MonoBehaviour
         }
     }
     
-    private List<SteamedFoodController> CheckOverlap(SteamedFoodController food)
+    private void CheckOverlap(SteamedFoodController food)
     {
-        List<SteamedFoodController> controllers = new List<SteamedFoodController>();
         foreach (var treeIndex in food.QuadTree)
         {
             var tree = _quadtree[treeIndex];
             for (int i = 0; i < tree.Count; i++)
             {
                 var staticFood = tree[i];
-                // if(staticFood.gameObject == food.gameObject)continue;
-
                 var overlap = staticFood.Bounds.Intersects(food.Bounds);
-                if (overlap)controllers.Add(staticFood);
+                staticFood.SetOverlap(overlap||staticFood.Overlap);
+                food.SetOverlap(overlap);
             }    
         }
-        return controllers;
     }
     
     public int InWhichTreeIndex(Vector3 localPos)
@@ -193,10 +192,10 @@ public class SteamedModule : MonoBehaviour
                 }
 
                 var overlap = anchorObj.Bounds.Intersects(checkObj.Bounds);
-                if (overlap)
-                {
-                    Debug.Log($"{anchorObj.name} overlap {checkObj.name}");
-                }
+                // if (overlap)
+                // {
+                //     Debug.Log($"{anchorObj.name} overlap {checkObj.name}");
+                // }
                 anchorObj.SetOverlap(overlap||anchorObj.Overlap);
                 checkObj.SetOverlap(overlap||checkObj.Overlap);
             }
@@ -208,15 +207,16 @@ public class SteamedModule : MonoBehaviour
     {
         _curDragFood = null;
         _start = true;
-        foreach (var tree in _quadtree)
-        {
-            CheckTreeOverlap(tree);
-        }
-
+        
         foreach (var one in _foods)
         {
             one.Begin(_handle);
         }
+
+        this.UpdateAsObservable()
+            .Where(_=>_start)
+            .Subscribe(CheckAllFoodOverlap)
+            .AddTo(_handle);
         
         var timer = Observable
             .Timer(TimeSpan.FromSeconds(_curRecipe.duration))
@@ -228,19 +228,74 @@ public class SteamedModule : MonoBehaviour
 
     public void GameOver(bool success)
     {
+        Debug.Log($"!!!!!Game Over!!!!!");
         _handle?.Clear();
         _curDragFood = null;
+    }
+
+    private void CheckAllFoodOverlap(Unit param)
+    {
+        foreach (var one in _foods)
+        {
+            one.ResetOverlap();
+        }
+        foreach (var tree in _quadtree)
+        {
+            CheckTreeOverlap(tree);
+        }  
     }
     
     private void CheckGameOver(Unit param)
     {
         var allDepart = true;
-        for (int i = 0; i < _foods.Count; i++)
+        foreach (var one in _foods)
         {
-            if (_foods[i].Overlap)
+            if (one.Overlap)
             {
                 allDepart = false;
                 break;
+            }
+
+            var distance = 0f;
+            var maxDistance = _boundary.radius*SteamShelf.transform.localScale.x;
+            // Debug.Log($"maxDistance = {maxDistance}");
+            switch (one.ColType)
+            {
+                case SteamedFoodController.ColliderType.Circle:
+                     distance = Vector2.Distance(one.transform.position, SteamShelf.transform.position);
+                    if (distance > maxDistance - one.CircleCollider2D.radius * 2f)
+                    {
+                        Debug.Log($"{one.name}不在范围内");
+                        allDepart = false;
+                    }
+                    break;
+                case SteamedFoodController.ColliderType.Polygon:
+                    var worldPoint = one.transform.position;
+                    foreach (var point in one.PolygonCollider2D.points)
+                    {
+                        worldPoint.x += point.x;
+                        worldPoint.y += point.y;
+                        distance = Vector2.Distance(worldPoint, SteamShelf.transform.position);
+                        if (distance > maxDistance)
+                        {
+                            Debug.Log($"{one.name}不在范围内");
+                            allDepart = false;
+                            break;
+                        }
+                    }
+                    break;
+                case SteamedFoodController.ColliderType.Square:
+                    Debug.Log($"name = {one.name} min = {one.Collider2D.bounds.min} max = {one.Collider2D.bounds.max}");
+                    distance = Vector2.Distance(one.Collider2D.bounds.min, SteamShelf.transform.position);
+                    bool leftBottom = distance > maxDistance;
+                    distance = Vector2.Distance(one.Collider2D.bounds.max, SteamShelf.transform.position);
+                    bool rightTop = distance > maxDistance;
+                    if (leftBottom || rightTop)
+                    {
+                        Debug.Log($"{one.name}不在范围内");
+                        allDepart = false;
+                    }
+                    break;
             }
         }
 
@@ -258,38 +313,41 @@ public class SteamedModule : MonoBehaviour
         {
             var tree = _quadtree[treeIndex];
             tree.Remove(p);
-            CheckTreeOverlap(tree);
         }
         _curDragFood = p;
-        // var tree = InWhichTree(p.transform.localPosition);
-        // if (tree != null)
-        // {
-        //     tree.Remove(p);
-        //     CheckTreeOverlap(tree);    
-        // }
     }
 
     void move(SteamedFoodController controller)
     {
         if (_curDragFood.gameObject != controller.gameObject) return;
-        Debug.Log($"click {controller.name}");
-        //先确定在哪几个象限里
-        DetermineQuadTree(controller);
-        //遍历是否叠加
-        CheckOverlap(controller);
-        // var overlapObj = CheckOverlap(controller);
-        // if (overlapObj != null)
-        // {
-        //     controller.SetOverlap(true);
-        //     overlapObj.SetOverlap(true);
-        // }
+        Debug.Log($"move {controller.name}");
+        //是否在范围内
+        var inBoundary = _boundary.bounds.Intersects(controller.Bounds);
+        if (inBoundary)
+        {
+            //先确定在哪几个象限里
+            DetermineQuadTree(controller);
+            //遍历是否叠加
+            CheckOverlap(controller);    
+        }
+        else
+        {
+            controller.SetOverlap(true);
+        }
     }
 
     void put(SteamedFoodController p)
     {
-        Debug.Log($"click {p.name}");
-        
-        InsertQuardTree(p);
+        Debug.Log($"put {p.name}");
+        var inBoundary = _boundary.bounds.Intersects(p.Bounds);
+        if (inBoundary)
+        {
+            InsertQuardTree(p);
+        }
+        else
+        {
+            p.SetOverlap(true);
+        }
         _curDragFood = null;
     }
 

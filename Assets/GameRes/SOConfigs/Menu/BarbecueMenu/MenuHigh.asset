@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeId: 0
   recipeName: "\u9AD8\u7EA7\u70E7\u70E4"
-  duration: 15
-  FanAddValue: 10
+  duration: 20
+  FanAddValue: 2
   Attenuation: 1
-  AddValueLimit: 20
+  AddValueLimit: 6
   Sets: {fileID: 11400000, guid: a05f9c0325168b94f91554214f8f2a55, type: 2}

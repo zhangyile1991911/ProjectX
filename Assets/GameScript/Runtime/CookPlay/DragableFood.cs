@@ -8,17 +8,13 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class DragableFood : MonoBehaviour
 {
-    public IObservable<Unit> OnClick => _clickTopic;
-    public IObservable<Unit> OnDrag => _dragTopic;
-    public IObservable<Unit> OnPut => _putTopic;
-
     private Camera _mainCamera;
     private bool _isDrag;
     private Vector3 _dragOffset;
 
-    private Subject<Unit> _clickTopic = new Subject<Unit>();
-    private Subject<Unit> _dragTopic = new Subject<Unit>();
-    private Subject<Unit> _putTopic = new Subject<Unit>();
+    public Action<DragableFood> Click;
+    public Action<DragableFood> Drag;
+    public Action<DragableFood> Put;
     // Start is called before the first frame update
     public void Init()
     {
@@ -40,29 +36,41 @@ public class DragableFood : MonoBehaviour
             .Subscribe(PutFood)
             .AddTo(handler);
     }
+
     private void CheckHit(Unit param)
     {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit;
-        if (hit = Physics2D.Raycast(ray.origin, ray.direction))
+        Vector2 origin = Vector2.zero;
+        Vector2 direction = Vector2.zero;
+        if (_mainCamera.orthographic)
         {
-            if (hit.collider.transform != transform)
+            origin = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        }
+        else
+        {
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            origin = ray.origin;
+            direction = ray.direction;
+        }
+
+        // Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction);
+        if (hit.collider != null)
+        {
+            if (hit.collider.transform == transform)
             {
-                _isDrag = false;
-                return;
+                var position = transform.position;
+                var mainCameraTransform = _mainCamera.transform;
+                Vector3 camToObjDir = position - mainCameraTransform.position;
+                Vector3 normalDir = Vector3.Project(camToObjDir, mainCameraTransform.forward);
+                Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
+                    Input.mousePosition.y, normalDir.magnitude));
+                _dragOffset = position - worldPos;
+                _isDrag = true;
+                Click?.Invoke(this);
             }
-            Debug.Log($"{transform.name} drag = {_isDrag}");
-            var position = transform.position;
-            var mainCameraTransform = _mainCamera.transform;
-            Vector3 camToObjDir = position - mainCameraTransform.position;
-            Vector3 normalDir = Vector3.Project(camToObjDir, mainCameraTransform.forward);
-            Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y, normalDir.magnitude));
-            _dragOffset = position - worldPos;
-            _isDrag = true;
-            _clickTopic?.OnNext(Unit.Default);
         }
     }
-    
+
     private void MoveFood(Unit param)
     {
         // Debug.Log($"{name} MoveFood is Moving");
@@ -73,13 +81,15 @@ public class DragableFood : MonoBehaviour
         Vector3 newPos = worldPos + _dragOffset;
         newPos.z = 0;
         transform.position = newPos;
-        _dragTopic?.OnNext(Unit.Default);
+        //_dragTopic?.OnNext(Unit.Default);
+        Drag?.Invoke(this);
     }
     
     private void PutFood(Unit param)
     {
         _isDrag = false;
-        _putTopic?.OnNext(Unit.Default);
+        //_putTopic?.OnNext(Unit.Default);
+        Put.Invoke(this);
     }
 
 }

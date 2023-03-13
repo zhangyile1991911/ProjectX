@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a92da4698b6f0e468e3b1a1138c761b, type: 3}
   m_Name: Food3
   m_EditorClassIdentifier: 
-  CookedHeatCapacity: 30
-  MaxHeatCapacity: 35
+  CookedHeatCapacity: 40
+  MaxHeatCapacity: 60
   CookingProgressColor: {r: 0.32604218, g: 1, b: 0, a: 1}
   OverCookedProgressColor: {r: 1, g: 0, b: 0.13217449, a: 1}

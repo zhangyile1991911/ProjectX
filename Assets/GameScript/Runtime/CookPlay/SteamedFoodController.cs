@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class SteamedFoodController : MonoBehaviour
 {
     public enum ColliderType
     {
-        Circle,Square,Variable
+        Circle,Square,Polygon
     }
 
     public ColliderType ColType;
@@ -20,9 +21,12 @@ public class SteamedFoodController : MonoBehaviour
     private readonly Subject<SteamedFoodController> _onPut = new();
     
     private CircleCollider2D _circleCollider2D;
+    public CircleCollider2D CircleCollider2D => _circleCollider2D;
+    
     private Collider2D _collider2D;
-    private PolygonCollider2D _edgeCollider2D;
-    public PolygonCollider2D EdgeCollider2D => _edgeCollider2D;
+    public Collider2D Collider2D => _collider2D;
+    private PolygonCollider2D _polygonCollider2D;
+    public PolygonCollider2D PolygonCollider2D => _polygonCollider2D;
     
     private DragableFood _dragableFood;
     private SpriteRenderer _spriteRenderer;
@@ -58,9 +62,10 @@ public class SteamedFoodController : MonoBehaviour
                 return _collider2D.bounds;
             }
 
-            return _edgeCollider2D.bounds;
+            return _polygonCollider2D.bounds;
         }
     }
+    
 
     public void Init()
     {
@@ -72,12 +77,12 @@ public class SteamedFoodController : MonoBehaviour
 
         if (ColType == ColliderType.Circle)
         {
-            _circleCollider2D = GetComponent<CircleCollider2D>();   
+            _circleCollider2D = GetComponent<CircleCollider2D>();
         }
 
-        if (ColType == ColliderType.Variable)
+        if (ColType == ColliderType.Polygon)
         {
-            _edgeCollider2D = GetComponent<PolygonCollider2D>();
+            _polygonCollider2D = GetComponent<PolygonCollider2D>();
         }
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -88,25 +93,30 @@ public class SteamedFoodController : MonoBehaviour
     public void Begin(CompositeDisposable handler)
     {
         _dragableFood.Begin(handler);
-        _dragableFood.OnClick.Subscribe(_=>
+        _dragableFood.Click += (_=>
         {
             _onClick.OnNext(this);
             _spriteRenderer.sortingOrder = 6;
-        }).AddTo(handler);
-        _dragableFood.OnDrag.Subscribe(_=>
+        });
+        _dragableFood.Drag += (_=>
         {
             _onDrag.OnNext(this);
-        }).AddTo(handler);
-        _dragableFood.OnPut.Subscribe(_=>
+        });
+        _dragableFood.Put += (_=>
         {
             _spriteRenderer.sortingOrder = 5;
             _onPut.OnNext(this);
-        }).AddTo(handler);
+        });
     }
 
     public void SetOverlap(bool overlap)
     {
         _isOverlap = overlap;
         _spriteRenderer.color = overlap ? Color.red:Color.white;
+    }
+
+    public void ResetOverlap()
+    {
+        _isOverlap = false;
     }
 }

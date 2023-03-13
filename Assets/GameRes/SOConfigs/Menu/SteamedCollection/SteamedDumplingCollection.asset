@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8939d83bc781f438e076bcabedfff0, type: 3}
   m_Name: SteamedDumplingCollection
   m_EditorClassIdentifier: 
-  keys: 030000000300000003000000
+  keys: 050000000500000005000000
   values:
   - {fileID: 4557556713025868083, guid: 98763e3426c71bf48bd3c5080544934c, type: 3}
   - {fileID: 4490624060763988220, guid: f22a651723c44694e88a5a11d4906e82, type: 3}

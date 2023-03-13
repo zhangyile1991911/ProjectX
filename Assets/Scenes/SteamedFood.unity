@@ -133,7 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 16338864}
   - component: {fileID: 16338863}
-  m_Layer: 0
+  - component: {fileID: 16338865}
+  m_Layer: 2
   m_Name: SteamShelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,6 +208,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &16338865
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16338862}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &326635287
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,7 +416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 532405419}
   m_Layer: 0
-  m_Name: Node
+  m_Name: FoodRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -472,7 +489,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -933,4 +950,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d66cafad0621d4b9f044448e18c77a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SteamShelf: {fileID: 532405419}
+  FoodRoot: {fileID: 532405419}
+  SteamShelf: {fileID: 16338864}

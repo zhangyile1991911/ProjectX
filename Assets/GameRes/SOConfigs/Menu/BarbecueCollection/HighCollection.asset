@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd1e6952e007d1e4a99d0563bb1dff96, type: 3}
   m_Name: HighCollection
   m_EditorClassIdentifier: 
-  keys: 030000000300000003000000
+  keys: 020000000300000002000000
   values:
   - {fileID: 7232291213462785356, guid: fad4d81bd6caabe488c9d326183dae1b, type: 3}
   - {fileID: 7232291213462785356, guid: 723613d125af3864f9d2dcca7b86e26f, type: 3}
