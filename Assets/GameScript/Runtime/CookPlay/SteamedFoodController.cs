@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
@@ -21,9 +22,26 @@ public class SteamedFoodController : MonoBehaviour
     private CircleCollider2D _circleCollider2D;
     private Collider2D _collider2D;
     private PolygonCollider2D _edgeCollider2D;
+    public PolygonCollider2D EdgeCollider2D => _edgeCollider2D;
     
     private DragableFood _dragableFood;
     private SpriteRenderer _spriteRenderer;
+
+    private HashSet<int> _quadTree = new();
+
+    public HashSet<int> QuadTree
+    {
+        get
+        {
+            if (_quadTree == null)
+            {
+                _quadTree = new HashSet<int>();
+            }
+
+            return _quadTree;
+        }
+    }
+    
 
     public bool Overlap => _isOverlap;
     private bool _isOverlap;
@@ -89,6 +107,6 @@ public class SteamedFoodController : MonoBehaviour
     public void SetOverlap(bool overlap)
     {
         _isOverlap = overlap;
-        _spriteRenderer.color = overlap ? Color.white : Color.red;
+        _spriteRenderer.color = overlap ? Color.red:Color.white;
     }
 }

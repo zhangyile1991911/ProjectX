@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Text;
 using UniRx;
 using UniRx.Triggers;
 using UnityEditor.VersionControl;
@@ -17,6 +18,8 @@ public class SteamedModule : MonoBehaviour
     private bool _start;
 
     private Subject<bool> _completeTopic;
+
+    private SteamedFoodController _curDragFood;
     // Start is called before the first frame update
     void Start()
     {
@@ -50,57 +53,161 @@ public class SteamedModule : MonoBehaviour
     
     private void AddSteamedFood(SteamedFoodController food)
     {
-        var position = food.transform.position;
-        position = Random.insideUnitCircle*3f;
+        // var position = food.transform.position;
+        // position = Random.insideUnitCircle*3f;
         food.Init();
         
-        food.OnClick.Where(_=>_start).Subscribe(click).AddTo(_handle);
-        food.OnDrag.Where(_=>_start).Subscribe(move).AddTo(_handle);
-        food.OnPut.Where(_=>_start).Subscribe(put).AddTo(_handle);
+        food.OnClick.Where(_=>_start && null ==_curDragFood).Subscribe(click).AddTo(_handle);
+        food.OnDrag.Where(_=>_start && _curDragFood != null).Subscribe(move).AddTo(_handle);
+        food.OnPut.Where(_=>_start &&  _curDragFood != null).Subscribe(put).AddTo(_handle);
         
-        position = Random.insideUnitCircle*3f;
+        var position = Random.insideUnitCircle*3f;
         food.transform.position = position;
 
         _foods ??= new List<SteamedFoodController>(20);
         _foods.Add(food);
-        var tree = InWhichTree(position);
-        if (tree==null)
-        {
-            Debug.LogError($"{position} InWhichTree return null");
-        }
-        else
-        {
-            // Debug.Log($"{food.name} local position = {position} 加入第{tree.Count}象限");
-            tree.Add(food);    
-        }
+        food.name = ZString.Format("{0}", _foods.Count);
+        InsertQuardTree(food);
+        // var tree = InWhichTree(position);
+        // if (tree==null)
+        // {
+        //     Debug.LogError($"{position} InWhichTree return null");
+        // }
+        // else
+        // {
+        //     // Debug.Log($"{food.name} local position = {position} 加入第{tree.Count}象限");
+        //     food.name = ZString.Format("position={0}",position);
+        //     tree.Add(food);    
+        // }
     }
 
-    public List<SteamedFoodController> InWhichTree(Vector3 localPos)
+    #region 四叉树
+
+    private void DetermineQuadTree(SteamedFoodController controller)
+    {
+        controller.QuadTree?.Clear();
+        if (controller.ColType == SteamedFoodController.ColliderType.Square || controller.ColType == SteamedFoodController.ColliderType.Circle)
+        {//查询四个点位置
+            var localPosition = controller.transform.localPosition;
+            var bounds = controller.Bounds;
+            Vector2 leftTop = new Vector2(
+                localPosition.x - bounds.size.x/2f,
+                localPosition.y + bounds.size.y/2f);
+            var index = InWhichTreeIndex(leftTop);
+            controller.QuadTree.Add(index);
+
+            Vector2 leftBottom = new Vector2(
+                localPosition.x - bounds.size.x/2f,
+                localPosition.y - bounds.size.y/2f);
+            index = InWhichTreeIndex(leftBottom);
+            controller.QuadTree.Add(index);
+
+            Vector2 rightTop = new Vector2(
+                localPosition.x + bounds.size.x/2f,
+                localPosition.y + bounds.size.y/2f);
+            index = InWhichTreeIndex(rightTop);
+            controller.QuadTree.Add(index);
+
+            Vector2 rightBottom = new Vector2(
+                localPosition.x - bounds.size.x/2f,
+                localPosition.y - bounds.size.y/2f);
+            index = InWhichTreeIndex(rightBottom);
+            controller.QuadTree.Add(index);
+        }
+
+        if (SteamedFoodController.ColliderType.Variable == controller.ColType)
+        {
+            foreach (var one in controller.EdgeCollider2D.points)
+            {
+                var transform1 = controller.transform;
+                var index = InWhichTreeIndex(new Vector2(
+                    transform1.localPosition.x+one.x,
+                    transform1.localPosition.y+one.y)
+                );
+                controller.QuadTree.Add(index);
+            }
+        }
+        Debug.Log($"判断当前食物{controller.name} 在 {controller.QuadTree.Count}个象限");
+    }
+    
+    private void InsertQuardTree(SteamedFoodController controller)
+    {
+        DetermineQuadTree(controller);
+        Debug.Log($"{controller.name} 在{controller.QuadTree.Count}个象限中");
+        foreach (var one in controller.QuadTree)
+        {
+            _quadtree[one].Add(controller);
+        }
+    }
+    
+    private List<SteamedFoodController> CheckOverlap(SteamedFoodController food)
+    {
+        List<SteamedFoodController> controllers = new List<SteamedFoodController>();
+        foreach (var treeIndex in food.QuadTree)
+        {
+            var tree = _quadtree[treeIndex];
+            for (int i = 0; i < tree.Count; i++)
+            {
+                var staticFood = tree[i];
+                // if(staticFood.gameObject == food.gameObject)continue;
+
+                var overlap = staticFood.Bounds.Intersects(food.Bounds);
+                if (overlap)controllers.Add(staticFood);
+            }    
+        }
+        return controllers;
+    }
+    
+    public int InWhichTreeIndex(Vector3 localPos)
     {
         if (localPos is { x: > 0, y: > 0 })
         {
-            Debug.Log($"local position = {localPos} 加入第1象限");
-            return _quadtree[0];
+            return 0;
         }
         if (localPos is { x: < 0, y: > 0 })
         {
-            Debug.Log($"local position = {localPos} 加入第2象限");
-            return _quadtree[1];
+            return 1;
         }
         if (localPos is { x: < 0, y: < 0 })
         {
-            Debug.Log($"local position = {localPos} 加入第3象限");
-            return _quadtree[2];
+            return 2;
         }
         if (localPos is { x: > 0, y: < 0 })
         {
-            Debug.Log($"local position = {localPos} 加入第4象限");
-            return _quadtree[3];
+            return 3;
         }
-        return null;
+        return -1;
     }
+    
+    private void CheckTreeOverlap(List<SteamedFoodController> tree)
+    {
+        for (int x = 0; x < tree.Count; x++)
+        {
+            var anchorObj = tree[x];
+            for (int y = 0; y < tree.Count; y++)
+            {
+                var checkObj = tree[y];
+                if (anchorObj.gameObject == checkObj.gameObject)
+                {
+                    continue;
+                }
+
+                var overlap = anchorObj.Bounds.Intersects(checkObj.Bounds);
+                if (overlap)
+                {
+                    Debug.Log($"{anchorObj.name} overlap {checkObj.name}");
+                }
+                anchorObj.SetOverlap(overlap||anchorObj.Overlap);
+                checkObj.SetOverlap(overlap||checkObj.Overlap);
+            }
+        }
+    }
+    #endregion
+
     public void StartGame()
     {
+        _curDragFood = null;
+        _start = true;
         foreach (var tree in _quadtree)
         {
             CheckTreeOverlap(tree);
@@ -122,40 +229,9 @@ public class SteamedModule : MonoBehaviour
     public void GameOver(bool success)
     {
         _handle?.Clear();
+        _curDragFood = null;
     }
-
-    private SteamedFoodController CheckOverlap(SteamedFoodController food)
-    {
-        var tree = InWhichTree(food.transform.localPosition);
-        for (int i = 0; i < tree.Count; i++)
-        {
-            var staticFood = tree[i];
-            if(staticFood.gameObject == food.gameObject)continue;
-
-            var overlap = staticFood.Bounds.Intersects(food.Bounds);
-            if (overlap) return staticFood;
-        }
-        return null;
-    }
-
-    private void CheckTreeOverlap(List<SteamedFoodController> tree)
-    {
-        for (int x = 0; x < tree.Count; x++)
-        {
-            for (int y = 0; y < tree.Count; y++)
-            {
-                if (tree[x].gameObject == tree[y].gameObject)
-                {
-                    continue;
-                }
-
-                var overlap = tree[x].Bounds.Intersects(tree[y].Bounds);
-                tree[x].SetOverlap(overlap);
-                tree[y].SetOverlap(overlap);
-            }
-        }
-    }
-
+    
     private void CheckGameOver(Unit param)
     {
         var allDepart = true;
@@ -177,52 +253,44 @@ public class SteamedModule : MonoBehaviour
     
     void click(SteamedFoodController p)
     {
-        var tree = InWhichTree(p.transform.localPosition);
-        tree.Remove(p);
-        CheckTreeOverlap(tree);
+        Debug.Log($"click {p.name}");
+        foreach (var treeIndex in p.QuadTree)
+        {
+            var tree = _quadtree[treeIndex];
+            tree.Remove(p);
+            CheckTreeOverlap(tree);
+        }
+        _curDragFood = p;
+        // var tree = InWhichTree(p.transform.localPosition);
+        // if (tree != null)
+        // {
+        //     tree.Remove(p);
+        //     CheckTreeOverlap(tree);    
+        // }
     }
 
     void move(SteamedFoodController controller)
     {
-        // Debug.Log($"move {controller.name}");
-        // bool overlap = false;
-        // for (int y = 0; y < _foods.Count; y++)
+        if (_curDragFood.gameObject != controller.gameObject) return;
+        Debug.Log($"click {controller.name}");
+        //先确定在哪几个象限里
+        DetermineQuadTree(controller);
+        //遍历是否叠加
+        CheckOverlap(controller);
+        // var overlapObj = CheckOverlap(controller);
+        // if (overlapObj != null)
         // {
-        //     var staticFood = _foods[y];
-        //     if(staticFood.gameObject == controller.gameObject) continue;
-        //     Debug.Log($"staticFood = {staticFood.name}");
-        //     overlap = staticFood.Bounds.Intersects(controller.Bounds);
-        //     // Debug.Log($"p.Bounds = {p.Bounds} other.Bounds = {other.Bounds}");
-        //     if (overlap)
-        //     {
-        //         Debug.Log($"{controller.name} 与 {staticFood.name} 发生碰撞");
-        //         break;
-        //     }
+        //     controller.SetOverlap(true);
+        //     overlapObj.SetOverlap(true);
         // }
-        // Debug.Log($"=============================================");
-        // controller.SetOverlap(overlap);
-
-        var tree = InWhichTree(controller.transform.localPosition);
-        foreach (var one in tree)
-        {
-            var overlap = one.Bounds.Intersects(controller.Bounds);
-            controller.SetOverlap(overlap);
-            if (one.Overlap)
-            {//本来就和其他重叠
-                continue;
-            }
-            one.SetOverlap(overlap);
-        }
     }
 
     void put(SteamedFoodController p)
     {
-        var tree = InWhichTree(p.transform.localPosition);
-        if(tree == null)
-            Debug.LogError($"local position {p.transform.localPosition} in tree");
+        Debug.Log($"click {p.name}");
         
-        tree.Add(p);
-        CheckTreeOverlap(tree);
+        InsertQuardTree(p);
+        _curDragFood = null;
     }
 
 }

@@ -28,7 +28,7 @@ public class DragableFood : MonoBehaviour
     public void Begin(CompositeDisposable handler)
     {
         this.UpdateAsObservable()
-            .Where(_ => Input.GetMouseButtonDown(0))
+            .Where(_ => Input.GetMouseButtonDown(0)&& !_isDrag)
             .Subscribe(CheckHit)
             .AddTo(handler);
         this.UpdateAsObservable()
@@ -46,17 +46,20 @@ public class DragableFood : MonoBehaviour
         RaycastHit2D hit;
         if (hit = Physics2D.Raycast(ray.origin, ray.direction))
         {
-            if (hit.collider.transform == transform)
+            if (hit.collider.transform != transform)
             {
-                var position = transform.position;
-                var mainCameraTransform = _mainCamera.transform;
-                Vector3 camToObjDir = position - mainCameraTransform.position;
-                Vector3 normalDir = Vector3.Project(camToObjDir, mainCameraTransform.forward);
-                Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y, normalDir.magnitude));
-                _dragOffset = position - worldPos;
-                _isDrag = true;
-                _clickTopic?.OnNext(Unit.Default);
+                _isDrag = false;
+                return;
             }
+            Debug.Log($"{transform.name} drag = {_isDrag}");
+            var position = transform.position;
+            var mainCameraTransform = _mainCamera.transform;
+            Vector3 camToObjDir = position - mainCameraTransform.position;
+            Vector3 normalDir = Vector3.Project(camToObjDir, mainCameraTransform.forward);
+            Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y, normalDir.magnitude));
+            _dragOffset = position - worldPos;
+            _isDrag = true;
+            _clickTopic?.OnNext(Unit.Default);
         }
     }
     
