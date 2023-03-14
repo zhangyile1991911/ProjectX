@@ -24,6 +24,7 @@ public class SteamedModule : MonoBehaviour
     private Subject<bool> _completeTopic;
 
     private SteamedFoodController _curDragFood;
+    private Vector3 _curOriginPos;
 
     private CircleCollider2D _boundary;
     // Start is called before the first frame update
@@ -247,6 +248,8 @@ public class SteamedModule : MonoBehaviour
     
     private void CheckGameOver(Unit param)
     {
+        if (_curDragFood != null) return;
+        
         var allDepart = true;
         foreach (var one in _foods)
         {
@@ -257,46 +260,52 @@ public class SteamedModule : MonoBehaviour
             }
 
             var distance = 0f;
-            var maxDistance = _boundary.radius*SteamShelf.transform.localScale.x;
-            // Debug.Log($"maxDistance = {maxDistance}");
-            switch (one.ColType)
+            // var maxDistance = _boundary.radius*SteamShelf.transform.localScale.x;
+            var isIn = CheckFoodInBoundary(one);
+            if (!isIn)
             {
-                case SteamedFoodController.ColliderType.Circle:
-                     distance = Vector2.Distance(one.transform.position, SteamShelf.transform.position);
-                    if (distance > maxDistance - one.CircleCollider2D.radius * 2f)
-                    {
-                        Debug.Log($"{one.name}不在范围内");
-                        allDepart = false;
-                    }
-                    break;
-                case SteamedFoodController.ColliderType.Polygon:
-                    var worldPoint = one.transform.position;
-                    foreach (var point in one.PolygonCollider2D.points)
-                    {
-                        worldPoint.x += point.x;
-                        worldPoint.y += point.y;
-                        distance = Vector2.Distance(worldPoint, SteamShelf.transform.position);
-                        if (distance > maxDistance)
-                        {
-                            Debug.Log($"{one.name}不在范围内");
-                            allDepart = false;
-                            break;
-                        }
-                    }
-                    break;
-                case SteamedFoodController.ColliderType.Square:
-                    Debug.Log($"name = {one.name} min = {one.Collider2D.bounds.min} max = {one.Collider2D.bounds.max}");
-                    distance = Vector2.Distance(one.Collider2D.bounds.min, SteamShelf.transform.position);
-                    bool leftBottom = distance > maxDistance;
-                    distance = Vector2.Distance(one.Collider2D.bounds.max, SteamShelf.transform.position);
-                    bool rightTop = distance > maxDistance;
-                    if (leftBottom || rightTop)
-                    {
-                        Debug.Log($"{one.name}不在范围内");
-                        allDepart = false;
-                    }
-                    break;
+                allDepart = false;
+                break;
             }
+            // Debug.Log($"maxDistance = {maxDistance}");
+            // switch (one.ColType)
+            // {
+            //     case SteamedFoodController.ColliderType.Circle:
+            //          distance = Vector2.Distance(one.transform.position, SteamShelf.transform.position);
+            //         if (distance > maxDistance - one.CircleCollider2D.radius * 2f)
+            //         {
+            //             Debug.Log($"{one.name}不在范围内");
+            //             allDepart = false;
+            //         }
+            //         break;
+            //     case SteamedFoodController.ColliderType.Polygon:
+            //         var worldPoint = one.transform.position;
+            //         foreach (var point in one.PolygonCollider2D.points)
+            //         {
+            //             worldPoint.x += point.x;
+            //             worldPoint.y += point.y;
+            //             distance = Vector2.Distance(worldPoint, SteamShelf.transform.position);
+            //             if (distance > maxDistance)
+            //             {
+            //                 Debug.Log($"{one.name}不在范围内");
+            //                 allDepart = false;
+            //                 break;
+            //             }
+            //         }
+            //         break;
+            //     case SteamedFoodController.ColliderType.Square:
+            //         // Debug.Log($"name = {one.name} min = {one.Collider2D.bounds.min} max = {one.Collider2D.bounds.max}");
+            //         distance = Vector2.Distance(one.Collider2D.bounds.min, SteamShelf.transform.position);
+            //         bool leftBottom = distance < maxDistance;
+            //         distance = Vector2.Distance(one.Collider2D.bounds.max, SteamShelf.transform.position);
+            //         bool rightTop = distance < maxDistance;
+            //         if (!leftBottom || !rightTop)
+            //         {
+            //             Debug.Log($"{one.name}不在范围内");
+            //             allDepart = false;
+            //         }
+            //         break;
+            // }
         }
 
         if (allDepart)
@@ -305,16 +314,63 @@ public class SteamedModule : MonoBehaviour
             _completeTopic.OnCompleted();
         }
     }
+
+    private bool CheckFoodInBoundary(SteamedFoodController p)
+    {
+        var distance = 0f;
+        var maxDistance = _boundary.radius*SteamShelf.transform.localScale.x;
+        switch (p.ColType)
+        {
+            case SteamedFoodController.ColliderType.Circle:
+                 distance = Vector2.Distance(p.transform.position, SteamShelf.transform.position);
+                if (distance > maxDistance - p.CircleCollider2D.radius * 2f)
+                {
+                    Debug.Log($"{p.name}不在范围内");
+                    return false;
+                }
+                break;
+            case SteamedFoodController.ColliderType.Polygon:
+                var worldPoint = p.transform.position;
+                foreach (var point in p.PolygonCollider2D.points)
+                {
+                    worldPoint.x += point.x;
+                    worldPoint.y += point.y;
+                    distance = Vector2.Distance(worldPoint, SteamShelf.transform.position);
+                    if (distance > maxDistance)
+                    {
+                        Debug.Log($"{p.name}不在范围内");
+                        return false;
+                    }
+                }
+                break;
+            case SteamedFoodController.ColliderType.Square:
+                // Debug.Log($"name = {one.name} min = {one.Collider2D.bounds.min} max = {one.Collider2D.bounds.max}");
+                distance = Vector2.Distance(p.Collider2D.bounds.min, SteamShelf.transform.position);
+                bool leftBottom = distance < maxDistance;
+                distance = Vector2.Distance(p.Collider2D.bounds.max, SteamShelf.transform.position);
+                bool rightTop = distance < maxDistance;
+                if (!leftBottom || !rightTop)
+                {
+                    Debug.Log($"{p.name}不在范围内");
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
     
     void click(SteamedFoodController p)
     {
         Debug.Log($"click {p.name}");
+        p.ResetOverlap();
         foreach (var treeIndex in p.QuadTree)
         {
             var tree = _quadtree[treeIndex];
             tree.Remove(p);
         }
         _curDragFood = p;
+        _curOriginPos = p.transform.localPosition;
     }
 
     void move(SteamedFoodController controller)
@@ -322,9 +378,10 @@ public class SteamedModule : MonoBehaviour
         if (_curDragFood.gameObject != controller.gameObject) return;
         Debug.Log($"move {controller.name}");
         //是否在范围内
-        var inBoundary = _boundary.bounds.Intersects(controller.Bounds);
+        var inBoundary = CheckFoodInBoundary(controller);
         if (inBoundary)
         {
+            controller.SetOverlap(false);
             //先确定在哪几个象限里
             DetermineQuadTree(controller);
             //遍历是否叠加
@@ -339,15 +396,21 @@ public class SteamedModule : MonoBehaviour
     void put(SteamedFoodController p)
     {
         Debug.Log($"put {p.name}");
-        var inBoundary = _boundary.bounds.Intersects(p.Bounds);
-        if (inBoundary)
+        var completeIn = CheckFoodInBoundary(p);
+        if (!completeIn)
         {
-            InsertQuardTree(p);
+            _curDragFood.transform.localPosition = _curOriginPos;
         }
-        else
-        {
-            p.SetOverlap(true);
-        }
+        InsertQuardTree(p);
+        // var inBoundary = _boundary.bounds.Intersects(p.Bounds);
+        // if (inBoundary)
+        // {
+        //     InsertQuardTree(p);
+        // }
+        // else
+        // {
+        //     p.SetOverlap(true);
+        // }
         _curDragFood = null;
     }
 
