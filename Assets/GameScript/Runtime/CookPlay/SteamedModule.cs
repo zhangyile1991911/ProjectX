@@ -14,7 +14,7 @@ public class SteamedModule : MonoBehaviour
 {
     public Transform FoodRoot;
     public Transform SteamShelf;
-    
+    public Transform GameOverTxt;
     private List<SteamedFoodController> _foods;
     private CompositeDisposable _handle;
     private List<List<SteamedFoodController>> _quadtree;
@@ -209,6 +209,7 @@ public class SteamedModule : MonoBehaviour
         _curDragFood = null;
         _start = true;
         
+        GameOverTxt.gameObject.SetActive(false);
         foreach (var one in _foods)
         {
             one.Begin(_handle);
@@ -232,6 +233,7 @@ public class SteamedModule : MonoBehaviour
         Debug.Log($"!!!!!Game Over!!!!!");
         _handle?.Clear();
         _curDragFood = null;
+        GameOverTxt.gameObject.SetActive(true);
     }
 
     private void CheckAllFoodOverlap(Unit param)
