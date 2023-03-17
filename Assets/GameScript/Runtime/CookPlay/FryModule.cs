@@ -172,7 +172,7 @@ public class FryModule : MonoBehaviour
             .Where(_ => _start && Input.anyKeyDown)
             .Subscribe(ListenQTE)
             .AddTo(_handler);
-        pan.Begin(_handler);
+        pan.GameStart(_handler);
         gameOverText.gameObject.SetActive(false);
     }
 

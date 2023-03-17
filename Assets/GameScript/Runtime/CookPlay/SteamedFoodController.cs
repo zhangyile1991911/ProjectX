@@ -31,21 +31,10 @@ public class SteamedFoodController : MonoBehaviour
     private DragableFood _dragableFood;
     private SpriteRenderer _spriteRenderer;
 
-    private HashSet<int> _quadTree = new();
+    private HashSet<int> _quadTree;
 
-    public HashSet<int> QuadTree
-    {
-        get
-        {
-            if (_quadTree == null)
-            {
-                _quadTree = new HashSet<int>();
-            }
+    public HashSet<int> QuadTree => _quadTree ??= new HashSet<int>();
 
-            return _quadTree;
-        }
-    }
-    
 
     public bool Overlap => _isOverlap;
     private bool _isOverlap;

@@ -16,6 +16,13 @@ public class FoodSimulator : MonoBehaviour
 
     private float _velocity;
     
+    private HashSet<int> _quadTreeIndex = new();
+    public HashSet<int> QuadTreeIndex => _quadTreeIndex ??= new HashSet<int>();
+
+    private Bounds _bounds;
+    private CircleCollider2D _circleCollider;
+    public float Radius => transform.localScale.x * _circleCollider.radius;
+    public Bounds Bounds => _bounds;
     // private float _curHeatVal;
     // Start is called before the first frame update
     void Start()
@@ -31,7 +38,8 @@ public class FoodSimulator : MonoBehaviour
 
     private void Init()
     {
-      
+        _circleCollider = GetComponent<CircleCollider2D>();
+        _bounds = _circleCollider.bounds;
     }
 
     private void Simulator(Unit param)

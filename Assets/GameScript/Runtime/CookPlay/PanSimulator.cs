@@ -11,6 +11,7 @@ public class PanSimulator : MonoBehaviour
     public Transform panHandle;
 
     public Transform animNode;
+
     // public Transform firePoint;
     // [InspectorName("距离热度比例")]
     // public AnimationCurve heatCurve;
@@ -18,7 +19,7 @@ public class PanSimulator : MonoBehaviour
     public float friction = 1.0f;
     public float edgeBounce = 50.0f;
     public float maxVelocity = 10f;
-    
+
     private Camera _mainCamera;
     private Vector3 _panMoveDir;
     private Vector3 _previousPosition;
@@ -28,7 +29,7 @@ public class PanSimulator : MonoBehaviour
     private bool _isDrag = false;
     private List<List<FoodSimulator>> _quadtree;
     private List<FoodSimulator> _foodList;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,9 +39,9 @@ public class PanSimulator : MonoBehaviour
     public void Init()
     {
         _mainCamera = Camera.main;
-        
+
         _previousPosition = transform.position;
-        
+
         _foodList ??= new List<FoodSimulator>();
 
         _quadtree = new List<List<FoodSimulator>>
@@ -52,13 +53,43 @@ public class PanSimulator : MonoBehaviour
         };
     }
 
+    private Vector2 leftTop = new Vector2();
+    private Vector2 leftBottom = new Vector2();
+    private Vector2 rightTop = new Vector2();
+    private Vector2 rightBottom = new Vector2();
+
     public void AddFood(FoodSimulator food)
     {
         if (food == null) return;
         _foodList.Add(food);
     }
 
-    public void Begin(CompositeDisposable handler)
+    private int InWhichTreeIndex(Vector3 localPos)
+    {
+        if (localPos is { x: > 0, y: > 0 })
+        {
+            return 0;
+        }
+
+        if (localPos is { x: < 0, y: > 0 })
+        {
+            return 1;
+        }
+
+        if (localPos is { x: < 0, y: < 0 })
+        {
+            return 2;
+        }
+
+        if (localPos is { x: > 0, y: < 0 })
+        {
+            return 3;
+        }
+
+        return -1;
+    }
+
+    public void GameStart(CompositeDisposable handler)
     {
         this.UpdateAsObservable().Subscribe(UpdatePan).AddTo(handler);
         foreach (var one in _foodList)
@@ -66,7 +97,7 @@ public class PanSimulator : MonoBehaviour
             one.Begin(handler);
         }
     }
-    
+
     private Vector3 ScreenToWorld(Vector3 mousePos, Transform targetTransform)
     {
         var cameraTransform = _mainCamera.transform;
@@ -89,17 +120,19 @@ public class PanSimulator : MonoBehaviour
                 _isDrag = true;
             }
         }
+
         if (Input.GetMouseButtonUp(0))
         {
             _isDrag = false;
         }
+
         if (Input.GetMouseButton(0) && _isDrag)
         {
             Vector3 pos = ScreenToWorld(Input.mousePosition, transform);
             transform.position = pos + _offset;
         }
     }
-    
+
     private void UpdatePan(Unit param)
     {
         DragHandle();
@@ -128,11 +161,13 @@ public class PanSimulator : MonoBehaviour
             {
                 one.AddVelocityAndDirection(_velocity, _panMoveDir);
             }
+
             AddQuadtree(one);
         }
+
         QuadCollision();
     }
-    
+
     private void ClearQuadtree()
     {
         foreach (var one in _quadtree)
@@ -140,60 +175,108 @@ public class PanSimulator : MonoBehaviour
             one.Clear();
         }
     }
-    
+
     private void AddQuadtree(FoodSimulator one_food)
     {
-        if (one_food.transform.localPosition is { x: > 0, y: > 0 })
+        var localPosition = one_food.transform.localPosition;
+        var bounds = one_food.Bounds;
+
+        leftTop.x = localPosition.x - bounds.size.x / 2f;
+        leftTop.y = localPosition.y + bounds.size.y / 2f;
+        var index = InWhichTreeIndex(leftTop);
+        if (index >= 0)
         {
-            _quadtree[0].Add(one_food);
+            one_food.QuadTreeIndex.Add(index);
+            _quadtree[index].Add(one_food);
         }
-        else if (one_food.transform.localPosition is { x: < 0, y: > 0 })
+
+        leftBottom.x = localPosition.x - bounds.size.x / 2f;
+        leftBottom.y = localPosition.y - bounds.size.y / 2f;
+        index = InWhichTreeIndex(leftBottom);
+        if (index >= 0)
         {
-            _quadtree[1].Add(one_food);
+            one_food.QuadTreeIndex.Add(index);
+            _quadtree[index].Add(one_food);
         }
-        else if (one_food.transform.localPosition is { x: < 0, y: < 0 })
+
+        rightTop.x = localPosition.x + bounds.size.x / 2f;
+        rightTop.y = localPosition.y + bounds.size.y / 2f;
+        index = InWhichTreeIndex(rightTop);
+        if (index >= 0)
         {
-            _quadtree[2].Add(one_food);
+            one_food.QuadTreeIndex.Add(index);
+            _quadtree[index].Add(one_food);
         }
-        else
+
+
+        rightBottom.x = localPosition.x - bounds.size.x / 2f;
+        rightBottom.y = localPosition.y - bounds.size.y / 2f;
+        index = InWhichTreeIndex(rightBottom);
+        if (index >= 0)
         {
-            _quadtree[3].Add(one_food);
+            one_food.QuadTreeIndex.Add(index);
+            _quadtree[index].Add(one_food);
         }
     }
 
     private void QuadCollision()
     {
         int count = 0;
-        for (int  x = 0;x < _quadtree.Count;x++)
+        foreach (var food in _foodList)
         {
-            for(int y = 0;y < _quadtree[x].Count;y++)
+            foreach (var treeIndex in food.QuadTreeIndex)
             {
-                FoodSimulator onefood = _quadtree[x][y];
-                for(int z = 0;z < _quadtree[x].Count;z++)
+                var curTree = _quadtree[treeIndex];
+                foreach (var treeFood in curTree)
                 {
-                    FoodSimulator otherFood = _quadtree[x][z];
-                    if (onefood == otherFood) continue;
-
-                    float distance = Vector2.Distance(otherFood.transform.localPosition, onefood.transform.localPosition);
-                    if (distance > 0.12f) continue;
+                    if (treeFood.transform == food.transform) continue;
                     
-                    Vector3 reverseDirection = (onefood.transform.localPosition - otherFood.transform.localPosition).normalized;
-                    if(reverseDirection.magnitude <= 0.01f)
+                    float distance = Vector2.Distance(food.transform.localPosition, treeFood.transform.localPosition);
+                    if (distance > food.Radius * 1.5f) continue;
+
+                    Vector3 reverseDirection =
+                        (food.transform.localPosition - treeFood.transform.localPosition).normalized;
+                    if (reverseDirection.magnitude <= 0.01f)
                     {
-                        reverseDirection.x = Random.Range(-1f,1f);
+                        reverseDirection.x = Random.Range(-1f, 1f);
                         reverseDirection.y = Random.Range(-1f, 1f);
                     }
-                    float newpower = (1 + (1 - distance / 0.2f)) * otherFood.data.bounce*0.5f;
-                    onefood.AddVelocityAndDirection(newpower, reverseDirection);
+
+                    float newpower = (1 + (1 - distance / 0.2f)) * treeFood.data.bounce * 0.5f;
+                    food.AddVelocityAndDirection(newpower, reverseDirection);
                     count++;
                 }
             }
         }
+        // for (int  x = 0;x < _quadtree.Count;x++)
+        // {
+        //     for(int y = 0;y < _quadtree[x].Count;y++)
+        //     {
+        //         FoodSimulator onefood = _quadtree[x][y];
+        //         for(int z = 0;z < _quadtree[x].Count;z++)
+        //         {
+        //             FoodSimulator otherFood = _quadtree[x][z];
+        //             if (onefood == otherFood) continue;
+        //
+        //             float distance = Vector2.Distance(otherFood.transform.localPosition, onefood.transform.localPosition);
+        //             if (distance > 0.12f) continue;
+        //             
+        //             Vector3 reverseDirection = (onefood.transform.localPosition - otherFood.transform.localPosition).normalized;
+        //             if(reverseDirection.magnitude <= 0.01f)
+        //             {
+        //                 reverseDirection.x = Random.Range(-1f,1f);
+        //                 reverseDirection.y = Random.Range(-1f, 1f);
+        //             }
+        //             float newpower = (1 + (1 - distance / 0.2f)) * otherFood.data.bounce*0.5f;
+        //             onefood.AddVelocityAndDirection(newpower, reverseDirection);
+        //             count++;
+        //         }
+        //     }
+        // }
 
         if (count > 0)
         {
-            // Debug.Log($"QuadCollision一帧循环了{count}次数");    
+            Debug.Log($"QuadCollision一帧循环了{count}次数");
         }
-        
     }
 }

@@ -27,10 +27,10 @@ public class SteamedModule : MonoBehaviour
     private Vector3 _curOriginPos;
 
     private CircleCollider2D _boundary;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     public void Init()
@@ -42,7 +42,7 @@ public class SteamedModule : MonoBehaviour
         _quadtree.Add(new List<SteamedFoodController>());
         _start = false;
         _handle ??= new CompositeDisposable();
-        
+
         _boundary = SteamShelf.GetComponent<CircleCollider2D>();
     }
 
@@ -53,65 +53,79 @@ public class SteamedModule : MonoBehaviour
         {
             for (int i = 0; i < one.Key; i++)
             {
-                var go = Instantiate(one.Value,FoodRoot);
+                var go = Instantiate(one.Value, FoodRoot);
                 var controller = go.GetComponent<SteamedFoodController>();
                 AddSteamedFood(controller);
             }
         }
     }
-    
+
     private void AddSteamedFood(SteamedFoodController food)
     {
         // var position = food.transform.position;
         // position = Random.insideUnitCircle*3f;
         food.Init();
-        
-        food.OnClick.Where(_=>_start && null ==_curDragFood).Subscribe(click).AddTo(_handle);
-        food.OnDrag.Where(_=>_start && null != _curDragFood).Subscribe(move).AddTo(_handle);
-        food.OnPut.Where(_=>_start &&  null != _curDragFood).Subscribe(put).AddTo(_handle);
-        
-        var position = Random.insideUnitCircle*3f;
+
+        food.OnClick.Where(_ => _start && null == _curDragFood).Subscribe(click).AddTo(_handle);
+        food.OnDrag.Where(_ => _start && null != _curDragFood).Subscribe(move).AddTo(_handle);
+        food.OnPut.Where(_ => _start && null != _curDragFood).Subscribe(put).AddTo(_handle);
+
+        var position = Random.insideUnitCircle * 3f;
         food.transform.position = position;
 
         _foods ??= new List<SteamedFoodController>(20);
         _foods.Add(food);
         food.name = ZString.Format("{0}", _foods.Count);
         InsertQuardTree(food);
-
     }
 
     #region 四叉树
 
+    private Vector2 leftTop = new();
+    private Vector2 leftBottom = new();
+    private Vector2 rightTop = new();
+    private Vector2 rightBottom = new();
+
     private void DetermineQuadTree(SteamedFoodController controller)
     {
         controller.QuadTree?.Clear();
-        if (controller.ColType == SteamedFoodController.ColliderType.Square || controller.ColType == SteamedFoodController.ColliderType.Circle)
-        {//查询四个点位置
+        if (controller.ColType == SteamedFoodController.ColliderType.Square ||
+            controller.ColType == SteamedFoodController.ColliderType.Circle)
+        {
+            //查询四个点位置
             var localPosition = controller.transform.localPosition;
             var bounds = controller.Bounds;
-            Vector2 leftTop = new Vector2(
-                localPosition.x - bounds.size.x/2f,
-                localPosition.y + bounds.size.y/2f);
+            leftTop.x = localPosition.x - bounds.size.x / 2f;
+            leftTop.y = localPosition.y + bounds.size.y / 2f;
             var index = InWhichTreeIndex(leftTop);
-            controller.QuadTree.Add(index);
+            if (index > 0)
+            {
+                controller.QuadTree.Add(index);
+            }
 
-            Vector2 leftBottom = new Vector2(
-                localPosition.x - bounds.size.x/2f,
-                localPosition.y - bounds.size.y/2f);
+            leftBottom.x = localPosition.x - bounds.size.x / 2f;
+            leftBottom.y = localPosition.y - bounds.size.y / 2f;
             index = InWhichTreeIndex(leftBottom);
-            controller.QuadTree.Add(index);
+            if (index > 0)
+            {
+                controller.QuadTree.Add(index);
+            }
 
-            Vector2 rightTop = new Vector2(
-                localPosition.x + bounds.size.x/2f,
-                localPosition.y + bounds.size.y/2f);
+            rightTop.x = localPosition.x + bounds.size.x / 2f;
+            rightTop.y = localPosition.y + bounds.size.y / 2f;
             index = InWhichTreeIndex(rightTop);
-            controller.QuadTree.Add(index);
+            if (index > 0)
+            {
+                controller.QuadTree.Add(index);
+            }
 
-            Vector2 rightBottom = new Vector2(
-                localPosition.x - bounds.size.x/2f,
-                localPosition.y - bounds.size.y/2f);
+            rightBottom.x = localPosition.x - bounds.size.x / 2f;
+            rightBottom.y = localPosition.y - bounds.size.y / 2f;
             index = InWhichTreeIndex(rightBottom);
-            controller.QuadTree.Add(index);
+            if (index > 0)
+            {
+                controller.QuadTree.Add(index);
+            }
         }
 
         if (SteamedFoodController.ColliderType.Polygon == controller.ColType)
@@ -119,20 +133,19 @@ public class SteamedModule : MonoBehaviour
             foreach (var one in controller.PolygonCollider2D.points)
             {
                 var transform1 = controller.transform;
-                var index = InWhichTreeIndex(new Vector2(
-                    transform1.localPosition.x+one.x,
-                    transform1.localPosition.y+one.y)
-                );
-                controller.QuadTree.Add(index);
+                leftTop.x = transform1.localPosition.x + one.x;
+                leftTop.y = transform1.localPosition.y + one.y;
+                var index = InWhichTreeIndex(leftTop);
+                if(index > 0) controller.QuadTree.Add(index);
             }
         }
-        foreach(var one in controller.QuadTree)
+
+        foreach (var one in controller.QuadTree)
         {
-            Debug.Log($"判断当前食物{controller.name} 在 {one}象限");    
+            Debug.Log($"判断当前食物{controller.name} 在 {one}象限");
         }
-        
     }
-    
+
     private void InsertQuardTree(SteamedFoodController controller)
     {
         DetermineQuadTree(controller);
@@ -142,7 +155,7 @@ public class SteamedModule : MonoBehaviour
             _quadtree[one].Add(controller);
         }
     }
-    
+
     private void CheckOverlap(SteamedFoodController food)
     {
         foreach (var treeIndex in food.QuadTree)
@@ -152,33 +165,37 @@ public class SteamedModule : MonoBehaviour
             {
                 var staticFood = tree[i];
                 var overlap = staticFood.Bounds.Intersects(food.Bounds);
-                staticFood.SetOverlap(overlap||staticFood.Overlap);
+                staticFood.SetOverlap(overlap || staticFood.Overlap);
                 food.SetOverlap(overlap);
-            }    
+            }
         }
     }
-    
+
     public int InWhichTreeIndex(Vector3 localPos)
     {
         if (localPos is { x: > 0, y: > 0 })
         {
             return 0;
         }
+
         if (localPos is { x: < 0, y: > 0 })
         {
             return 1;
         }
+
         if (localPos is { x: < 0, y: < 0 })
         {
             return 2;
         }
+
         if (localPos is { x: > 0, y: < 0 })
         {
             return 3;
         }
+
         return -1;
     }
-    
+
     private void CheckTreeOverlap(List<SteamedFoodController> tree)
     {
         for (int x = 0; x < tree.Count; x++)
@@ -197,18 +214,19 @@ public class SteamedModule : MonoBehaviour
                 // {
                 //     Debug.Log($"{anchorObj.name} overlap {checkObj.name}");
                 // }
-                anchorObj.SetOverlap(overlap||anchorObj.Overlap);
-                checkObj.SetOverlap(overlap||checkObj.Overlap);
+                anchorObj.SetOverlap(overlap || anchorObj.Overlap);
+                checkObj.SetOverlap(overlap || checkObj.Overlap);
             }
         }
     }
+
     #endregion
 
     public void StartGame()
     {
         _curDragFood = null;
         _start = true;
-        
+
         GameOverTxt.gameObject.SetActive(false);
         foreach (var one in _foods)
         {
@@ -216,16 +234,16 @@ public class SteamedModule : MonoBehaviour
         }
 
         this.UpdateAsObservable()
-            .Where(_=>_start)
+            .Where(_ => _start)
             .Subscribe(CheckAllFoodOverlap)
             .AddTo(_handle);
-        
+
         var timer = Observable
             .Timer(TimeSpan.FromSeconds(_curRecipe.duration))
-            .Select(_=>false);
+            .Select(_ => false);
         this.UpdateAsObservable().Subscribe(CheckGameOver).AddTo(_handle);
         _completeTopic = new Subject<bool>();
-        Observable.Amb(timer,_completeTopic).Subscribe(GameOver).AddTo(_handle);
+        Observable.Amb(timer, _completeTopic).Subscribe(GameOver).AddTo(_handle);
     }
 
     public void GameOver(bool success)
@@ -242,16 +260,17 @@ public class SteamedModule : MonoBehaviour
         {
             one.ResetOverlap();
         }
+
         foreach (var tree in _quadtree)
         {
             CheckTreeOverlap(tree);
-        }  
+        }
     }
-    
+
     private void CheckGameOver(Unit param)
     {
         if (_curDragFood != null) return;
-        
+
         var allDepart = true;
         foreach (var one in _foods)
         {
@@ -320,16 +339,17 @@ public class SteamedModule : MonoBehaviour
     private bool CheckFoodInBoundary(SteamedFoodController p)
     {
         var distance = 0f;
-        var maxDistance = _boundary.radius*SteamShelf.transform.localScale.x;
+        var maxDistance = _boundary.radius * SteamShelf.transform.localScale.x;
         switch (p.ColType)
         {
             case SteamedFoodController.ColliderType.Circle:
-                 distance = Vector2.Distance(p.transform.position, SteamShelf.transform.position);
+                distance = Vector2.Distance(p.transform.position, SteamShelf.transform.position);
                 if (distance > maxDistance - p.CircleCollider2D.radius * 2f)
                 {
                     Debug.Log($"{p.name}不在范围内");
                     return false;
                 }
+
                 break;
             case SteamedFoodController.ColliderType.Polygon:
                 var worldPoint = p.transform.position;
@@ -344,6 +364,7 @@ public class SteamedModule : MonoBehaviour
                         return false;
                     }
                 }
+
                 break;
             case SteamedFoodController.ColliderType.Square:
                 // Debug.Log($"name = {one.name} min = {one.Collider2D.bounds.min} max = {one.Collider2D.bounds.max}");
@@ -356,12 +377,13 @@ public class SteamedModule : MonoBehaviour
                     Debug.Log($"{p.name}不在范围内");
                     return false;
                 }
+
                 break;
         }
 
         return true;
     }
-    
+
     void click(SteamedFoodController p)
     {
         Debug.Log($"click {p.name}");
@@ -371,6 +393,7 @@ public class SteamedModule : MonoBehaviour
             var tree = _quadtree[treeIndex];
             tree.Remove(p);
         }
+
         _curDragFood = p;
         _curOriginPos = p.transform.localPosition;
     }
@@ -387,7 +410,7 @@ public class SteamedModule : MonoBehaviour
             //先确定在哪几个象限里
             DetermineQuadTree(controller);
             //遍历是否叠加
-            CheckOverlap(controller);    
+            CheckOverlap(controller);
         }
         else
         {
@@ -403,6 +426,7 @@ public class SteamedModule : MonoBehaviour
         {
             _curDragFood.transform.localPosition = _curOriginPos;
         }
+
         InsertQuardTree(p);
         // var inBoundary = _boundary.bounds.Intersects(p.Bounds);
         // if (inBoundary)
@@ -415,5 +439,4 @@ public class SteamedModule : MonoBehaviour
         // }
         _curDragFood = null;
     }
-
 }
