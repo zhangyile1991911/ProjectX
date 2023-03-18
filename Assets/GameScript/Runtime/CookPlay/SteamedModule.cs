@@ -98,7 +98,7 @@ public class SteamedModule : MonoBehaviour
             leftTop.x = localPosition.x - bounds.size.x / 2f;
             leftTop.y = localPosition.y + bounds.size.y / 2f;
             var index = InWhichTreeIndex(leftTop);
-            if (index > 0)
+            if (index >= 0)
             {
                 controller.QuadTree.Add(index);
             }
@@ -106,7 +106,7 @@ public class SteamedModule : MonoBehaviour
             leftBottom.x = localPosition.x - bounds.size.x / 2f;
             leftBottom.y = localPosition.y - bounds.size.y / 2f;
             index = InWhichTreeIndex(leftBottom);
-            if (index > 0)
+            if (index >= 0)
             {
                 controller.QuadTree.Add(index);
             }
@@ -114,7 +114,7 @@ public class SteamedModule : MonoBehaviour
             rightTop.x = localPosition.x + bounds.size.x / 2f;
             rightTop.y = localPosition.y + bounds.size.y / 2f;
             index = InWhichTreeIndex(rightTop);
-            if (index > 0)
+            if (index >= 0)
             {
                 controller.QuadTree.Add(index);
             }
@@ -122,7 +122,7 @@ public class SteamedModule : MonoBehaviour
             rightBottom.x = localPosition.x - bounds.size.x / 2f;
             rightBottom.y = localPosition.y - bounds.size.y / 2f;
             index = InWhichTreeIndex(rightBottom);
-            if (index > 0)
+            if (index >= 0)
             {
                 controller.QuadTree.Add(index);
             }
