@@ -11,10 +11,10 @@ public enum UILayer
 public interface IUIBase
 {
     GameObject uiGo { get; set; }
+    Transform uiTran { get; }
+    UILayer uiLayer { get; set; }
     
     void Init(GameObject go);
-    
-    UILayer GetLayer();
     
     void OnCreate();
 

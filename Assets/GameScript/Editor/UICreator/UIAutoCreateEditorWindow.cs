@@ -66,9 +66,13 @@ public class UIAutoCreateEditorWindow : EditorWindow
         
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button("生成", GUILayout.Width(150), GUILayout.Height(30)))
+        if (GUILayout.Button("生成Window", GUILayout.Width(150), GUILayout.Height(30)))
         {
-            Generator(uiRootGo);
+            GeneratorWindow(uiRootGo);
+        }
+        if (GUILayout.Button("生成Component", GUILayout.Width(150), GUILayout.Height(30)))
+        {
+            GeneratorComponent(uiRootGo);
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
@@ -77,23 +81,28 @@ public class UIAutoCreateEditorWindow : EditorWindow
         GUILayout.EndArea();
     }
     
-    private void Generator(GameObject go)
+    private void GeneratorWindow(GameObject go)
     {
-        var config = AssetDatabase.LoadAssetAtPath<UIAutoCreateInfoConfig>("Assets/Editor/UIAutoCreateInfoConfig.asset");
-        CreatePrefab(go,config);
-        CreateUIClass(config);
+        var config = AssetDatabase.LoadAssetAtPath<UIAutoCreateInfoConfig>("Assets/GameScript/Editor/UIAutoCreateInfoConfig.asset");
+        CreateWindowPrefab(go,config);
+        CreateWindowUIClass(config);
     }
     
-    private void CreatePrefab(GameObject gameObject,UIAutoCreateInfoConfig config)
+    private void CreateWindowPrefab(GameObject gameObject,UIAutoCreateInfoConfig config)
     {
         //检查目录
-        if (!Directory.Exists(config.PrefabPath))
+        if (!Directory.Exists(config.WindowPrefabPath))
         {
-            throw new System.Exception($"路径{config.PrefabPath} 不存在");
+            throw new System.Exception($"路径{config.WindowPrefabPath} 不存在");
         }
 
         var uiName = GetUIName();
-        var localPath = string.Format("{0}/{1}.prefab", config.PrefabPath, uiName);
+        var localPath = string.Format("{0}/{1}.prefab", config.WindowPrefabPath, uiName);
+        if (File.Exists(localPath))
+        {
+            Debug.Log($"{uiName}.prefab已经存在");
+            return;
+        }
         //确保prefab唯一
         localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
 
@@ -107,17 +116,63 @@ public class UIAutoCreateEditorWindow : EditorWindow
         AssetDatabase.Refresh();
     }
     
-    private void CreateUIClass(UIAutoCreateInfoConfig config)
+    private void CreateWindowUIClass(UIAutoCreateInfoConfig config)
     {
         if (uiRootGo == null) throw new System.Exception("请拖入需要生成的预制体节点");
         string uiName = GetUIName();
 
         
-        var targetPath = config.ScriptPath;
+        var targetPath = config.WindowScriptPath;
         CheckTargetPath(targetPath);
-        new UIClassAutoCreate().Create(uiName,uiRootGo,config);
+        new UIClassAutoCreate().CreateWindow(uiName,uiRootGo,config);
+    }
+    
+    private void GeneratorComponent(GameObject go)
+    {
+        var config = AssetDatabase.LoadAssetAtPath<UIAutoCreateInfoConfig>("Assets/GameScript/Editor/UIAutoCreateInfoConfig.asset");
+        CreateComponentClass(config);
+        CreateComponentPrefab(go,config);
     }
 
+    private void CreateComponentClass(UIAutoCreateInfoConfig config)
+    {
+        if (uiRootGo == null) throw new System.Exception("请拖入需要生成的预制体节点");
+        string uiName = GetUIName();
+        
+        var targetPath = config.WindowScriptPath;
+        CheckTargetPath(targetPath);
+        
+        new UIClassAutoCreate().CreateComponent(uiName,uiRootGo,config);
+    }
+
+    private void CreateComponentPrefab(GameObject gameObject,UIAutoCreateInfoConfig config)
+    {
+        //检查目录
+        if (!Directory.Exists(config.ComponentPrefabPath))
+        {
+            throw new System.Exception($"路径{config.ComponentPrefabPath} 不存在");
+        }
+
+        var uiName = GetUIName();
+        var localPath = string.Format("{0}/{1}.prefab", config.ComponentPrefabPath, uiName);
+        if (File.Exists(localPath))
+        {
+            Debug.Log($"{uiName}.prefab已经存在");
+            return;
+        }
+        //确保prefab唯一
+        localPath = AssetDatabase.GenerateUniqueAssetPath(localPath);
+
+        //创建一个prefab 并且输出日志
+        bool prefabSuccess;
+        PrefabUtility.SaveAsPrefabAssetAndConnect(gameObject, localPath, InteractionMode.UserAction, out prefabSuccess);
+        if (prefabSuccess)
+            Debug.Log($"{uiName}.prefab创建成功");
+        else
+            Debug.Log($"{uiName}.prefab创建失败");
+        AssetDatabase.Refresh();
+    }
+    
     private string GetUIName()
     {
         string uiName = uiRootGo.name.Replace("UI", "");

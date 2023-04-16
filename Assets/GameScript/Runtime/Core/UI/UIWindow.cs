@@ -9,16 +9,22 @@ public class UIWindow : IUIBase
         get => _uiGo;
         set => _uiGo = value;
     }
+    public Transform uiTran
+    {
+        get => _uiGo.transform;
+    }
     private GameObject _uiGo;
-    
+
+    public UILayer uiLayer
+    {
+        get => _uiLayer;
+        set => _uiLayer = value;
+    }
+
+    private UILayer _uiLayer;
     public virtual void Init(GameObject go)
     {
         
-    }
-
-    public virtual UILayer GetLayer()
-    {
-        throw new System.NotImplementedException();
     }
 
     public virtual void OnCreate()

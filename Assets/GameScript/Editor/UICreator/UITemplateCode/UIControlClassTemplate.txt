@@ -8,10 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public partial class {0} : UIWindow
 {
-    public override UILayer GetLayer()
-    {
-        return UILayer.Bottom;
-    }
 
     public override void OnCreate()
     {
@@ -30,7 +26,7 @@ public partial class {0} : UIWindow
 
     public override void OnHide()
     {
-        base.OnHide(openParam);
+        base.OnHide();
     }
 
     public override void OnUpdate()

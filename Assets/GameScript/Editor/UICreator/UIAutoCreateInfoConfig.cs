@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class UIFieldRule
@@ -15,9 +16,13 @@ public class UIAutoCreateInfoConfig : ScriptableObject
 {
     public List<UIFieldRule> uiInfoList;
 
-    public string UIViewTemplatePath;
+    public string UIWindowTemplatePath;
     public string UIControlTemplatePath;
-    public string ScriptPath;
-    public string PrefabPath;
+    public string UIComponentTemplatePath;
+    public string UIComponentClassTemplatePath;
+    public string WindowScriptPath;
+    public string ComponentScriptPath;
+    public string WindowPrefabPath;
+    public string ComponentPrefabPath;
 }
 

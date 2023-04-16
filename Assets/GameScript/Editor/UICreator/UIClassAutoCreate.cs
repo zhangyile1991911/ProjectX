@@ -24,7 +24,7 @@ public class UIClassAutoCreate
     private string IgnoreCommonName = "Ins_";
     private UIAutoCreateInfoConfig infoConfig;
     
-    public void Create(string uiClassName, GameObject uiRootGo,UIAutoCreateInfoConfig config)
+    public void CreateWindow(string uiClassName, GameObject uiRootGo,UIAutoCreateInfoConfig config)
     {
         this.uiRootGo = uiRootGo;
         allNodeInfos.Clear();
@@ -48,7 +48,7 @@ public class UIClassAutoCreate
         }
         
         //找到生成UI类模板文件
-        var templateAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(config.UIViewTemplatePath);
+        var templateAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(config.UIWindowTemplatePath);
         var templateFile = templateAsset.text; 
         
         //替换类名
@@ -57,8 +57,14 @@ public class UIClassAutoCreate
         templateFile = templateFile.Replace("{1}",allDeclaration.ToString());
         //替换find代码
         templateFile = templateFile.Replace("{2}",allFindCode.ToString());
-
-        string uiVIewFilePath = string.Format("{0}{1}View.cs", config.ScriptPath,uiClassName);
+        //替换枚举类型
+        var enumClassName = $"UIEnum.{uiClassName}";
+        templateFile = templateFile.Replace("{3}",enumClassName);
+        //替换资源路径
+        var prefabResPath = $"{config.WindowPrefabPath}/{uiClassName}.prefab";
+        templateFile = templateFile.Replace("{4}",prefabResPath);
+        
+        string uiVIewFilePath = string.Format("{0}/{1}View.cs", config.WindowScriptPath,uiClassName);
         if (File.Exists(uiVIewFilePath))
         {
             if (EditorUtility.DisplayDialog("警告", "检测到脚本,是否覆盖", "确定","取消"))
@@ -73,7 +79,7 @@ public class UIClassAutoCreate
 
         //生成控制代码
         var controlTemplateFile = AssetDatabase.LoadAssetAtPath<TextAsset>(config.UIControlTemplatePath).text;
-        string uiControllerFilePath = string.Format("{0}{1}Control.cs", config.ScriptPath, uiClassName);
+        string uiControllerFilePath = string.Format("{0}/{1}Control.cs", config.WindowScriptPath, uiClassName);
         controlTemplateFile = controlTemplateFile.Replace("{0}", uiClassName);
         if (!File.Exists(uiControllerFilePath))
         {
@@ -158,4 +164,66 @@ public class UIClassAutoCreate
 
         return path;
     }
+    
+    public void CreateComponent(string uiComponentName, GameObject uiRootGo,UIAutoCreateInfoConfig config)
+    {
+        this.uiRootGo = uiRootGo;
+        allNodeInfos.Clear();
+        
+        infoConfig = config;
+        
+        FindGoChild(uiRootGo.transform,true);
+        
+        if (allNodeInfos.Count <= 0)
+        {
+            Debug.Log("<color=#ff0000>组件数量为0，请确认组件命名是否正确！</color>");
+        }
+        
+        var allDeclaration = new StringBuilder();
+        var allFindCode = new StringBuilder();
+
+        foreach (var node in allNodeInfos)
+        {
+            allDeclaration.Append(node.Value.DeclarationCode);
+            allFindCode.Append(node.Value.InitFindCode);
+        }
+        
+        //找到生成UI类模板文件
+        var templateAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(config.UIComponentTemplatePath);
+        var templateFile = templateAsset.text; 
+        
+        //替换类名
+        templateFile = templateFile.Replace("{0}",uiComponentName);
+        //替换成员变量声明
+        templateFile = templateFile.Replace("{1}",allDeclaration.ToString());
+        //替换find代码
+        templateFile = templateFile.Replace("{2}",allFindCode.ToString());
+        //替换资源路径
+        var prefabResPath = $"{config.ComponentPrefabPath}/{uiComponentName}.prefab";
+        templateFile = templateFile.Replace("{3}",prefabResPath);
+
+        string uiVIewFilePath = string.Format("{0}/{1}View.cs", config.ComponentScriptPath,uiComponentName);
+        if (File.Exists(uiVIewFilePath))
+        {
+            if (EditorUtility.DisplayDialog("警告", "检测到脚本,是否覆盖", "确定","取消"))
+            {
+                SaveFile(templateFile,uiVIewFilePath);
+            }
+        }
+        else
+        {
+            SaveFile(templateFile,uiVIewFilePath);
+        }
+
+        //生成控制代码
+        var controlTemplateFile = AssetDatabase.LoadAssetAtPath<TextAsset>(config.UIComponentClassTemplatePath).text;
+        string uiControllerFilePath = string.Format("{0}/{1}Control.cs", config.ComponentScriptPath, uiComponentName);
+        controlTemplateFile = controlTemplateFile.Replace("{0}", uiComponentName);
+        controlTemplateFile = controlTemplateFile.Replace("{1}", uiComponentName);
+        if (!File.Exists(uiControllerFilePath))
+        {
+            SaveFile(controlTemplateFile,uiControllerFilePath);
+        }
+    }
+    
 }

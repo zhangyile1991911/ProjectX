@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using YooAsset;
 
@@ -107,16 +108,38 @@ public class UIManager : MonoBehaviour
         var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
         handle.Completed += (result) =>
         {
-            IUIBase ui = Activator.CreateInstance(uiType) as IUIBase;
             var uiPrefab = result.AssetObject;
             var parentNode = getParentNode(layer);
             var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
-            // uiGameObject.transform.position = Vector3.zero;
-            // uiGameObject.transform.localScale = Vector3.one;
+            uiGameObject.transform.localScale = Vector3.one;
             uiGameObject.transform.SetParent(parentNode,false);
+            IUIBase ui = Activator.CreateInstance(uiType) as IUIBase;
+            ui.uiLayer = layer;
             ui.Init(uiGameObject);
             onComplete?.Invoke(ui);
             _uiCachedDic.Add(uiName,ui);
         };
+    }
+    
+    public T CreateUIComponent<T>(UIOpenParam openParam,Transform node,UIWindow parent)where T : UIComponent
+    {
+        var componentType = typeof(T);
+        
+        var attributes = componentType.GetCustomAttributes(false);
+        var uiPath = attributes
+            .Where(one => one is UIAttribute)
+            .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
+        
+        var handle = YooAssets.LoadAssetSync<GameObject>(uiPath);
+        // await handle.Task;
+        var uiPrefab = handle.AssetObject;
+        
+        var uiGameObject = GameObject.Instantiate(uiPrefab,node) as GameObject;
+        uiGameObject.transform.localPosition = Vector3.zero;
+        uiGameObject.transform.localScale = Vector3.one;
+        T uiComponent = Activator.CreateInstance(componentType,new object[]{uiGameObject,parent}) as T;
+        uiComponent.OnCreate();
+        uiComponent.OnShow(openParam);
+        return uiComponent;
     }
 }

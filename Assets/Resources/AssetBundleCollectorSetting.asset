@@ -33,8 +33,8 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/GameScript
-        CollectorGUID: 7570a96063a2c8e478a8eca1f06425af
+      - CollectPath: Assets/GameScript/Runtime
+        CollectorGUID: 79d53b56b90d03c4aac2c0c3e6b2bcfc
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
