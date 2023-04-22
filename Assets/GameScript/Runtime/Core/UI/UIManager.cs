@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using YooAsset;
 
 
-public class UIManager : MonoBehaviour
+public class UIManager : IModule
 {
-    public static UIManager Instance => _instance;
-    private static UIManager _instance;
+    // public static UIManager Instance => _instance;
+    // private static UIManager _instance;
 
     private LRUCache<UIEnum, IUIBase> _uiCachedDic;
 
@@ -19,24 +19,6 @@ public class UIManager : MonoBehaviour
     private Transform _top;
 
     private Transform _guide;
-
-    private void Awake()
-    {
-        _uiCachedDic = new LRUCache<UIEnum, IUIBase>(10);
-        _uiCachedDic.OnRemove += (ui) =>
-        {
-            ui.OnHide();
-            ui.OnDestroy();
-        };
-        // uiStack = new Stack<IUIBase>();
-        // uiList = new List<IUIBase>();
-        _bottom = transform.Find("Bottom");
-        _center = transform.Find("Center");
-        _top = transform.Find("Top");
-        _guide = transform.Find("Guide");
-        
-        _instance = this;
-    }
 
     public IUIBase Get(UIEnum uiName)
     {
@@ -81,6 +63,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void DestroyUI(UIEnum uiName)
+    {
+        _uiCachedDic.Remove(uiName);
+    }
+
     private Transform getParentNode(UILayer layer)
     {
         switch (layer)
@@ -97,7 +84,7 @@ public class UIManager : MonoBehaviour
 
         return null;
     }
-    private void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer)
+    private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer)
     {
         Type uiType = Type.GetType(uiName.ToString());
         var attributes = uiType.GetCustomAttributes(false);
@@ -106,9 +93,10 @@ public class UIManager : MonoBehaviour
             .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
         
         var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
-        handle.Completed += (result) =>
-        {
-            var uiPrefab = result.AssetObject;
+        await handle.ToUniTask();
+        // handle.Completed += (result) =>
+        // {
+            var uiPrefab = handle.AssetObject;
             var parentNode = getParentNode(layer);
             var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
             uiGameObject.transform.localScale = Vector3.one;
@@ -118,7 +106,7 @@ public class UIManager : MonoBehaviour
             ui.Init(uiGameObject);
             onComplete?.Invoke(ui);
             _uiCachedDic.Add(uiName,ui);
-        };
+        // };
     }
     
     public T CreateUIComponent<T>(UIOpenParam openParam,Transform node,UIWindow parent)where T : UIComponent
@@ -141,5 +129,34 @@ public class UIManager : MonoBehaviour
         uiComponent.OnCreate();
         uiComponent.OnShow(openParam);
         return uiComponent;
+    }
+
+    public void OnCreate(object createParam)
+    {
+        _uiCachedDic = new LRUCache<UIEnum, IUIBase>(10);
+        _uiCachedDic.OnRemove += (ui) =>
+        {
+            ui.OnHide();
+            ui.OnDestroy();
+        };
+        //在场景里找到UIModule节点
+        var uiModule = GameObject.Find("UIModule");
+        
+        _bottom = uiModule.transform.Find("UIRoot/Bottom");
+        _center = uiModule.transform.Find("UIRoot/Center");
+        _top = uiModule.transform.Find("UIRoot/Top");
+        _guide = uiModule.transform.Find("UIRoot/Guide");
+        GameObject.DontDestroyOnLoad(uiModule);
+        // _instance = this;
+    }
+
+    public void OnUpdate()
+    {
+        
+    }
+
+    public void OnDestroy()
+    {
+        
     }
 }

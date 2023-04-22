@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 
 public class Node<TKey, TValue>
 {
@@ -9,7 +10,7 @@ public class Node<TKey, TValue>
     public Node<TKey, TValue> Next { get; set; }
 }
 
-public class LRUCache<TKey, TValue>
+public class LRUCache<TKey, TValue> where TKey : IComparable
 {
     public Action<TValue> OnRemove;
     private readonly int capacity;
@@ -127,5 +128,41 @@ public class LRUCache<TKey, TValue>
             tail.Next = null;
         }
         
+    }
+
+    public void Remove(TKey key)
+    {
+        if (!cache.ContainsKey(key))return;
+            
+        var curNode = head;
+        while (curNode != null)
+        {
+            if (curNode.Key.CompareTo(key) == 0)
+            {
+                var previous = curNode.Previous;
+                var next = curNode.Next;
+                
+                if (previous != null)
+                {
+                    previous.Next = next;    
+                }
+
+                if (next != null)
+                {
+                    next.Previous = previous;    
+                }
+
+                curNode.Previous = null;
+                curNode.Next = null;
+                
+                cache.Remove(key);
+                count--;
+                
+                OnRemove?.Invoke(curNode.Value);
+                break;
+            }
+
+            curNode = curNode.Next;
+        }
     }
 }

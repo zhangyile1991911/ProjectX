@@ -33,6 +33,7 @@ public class UIComponent : IUIBase
         _uiGo = go;
         _parentWindow = parent;
         Init(go);
+        OnCreate();
     }
     
     public virtual void Init(GameObject go)

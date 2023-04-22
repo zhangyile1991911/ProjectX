@@ -5,5 +5,6 @@ using UnityEngine;
 public enum UIEnum
 {
     RestaurantWindow,
-    PhoneWindow
+    PhoneWindow,
+    BootWindow
 }

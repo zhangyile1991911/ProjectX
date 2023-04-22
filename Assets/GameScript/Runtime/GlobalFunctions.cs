@@ -10,10 +10,11 @@ public static class GlobalFunctions
     {
         //todo 这部分初始化 之后移动一个专门地方做
         YooAssets.Initialize();
-        var package = YooAssets.CreateAssetsPackage("DefaultPackage");
-        YooAssets.SetDefaultAssetsPackage(package);
+
+        var package = YooAssets.CreatePackage("DefaultPackage");
+        YooAssets.SetDefaultPackage(package);
         var initParameters = new EditorSimulateModeParameters();
-        initParameters.SimulatePatchManifestPath = EditorSimulateModeHelper.SimulateBuild("DefaultPackage");
+        initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("DefaultPackage");
         yield return package.InitializeAsync(initParameters);
         Debug.Log($"YooAssets初始化完成");
         complete?.Invoke(true);

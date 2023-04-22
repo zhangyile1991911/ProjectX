@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class UIWindow : IUIBase
@@ -21,6 +22,7 @@ public class UIWindow : IUIBase
         set => _uiLayer = value;
     }
 
+    protected CompositeDisposable handles = new CompositeDisposable(10);
     private UILayer _uiLayer;
     public virtual void Init(GameObject go)
     {
@@ -34,7 +36,8 @@ public class UIWindow : IUIBase
 
     public virtual void OnDestroy()
     {
-        
+        handles.Clear();
+        GameObject.DestroyImmediate(uiGo);
     }
 
     public virtual void OnShow(UIOpenParam openParam)
@@ -45,6 +48,7 @@ public class UIWindow : IUIBase
     public virtual void OnHide()
     {
         uiGo.SetActive(false);
+        handles.Clear();
     }
 
     public virtual void OnUpdate()

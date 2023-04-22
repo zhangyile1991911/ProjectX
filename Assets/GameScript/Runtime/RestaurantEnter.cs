@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class RestaurantEnter : MonoBehaviour
 {
+    private UIManager _uiManager;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GlobalFunctions.InitYooAssets(WaitInit));
-    }
-
-    void WaitInit(bool success)
-    {
-        UIManager.Instance.OpenUI(UIEnum.RestaurantWindow,null,null);
+        _uiManager = UniModule.GetModule<UIManager>();
+        _uiManager.OpenUI(UIEnum.RestaurantWindow,null,null);
     }
 
     // Update is called once per frame

@@ -23,6 +23,8 @@ MonoBehaviour:
     typeName: TextMeshProUGUI
   - prefixName: Input_
     typeName: TMP_InputField
+  - prefixName: Ins_
+    typeName: Transform
   UIWindowTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIWindowClassTemplate.txt
   UIControlTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIControlClassTemplate.txt
   UIComponentTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIComponentViewTemplate.txt
