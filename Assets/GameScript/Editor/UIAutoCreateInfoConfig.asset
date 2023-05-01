@@ -25,6 +25,8 @@ MonoBehaviour:
     typeName: TMP_InputField
   - prefixName: Ins_
     typeName: Transform
+  - prefixName: Grid_
+    typeName: LoopGridView
   UIWindowTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIWindowClassTemplate.txt
   UIControlTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIControlClassTemplate.txt
   UIComponentTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIComponentViewTemplate.txt

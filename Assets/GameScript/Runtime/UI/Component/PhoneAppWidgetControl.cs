@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Text;
+using PlasticGui.WorkspaceWindow;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,27 +9,24 @@ using UnityEngine.UI;
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
-public partial class ClockWidget : UIComponent
+public partial class PhoneAppWidget : UIComponent
 {
-    public ClockWidget(GameObject go,UIWindow parent):base(go,parent)
+    public PhoneAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
 		
     }
     
     public override void OnCreate()
     {
-        base.OnCreate();
-        var clocker = UniModule.GetModule<Clocker>();
-        Txt_timer.text = ZString.Format("{0}:{1}",clocker.NowDateTime.Hour,clocker.NowDateTime.Minute);
-        clocker.Topic.Subscribe(nowms =>
+        Btn_App.OnClickAsObservable().Subscribe(_ =>
         {
-            Txt_timer.text = ZString.Format("{0}:{1}",nowms.Hour,nowms.Minute);
+            onClick?.Invoke();
         }).AddTo(uiTran);
     }
     
     public override void OnDestroy()
     {
-        base.OnDestroy();
+        
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -43,6 +41,13 @@ public partial class ClockWidget : UIComponent
 
     public override void OnUpdate()
     {
-        base.OnUpdate();
+        
+    }
+
+    private Action onClick;
+    public void SetAPPInfo(string appName,Action click)
+    {
+        Txt_App.text = appName;
+        onClick = click;
     }
 }

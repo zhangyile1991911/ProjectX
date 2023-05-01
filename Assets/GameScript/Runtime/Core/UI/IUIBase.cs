@@ -13,7 +13,9 @@ public interface IUIBase
     GameObject uiGo { get; set; }
     Transform uiTran { get; }
     UILayer uiLayer { get; set; }
-    
+
+    bool IsActive { get; }
+
     void Init(GameObject go);
     
     void OnCreate();

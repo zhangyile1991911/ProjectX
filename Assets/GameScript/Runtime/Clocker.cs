@@ -3,17 +3,20 @@ using UniRx;
 
 public class Clocker : IModule
 {
-    public IObservable<long> Topic;
+    public IObservable<DateTime> Topic;
     public long Now => _nowMs;
-    
-    private Subject<long> _subject;
+    public DateTime NowDateTime => _nowDate;
+    private Subject<DateTime> _subject;
     private long _nowMs;
+    private DateTime _nowDate;
     public void OnCreate(object createParam)
     {
-        _subject = new Subject<long>();
+        _subject = new Subject<DateTime>();
         Topic = _subject;
         //读取数据库或者json
         _nowMs = 1682155171369;
+        _nowDate = new DateTime(1970, 1, 1, 8, 0, 0).AddMilliseconds(_nowMs);
+
     }
 
     public void AddOneSecond()
@@ -23,19 +26,19 @@ public class Clocker : IModule
     
     public void AddSecond(int i)
     {
-        _nowMs += 1000 * i;
-        _subject.OnNext(_nowMs);
+        _nowDate = _nowDate.AddSeconds(i);
+        _subject.OnNext(_nowDate);
     }
 
     public void AddOneMinute()
     {
-        AddMinute(1);
+        AddSecond(60);
     }
 
     public void AddMinute(int i)
     {
-        _nowMs += 1000 * 60 * i;
-        _subject.OnNext(_nowMs);
+        // _nowMs += 1000 * 60 * i;
+        AddSecond(i*60);
     }
 
     public void OnUpdate()

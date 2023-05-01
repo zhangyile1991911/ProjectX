@@ -21,6 +21,8 @@ public class UIWindow : IUIBase
         get => _uiLayer;
         set => _uiLayer = value;
     }
+    
+    public bool IsActive => uiGo.active;
 
     protected CompositeDisposable handles = new CompositeDisposable(10);
     private UILayer _uiLayer;

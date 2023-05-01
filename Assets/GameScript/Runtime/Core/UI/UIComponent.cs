@@ -21,6 +21,8 @@ public class UIComponent : IUIBase
         set;
     }
 
+    public bool IsActive => uiGo.active;
+    
     public UIWindow ParentWindow
     {
         get => _parentWindow;
@@ -39,11 +41,6 @@ public class UIComponent : IUIBase
     public virtual void Init(GameObject go)
     {
         
-    }
-
-    public virtual UILayer GetLayer()
-    {
-        throw new System.NotImplementedException();
     }
 
     public virtual void OnCreate()

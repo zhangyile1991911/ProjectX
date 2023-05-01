@@ -109,7 +109,7 @@ public class UIManager : IModule
         // };
     }
     
-    public T CreateUIComponent<T>(UIOpenParam openParam,Transform node,UIWindow parent)where T : UIComponent
+    public async UniTask<T> CreateUIComponent<T>(UIOpenParam openParam,Transform node,UIWindow parent,bool show=true)where T : UIComponent
     {
         var componentType = typeof(T);
         
@@ -118,16 +118,25 @@ public class UIManager : IModule
             .Where(one => one is UIAttribute)
             .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
         
-        var handle = YooAssets.LoadAssetSync<GameObject>(uiPath);
-        // await handle.Task;
+        var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
+        await handle.ToUniTask();
+        
         var uiPrefab = handle.AssetObject;
         
         var uiGameObject = GameObject.Instantiate(uiPrefab,node) as GameObject;
         uiGameObject.transform.localPosition = Vector3.zero;
         uiGameObject.transform.localScale = Vector3.one;
         T uiComponent = Activator.CreateInstance(componentType,new object[]{uiGameObject,parent}) as T;
-        uiComponent.OnCreate();
-        uiComponent.OnShow(openParam);
+        // uiComponent.OnCreate();
+        if (show)
+        {
+            uiComponent.OnShow(openParam);    
+        }
+        else
+        {
+            uiComponent.OnHide();
+        }
+        
         return uiComponent;
     }
 

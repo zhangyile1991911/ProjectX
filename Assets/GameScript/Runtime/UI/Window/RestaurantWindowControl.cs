@@ -22,7 +22,6 @@ public partial class RestaurantWindow : UIWindow
         // }
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
 
-       
     }
     
     public override void OnDestroy()
@@ -33,11 +32,7 @@ public partial class RestaurantWindow : UIWindow
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
-        
-        Btn_Phone.OnClickAsObservable().Subscribe(_ =>
-        {
-            UniModule.GetModule<Clocker>().AddOneMinute();
-        }).AddTo(handles);
+        Btn_Phone.OnClickAsObservable().Subscribe(ClickPhone).AddTo(handles);
         
     }
 
@@ -49,5 +44,24 @@ public partial class RestaurantWindow : UIWindow
     public override void OnUpdate()
     {
         base.OnUpdate();
+    }
+
+    private void ClickPhone(Unit param)
+    {
+        UniModule.GetModule<Clocker>().AddOneMinute();
+        var uiManager = UniModule.GetModule<UIManager>();
+        var phone = uiManager.Get(UIEnum.PhoneWindow);
+        if (phone == null)
+        {
+            uiManager.OpenUI(UIEnum.PhoneWindow,null,null,UILayer.Center);   
+        }
+        else if (phone.IsActive)
+        {
+            uiManager.CloseUI(UIEnum.PhoneWindow);    
+        }
+        else
+        {
+            uiManager.OpenUI(UIEnum.PhoneWindow,null,null,UILayer.Center);    
+        }
     }
 }
