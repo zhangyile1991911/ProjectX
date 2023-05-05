@@ -43,7 +43,7 @@ public partial class PhoneWindow : UIWindow
         _clocker = UniModule.GetModule<Clocker>();
         Btn_Home.OnClickAsObservable().Subscribe(_ =>
         {
-            if (curRunApp.IsActive)
+            if (curRunApp != null && curRunApp.IsActive)
             {
                 curRunApp.OnHide();
                 _clocker.AddMinute(1);

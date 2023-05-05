@@ -11,6 +11,7 @@ public partial class RestaurantWindow : UIWindow
 {
     private ClockWidget _clockWidget;
     private List<FoodOrderComponent> foodOrderList;
+    private StateMachine _machine;
     public override void OnCreate()
     {
         base.OnCreate();

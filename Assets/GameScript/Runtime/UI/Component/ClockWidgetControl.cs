@@ -19,10 +19,10 @@ public partial class ClockWidget : UIComponent
     {
         base.OnCreate();
         var clocker = UniModule.GetModule<Clocker>();
-        Txt_timer.text = ZString.Format("{0}:{1}",clocker.NowDateTime.Hour,clocker.NowDateTime.Minute);
+        Txt_timer.text = ZString.Format("{0}:{1:D2}",clocker.NowDateTime.Hour,clocker.NowDateTime.Minute);
         clocker.Topic.Subscribe(nowms =>
         {
-            Txt_timer.text = ZString.Format("{0}:{1}",nowms.Hour,nowms.Minute);
+            Txt_timer.text = ZString.Format("{0}:{1:D2}",nowms.Hour,nowms.Minute);
         }).AddTo(uiTran);
     }
     
