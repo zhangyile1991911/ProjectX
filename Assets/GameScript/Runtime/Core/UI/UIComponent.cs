@@ -15,6 +15,12 @@ public class UIComponent : IUIBase
         get => _uiGo.transform;
     }
 
+    public RectTransform uiRectTran
+    {
+        get => _rectTransform;
+    }
+
+    private RectTransform _rectTransform;
     public UILayer uiLayer
     {
         get;
@@ -34,6 +40,8 @@ public class UIComponent : IUIBase
     {
         _uiGo = go;
         _parentWindow = parent;
+        _rectTransform = go.GetComponent<RectTransform>();
+        
         Init(go);
         OnCreate();
     }

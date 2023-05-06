@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using YooAsset;
 
 
@@ -19,6 +20,12 @@ public class UIManager : IModule
     private Transform _top;
 
     private Transform _guide;
+
+    public CanvasScaler RootCanvasScaler;
+    private CanvasScaler _rootCanvasScaler;
+
+    public Canvas RootCanvas;
+    private Canvas _rootCanvas;
 
     public IUIBase Get(UIEnum uiName)
     {
@@ -150,6 +157,10 @@ public class UIManager : IModule
         };
         //在场景里找到UIModule节点
         var uiModule = GameObject.Find("UIModule");
+
+        var root = uiModule.transform.Find("UIRoot");
+        _rootCanvasScaler = root.GetComponent<CanvasScaler>();
+        _rootCanvas = root.GetComponent<Canvas>();
         
         _bottom = uiModule.transform.Find("UIRoot/Bottom");
         _center = uiModule.transform.Find("UIRoot/Center");

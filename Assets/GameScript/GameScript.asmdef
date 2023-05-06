@@ -2,13 +2,17 @@
     "name": "GameScript",
     "rootNamespace": "",
     "references": [
-        "GUID:e34a5702dd353724aa315fb8011f08c3",
         "GUID:33661e06c33d31b4c9223810bf503247",
         "GUID:560b04d1a97f54a4e82edc0cbbb69285",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:cbfdca87e247d3a49986d4759bbc1ccc",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:2cc1a00779e706941a332997cf536bfd"
+        "GUID:2cc1a00779e706941a332997cf536bfd",
+        "GUID:adfb4b589bffdd241a4b7270a163e64a",
+        "GUID:34aa492b82754644eac2f903cd496268",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
+        "GUID:eba6c731e66f4ca46882b8d618479a54",
+        "GUID:bc360438cf6737d4cbad3921099a7807"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

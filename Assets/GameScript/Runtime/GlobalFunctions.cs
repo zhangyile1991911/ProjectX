@@ -13,8 +13,11 @@ public static class GlobalFunctions
 
         var package = YooAssets.CreatePackage("DefaultPackage");
         YooAssets.SetDefaultPackage(package);
+        
         var initParameters = new EditorSimulateModeParameters();
         initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("DefaultPackage");
+        
+        // var initParameters = new OfflinePlayModeParameters();
         yield return package.InitializeAsync(initParameters);
         Debug.Log($"YooAssets初始化完成");
         complete?.Invoke(true);

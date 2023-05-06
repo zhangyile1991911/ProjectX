@@ -12,9 +12,6 @@ public class Boot : MonoBehaviour
     void Start()
     {
         StartCoroutine(GlobalFunctions.InitYooAssets(waitYooAssets));
-        
-        
-        
     }
 
     void waitYooAssets(bool success)
