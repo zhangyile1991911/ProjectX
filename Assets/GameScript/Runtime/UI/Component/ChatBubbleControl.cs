@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public partial class ChatBubble : UIComponent
 {
     private DOTweenAnimation _doTweenAnimation;
+    private Character _owner;
     public ChatBubble(GameObject go,UIWindow parent):base(go,parent)
     {
 		
@@ -30,13 +31,14 @@ public partial class ChatBubble : UIComponent
     {
         base.OnShow(openParam);
         //随机生成一个目的
-        float x = Random.Range(0, 1920);
-        float y = Random.Range(0, 1080 / 2);
-        y += 1080 / 2f;
-        // uiRectTran.DOMove(new Vector2(x, y), 5.0f).OnComplete(()=>
-        // {
-        //     _doTweenAnimation.DOPlay();
-        // });
+        float x = Random.Range(-870, 870);
+        float y = Random.Range(0, 440);
+        // uiRectTran.anchoredPosition = new Vector2(x, y);
+        uiRectTran.DOAnchorPos(new Vector2(x, y), 5.0f).OnComplete(()=>
+        {
+            _doTweenAnimation.DOPlay();
+        });
+        
     }
 
     public override void OnHide()

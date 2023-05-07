@@ -72,7 +72,8 @@ public partial class RestaurantWindow : UIWindow
     private async void ClickTest(Unit param)
     {
         var uiManager = UniModule.GetModule<UIManager>();
-        var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,uiTran,this);
+        var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
         _bubbleList.Add(bubble);
+        
     }
 }
