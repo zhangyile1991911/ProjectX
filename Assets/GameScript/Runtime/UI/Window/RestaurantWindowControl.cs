@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
@@ -36,8 +36,7 @@ public partial class RestaurantWindow : UIWindow
     {
         base.OnShow(openParam);
         Btn_Phone.OnClickAsObservable().Subscribe(ClickPhone).AddTo(handles);
-        Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
-
+        // Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
     }
 
     public override void OnHide()
@@ -68,12 +67,33 @@ public partial class RestaurantWindow : UIWindow
             uiManager.OpenUI(UIEnum.PhoneWindow,null,null,UILayer.Center);    
         }
     }
+    
+    // private async void ClickTest(Unit param)
+    // {
+    //     // var uiManager = UniModule.GetModule<UIManager>();
+    //     // var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
+    //     // // bubble.SetBubbleInfo(1,,ClickBubble);
+    //     // _bubbleList.Add(bubble);
+    //     
+    // }
 
-    private async void ClickTest(Unit param)
+    public async void GenerateChatBubble(int chatId,Character character,Action<ChatBubble> ClickBubble)
     {
         var uiManager = UniModule.GetModule<UIManager>();
         var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
-        _bubbleList.Add(bubble);
-        
+        bubble.SetBubbleInfo(chatId,character,ClickBubble);
+        _bubbleList.Add(bubble);   
     }
+
+    public void RemoveChatBubble(Character character)
+    {
+        for (int i = _bubbleList.Count - 1; i >= 0; i--)
+        {
+            if (_bubbleList[i].Owner == character)
+            {
+                _bubbleList.RemoveAt(i);
+            }
+        }
+    }
+
 }

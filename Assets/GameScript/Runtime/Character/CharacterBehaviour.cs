@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UniRx;
 
 public interface CharacterBehaviour
 {
@@ -9,19 +11,20 @@ public interface CharacterBehaviour
 
     public void Enter(Character character);
 
+    public void Update();
 
     public void Exit();
 }
 
 
-public class CharacterEnterSceneBehaviour : CharacterBehaviour
+public class CharacterEnterScene : CharacterBehaviour
 {
     public Character Char => _character;
     private Character _character;
     
     private Vector3 destPoint;
     private Vector3 spawnPoint;
-    public CharacterEnterSceneBehaviour(Vector3 spawn,Vector3 dest)
+    public CharacterEnterScene(Vector3 spawn,Vector3 dest)
     {
         destPoint = dest;
         spawnPoint = spawn;
@@ -37,6 +40,10 @@ public class CharacterEnterSceneBehaviour : CharacterBehaviour
         var seq = DOTween.Sequence();
         seq.Append(_character.transform.DOMove(dest1, 7f));
         seq.Append(_character.transform.DOMove(dest2, 3f));
+        seq.OnComplete(() =>
+        {
+            _character.CurBehaviour = new CharacterMakeBubble();
+        });
         // seq.Complete();
         // _character.transform.DOMove(dest1, 10f);
         // _character.MoveTo(dest1,10);
@@ -44,6 +51,53 @@ public class CharacterEnterSceneBehaviour : CharacterBehaviour
 
     public void Exit()
     {
+        _character = null;
+    }
+
+    public void Update()
+    {
         
+    }
+}
+
+public class CharacterMakeBubble : CharacterBehaviour
+{
+    public Character Char => _character;
+    private Character _character;
+
+    private DateTime preDateTime;
+    private IDisposable _disposable;
+    public CharacterMakeBubble()
+    {
+        
+    }
+    
+    public void Enter(Character character)
+    {
+        _character = character;
+        var clocker = UniModule.GetModule<Clocker>();
+        _disposable = clocker.Topic.Subscribe(think);
+        preDateTime = clocker.NowDateTime;
+    }
+
+    public void Exit()
+    {
+        _disposable?.Dispose();
+    }
+
+    public void Update()
+    {
+        
+    }
+
+    private void think(DateTime dateTime)
+    {
+        var minutes = (dateTime - preDateTime).TotalMinutes;
+        if (minutes >= 5)
+        {
+            var eventModule = UniModule.GetModule<EventModule>();
+            eventModule.CharBubbleTopic.OnNext(_character);
+            preDateTime = dateTime;
+        }
     }
 }

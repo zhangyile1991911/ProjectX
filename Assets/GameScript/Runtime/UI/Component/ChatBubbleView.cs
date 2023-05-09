@@ -10,12 +10,14 @@ using TMPro;
 [UI(0,"Assets/GameRes/Prefabs/Components/ChatBubble.prefab")]
 public partial class ChatBubble : UIComponent
 {
+	public TextMeshProUGUI Txt_content;
 
 
 	public override void Init(GameObject go)
 	{
 	    uiGo = go;
 	    
+		Txt_content = go.transform.Find("Txt_content").GetComponent<TextMeshProUGUI>();
 
 	}
 }

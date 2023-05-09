@@ -23,7 +23,7 @@ public class CharacterMgr : IModule
         
     }
 
-    public async UniTask<Character> CreateCharacter(string name)
+    public async UniTask<Character> CreateCharacter(int cid,string name)
     {
         if (_characters.TryGetValue(name, out var character))
         {
@@ -38,7 +38,7 @@ public class CharacterMgr : IModule
         var ins_character = GameObject.Instantiate(go);
         character = ins_character.GetComponent<Character>();
         
-        character.InitCharacter(name);
+        character.InitCharacter(cid,name);
         
         _characters.Add(name,character);
 
@@ -54,5 +54,5 @@ public class CharacterMgr : IModule
 
         return null;
     }
-    
+
 }

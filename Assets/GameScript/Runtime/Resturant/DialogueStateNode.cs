@@ -1,8 +1,9 @@
 public class DialogueStateNode : IStateNode
 {
+    private RestaurantEnter _restaurantEnter;
     public void OnCreate(StateMachine machine)
     {
-        throw new System.NotImplementedException();
+        _restaurantEnter = machine.Owner as RestaurantEnter;
     }
 
     public void OnEnter()

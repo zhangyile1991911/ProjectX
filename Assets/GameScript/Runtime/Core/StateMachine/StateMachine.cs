@@ -9,15 +9,19 @@ public class StateMachine
     private IStateNode _curNode;
     private IStateNode _preNode;
     public System.Object Owner { private set; get; }
-    public string CurrentNode
-    {
-        get { return _curNode != null ? _curNode.GetType().FullName : string.Empty; }
-    }
+    // public string CurrentNode
+    // {
+    //     get { return _curNode != null ? _curNode.GetType().FullName : string.Empty; }
+    // }
 
-    public string PreviousNode
-    {
-        get { return _preNode != null ? _preNode.GetType().FullName : string.Empty; }
-    }
+    public IStateNode CurrentNode => _curNode;
+    
+    // public string PreviousNode
+    // {
+    //     get { return _preNode != null ? _preNode.GetType().FullName : string.Empty; }
+    // }
+
+    public IStateNode PreviousNode => _preNode;
     
     private StateMachine(){}
 

@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using YooAsset;
 
+
 public class Character : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
@@ -22,14 +23,37 @@ public class Character : MonoBehaviour
     //好感度
     public int Like => _like;
     private int _like;
-    
+
+    public int CharacterId => _cid;
+    private int _cid;
+
+    public CharacterBehaviour CurBehaviour
+    {
+        get => _behaviour;
+        set
+        {
+            if (_behaviour == null)
+            {
+                _behaviour = value;
+                _behaviour.Enter(this);
+            }
+            else
+            {
+                _behaviour.Exit();
+                _behaviour = value;
+                _behaviour.Enter(this);
+            }
+        }
+    }
+    private CharacterBehaviour _behaviour;
     void Start()
     {
         
     }
 
-    public void InitCharacter(string characterName)
+    public void InitCharacter(int cid,string characterName)
     {
+        _cid = cid;
         _name = characterName;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         LoadCharacterSprite();
@@ -44,11 +68,6 @@ public class Character : MonoBehaviour
         _spriteRenderer.sprite = sp;
     }
 
-    public void ChatBubble()
-    {//冒出聊天气泡
-        
-    }
-
     //增加好感度
     public void AddLike()
     {
@@ -59,5 +78,10 @@ public class Character : MonoBehaviour
     public void ReduceLike()
     {
         
+    }
+    
+    public int HaveChatId()
+    {
+        return UnityEngine.Random.Range(0,5);
     }
 }
