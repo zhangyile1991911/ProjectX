@@ -6,5 +6,7 @@ public enum UIEnum
 {
     RestaurantWindow,
     PhoneWindow,
-    BootWindow
+    BootWindow,
+    CharacterDialogWindow,
+    testwindow,
 }

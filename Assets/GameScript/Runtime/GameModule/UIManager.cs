@@ -91,7 +91,7 @@ public class UIManager : IModule
 
         return null;
     }
-    private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer)
+    private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent=false)
     {
         Type uiType = Type.GetType(uiName.ToString());
         var attributes = uiType.GetCustomAttributes(false);
@@ -103,17 +103,23 @@ public class UIManager : IModule
         await handle.ToUniTask();
         // handle.Completed += (result) =>
         // {
-            var uiPrefab = handle.AssetObject;
-            var parentNode = getParentNode(layer);
-            var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
-            uiGameObject.transform.localScale = Vector3.one;
-            uiGameObject.transform.SetParent(parentNode,false);
-            IUIBase ui = Activator.CreateInstance(uiType) as IUIBase;
-            ui.uiLayer = layer;
-            ui.Init(uiGameObject);
-            onComplete?.Invoke(ui);
-            _uiCachedDic.Add(uiName,ui);
+        var uiPrefab = handle.AssetObject;
+        var parentNode = getParentNode(layer);
+        var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
+        uiGameObject.transform.localScale = Vector3.one;
+        uiGameObject.transform.SetParent(parentNode,false);
+        IUIBase ui = Activator.CreateInstance(uiType) as IUIBase;
+        ui.uiLayer = layer;
+        ui.Init(uiGameObject);
+        onComplete?.Invoke(ui);
+        _uiCachedDic.Add(uiName,ui,isPermanent);
         // };
+    }
+
+    public void DestroyUIComponent(UIComponent component)
+    {
+        component?.OnHide();
+        component?.OnDestroy();
     }
     
     public async UniTask<T> CreateUIComponent<T>(UIOpenParam openParam,Transform node,UIWindow parent,bool show=true)where T : UIComponent

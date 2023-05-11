@@ -4,16 +4,7 @@ using System.Linq;
 using UniRx;
 
 //临时定义了表格数据
-internal class CharacterAppear
-{
-    public int CharacterId;
-    public int DayOfWeek;
-    public int startHour;
-    public int startMinutes;
-    public int endHour;
-    public int endMinutes;
-    public string CharacterImage;
-}
+
 
 public class WaitStateNode : IStateNode
 {
@@ -27,44 +18,15 @@ public class WaitStateNode : IStateNode
     private RestaurantEnter _restaurant;
     private RestaurantWindow _restaurantWindow;
     private UIManager _uiManager;
-
-    private List<CharacterAppear> appears;
+    
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
         _restaurant = machine.Owner as RestaurantEnter;
         _handles = new CompositeDisposable();
-        makeFakeDate();
-    }
-
-    void makeFakeDate()
-    {
-        appears = new List<CharacterAppear>();
-        appears.Add(new CharacterAppear()
-        {
-            CharacterId = 1,
-            DayOfWeek = 6,
-            startHour = 17,
-            startMinutes = 21,
-            endHour = 20,
-            endMinutes = 30,
-            CharacterImage = "DeliveryMan"
-        });
-        
-        appears.Add(new CharacterAppear()
-        {
-            CharacterId = 2,
-            DayOfWeek = 6,
-            startHour = 18,
-            startMinutes = 21,
-            endHour = 20,
-            endMinutes = 30,
-            CharacterImage = "FishMan"
-        });
-        
     }
     
-    public void OnEnter()
+    public void OnEnter(object param = null)
     {
         _characterMgr = UniModule.GetModule<CharacterMgr>();
         
@@ -120,7 +82,7 @@ public class WaitStateNode : IStateNode
 
     private List<CharacterAppear> checkWhoAppear(DateTime dateTime)
     {
-        return appears.Where(one => one.DayOfWeek == (int)dateTime.DayOfWeek)
+        return GlobalFunctions.appears.Where(one => one.DayOfWeek == (int)dateTime.DayOfWeek)
             .Where(one => dateTime.Hour >= one.startHour)
             .Where(one => dateTime.Minute >= one.startMinutes).ToList();
     }
@@ -137,6 +99,8 @@ public class WaitStateNode : IStateNode
 
     public void OnClickBubble(ChatBubble bubble)
     {
-        _machine.ChangeState<DialogueStateNode>();
+        var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
+        uiWindow.RemoveChatBubble(bubble);
+        _machine.ChangeState<DialogueStateNode>(bubble.Owner);
     }
 }

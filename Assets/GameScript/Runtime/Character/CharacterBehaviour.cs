@@ -101,3 +101,57 @@ public class CharacterMakeBubble : CharacterBehaviour
         }
     }
 }
+
+public class CharacterOnFocus : CharacterBehaviour
+{
+    public Character Char => _character;
+    private Character _character;
+
+    public CharacterOnFocus()
+    {
+        
+    }
+    
+    public void Enter(Character character)
+    {
+        _character = character;
+        _character.ToLight();
+    }
+
+    public void Exit()
+    {
+        _character = null;
+    }
+
+    public void Update()
+    {
+        
+    }
+}
+public class CharacterMute : CharacterBehaviour
+{
+    public Character Char => _character;
+    private Character _character;
+
+    public CharacterMute()
+    {
+        
+    }
+    
+    public void Enter(Character character)
+    {
+        _character = character;
+        _character.ToDark();
+    }
+
+    public void Exit()
+    {
+        _character = null;
+        _character.ToLight();
+    }
+
+    public void Update()
+    {
+        
+    }
+}

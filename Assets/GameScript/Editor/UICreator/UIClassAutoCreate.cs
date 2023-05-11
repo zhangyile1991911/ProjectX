@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Codice.Client.Common;
+using Cysharp.Text;
 using UnityEditor;
 using UnityEngine;
-using Yarn.Compiler;
 
 public class UIClassAutoCreate
 {
@@ -119,30 +117,40 @@ public class UIClassAutoCreate
 
     private void CheckUINode(Transform child)
     {
-        //1 确定成员 类型名字
-        var fieldTypeInfo = DetermineExportType(child.name);
-        if (fieldTypeInfo == null) return;
-
-        string classFieldName = child.name;
-        
-        var DefineNodeCode = string.Format("\tpublic {0} {1};\n", fieldTypeInfo.typeName, classFieldName);
-        //2 UI节点全路径
-        var path = GetFullNodePath(child);
-        //3 生成查找语句
-        var findNodeCode = string.Format("\t\t{0} = go.transform.Find(\"{1}\").GetComponent<{2}>();\n",
-            classFieldName, path, fieldTypeInfo.typeName);
-
-        if (allNodeInfos.ContainsKey(classFieldName))
+        var names = child.name.Split("_");
+        if (names == null||names.Length < 1)
         {
-            throw new Exception("组件重名!"+path);
+            return;
         }
 
-        var one = new UIDeclaration()
+        //2 UI节点全路径
+        var path = GetFullNodePath(child);
+        
+        foreach (var oneName in names)
         {
-            DeclarationCode = DefineNodeCode,
-            InitFindCode = findNodeCode
-        };
-        allNodeInfos.Add(classFieldName,one);
+            //1 确定成员 类型名字
+            var fieldTypeInfo = DetermineExportType(oneName+"_");
+            if (fieldTypeInfo == null) continue;
+
+            string classFieldName = $"{oneName}_{names[^1]}";
+    
+            var DefineNodeCode = string.Format("\tpublic {0} {1};\n", fieldTypeInfo.typeName, classFieldName);
+            //3 生成查找语句
+            var findNodeCode = string.Format("\t\t{0} = go.transform.Find(\"{1}\").GetComponent<{2}>();\n",
+                classFieldName, path, fieldTypeInfo.typeName);
+
+            if (allNodeInfos.ContainsKey(classFieldName))
+            {
+                throw new Exception("组件重名!"+path);
+            }
+
+            var one = new UIDeclaration()
+            {
+                DeclarationCode = DefineNodeCode,
+                InitFindCode = findNodeCode
+            };
+            allNodeInfos.Add(classFieldName,one);
+        }
     }
 
     private UIFieldRule DetermineExportType(string transformName)

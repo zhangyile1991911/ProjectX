@@ -9,6 +9,13 @@ using UnityEngine.UI;
 /// </summary>
 public partial class RestaurantWindow : UIWindow
 {
+    class ChatBubbleComparer : Comparer<ChatBubble>
+    {
+        public override int Compare(ChatBubble x, ChatBubble y)
+        {
+            return 1;
+        }
+    }
     private ClockWidget _clockWidget;
     private List<FoodOrderComponent> foodOrderList;
     private List<ChatBubble> _bubbleList;
@@ -23,6 +30,7 @@ public partial class RestaurantWindow : UIWindow
         //     foodOrderList.Add(one);
         // }
         _bubbleList = new List<ChatBubble>(20);
+
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
 
     }
@@ -82,18 +90,27 @@ public partial class RestaurantWindow : UIWindow
         var uiManager = UniModule.GetModule<UIManager>();
         var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
         bubble.SetBubbleInfo(chatId,character,ClickBubble);
-        _bubbleList.Add(bubble);   
+        _bubbleList.Add(bubble);
     }
 
     public void RemoveChatBubble(Character character)
     {
+        var uiManager = UniModule.GetModule<UIManager>();
         for (int i = _bubbleList.Count - 1; i >= 0; i--)
         {
             if (_bubbleList[i].Owner == character)
             {
                 _bubbleList.RemoveAt(i);
+                uiManager.DestroyUIComponent(_bubbleList[i]);
             }
         }
+    }
+
+    public void RemoveChatBubble(ChatBubble bubble)
+    {
+        _bubbleList.Remove(bubble);
+        var uiManager = UniModule.GetModule<UIManager>();
+        uiManager.DestroyUIComponent(bubble);
     }
 
 }

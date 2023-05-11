@@ -42,7 +42,7 @@ public class StateMachine
         Run(nodeName);
     }
 
-    public void Run(string entryNode)
+    public void Run(string entryNode,object param = null)
     {
         _curNode = TryGetNode(entryNode);
         _preNode = _curNode;
@@ -50,7 +50,7 @@ public class StateMachine
         if (_curNode == null)
             throw new Exception($"Not found entry node:{entryNode}");
         
-        _curNode.OnEnter();
+        _curNode.OnEnter(param);
     }
 
     public void AddNode<TNode>()where TNode : IStateNode
@@ -79,14 +79,14 @@ public class StateMachine
         }
     }
 
-    public void ChangeState<TNode>()where TNode : IStateNode
+    public void ChangeState<TNode>(object param = null)where TNode : IStateNode
     {
         var nodeType = typeof(TNode);
         var nodeName = nodeType.FullName;
         ChangeState(nodeName);
     }
 
-    public void ChangeState(string nodeName)
+    public void ChangeState(string nodeName,object param = null)
     {
         if (string.IsNullOrEmpty(nodeName))
             throw new ArgumentNullException();
@@ -102,7 +102,7 @@ public class StateMachine
         _preNode = _curNode;
         _curNode.OnExit();
         _curNode = node;
-        _curNode.OnEnter();
+        _curNode.OnEnter(param);
     }
 
     private IStateNode TryGetNode(string nodeName)

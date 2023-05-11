@@ -104,6 +104,29 @@ public class RestaurantEnter : MonoBehaviour
         return _spawnPoints[index].position;
     }
 
+    public void FocusOnCharacter(Character c)
+    {
+        foreach (var one in _characters.Values)
+        {
+            if (one == c)
+            {
+                one.CurBehaviour = new CharacterOnFocus();
+            }
+            else
+            {
+                one.CurBehaviour = new CharacterMute();    
+            }
+        }
+    }
+
+    public void NoFocusOnCharacter()
+    {
+        foreach (var one in _characters.Values)
+        {
+            one.CurBehaviour = new CharacterOnFocus();
+        }
+    }
+
     // private async void TimeGoesOn(DateTime dateTime)
     // { //时间流逝
     //     if (dateTime.Hour == 17)

@@ -84,4 +84,15 @@ public class Character : MonoBehaviour
     {
         return UnityEngine.Random.Range(0,5);
     }
+
+    public void ToDark()
+    {
+        _spriteRenderer.color = Color.gray;
+    }
+
+    public void ToLight()
+    {
+        _spriteRenderer.color = Color.white;
+    }
+    
 }

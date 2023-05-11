@@ -4,6 +4,7 @@ using Unity.IO.LowLevel.Unsafe;
 
 public class Node<TKey, TValue>
 {
+    public bool Permanent { get; set; }
     public TKey Key { get; set; }
     public TValue Value { get; set; }
     public Node<TKey, TValue> Previous { get; set; }
@@ -38,7 +39,7 @@ public class LRUCache<TKey, TValue> where TKey : IComparable
         return true;
     }
 
-    public void Add(TKey key, TValue value)
+    public void Add(TKey key, TValue value,bool permanent = false)
     {
         if (cache.TryGetValue(key, out var node))
         {
@@ -50,9 +51,9 @@ public class LRUCache<TKey, TValue> where TKey : IComparable
             var newNode = new Node<TKey, TValue>
             {
                 Key = key,
-                Value = value
+                Value = value,
+                Permanent = permanent
             };
-
             if (count == capacity)
             {
                 RemoveTail();
@@ -111,6 +112,14 @@ public class LRUCache<TKey, TValue> where TKey : IComparable
         {
             return;
         }
+
+        do
+        {
+            if (tail.Permanent)
+            {
+                MoveToHead(tail);
+            }
+        } while(tail.Permanent);
 
         cache.Remove(tail.Key);
         count--;

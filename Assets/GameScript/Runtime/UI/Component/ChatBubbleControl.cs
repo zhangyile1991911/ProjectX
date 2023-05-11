@@ -8,11 +8,25 @@ using System.Transactions;
 using UniRx;
 using Random = UnityEngine.Random;
 
+public class SameChatBubble : EqualityComparer<ChatBubble>
+{
+    public override bool Equals(ChatBubble x, ChatBubble y)
+    {
+        return x.InstanceId == y.InstanceId;
+    }
+
+    public override int GetHashCode(ChatBubble obj)
+    {
+        int hCode = (int)obj.InstanceId ^ 1; 
+        return hCode;
+    }
+}
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
 public partial class ChatBubble : UIComponent
 {
+    private static long ChatBubbleInstanceId = 0; 
     public Character Owner => _owner;
     public int ChatId => _chatId;
     private DOTweenAnimation _doTweenAnimation;
@@ -21,9 +35,11 @@ public partial class ChatBubble : UIComponent
     private Action<ChatBubble> _click;
     private Button _btn;
     private Tweener _tweener;
+    public long InstanceId => _instanceId;
+    private long _instanceId;
     public ChatBubble(GameObject go,UIWindow parent):base(go,parent)
     {
-		
+        _instanceId = ChatBubbleInstanceId++;
     }
     
     public override void OnCreate()
@@ -47,6 +63,7 @@ public partial class ChatBubble : UIComponent
     public override void OnDestroy()
     {
         _doTweenAnimation.DOKill();
+        GameObject.Destroy(uiGo);
     }
 
     public override void OnUpdate()
@@ -71,11 +88,25 @@ public partial class ChatBubble : UIComponent
         _owner = origin;
         _chatId = chatId;
         _click = click;
-        Txt_content.text = "hello";
         
+        if (GlobalFunctions.BubbleMessages.ContainsKey(chatId))
+        {
+            Txt_content.text = GlobalFunctions.BubbleMessages[chatId].Title;
+        }
+        else
+        {
+            Txt_content.text = "hello";    
+        }
+
         _tweener = uiRectTran.DOAnchorPos(new Vector2(x, y), 5.0f).OnComplete(()=>
         {
             _doTweenAnimation.DOPlay();
         });
+    }
+
+    public override bool Equals(object obj)
+    {
+        var tmp = obj as ChatBubble;
+        return tmp._instanceId == _instanceId;
     }
 }
