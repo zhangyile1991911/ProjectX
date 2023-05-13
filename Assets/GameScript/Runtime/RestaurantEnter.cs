@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
+using Yarn.Unity;
 using Random = UnityEngine.Random;
 
 public class RestaurantEnter : MonoBehaviour
@@ -126,6 +128,60 @@ public class RestaurantEnter : MonoBehaviour
             one.CurBehaviour = new CharacterOnFocus();
         }
     }
+
+    #region 自定义Command
+    //加载Actor是异步的 可能图片还没加载完 执行了后面的命令
+    //所以加一个计数器 等到人物都加载完后 在执行后面的演出命令
+    //暂时还没想到更好的解决方式
+    // private static uint LoadActorCounter = 0;
+    // [YarnCommand("LoadActor")]
+    // public static async void LoadActor(string nodeName,string characterName,bool show)
+    // {
+    //     var trans = Instance.findNode(nodeName);
+    //     if (trans == null)
+    //     {
+    //         Debug.LogError($"找不到{nodeName}节点");
+    //         return;
+    //     }
+    //
+    //     LoadActorCounter++;
+    //     var spName = string.Concat("Assets/Art/Character/Picture/", characterName,".png");
+    //     var characterSp = await Addressables.LoadAssetAsync<Sprite>(spName).ToUniTask();
+    //     LoadActorCounter--;
+    //     
+    //     var spriteRenderer = trans.GetComponent<SpriteRenderer>();
+    //     spriteRenderer.sprite = characterSp;
+    //     trans.gameObject.SetActive(show);
+    //     // Debug.Log($"LoadActor {show}");
+    // }
+
+    // [YarnCommand("ActorFadeIn")]
+    // public static async void ActorFadeIn(string actorName,float x,float y,float duration)
+    // {
+    //     await UniTask.WaitUntil(()=>LoadActorCounter == 0);
+    //     var actor = Instance.findNode(actorName);
+    //     actor.transform.position = new Vector3(x, y,0);
+    //     var spriteRenderer = actor.GetComponent<SpriteRenderer>();
+    //     spriteRenderer.color = new Color(1,1,1,0);
+    //     spriteRenderer.DOFade(1, duration);
+    //     actor.gameObject.SetActive(true);
+    //     // Debug.Log($"ActorFadeIn");
+    // }
+    
+    // [YarnCommand("CharacterFadeOut")]
+    // public static void ActorFadeOut(string actorName,float x,float y,float duration)
+    // {
+    //     var actor = Instance.findNode(actorName);
+    //     actor.transform.position = new Vector3(x, y,0);
+    //     var spriteRenderer = actor.GetComponent<SpriteRenderer>();
+    //     spriteRenderer.DOFade(0, duration);
+    // }
+    // [YarnCommand("OrderMeal")]
+    // public void OrderMeal(string menuName)
+    // {
+    //     
+    // }
+    #endregion
 
     // private async void TimeGoesOn(DateTime dateTime)
     // { //时间流逝

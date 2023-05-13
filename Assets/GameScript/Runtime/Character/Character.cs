@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Yarn.Unity;
 using YooAsset;
 
 
@@ -21,8 +22,8 @@ public class Character : MonoBehaviour
     private string _name;
 
     //好感度
-    public int Like => _like;
-    private int _like;
+    public int Friendliness => _friendliness;
+    private int _friendliness;
 
     public int CharacterId => _cid;
     private int _cid;
@@ -94,5 +95,16 @@ public class Character : MonoBehaviour
     {
         _spriteRenderer.color = Color.white;
     }
-    
+
+    public override bool Equals(object other)
+    {
+        var otherCharacter = other as Character;
+        return otherCharacter.CharacterId == this.CharacterId;
+    }
+
+    public void InjectVariable(VariableStorageBehaviour storageBehaviour)
+    {
+        storageBehaviour.SetValue("$friendliness",_friendliness);
+        // storageBehaviour.SetValue("NPCName",_name);
+    }
 }

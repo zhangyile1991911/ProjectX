@@ -17,22 +17,20 @@ public partial class RestaurantWindow : UIWindow
         }
     }
     private ClockWidget _clockWidget;
-    private List<FoodOrderComponent> foodOrderList;
+    private List<MealOrderComponent> _mealOrderList;
     private List<ChatBubble> _bubbleList;
     private StateMachine _machine;
     public override void OnCreate()
     {
         base.OnCreate();
-        // foodOrderList = new List<FoodOrderComponent>(4);
-        // for (int i = 0; i < 4; i++)
-        // {
-        //     var one = UIManager.Instance.CreateUIComponent<FoodOrderComponent>(null,Tran_OrderGroup,this);
-        //     foodOrderList.Add(one);
-        // }
+        _mealOrderList = new List<MealOrderComponent>(10);
+        
         _bubbleList = new List<ChatBubble>(20);
 
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
-
+        
+        var eventModule = UniModule.GetModule<EventModule>();
+        eventModule.OrderMealSub.Subscribe(AddOrderMealInfo).AddTo(uiTran);
     }
     
     public override void OnDestroy()
@@ -75,15 +73,6 @@ public partial class RestaurantWindow : UIWindow
             uiManager.OpenUI(UIEnum.PhoneWindow,null,null,UILayer.Center);    
         }
     }
-    
-    // private async void ClickTest(Unit param)
-    // {
-    //     // var uiManager = UniModule.GetModule<UIManager>();
-    //     // var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
-    //     // // bubble.SetBubbleInfo(1,,ClickBubble);
-    //     // _bubbleList.Add(bubble);
-    //     
-    // }
 
     public async void GenerateChatBubble(int chatId,Character character,Action<ChatBubble> ClickBubble)
     {
@@ -111,6 +100,14 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList.Remove(bubble);
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.DestroyUIComponent(bubble);
+    }
+
+    private async void AddOrderMealInfo(OrderMealInfo info)
+    {
+        var uiManager = UniModule.GetModule<UIManager>();
+        var orderPrefab = await uiManager.CreateUIComponent<MealOrderComponent>(null,Tran_OrderGroup,this);
+        orderPrefab.SetMealOrderInfo(info);
+        _mealOrderList.Add(orderPrefab);
     }
 
 }

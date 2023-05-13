@@ -27,6 +27,8 @@ MonoBehaviour:
     typeName: Transform
   - prefixName: Grid_
     typeName: LoopGridView
+  - prefixName: LBtn_
+    typeName: ButtonLongPress
   UIWindowTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIWindowClassTemplate.txt
   UIControlTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIControlClassTemplate.txt
   UIComponentTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIComponentViewTemplate.txt

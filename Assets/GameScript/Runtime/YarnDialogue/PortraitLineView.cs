@@ -82,8 +82,8 @@ public class PortraitLineView : DialogueViewBase
     [SerializeField]
     internal TextMeshProUGUI lineText = null;
 
-    [SerializeField]
-    internal ButtonLongPress backgroundBtn = null;
+    // [SerializeField]
+    // internal ButtonLongPress backgroundBtn = null;
 
     [SerializeField]
     internal bool useFadeEffect = true;
@@ -228,6 +228,7 @@ public class PortraitLineView : DialogueViewBase
         if (useFadeEffect)
         {//演出渐入效果
             // Debug.Log($"演出渐入效果");
+            if(cts.IsCancellationRequested) cts = new CancellationTokenSource();
             await EffectsAsync.FadeAlpha(canvasGroup, 0, 1, fadeInTime,cts);
         }
         
@@ -238,6 +239,7 @@ public class PortraitLineView : DialogueViewBase
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
+            if (cts.IsCancellationRequested) cts = new();
             // Debug.Log($"演出打字机效果");
             await EffectsAsync.Typewriter(
                 lineText,
@@ -263,6 +265,7 @@ public class PortraitLineView : DialogueViewBase
         if (useFadeEffect)
         {
             // Debug.Log($"当前文字展示渐出效果");
+            if (cts.IsCancellationRequested) cts = new ();
             await EffectsAsync.FadeAlpha(canvasGroup, 1, 0, fadeOutTime,cts);
         }
 
@@ -296,7 +299,7 @@ public class PortraitLineView : DialogueViewBase
         }
         
         cts?.Cancel();
-        cts = null;
+        
         onDialogueLineFinished();
     }
     

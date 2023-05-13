@@ -83,7 +83,7 @@ public class StateMachine
     {
         var nodeType = typeof(TNode);
         var nodeName = nodeType.FullName;
-        ChangeState(nodeName);
+        ChangeState(nodeName,param);
     }
 
     public void ChangeState(string nodeName,object param = null)

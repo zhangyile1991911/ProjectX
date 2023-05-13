@@ -24,6 +24,13 @@ public class ChatBubbleMessage
     public string ContentYarn;
 }
 
+public class OrderMealInfo
+{
+    public Character Customer;
+    public int MealId;
+}
+
+
 public static class GlobalFunctions
 {
     // public static Action<bool> YooAssetsComplete;

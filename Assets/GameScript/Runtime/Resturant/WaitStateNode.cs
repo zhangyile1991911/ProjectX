@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 
-//临时定义了表格数据
-
-
 public class WaitStateNode : IStateNode
 {
     private StateMachine _machine;
@@ -36,7 +33,7 @@ public class WaitStateNode : IStateNode
         // _fiveSecondTimer = Observable.Interval(TimeSpan.FromSeconds(5)).Subscribe(fiveSecondLoop);
         
         _uiManager = UniModule.GetModule<UIManager>();
-        _uiManager.OpenUI(UIEnum.RestaurantWindow, null, null);
+        _uiManager.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, null);
 
         var eventModule = UniModule.GetModule<EventModule>();
         eventModule.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
@@ -45,6 +42,7 @@ public class WaitStateNode : IStateNode
     public void OnExit()
     {
         _handles?.Clear();
+        _uiManager.CloseUI(UIEnum.RestaurantWindow);
     }
     
     public void OnUpdate()
@@ -92,15 +90,18 @@ public class WaitStateNode : IStateNode
         var chatId = character.HaveChatId();
         if (chatId > 0)
         {
-            var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
-            uiWindow.GenerateChatBubble(chatId,character,OnClickBubble);
+            // var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
+            _restaurantWindow.GenerateChatBubble(chatId,character,OnClickBubble);
         }
     }
 
     public void OnClickBubble(ChatBubble bubble)
     {
-        var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
-        uiWindow.RemoveChatBubble(bubble);
+        var dm = UniModule.GetModule<DialogueModule>();
+        dm.CurentDialogueCharacter = bubble.Owner;
+        
+        // var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
+        _restaurantWindow.RemoveChatBubble(bubble);
         _machine.ChangeState<DialogueStateNode>(bubble.Owner);
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Yarn.Unity;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -11,15 +10,19 @@ using Yarn.Unity;
 [UI((int)UIEnum.CharacterDialogWindow,"Assets/GameRes/Prefabs/Windows/CharacterDialogWindow.prefab")]
 public partial class CharacterDialogWindow : UIWindow
 {
-	public DialogueRunner DialogueRunner;
-	public InMemoryVariableStorage VariableStorage;
-	public OptionsListView OptionsListView;
+	public ButtonLongPress LBtn_Background;
+	public TextMeshProUGUI Txt_Line;
+	public Button Btn_Skip;
+	public Button Btn_SpeedUp;
+
 	public override void Init(GameObject go)
 	{
 	    uiGo = go;
+	    
+		LBtn_Background = go.transform.Find("LineView/LBtn_Background").GetComponent<ButtonLongPress>();
+		Txt_Line = go.transform.Find("LineView/Txt_Line").GetComponent<TextMeshProUGUI>();
+		Btn_Skip = go.transform.Find("LineView/Btn_Skip").GetComponent<Button>();
+		Btn_SpeedUp = go.transform.Find("LineView/Btn_SpeedUp").GetComponent<Button>();
 
-	    DialogueRunner = go.transform.Find("LineView").GetComponent<DialogueRunner>();
-	    VariableStorage = go.transform.Find("LineView").GetComponent<InMemoryVariableStorage>();
-	    OptionsListView = go.transform.Find("Options List View").GetComponent<OptionsListView>();
 	}
 }

@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 6374942115495615226}
   - component: {fileID: 6374942115495615229}
   m_Layer: 5
-  m_Name: SkipBtn
+  m_Name: Btn_Skip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 6374942115648156944}
   - component: {fileID: 6374942115648156947}
   m_Layer: 5
-  m_Name: SpeedUpBtn
+  m_Name: Btn_SpeedUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,7 +693,7 @@ GameObject:
   - component: {fileID: 6374942116111633241}
   - component: {fileID: 6374942116111633240}
   m_Layer: 5
-  m_Name: Line
+  m_Name: Txt_Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -741,7 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -870,7 +870,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yarnProject: {fileID: 0}
   _variableStorage: {fileID: 6374942116568982614}
-  dialogueViews: []
+  dialogueViews:
+  - {fileID: 6374942117335729539}
+  - {fileID: 6374942116936375329}
   startNode: Start
   startAutomatically: 0
   runSelectedOptionAsLine: 0
@@ -1055,7 +1057,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6374942116735996655
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1147,7 +1149,7 @@ GameObject:
   - component: {fileID: 6374942116777171627}
   - component: {fileID: 6374942116777171625}
   m_Layer: 5
-  m_Name: Background
+  m_Name: LBtn_Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1503,11 +1505,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 6374942117335729536}
   lineText: {fileID: 6374942116111633240}
-  backgroundBtn: {fileID: 0}
   useFadeEffect: 1
   fadeInTime: 0.25
   fadeOutTime: 0.05
-  useTypewriterEffect: 0
+  useTypewriterEffect: 1
   onCharacterTyped:
     m_PersistentCalls:
       m_Calls: []
