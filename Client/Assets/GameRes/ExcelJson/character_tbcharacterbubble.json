@@ -1,0 +1,56 @@
+[
+  {
+    "id": 10001001,
+    "title": "你好....",
+    "npc_id": 10001,
+    "friend_value": 0,
+    "bubble_type": 1,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+  },
+  {
+    "id": 10001002,
+    "title": "来个蛋炒饭",
+    "npc_id": 10001,
+    "friend_value": 10,
+    "bubble_type": 2,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": ""
+  },
+  {
+    "id": 10001003,
+    "title": "这里什么时候...",
+    "npc_id": 10001,
+    "friend_value": 5,
+    "bubble_type": 1,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+  },
+  {
+    "id": 10004001,
+    "title": "你好....",
+    "npc_id": 10004,
+    "friend_value": 0,
+    "bubble_type": 1,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+  },
+  {
+    "id": 10004002,
+    "title": "来个蛋炒饭",
+    "npc_id": 10004,
+    "friend_value": 10,
+    "bubble_type": 2,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": ""
+  },
+  {
+    "id": 10004003,
+    "title": "这里什么时候...",
+    "npc_id": 10004,
+    "friend_value": 5,
+    "bubble_type": 1,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 10001,
+    "name": "快递员",
+    "character_appear_infos": [
+      {
+        "weekday": 1,
+        "enter_time": {
+          "hour": 17,
+          "minutes": 52
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 0
+        }
+      },
+      {
+        "weekday": 2,
+        "enter_time": {
+          "hour": 18,
+          "minutes": 16
+        },
+        "leave_time": {
+          "hour": 23,
+          "minutes": 11
+        }
+      }
+    ]
+  }
+]
