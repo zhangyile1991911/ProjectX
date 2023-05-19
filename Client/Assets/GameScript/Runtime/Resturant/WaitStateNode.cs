@@ -55,12 +55,35 @@ public class WaitStateNode : IStateNode
 
     private async void TimeGoesOn(DateTime dateTime)
     { //时间流逝
-        var characters = checkWhoAppear(dateTime);
-        if (characters == null) return;
+        // var characters = checkWhoAppear(dateTime);
+        // if (characters == null) return;
+        //
+        // foreach (var one in characters)
+        // {
+        //     if (_restaurant.ExistCharacter(one.CharacterId))
+        //     {
+        //         continue;
+        //     }
+        //     if (!_restaurant.HaveEmptySeat())
+        //     {
+        //         break;
+        //     }
+        //     var man = await _characterMgr.CreateCharacter(one.CharacterId,one.CharacterImage);
+        //     _restaurant.CharacterTakeRandomSeat(man);
+        //
+        //     var seatPoint = _restaurant.TakeSeatPoint(man.SeatIndex);
+        //     var spawnPoint = _restaurant.RandSpawnPoint();
+        //     
+        //     man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
+        // }
+        var ids = pickWhoAppear(dateTime);
+        if (ids is not { Count: > 0 }) return;
         
-        foreach (var one in characters)
+        var module = UniModule.GetModule<DataProviderModule>();
+
+        foreach (var CharacterId in ids)
         {
-            if (_restaurant.ExistCharacter(one.CharacterId))
+            if (_restaurant.ExistCharacter(CharacterId))
             {
                 continue;
             }
@@ -68,9 +91,13 @@ public class WaitStateNode : IStateNode
             {
                 break;
             }
-            var man = await _characterMgr.CreateCharacter(one.CharacterId,one.CharacterImage);
-            _restaurant.CharacterTakeRandomSeat(man);
 
+            var tbCharacter = module.GetCharacterBaseInfo(CharacterId);
+            if(tbCharacter == null)continue;
+            
+            var man = await _characterMgr.CreateCharacter(CharacterId,tbCharacter.ResPath);
+            _restaurant.CharacterTakeRandomSeat(man);
+        
             var seatPoint = _restaurant.TakeSeatPoint(man.SeatIndex);
             var spawnPoint = _restaurant.RandSpawnPoint();
             
@@ -78,11 +105,17 @@ public class WaitStateNode : IStateNode
         }
     }
 
-    private List<CharacterAppear> checkWhoAppear(DateTime dateTime)
+    // private List<CharacterAppear> checkWhoAppear(DateTime dateTime)
+    // {
+    //     return GlobalFunctions.appears.Where(one => one.DayOfWeek == (int)dateTime.DayOfWeek)
+    //         .Where(one => dateTime.Hour >= one.startHour)
+    //         .Where(one => dateTime.Minute >= one.startMinutes).ToList();
+    // }
+
+    private List<int> pickWhoAppear(DateTime dateTime)
     {
-        return GlobalFunctions.appears.Where(one => one.DayOfWeek == (int)dateTime.DayOfWeek)
-            .Where(one => dateTime.Hour >= one.startHour)
-            .Where(one => dateTime.Minute >= one.startMinutes).ToList();
+        var module = UniModule.GetModule<DataProviderModule>();
+        return module.AtWeekDay((int)dateTime.DayOfWeek);
     }
     
     private void GenerateChatBubble(Character character)
