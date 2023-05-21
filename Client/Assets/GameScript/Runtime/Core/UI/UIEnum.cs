@@ -8,4 +8,5 @@ public enum UIEnum
     PhoneWindow,
     BootWindow,
     CharacterDialogWindow,
+    KitchenWindow,
 }
