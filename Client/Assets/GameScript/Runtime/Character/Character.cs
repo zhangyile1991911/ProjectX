@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using cfg.character;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -18,15 +19,15 @@ public class Character : MonoBehaviour
     }
     private int _seatIndex;
     
-    public string CharacterName => _name;
-    private string _name;
+    public string CharacterName => _baseInfo.Name;
+    
 
     //好感度
     public int Friendliness => _friendliness;
     private int _friendliness;
 
-    public int CharacterId => _cid;
-    private int _cid;
+    public int CharacterId => _baseInfo.Id;
+    private CharacterBaseInfo _baseInfo;
 
     public CharacterBehaviour CurBehaviour
     {
@@ -52,18 +53,16 @@ public class Character : MonoBehaviour
         
     }
 
-    public void InitCharacter(int cid,string characterName)
+    public void InitCharacter(CharacterBaseInfo info)
     {
-        _cid = cid;
-        _name = characterName;
+        _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         LoadCharacterSprite();
     }
     
-    public async void LoadCharacterSprite()
+    private async void LoadCharacterSprite()
     {
-        var spName = ZString.Format("Assets/GameRes/Picture/Character/{0}.png", _name);
-        var handler = YooAssets.LoadAssetAsync<Sprite>(spName);
+        var handler = YooAssets.LoadAssetAsync<Sprite>(_baseInfo.ResPath);
         await handler.ToUniTask();
         var sp = handler.AssetObject as Sprite;
         _spriteRenderer.sprite = sp;

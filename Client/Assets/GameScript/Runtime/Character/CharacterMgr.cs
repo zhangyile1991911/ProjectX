@@ -23,9 +23,13 @@ public class CharacterMgr : IModule
         
     }
 
-    public async UniTask<Character> CreateCharacter(int cid,string name)
+    public async UniTask<Character> CreateCharacter(int cid)
     {
-        if (_characters.TryGetValue(name, out var character))
+        var dataProvider = UniModule.GetModule<DataProviderModule>();
+        var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
+        if(tbCharacter == null)return null;
+        
+        if (_characters.TryGetValue(tbCharacter.Name, out var character))
         {
             return character;
         }
@@ -38,9 +42,9 @@ public class CharacterMgr : IModule
         var ins_character = GameObject.Instantiate(go);
         character = ins_character.GetComponent<Character>();
         
-        character.InitCharacter(cid,name);
+        character.InitCharacter(tbCharacter);
         
-        _characters.Add(name,character);
+        _characters.Add(tbCharacter.Name,character);
 
         return character;
     }

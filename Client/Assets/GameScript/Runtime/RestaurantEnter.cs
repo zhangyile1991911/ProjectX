@@ -52,6 +52,7 @@ public class RestaurantEnter : MonoBehaviour
         _stateMachine = new StateMachine(this);
         _stateMachine.AddNode<WaitStateNode>();
         _stateMachine.AddNode<DialogueStateNode>();
+        _stateMachine.AddNode<PrepareStateNode>();
         
         _stateMachine.Run<WaitStateNode>();
         
@@ -182,51 +183,5 @@ public class RestaurantEnter : MonoBehaviour
     //     
     // }
     #endregion
-
-    // private async void TimeGoesOn(DateTime dateTime)
-    // { //时间流逝
-    //     if (dateTime.Hour == 17)
-    //     {
-    //         if (dateTime.Minute >= 25 && dateTime.Minute < 26)
-    //         {
-    //             var DeliveryMan = await _characterMgr.CreateCharacter("DeliveryMan");
-    //             DeliveryMan.SeatIndex = RandSeatIndex();
-    //             var seatPoint = TakeSeatPoint(DeliveryMan.SeatIndex);
-    //             _characters.Add(DeliveryMan);
-    //             var enterBh = new CharacterEnterSceneBehaviour(RandSpawnPoint(),seatPoint);
-    //             enterBh.Enter(DeliveryMan);    
-    //         }
-    //         
-    //         if (dateTime.Minute >= 45 && dateTime.Minute < 46)
-    //         {
-    //             var DeliveryMan = await _characterMgr.CreateCharacter("FishMan");
-    //             DeliveryMan.SeatIndex = RandSeatIndex();
-    //             var seatPoint = TakeSeatPoint(DeliveryMan.SeatIndex);
-    //             _characters.Add(DeliveryMan);
-    //             var enterBh = new CharacterEnterSceneBehaviour(RandSpawnPoint(),seatPoint);
-    //             enterBh.Enter(DeliveryMan);    
-    //         }
-    //     }
-    // }
-
-    // private void fiveSecondLoop()
-    // {
-    //     for (int i = 0; i < _characters.Count; i++)
-    //     {
-    //         var ch = _characters[i];
-    //         var chatId = ch.HaveChatId();
-    //         if (chatId > 0)
-    //         {
-    //             _restaurantWindow.GenerateChatBubble(chatId,ch,onClickBubble);
-    //         }
-    //     }
-    // }
-
-    // private void onClickBubble(ChatBubble bubble)
-    // {
-    //     //1 判断是否已经看过了
-    //     //2 切换模式
-    //     var cur = _stateMachine.CurrentNode as IRestaurantStateNode;
-    //     cur?.OnClickBubble(bubble);
-    // }
+    
 }

@@ -98,6 +98,8 @@ public class StateMachine
             return;
         }
 
+        if (node == _curNode) return;
+
         Debug.Log($"{_curNode.GetType().FullName} --> {node.GetType().FullName}");
         _preNode = _curNode;
         _curNode.OnExit();

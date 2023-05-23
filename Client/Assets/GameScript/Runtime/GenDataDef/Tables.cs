@@ -17,6 +17,7 @@ public sealed partial class Tables
     public character.TbBaseInfo TbBaseInfo {get; }
     public character.TbSchedule TbSchedule {get; }
     public character.TbCharacterBubble TbCharacterBubble {get; }
+    public food.TbFoodInfo TbFoodInfo {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -27,11 +28,14 @@ public sealed partial class Tables
         tables.Add("character.TbSchedule", TbSchedule);
         TbCharacterBubble = new character.TbCharacterBubble(loader("character_tbcharacterbubble")); 
         tables.Add("character.TbCharacterBubble", TbCharacterBubble);
+        TbFoodInfo = new food.TbFoodInfo(loader("food_tbfoodinfo")); 
+        tables.Add("food.TbFoodInfo", TbFoodInfo);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
         TbSchedule.Resolve(tables); 
         TbCharacterBubble.Resolve(tables); 
+        TbFoodInfo.Resolve(tables); 
         PostResolve();
     }
 
@@ -40,6 +44,7 @@ public sealed partial class Tables
         TbBaseInfo.TranslateText(translator); 
         TbSchedule.TranslateText(translator); 
         TbCharacterBubble.TranslateText(translator); 
+        TbFoodInfo.TranslateText(translator); 
     }
     
     partial void PostInit();

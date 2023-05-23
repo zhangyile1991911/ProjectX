@@ -22,13 +22,13 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         { if(!_json["title"].IsString) { throw new SerializationException(); }  Title = _json["title"]; }
         { if(!_json["npc_id"].IsNumber) { throw new SerializationException(); }  NpcId = _json["npc_id"]; }
         { if(!_json["friend_value"].IsNumber) { throw new SerializationException(); }  FriendValue = _json["friend_value"]; }
-        { if(!_json["bubble_type"].IsNumber) { throw new SerializationException(); }  BubbleType = (common_bubbleType)_json["bubble_type"].AsInt; }
+        { if(!_json["bubble_type"].IsNumber) { throw new SerializationException(); }  BubbleType = (common.bubbleType)_json["bubble_type"].AsInt; }
         { if(!_json["bubble_bg"].IsString) { throw new SerializationException(); }  BubbleBg = _json["bubble_bg"]; }
         { var _j = _json["dialogue_content_res"]; if (_j.Tag != JSONNodeType.None && _j.Tag != JSONNodeType.NullValue) { { if(!_j.IsString) { throw new SerializationException(); }  DialogueContentRes = _j; } } else { DialogueContentRes = null; } }
         PostInit();
     }
 
-    public CharacterBubble(int id, string title, int npc_id, int friend_value, common_bubbleType bubble_type, string bubble_bg, string dialogue_content_res ) 
+    public CharacterBubble(int id, string title, int npc_id, int friend_value, common.bubbleType bubble_type, string bubble_bg, string dialogue_content_res ) 
     {
         this.Id = id;
         this.Title = title;
@@ -62,7 +62,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     /// <summary>
     /// 气泡类型
     /// </summary>
-    public common_bubbleType BubbleType { get; private set; }
+    public common.bubbleType BubbleType { get; private set; }
     /// <summary>
     /// 气泡背景图
     /// </summary>

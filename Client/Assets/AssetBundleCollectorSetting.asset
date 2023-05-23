@@ -25,8 +25,72 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/GameRes
-        CollectorGUID: aa556ca21a1e1a14ca6eec294da1cd41
+      - CollectPath: Assets/GameRes/Animation
+        CollectorGUID: 53ebcb9b41daaae4983d52f426e90c05
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/ExcelJson
+        CollectorGUID: b7291f600ec8a8045bf261c4a0b1d9b8
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Material
+        CollectorGUID: ee30f3c42c8eb7c45b2143e6bca79f16
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Picture
+        CollectorGUID: 9f03eb1c19a39384ea95e967e3390d08
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Prefabs
+        CollectorGUID: 902901a538d30f94e9f99f9b18f48994
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Scenes
+        CollectorGUID: 6ea315d0fd7389c41b19996891e99ae3
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Shader
+        CollectorGUID: 76aa17500d22f4f44a15084c304348c3
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/SOConfigs
+        CollectorGUID: f575502770104804db3682733733c332
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Story
+        CollectorGUID: f6934ff17c4e6c94683104aa2896f361
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory

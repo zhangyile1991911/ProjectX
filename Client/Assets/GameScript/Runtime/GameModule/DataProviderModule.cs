@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using cfg.character;
+using cfg.food;
 using Cysharp.Text;
 using SimpleJSON;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class DataProviderModule : IModule
 
     private JSONNode LoadJsonBuf(string file)
     {
-        var fullPath = ZString.Format("{0}/{1}{2}{3}", Application.dataPath, "/Assets/GameRes/ExcelJson", file, ".json");
+        var fullPath = ZString.Format("{0}/{1}{2}{3}", Application.dataPath, "/GameRes/ExcelJson/", file, ".json");
         return JSONNode.Parse(File.ReadAllText(fullPath));
     }
 
@@ -69,4 +70,16 @@ public class DataProviderModule : IModule
     {
         return weekdaySchedule[weekDay];
     }
+
+    public FoodBaseInfo GetFoodBaseInfo(int foodId)
+    {
+        FoodBaseInfo info;
+        if (_database.TbFoodInfo.DataMap.TryGetValue(foodId, out info))
+        {
+            return info;
+        }
+
+        return null;
+    }
+    
 }

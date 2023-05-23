@@ -7,18 +7,26 @@
 //------------------------------------------------------------------------------
 
 
-namespace cfg
+namespace cfg.food
 { 
-    public enum common_bubbleType
+    public enum rawType
     {
         /// <summary>
-        /// 对话
+        /// 海鲜
         /// </summary>
-        Talk = 1,
+        SeaFood = 0,
         /// <summary>
-        /// 下单
+        /// 肉
         /// </summary>
-        Order = 2,
+        Meat = 1,
+        /// <summary>
+        /// 蔬菜
+        /// </summary>
+        Vegetable = 2,
+        /// <summary>
+        /// 其他
+        /// </summary>
+        Others = 3,
     }
 
 } 

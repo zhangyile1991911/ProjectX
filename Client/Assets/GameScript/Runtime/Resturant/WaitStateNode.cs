@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
+using UnityEngine;
 
 public class WaitStateNode : IStateNode
 {
@@ -51,6 +52,10 @@ public class WaitStateNode : IStateNode
         // {
         //     one.CurBehaviour.Update();
         // }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _machine.ChangeState<PrepareStateNode>();            
+        }
     }
 
     private async void TimeGoesOn(DateTime dateTime)
@@ -91,11 +96,8 @@ public class WaitStateNode : IStateNode
             {
                 break;
             }
-
-            var tbCharacter = module.GetCharacterBaseInfo(CharacterId);
-            if(tbCharacter == null)continue;
             
-            var man = await _characterMgr.CreateCharacter(CharacterId,tbCharacter.ResPath);
+            var man = await _characterMgr.CreateCharacter(CharacterId);
             _restaurant.CharacterTakeRandomSeat(man);
         
             var seatPoint = _restaurant.TakeSeatPoint(man.SeatIndex);

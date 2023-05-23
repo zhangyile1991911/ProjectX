@@ -26,5 +26,22 @@
         }
       }
     ]
+  },
+  {
+    "id": 10004,
+    "name": "小萝莉",
+    "character_appear_infos": [
+      {
+        "weekday": 6,
+        "enter_time": {
+          "hour": 17,
+          "minutes": 22
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 0
+        }
+      }
+    ]
   }
 ]
