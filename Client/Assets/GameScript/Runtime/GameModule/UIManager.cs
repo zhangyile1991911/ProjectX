@@ -44,7 +44,7 @@ public class UIManager : IModule
         onComplete?.Invoke(ui);
     }
     
-    public void OpenUI(UIEnum uiName,Action<IUIBase> onComplete,UIOpenParam openParam,UILayer layer = UILayer.Bottom)
+    public void OpenUI(UIEnum uiName,Action<IUIBase> onComplete,UIOpenParam openParam,UILayer layer = UILayer.Bottom,bool isPermanent=false)
     {
         IUIBase ui = null;
         if (_uiCachedDic.TryGetValue(uiName, out ui))
@@ -57,7 +57,7 @@ public class UIManager : IModule
             {
                 loadUi.OnCreate();
                 OnOpenUI(loadUi,onComplete,openParam,layer);
-            },layer);
+            },layer,isPermanent);
         }
     }
 
@@ -91,7 +91,7 @@ public class UIManager : IModule
 
         return null;
     }
-    private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent=false)
+    private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent)
     {
         Type uiType = Type.GetType(uiName.ToString());
         var attributes = uiType.GetCustomAttributes(false);

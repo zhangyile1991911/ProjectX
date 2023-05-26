@@ -69,17 +69,11 @@ public class Character : MonoBehaviour
     }
 
     //增加好感度
-    public void AddLike()
+    public void AddFriendly(int num)
     {
         
     }
 
-    //减少好感度
-    public void ReduceLike()
-    {
-        
-    }
-    
     public int HaveChatId()
     {
         return UnityEngine.Random.Range(0,5);

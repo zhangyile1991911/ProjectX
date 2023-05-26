@@ -28,6 +28,7 @@ public class DialogueStateNode : IStateNode
         {
             _dialogWindow = ui as CharacterDialogWindow;
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderMeal",OrderMealCommand);
+            _dialogWindow.DialogueRunner.AddCommandHandler<string,int>("AddFriend",AddNPCFriendlyValue);
         },openData,UILayer.Center);
     }
 
@@ -39,6 +40,10 @@ public class DialogueStateNode : IStateNode
     public void OnExit()
     {
         _restaurantEnter.NoFocusOnCharacter();
+        
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
+        
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.CloseUI(UIEnum.CharacterDialogWindow);
     }
@@ -59,5 +64,13 @@ public class DialogueStateNode : IStateNode
         };
         var eventModule = UniModule.GetModule<EventModule>();
         eventModule.OrderMealTopic.OnNext(info);
+    }
+
+    private void AddNPCFriendlyValue(string name,int val)
+    {
+        var mgr = UniModule.GetModule<CharacterMgr>();
+        var chr = mgr.GetCharacter(name);
+        if (chr == null) return;
+        chr.AddFriendly(val);
     }
 }
