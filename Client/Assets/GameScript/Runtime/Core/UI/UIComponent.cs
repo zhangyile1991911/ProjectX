@@ -40,6 +40,7 @@ public class UIComponent : IUIBase
     {
         _uiGo = go;
         _parentWindow = parent;
+        _parentWindow.AddChildComponent(this);
         _rectTransform = go.GetComponent<RectTransform>();
         
         Init(go);

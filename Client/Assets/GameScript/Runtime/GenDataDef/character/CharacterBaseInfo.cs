@@ -22,15 +22,17 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         { if(!_json["name"].IsString) { throw new SerializationException(); }  Name = _json["name"]; }
         { if(!_json["desc"].IsString) { throw new SerializationException(); }  Desc = _json["desc"]; }
         { if(!_json["res_path"].IsString) { throw new SerializationException(); }  ResPath = _json["res_path"]; }
+        { if(!_json["portrait_path"].IsString) { throw new SerializationException(); }  PortraitPath = _json["portrait_path"]; }
         PostInit();
     }
 
-    public CharacterBaseInfo(int id, string name, string desc, string res_path ) 
+    public CharacterBaseInfo(int id, string name, string desc, string res_path, string portrait_path ) 
     {
         this.Id = id;
         this.Name = name;
         this.Desc = desc;
         this.ResPath = res_path;
+        this.PortraitPath = portrait_path;
         PostInit();
     }
 
@@ -55,6 +57,10 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
     /// 资源路径
     /// </summary>
     public string ResPath { get; private set; }
+    /// <summary>
+    /// 头像路径
+    /// </summary>
+    public string PortraitPath { get; private set; }
 
     public const int __ID__ = -1834518077;
     public override int GetTypeId() => __ID__;
@@ -75,6 +81,7 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         + "Name:" + Name + ","
         + "Desc:" + Desc + ","
         + "ResPath:" + ResPath + ","
+        + "PortraitPath:" + PortraitPath + ","
         + "}";
     }
     

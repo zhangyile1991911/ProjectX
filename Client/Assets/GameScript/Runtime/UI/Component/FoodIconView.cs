@@ -12,6 +12,7 @@ public partial class FoodIcon : UIComponent
 {
 	public Button Btn_Food;
 	public Image Img_Food;
+	public TextMeshProUGUI Txt_name;
 
 
 	public override void Init(GameObject go)
@@ -20,6 +21,7 @@ public partial class FoodIcon : UIComponent
 	    
 		Btn_Food = go.transform.Find("Btn_Img_Food").GetComponent<Button>();
 		Img_Food = go.transform.Find("Btn_Img_Food").GetComponent<Image>();
+		Txt_name = go.transform.Find("Txt_name").GetComponent<TextMeshProUGUI>();
 
 	}
 }

@@ -66,8 +66,8 @@ public class FoodBtnCell : UIComponent
 
         Txt_num.text = _foodNum.ToString();
         var dataProviderModule = UniModule.GetModule<DataProviderModule>();
-        var foodTb = dataProviderModule.GetFoodBaseInfo(foodId);
-        var handler = YooAssets.LoadAssetAsync<Sprite>(foodTb.ResPath);
+        var foodTb = dataProviderModule.GetItemBaseInfo(foodId);
+        var handler = YooAssets.LoadAssetAsync<Sprite>(foodTb.UiResPath);
         handler.Completed += (opera) =>
         {
             Img_food.sprite = opera.AssetObject as Sprite;

@@ -9,24 +9,24 @@
 
 namespace cfg.food
 { 
-    public enum rawType
+    public enum materialType
     {
         /// <summary>
-        /// 海鲜
-        /// </summary>
-        SeaFood = 0,
-        /// <summary>
-        /// 肉
+        /// 肉类
         /// </summary>
         Meat = 1,
         /// <summary>
+        /// 海鲜
+        /// </summary>
+        Seafood = 2,
+        /// <summary>
         /// 蔬菜
         /// </summary>
-        Vegetable = 2,
+        Vegetable = 3,
         /// <summary>
-        /// 其他
+        /// 其它
         /// </summary>
-        Others = 3,
+        Other = 4,
     }
 
 } 

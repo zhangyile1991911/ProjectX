@@ -17,7 +17,9 @@ public sealed partial class Tables
     public character.TbBaseInfo TbBaseInfo {get; }
     public character.TbSchedule TbSchedule {get; }
     public character.TbCharacterBubble TbCharacterBubble {get; }
-    public food.TbFoodInfo TbFoodInfo {get; }
+    public food.TbMaterial TbMaterial {get; }
+    public food.TbMenuInfo TbMenuInfo {get; }
+    public TbItem TbItem {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -28,14 +30,20 @@ public sealed partial class Tables
         tables.Add("character.TbSchedule", TbSchedule);
         TbCharacterBubble = new character.TbCharacterBubble(loader("character_tbcharacterbubble")); 
         tables.Add("character.TbCharacterBubble", TbCharacterBubble);
-        TbFoodInfo = new food.TbFoodInfo(loader("food_tbfoodinfo")); 
-        tables.Add("food.TbFoodInfo", TbFoodInfo);
+        TbMaterial = new food.TbMaterial(loader("food_tbmaterial")); 
+        tables.Add("food.TbMaterial", TbMaterial);
+        TbMenuInfo = new food.TbMenuInfo(loader("food_tbmenuinfo")); 
+        tables.Add("food.TbMenuInfo", TbMenuInfo);
+        TbItem = new TbItem(loader("tbitem")); 
+        tables.Add("TbItem", TbItem);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
         TbSchedule.Resolve(tables); 
         TbCharacterBubble.Resolve(tables); 
-        TbFoodInfo.Resolve(tables); 
+        TbMaterial.Resolve(tables); 
+        TbMenuInfo.Resolve(tables); 
+        TbItem.Resolve(tables); 
         PostResolve();
     }
 
@@ -44,7 +52,9 @@ public sealed partial class Tables
         TbBaseInfo.TranslateText(translator); 
         TbSchedule.TranslateText(translator); 
         TbCharacterBubble.TranslateText(translator); 
-        TbFoodInfo.TranslateText(translator); 
+        TbMaterial.TranslateText(translator); 
+        TbMenuInfo.TranslateText(translator); 
+        TbItem.TranslateText(translator); 
     }
     
     partial void PostInit();

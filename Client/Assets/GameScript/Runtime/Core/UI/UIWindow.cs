@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 using YooAsset;
 
 public class UIWindow : IUIBase
@@ -89,5 +91,23 @@ public class UIWindow : IUIBase
         _resHandles.Add(handler);
         await handler.ToUniTask();
         complete?.Invoke(handler.AssetObject as T);
+    }
+    
+    public async void LoadSpriteAsync(string resPath,Action<Sprite> complete)
+    {
+        var handler = YooAssets.LoadAssetAsync<Sprite>(resPath);
+        _resHandles.Add(handler);
+        await handler.ToUniTask();
+        complete?.Invoke(handler.AssetObject as Sprite);
+    }
+
+    public void LoadSpriteAsync(string resPath, Image image)
+    {
+        var handler = YooAssets.LoadAssetAsync<Sprite>(resPath);
+        _resHandles.Add(handler);
+        handler.Completed += handle =>
+        {
+            image.sprite = handle.AssetObject as Sprite;
+        };
     }
 }

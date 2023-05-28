@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 5586128848391700918}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -50, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4222659448057774683
 CanvasRenderer:
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 54.057312, y: 62.303406, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5332,6 +5332,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1527583924711783533}
     m_Modifications:
+    - target: {fileID: 4802975165457193724, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4802975165676605162, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5419,6 +5423,10 @@ PrefabInstance:
     - target: {fileID: 4802975165676605163, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}
       propertyPath: m_Name
       value: Ins_FoodIconA
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802975165863659308, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}

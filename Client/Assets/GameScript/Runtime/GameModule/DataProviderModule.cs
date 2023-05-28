@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
+using cfg;
 using cfg.character;
 using cfg.food;
 using Cysharp.Text;
@@ -45,6 +46,16 @@ public class DataProviderModule : IModule
 
         return null;
     }
+
+    public ItemBaseInfo GetItemBaseInfo(int itemId)
+    {
+        if (_database.TbItem.DataMap.ContainsKey(itemId))
+        {
+            return _database.TbItem.DataMap[itemId];
+        }
+
+        return null;
+    }
     
     private List<List<int>> weekdaySchedule;
     private void initScheduleTable()
@@ -71,10 +82,9 @@ public class DataProviderModule : IModule
         return weekdaySchedule[weekDay];
     }
 
-    public FoodBaseInfo GetFoodBaseInfo(int foodId)
+    public FoodMaterial GetFoodBaseInfo(int foodId)
     {
-        FoodBaseInfo info;
-        if (_database.TbFoodInfo.DataMap.TryGetValue(foodId, out info))
+        if (_database.TbMaterial.DataMap.TryGetValue(foodId, out var info))
         {
             return info;
         }

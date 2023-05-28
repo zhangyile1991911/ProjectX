@@ -14,31 +14,31 @@ using SimpleJSON;
 namespace cfg.food
 { 
 
-public sealed partial class TbFoodInfo
+public sealed partial class TbMaterial
 {
-    private readonly Dictionary<int, food.FoodBaseInfo> _dataMap;
-    private readonly List<food.FoodBaseInfo> _dataList;
+    private readonly Dictionary<int, food.FoodMaterial> _dataMap;
+    private readonly List<food.FoodMaterial> _dataList;
     
-    public TbFoodInfo(JSONNode _json)
+    public TbMaterial(JSONNode _json)
     {
-        _dataMap = new Dictionary<int, food.FoodBaseInfo>();
-        _dataList = new List<food.FoodBaseInfo>();
+        _dataMap = new Dictionary<int, food.FoodMaterial>();
+        _dataList = new List<food.FoodMaterial>();
         
         foreach(JSONNode _row in _json.Children)
         {
-            var _v = food.FoodBaseInfo.DeserializeFoodBaseInfo(_row);
+            var _v = food.FoodMaterial.DeserializeFoodMaterial(_row);
             _dataList.Add(_v);
             _dataMap.Add(_v.Id, _v);
         }
         PostInit();
     }
 
-    public Dictionary<int, food.FoodBaseInfo> DataMap => _dataMap;
-    public List<food.FoodBaseInfo> DataList => _dataList;
+    public Dictionary<int, food.FoodMaterial> DataMap => _dataMap;
+    public List<food.FoodMaterial> DataList => _dataList;
 
-    public food.FoodBaseInfo GetOrDefault(int key) => _dataMap.TryGetValue(key, out var v) ? v : null;
-    public food.FoodBaseInfo Get(int key) => _dataMap[key];
-    public food.FoodBaseInfo this[int key] => _dataMap[key];
+    public food.FoodMaterial GetOrDefault(int key) => _dataMap.TryGetValue(key, out var v) ? v : null;
+    public food.FoodMaterial Get(int key) => _dataMap[key];
+    public food.FoodMaterial this[int key] => _dataMap[key];
 
     public void Resolve(Dictionary<string, object> _tables)
     {
