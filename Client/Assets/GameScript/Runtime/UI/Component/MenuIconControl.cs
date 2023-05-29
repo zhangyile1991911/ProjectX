@@ -37,4 +37,15 @@ public partial class MenuIcon : UIComponent
     {
         
     }
+
+    public void SetMenuInfo(cfg.ItemBaseInfo info)
+    {
+        uiGo.SetActive(true);
+        ParentWindow.LoadSpriteAsync(info.UiResPath,Img_icon);
+    }
+
+    public void ClearMenuInfo()
+    {
+        Img_icon.sprite = null;
+    }
 }

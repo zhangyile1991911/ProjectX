@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -43,7 +44,8 @@ public partial class FoodIcon : UIComponent
         
     }
 
-    public void FoodMaterialInfo(int materialId)
+    private Action clearCB;
+    public void FoodMaterialInfo(int materialId,Action clearCb)
     {
         var m = UniModule.GetModule<DataProviderModule>();
         var tb = m.GetItemBaseInfo(materialId);
@@ -57,6 +59,7 @@ public partial class FoodIcon : UIComponent
         FoodId = materialId;
         Txt_name.text = tb.Name;
         Txt_name.gameObject.SetActive(true);
+        clearCB = clearCb;
     }
 
     public void ClearMaterialInfo()
@@ -66,5 +69,6 @@ public partial class FoodIcon : UIComponent
         Btn_Food.interactable = false;
         Txt_name.text = null;
         Txt_name.gameObject.SetActive(false);
+        clearCB?.Invoke();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using cfg.food;
 using SuperScrollView;
 using UniRx;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public partial class KitchenWindow : UIWindow
 
     private List<FoodIcon> _choicedFoodIcons;
     private List<MenuIcon> _canMakeFoodIcons;
+    private DataProviderModule _dataProvider;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -45,8 +47,9 @@ public partial class KitchenWindow : UIWindow
         _canMakeFoodIcons.Add(new MenuIcon(Ins_MenuIcon6.gameObject,this));
         _canMakeFoodIcons.Add(new MenuIcon(Ins_MenuIcon7.gameObject,this));
         _canMakeFoodIcons.Add(new MenuIcon(Ins_MenuIcon8.gameObject,this));
-        
-        
+
+        _dataProvider = UniModule.GetModule<DataProviderModule>();
+
     }
     
     public override void OnDestroy()
@@ -105,6 +108,11 @@ public partial class KitchenWindow : UIWindow
         _ownedFoodItems = _userInfoModule.OwnFoodMaterials;
 
         setFoodView(cfg.food.materialType.Meat);
+
+        foreach (var t in _canMakeFoodIcons)
+        {
+            t.uiGo.SetActive(false);
+        }
     }
 
     public override void OnHide()
@@ -186,11 +194,70 @@ public partial class KitchenWindow : UIWindow
 
         if (emptyIndex < 0) return;
         
-        _choicedFoodIcons[emptyIndex].FoodMaterialInfo(foodId);
+        _choicedFoodIcons[emptyIndex].FoodMaterialInfo(foodId,checkCanProduce);
+        checkCanProduce();
     }
 
     private void clickCookTool(cfg.food.cookTools toolType)
     {
         _choicedTools = toolType;
+        checkCanProduce();
+    }
+
+    private void checkCanProduce()
+    {
+        foreach (var t in _canMakeFoodIcons)
+        {
+            t.uiGo.SetActive(false);
+        }
+
+        var tmp = 0;
+        foreach (var icon in _choicedFoodIcons)
+        {
+            if (icon.FoodId > 0) tmp++;
+        }
+        if (tmp <= 0) return;
+        
+
+        var menuList = _dataProvider.DataBase.TbMenuInfo.DataList;
+        //通过厨具删选出可以制作的料理
+        var toolsCanMakeMenu = new List<MenuInfo>(10);
+        foreach (var one in menuList)
+        {
+            if (one.MakeMethod == _choicedTools)
+            {
+                toolsCanMakeMenu.Add(one);
+            }
+        }
+
+        HashSet<int> needMaterial = new ();
+        int showMenuIndex = 0;
+        //判断当前食材是否满足
+        foreach (var one in toolsCanMakeMenu)
+        {
+            needMaterial.Clear();
+            foreach (var m in one.RelatedMaterial)
+            {
+                needMaterial.Add(m);
+            }
+            
+            int checkCount = 0;
+            foreach (var choiced in _choicedFoodIcons)
+            {
+                if (needMaterial.Contains(choiced.FoodId))
+                {
+                    checkCount++;
+                }
+            }
+
+            if (checkCount == needMaterial.Count)
+            {//满足显示
+                var tbItem = _dataProvider.GetItemBaseInfo(one.Id);
+                _canMakeFoodIcons[showMenuIndex].SetMenuInfo(tbItem);
+                showMenuIndex++;
+            }
+        }
+
+        
     }
 }

@@ -22,19 +22,17 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         { if(!_json["name"].IsString) { throw new SerializationException(); }  Name = _json["name"]; }
         { if(!_json["make_method"].IsNumber) { throw new SerializationException(); }  MakeMethod = (food.cookTools)_json["make_method"].AsInt; }
         { var __json0 = _json["related_material"]; if(!__json0.IsArray) { throw new SerializationException(); } RelatedMaterial = new System.Collections.Generic.List<int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = __e0; }  RelatedMaterial.Add(__v0); }   }
-        { if(!_json["res_path"].IsString) { throw new SerializationException(); }  ResPath = _json["res_path"]; }
         { var __json0 = _json["tag"]; if(!__json0.IsArray) { throw new SerializationException(); } Tag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  Tag.Add(__v0); }   }
         { var __json0 = _json["opposite_tag"]; if(!__json0.IsArray) { throw new SerializationException(); } OppositeTag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  OppositeTag.Add(__v0); }   }
         PostInit();
     }
 
-    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, string res_path, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag ) 
+    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag ) 
     {
         this.Id = id;
         this.Name = name;
         this.MakeMethod = make_method;
         this.RelatedMaterial = related_material;
-        this.ResPath = res_path;
         this.Tag = tag;
         this.OppositeTag = opposite_tag;
         PostInit();
@@ -62,10 +60,6 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
     /// </summary>
     public System.Collections.Generic.List<int> RelatedMaterial { get; private set; }
     public System.Collections.Generic.List<food.FoodMaterial> RelatedMaterial_Ref { get; private set; }
-    /// <summary>
-    /// 资源路径
-    /// </summary>
-    public string ResPath { get; private set; }
     /// <summary>
     /// 标签
     /// </summary>
@@ -95,7 +89,6 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         + "Name:" + Name + ","
         + "MakeMethod:" + MakeMethod + ","
         + "RelatedMaterial:" + Bright.Common.StringUtil.CollectionToString(RelatedMaterial) + ","
-        + "ResPath:" + ResPath + ","
         + "Tag:" + Bright.Common.StringUtil.CollectionToString(Tag) + ","
         + "OppositeTag:" + Bright.Common.StringUtil.CollectionToString(OppositeTag) + ","
         + "}";
