@@ -85,6 +85,14 @@ public class UIWindow : IUIBase
         }
     }
 
+    public void RemoveChildComponent(UIComponent uiComponent)
+    {
+        if (uiComponent != null)
+        {
+            _childComponent.Remove(uiComponent);    
+        }
+    }
+
     public async void LoadAssetAsync<T>(string resPath,Action<T> complete)where T : UnityEngine.Object
     {
         var handler = YooAssets.LoadAssetAsync<T>(resPath);

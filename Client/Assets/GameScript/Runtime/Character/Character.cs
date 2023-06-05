@@ -12,6 +12,8 @@ public class Character : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
 
+    public cfg.character.CharacterBaseInfo TBBaseInfo => _baseInfo;
+    
     public int SeatIndex
     {
         get => _seatIndex;
@@ -23,11 +25,13 @@ public class Character : MonoBehaviour
     
 
     //好感度
-    public int Friendliness => _friendliness;
-    private int _friendliness;
+    public int Friendliness => _npcData.FriendlyValue;
+    private NPCDataDef _npcData;
 
     public int CharacterId => _baseInfo.Id;
     private CharacterBaseInfo _baseInfo;
+
+    private List<cfg.character.CharacterBubble> _bubbleTB;
 
     public CharacterBehaviour CurBehaviour
     {
@@ -58,6 +62,8 @@ public class Character : MonoBehaviour
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         LoadCharacterSprite();
+        LoadTableData();
+        LoadDataBase();
     }
     
     private async void LoadCharacterSprite()
@@ -68,15 +74,43 @@ public class Character : MonoBehaviour
         _spriteRenderer.sprite = sp;
     }
 
+    private void LoadTableData()
+    {
+        _bubbleTB = new List<cfg.character.CharacterBubble>(50);
+        var dataProvider = UniModule.GetModule<DataProviderModule>();
+        var dataList = dataProvider.DataBase.TbCharacterBubble.DataList;
+        for (int i = 0; i < dataList.Count; i++)
+        {
+            if(dataList[i].NpcId != CharacterId)continue;
+            _bubbleTB.Add(dataList[i]);
+        }
+    }
+
+    private void LoadDataBase()
+    {
+        var userInfoModule = UniModule.GetModule<UserInfoModule>();
+        _npcData = userInfoModule.NpcData(CharacterId);
+    }
+
     //增加好感度
     public void AddFriendly(int num)
     {
-        
+        _npcData.FriendlyValue += num;
     }
 
     public int HaveChatId()
     {
-        return UnityEngine.Random.Range(0,5);
+        var friendliness = _npcData.FriendlyValue;
+        for (int i = 0; i < _bubbleTB.Count; i++)
+        {
+            if (friendliness >= _bubbleTB[i].FriendValue.StartValue &&
+                friendliness <= _bubbleTB[i].FriendValue.EndValue)
+            {
+                return _bubbleTB[i].Id;
+            }
+        }
+
+        return -1;
     }
 
     public void ToDark()
@@ -97,7 +131,7 @@ public class Character : MonoBehaviour
 
     public void InjectVariable(VariableStorageBehaviour storageBehaviour)
     {
-        storageBehaviour.SetValue("$friendliness",_friendliness);
+        storageBehaviour.SetValue("$friendliness",_npcData.FriendlyValue);
         // storageBehaviour.SetValue("NPCName",_name);
     }
 }

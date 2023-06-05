@@ -3,54 +3,78 @@
     "id": 10001001,
     "title": "你好....",
     "npc_id": 10001,
-    "friend_value": 0,
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
     "bubble_type": 1,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
+    "dialogue_start_node": "Beginner"
   },
   {
     "id": 10001002,
     "title": "来个蛋炒饭",
     "npc_id": 10001,
-    "friend_value": 10,
+    "friend_value": {
+      "start_value": 101,
+      "end_value": 500
+    },
     "bubble_type": 2,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
-    "dialogue_content_res": ""
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
   },
   {
     "id": 10001003,
     "title": "这里什么时候...",
     "npc_id": 10001,
-    "friend_value": 5,
+    "friend_value": {
+      "start_value": 501,
+      "end_value": 1000
+    },
     "bubble_type": 1,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
+    "dialogue_start_node": "Beginner"
   },
   {
     "id": 10004001,
     "title": "你好....",
     "npc_id": 10004,
-    "friend_value": 0,
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
     "bubble_type": 1,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
+    "dialogue_start_node": "Beginner"
   },
   {
     "id": 10004002,
     "title": "来个蛋炒饭",
     "npc_id": 10004,
-    "friend_value": 10,
+    "friend_value": {
+      "start_value": 101,
+      "end_value": 200
+    },
     "bubble_type": 2,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
-    "dialogue_content_res": ""
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
   },
   {
     "id": 10004003,
     "title": "这里什么时候...",
     "npc_id": 10004,
-    "friend_value": 5,
+    "friend_value": {
+      "start_value": 201,
+      "end_value": 300
+    },
     "bubble_type": 1,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject"
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
+    "dialogue_start_node": "Beginner"
   }
 ]

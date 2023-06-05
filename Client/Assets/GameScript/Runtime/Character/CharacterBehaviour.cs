@@ -93,7 +93,7 @@ public class CharacterMakeBubble : CharacterBehaviour
     private void think(DateTime dateTime)
     {
         var minutes = (dateTime - preDateTime).TotalMinutes;
-        if (minutes >= 5)
+        if (minutes >= 3)
         {
             var eventModule = UniModule.GetModule<EventModule>();
             eventModule.CharBubbleTopic.OnNext(_character);

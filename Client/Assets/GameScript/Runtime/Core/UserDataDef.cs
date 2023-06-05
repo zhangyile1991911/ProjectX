@@ -20,5 +20,16 @@ public class NPCDataDef
 {
     public int Id { get; set; }
     public int FriendlyValue { get; set; }
-    public HashSet<int> talkedId { get; set; }
 }
+
+public class DialogueDataCollection
+{
+    public Dictionary<int,OneDialogueDef> ReadDialogue { get; set; }
+}
+
+public class OneDialogueDef
+{
+    public int Id { get; set; }
+    public List<int> Choice { get; set; }
+}
+

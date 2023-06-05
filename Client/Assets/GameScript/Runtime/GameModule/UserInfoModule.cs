@@ -5,7 +5,7 @@ using cfg.item;
 using LiteDB;
 using UnityEngine;
 
-public class UserInfoModule : IModule
+public class UserInfoModule : SingletonModule<UserInfoModule>
 {
     public List<ItemDataDef> OwnFoodMaterials => _foodmaterialDatas.Values.ToList();
     // private Dictionary<int, int> _ownFoods;
@@ -13,9 +13,11 @@ public class UserInfoModule : IModule
     private LiteDatabase _liteDatabase;
     private ILiteCollection<ItemDataDef> _bagDatas;
     private ILiteCollection<NPCDataDef> _npcDatas;
+    private ILiteCollection<DialogueDataCollection> _dialogueCollection;
+
 
     private Dictionary<int,ItemDataDef> _foodmaterialDatas;//key = itemId
-    public void OnCreate(object createParam)
+    public override void OnCreate(object createParam)
     {
         //连接数据库
         _liteDatabase = new LiteDatabase(Application.dataPath + "/playerDB");
@@ -23,16 +25,17 @@ public class UserInfoModule : IModule
         _foodmaterialDatas = new Dictionary<int,ItemDataDef>();
         
         initPlayerData();
-        
+        base.OnCreate(this);
     }
 
-    public void OnUpdate()
+    public override void OnUpdate()
     {
-        
+        base.OnUpdate();
     }
 
-    public void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         _liteDatabase.Dispose();
     }
 
@@ -45,7 +48,15 @@ public class UserInfoModule : IModule
             initBagData();
         }
         _npcDatas = _liteDatabase.GetCollection<NPCDataDef>();
-        
+
+        exist = _liteDatabase.CollectionExists("DialogueDataCollection");
+        _dialogueCollection = _liteDatabase.GetCollection<DialogueDataCollection>();
+        if (!exist)
+        {
+            var newDialogueData = new DialogueDataCollection();
+            newDialogueData.ReadDialogue = new Dictionary<int, OneDialogueDef>();
+            _dialogueCollection.Insert(newDialogueData);
+        }
         classifyItem();
     }
 
@@ -163,21 +174,33 @@ public class UserInfoModule : IModule
     public NPCDataDef NpcData(int npcId)
     {
         var result = _npcDatas.FindOne(x => x.Id == npcId);
+        if (result == null)
+        {
+            result = new NPCDataDef();
+            result.Id = npcId;
+            result.FriendlyValue = 0;
+            _npcDatas.Insert(result);
+        }
         return result;
+    }
+
+    public bool HaveReadDialogueId(int did)
+    {
+        var tmp = _dialogueCollection.FindOne(x=> true);
+        return tmp.ReadDialogue.ContainsKey(did);
+    }
+
+    public void InsertReadDialogueId(int did)
+    {
+        var tmp = _dialogueCollection.FindOne(x=> true);
+        tmp.ReadDialogue.Add(did,new OneDialogueDef());
     }
 
     public void SaveAllData()
     {
         
+        // private ILiteCollection<ItemDataDef> _bagDatas;
+        // private ILiteCollection<NPCDataDef> _npcDatas;
+        // private ILiteCollection<DialogueDataCollection> _dialogueCollection;
     }
-    
-    // public int FoodStackNum(int foodId)
-    // {
-    //     if (_ownFoods.ContainsKey(foodId))
-    //     {
-    //         return _ownFoods[foodId];
-    //     }
-    //
-    //     return 0;
-    // }
 }

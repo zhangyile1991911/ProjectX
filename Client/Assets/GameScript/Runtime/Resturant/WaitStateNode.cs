@@ -12,11 +12,9 @@ public class WaitStateNode : IStateNode
     // private IDisposable _clockTopic;
     // private IDisposable _fiveSecondTimer;
     
-    private CharacterMgr _characterMgr;
     private RestaurantEnter _restaurant;
     private RestaurantWindow _restaurantWindow;
-    private UIManager _uiManager;
-    
+
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -26,24 +24,24 @@ public class WaitStateNode : IStateNode
     
     public void OnEnter(object param = null)
     {
-        _characterMgr = UniModule.GetModule<CharacterMgr>();
-        
+
         var _clocker = UniModule.GetModule<Clocker>();
         _clocker.Topic.Subscribe(TimeGoesOn).AddTo(_handles);
 
         // _fiveSecondTimer = Observable.Interval(TimeSpan.FromSeconds(5)).Subscribe(fiveSecondLoop);
         
-        _uiManager = UniModule.GetModule<UIManager>();
-        _uiManager.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, null);
+        UIManager.Instance.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, null);
+        UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
+        
+        EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
 
-        var eventModule = UniModule.GetModule<EventModule>();
-        eventModule.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
+        CreateBoss();
     }
 
     public void OnExit()
     {
         _handles?.Clear();
-        _uiManager.CloseUI(UIEnum.RestaurantWindow);
+        UIManager.Instance.CloseUI(UIEnum.RestaurantWindow);
     }
     
     public void OnUpdate()
@@ -58,29 +56,18 @@ public class WaitStateNode : IStateNode
         }
     }
 
+    private async void CreateBoss()
+    {
+        var man = CharacterMgr.Instance.GetCharacterById(10005);
+        if (man == null)
+        {
+            man = await CharacterMgr.Instance.CreateCharacter(10005);    
+        }
+
+        man.gameObject.transform.position = new(0,0,-11f);
+    }
     private async void TimeGoesOn(DateTime dateTime)
     { //时间流逝
-        // var characters = checkWhoAppear(dateTime);
-        // if (characters == null) return;
-        //
-        // foreach (var one in characters)
-        // {
-        //     if (_restaurant.ExistCharacter(one.CharacterId))
-        //     {
-        //         continue;
-        //     }
-        //     if (!_restaurant.HaveEmptySeat())
-        //     {
-        //         break;
-        //     }
-        //     var man = await _characterMgr.CreateCharacter(one.CharacterId,one.CharacterImage);
-        //     _restaurant.CharacterTakeRandomSeat(man);
-        //
-        //     var seatPoint = _restaurant.TakeSeatPoint(man.SeatIndex);
-        //     var spawnPoint = _restaurant.RandSpawnPoint();
-        //     
-        //     man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
-        // }
         var ids = pickWhoAppear(dateTime);
         if (ids is not { Count: > 0 }) return;
         
@@ -97,7 +84,7 @@ public class WaitStateNode : IStateNode
                 break;
             }
             
-            var man = await _characterMgr.CreateCharacter(CharacterId);
+            var man = await CharacterMgr.Instance.CreateCharacter(CharacterId);
             _restaurant.CharacterTakeRandomSeat(man);
         
             var seatPoint = _restaurant.TakeSeatPoint(man.SeatIndex);
@@ -106,13 +93,6 @@ public class WaitStateNode : IStateNode
             man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
         }
     }
-
-    // private List<CharacterAppear> checkWhoAppear(DateTime dateTime)
-    // {
-    //     return GlobalFunctions.appears.Where(one => one.DayOfWeek == (int)dateTime.DayOfWeek)
-    //         .Where(one => dateTime.Hour >= one.startHour)
-    //         .Where(one => dateTime.Minute >= one.startMinutes).ToList();
-    // }
 
     private List<int> pickWhoAppear(DateTime dateTime)
     {
@@ -134,9 +114,17 @@ public class WaitStateNode : IStateNode
     {
         var dm = UniModule.GetModule<DialogueModule>();
         dm.CurentDialogueCharacter = bubble.Owner;
-        
-        // var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
+
         _restaurantWindow.RemoveChatBubble(bubble);
-        _machine.ChangeState<DialogueStateNode>(bubble.Owner);
+        
+        var read = UserInfoModule.Instance.HaveReadDialogueId(bubble.ChatId);
+        if (read) return;
+        
+        UserInfoModule.Instance.InsertReadDialogueId(bubble.ChatId);
+
+        var stateData = new DialogueStateNodeData();
+        stateData.ChatId = bubble.ChatId;
+        stateData.ChatCharacter = bubble.Owner;
+        _machine.ChangeState<DialogueStateNode>(stateData);
     }
 }

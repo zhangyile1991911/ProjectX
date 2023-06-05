@@ -34,8 +34,9 @@ public class DialoguePortraitView : DialogueViewBase
             }
             
             var characterName = properties["name"].StringValue;
-            var spName = ZString.Concat("Assets/Art/Character/Portrait/",characterName, "Portrait.png");
-            var loadSpriteHandle = YooAssets.LoadAssetAsync<Sprite>(spName);
+            var mgr = UniModule.GetModule<CharacterMgr>();
+            var chr = mgr.GetCharacterByName(characterName);
+            var loadSpriteHandle = YooAssets.LoadAssetAsync<Sprite>(chr.TBBaseInfo.PortraitPath);
             loadSpriteHandle.Completed += sp =>
             {
                 CharacterPortrait.sprite = sp.AssetObject as Sprite;

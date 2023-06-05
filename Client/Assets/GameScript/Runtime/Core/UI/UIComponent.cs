@@ -59,7 +59,7 @@ public class UIComponent : IUIBase
 
     public virtual void OnDestroy()
     {
-        
+        _parentWindow.RemoveChildComponent(this);
     }
 
     public virtual void OnShow(UIOpenParam openParam)

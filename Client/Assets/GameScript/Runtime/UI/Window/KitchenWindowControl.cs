@@ -6,7 +6,9 @@ using SuperScrollView;
 using UniRx;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YooAsset;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -18,8 +20,8 @@ public partial class KitchenWindow : UIWindow
     private List<ItemDataDef> _showFoodItems;
     private List<FoodBtnCell> _cacheCells;
     private cfg.food.materialType _foodMaterialType;
-    private UserInfoModule _userInfoModule;
 
+    private int _curSelectMenuId;
     private List<FoodIcon> _choicedFoodIcons;
     private List<MenuIcon> _canMakeFoodIcons;
     private DataProviderModule _dataProvider;
@@ -27,7 +29,7 @@ public partial class KitchenWindow : UIWindow
     {
         base.OnCreate();
         Grid_FoodItem.InitGridView(0,getFoodItem);
-        _userInfoModule = UniModule.GetModule<UserInfoModule>();
+        
         _cacheCells = new List<FoodBtnCell>(10);
         _showFoodItems = new List<ItemDataDef>(10);
 
@@ -103,9 +105,10 @@ public partial class KitchenWindow : UIWindow
         {
             setFoodView(cfg.food.materialType.Other);
         }).AddTo(handles);
-        
+
+        Btn_produce.OnClickAsObservable().Subscribe(EnterProduce).AddTo(handles);
         //获取当前玩家拥有的食材
-        _ownedFoodItems = _userInfoModule.OwnFoodMaterials;
+        _ownedFoodItems = UserInfoModule.Instance.OwnFoodMaterials;
 
         setFoodView(cfg.food.materialType.Meat);
 
@@ -217,8 +220,9 @@ public partial class KitchenWindow : UIWindow
             if (icon.FoodId > 0) tmp++;
         }
         if (tmp <= 0) return;
-        
 
+        _curSelectMenuId = 0;
+        
         var menuList = _dataProvider.DataBase.TbMenuInfo.DataList;
         //通过厨具删选出可以制作的料理
         var toolsCanMakeMenu = new List<MenuInfo>(10);
@@ -253,11 +257,47 @@ public partial class KitchenWindow : UIWindow
             if (checkCount == needMaterial.Count)
             {//满足显示
                 var tbItem = _dataProvider.GetItemBaseInfo(one.Id);
-                _canMakeFoodIcons[showMenuIndex].SetMenuInfo(tbItem);
+                _canMakeFoodIcons[showMenuIndex].SetMenuInfo(tbItem,ClickMenuIcon);
                 showMenuIndex++;
             }
         }
+    }
 
+    private void ClickMenuIcon(int menuId)
+    {
+        _curSelectMenuId = menuId;
+    }
+
+    private void EnterProduce(Unit param)
+    {
+        switch (_choicedTools)
+        {
+            case cookTools.Cook:
+                break;
+            case cookTools.Barbecue:
+                break;
+            case cookTools.Boil:
+                break;
+            case cookTools.Steam:
+                break;
+        }
+
+        if (_choicedTools == 0) return;
+        if (_curSelectMenuId == 0) return;
         
+        var foodReceipt = new FoodReceipt();
+        foodReceipt.MenuId = _curSelectMenuId;
+        foodReceipt.CookTools = _choicedTools;
+        foodReceipt.CookFoods = new List<ItemDataDef>(_choicedFoodIcons.Count);
+        foreach (var icon in _choicedFoodIcons)
+        {
+            var tmp = new ItemDataDef()
+            {
+                Id = icon.FoodId,
+                Num = 1
+            };
+            foodReceipt.CookFoods.Add(tmp);
+        }
+        EventModule.Instance.StartCookTopic.OnNext(foodReceipt);
     }
 }

@@ -2,10 +2,17 @@
 using UnityEngine;
 using Yarn.Unity;
 
+public class DialogueStateNodeData
+{
+    public Character ChatCharacter;
+    public int ChatId;
+}
+
 public class DialogueStateNode : IStateNode
 {
     private RestaurantEnter _restaurantEnter;
     private Character _character;
+    private int _chatId;
     private StateMachine _machine;
     private CharacterDialogWindow _dialogWindow;
     public void OnCreate(StateMachine machine)
@@ -16,12 +23,17 @@ public class DialogueStateNode : IStateNode
 
     public void OnEnter(object param = null)
     {
-        _character = param as Character;
+        var stateNodeData = param as DialogueStateNodeData;
+        
+        _character = stateNodeData.ChatCharacter;
+        _chatId = stateNodeData.ChatId;
+        
         _restaurantEnter.FocusOnCharacter(_character);
         
         var openData = new CharacterDialogData();
-        openData.StoryResPath = "Assets/GameRes/Story/NewProject.yarnproject";
-        openData.StoryStartNode = "Beginner";
+        var bubbleTB = DataProviderModule.Instance.GetCharacterBubble(_chatId);
+        openData.StoryResPath = bubbleTB.DialogueContentRes;
+        openData.StoryStartNode = bubbleTB.DialogueStartNode;
         openData.StoryComplete = DialogueComplete; 
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.OpenUI(UIEnum.CharacterDialogWindow, ui =>
@@ -34,18 +46,16 @@ public class DialogueStateNode : IStateNode
 
     public void OnUpdate()
     {
-        // throw new System.NotImplementedException();
     }
 
     public void OnExit()
     {
         _restaurantEnter.NoFocusOnCharacter();
         
-        _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
-        _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
+        // _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
+        // _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
         
-        var uiManager = UniModule.GetModule<UIManager>();
-        uiManager.CloseUI(UIEnum.CharacterDialogWindow);
+        UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
     }
 
     private void DialogueComplete()
@@ -62,14 +72,13 @@ public class DialogueStateNode : IStateNode
             MealId = mealId,
             Customer = _character
         };
-        var eventModule = UniModule.GetModule<EventModule>();
-        eventModule.OrderMealTopic.OnNext(info);
+        EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 
     private void AddNPCFriendlyValue(string name,int val)
     {
         var mgr = UniModule.GetModule<CharacterMgr>();
-        var chr = mgr.GetCharacter(name);
+        var chr = mgr.GetCharacterByName(name);
         if (chr == null) return;
         chr.AddFriendly(val);
     }

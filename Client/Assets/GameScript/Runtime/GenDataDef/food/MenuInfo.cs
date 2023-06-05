@@ -24,10 +24,12 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         { var __json0 = _json["related_material"]; if(!__json0.IsArray) { throw new SerializationException(); } RelatedMaterial = new System.Collections.Generic.List<int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = __e0; }  RelatedMaterial.Add(__v0); }   }
         { var __json0 = _json["tag"]; if(!__json0.IsArray) { throw new SerializationException(); } Tag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  Tag.Add(__v0); }   }
         { var __json0 = _json["opposite_tag"]; if(!__json0.IsArray) { throw new SerializationException(); } OppositeTag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  OppositeTag.Add(__v0); }   }
+        { if(!_json["difficulty"].IsNumber) { throw new SerializationException(); }  Difficulty = _json["difficulty"]; }
+        { if(!_json["cook_scene"].IsString) { throw new SerializationException(); }  CookScene = _json["cook_scene"]; }
         PostInit();
     }
 
-    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag ) 
+    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, int difficulty, string cook_scene ) 
     {
         this.Id = id;
         this.Name = name;
@@ -35,6 +37,8 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         this.RelatedMaterial = related_material;
         this.Tag = tag;
         this.OppositeTag = opposite_tag;
+        this.Difficulty = difficulty;
+        this.CookScene = cook_scene;
         PostInit();
     }
 
@@ -68,6 +72,14 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
     /// 反标签
     /// </summary>
     public System.Collections.Generic.List<food.flavorTag> OppositeTag { get; private set; }
+    /// <summary>
+    /// 难度
+    /// </summary>
+    public int Difficulty { get; private set; }
+    /// <summary>
+    /// 玩法场景
+    /// </summary>
+    public string CookScene { get; private set; }
 
     public const int __ID__ = -566658467;
     public override int GetTypeId() => __ID__;
@@ -91,6 +103,8 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         + "RelatedMaterial:" + Bright.Common.StringUtil.CollectionToString(RelatedMaterial) + ","
         + "Tag:" + Bright.Common.StringUtil.CollectionToString(Tag) + ","
         + "OppositeTag:" + Bright.Common.StringUtil.CollectionToString(OppositeTag) + ","
+        + "Difficulty:" + Difficulty + ","
+        + "CookScene:" + CookScene + ","
         + "}";
     }
     

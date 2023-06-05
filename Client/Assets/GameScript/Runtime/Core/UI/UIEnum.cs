@@ -9,4 +9,5 @@ public enum UIEnum
     BootWindow,
     CharacterDialogWindow,
     KitchenWindow,
+    OrderQueueWindow,
 }

@@ -5,22 +5,23 @@ using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 using YooAsset;
 
-public class CharacterMgr : IModule
+public class CharacterMgr : SingletonModule<CharacterMgr>
 {
     private Dictionary<string,Character> _characters;
-    public void OnCreate(object createParam)
+    public override void OnCreate(object createParam)
     {
         _characters = new Dictionary<string, Character>();
+        base.OnCreate(this);
     }
 
-    public void OnUpdate()
+    public override void OnUpdate()
     {
-        
+        base.OnUpdate();
     }
 
-    public void OnDestroy()
+    public override void OnDestroy()
     {
-        
+        base.OnDestroy();
     }
 
     public async UniTask<Character> CreateCharacter(int cid)
@@ -49,7 +50,7 @@ public class CharacterMgr : IModule
         return character;
     }
 
-    public Character GetCharacter(string name)
+    public Character GetCharacterByName(string name)
     {
         if (_characters.TryGetValue(name, out var character))
         {
@@ -59,4 +60,11 @@ public class CharacterMgr : IModule
         return null;
     }
 
+    public Character GetCharacterById(int cid)
+    {
+        var dataProvider = UniModule.GetModule<DataProviderModule>();
+        var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
+        return GetCharacterByName(tbCharacter.Name);
+    }
+    
 }

@@ -62,6 +62,7 @@ public partial class ChatBubble : UIComponent
     
     public override void OnDestroy()
     {
+        base.OnDestroy();
         _doTweenAnimation.DOKill();
         GameObject.Destroy(uiGo);
     }
@@ -82,20 +83,22 @@ public partial class ChatBubble : UIComponent
     
     public void SetBubbleInfo(int chatId,Character origin,Action<ChatBubble> click)
     {
-        //随机生成一个目的
+        //随机生成一个目的地
         float x = Random.Range(-870, 870);
         float y = Random.Range(0, 440);
         _owner = origin;
         _chatId = chatId;
         _click = click;
-        
-        if (GlobalFunctions.BubbleMessages.ContainsKey(chatId))
+
+        var dataProvider = UniModule.GetModule<DataProviderModule>();
+        var bubble = dataProvider.GetCharacterBubble(chatId);
+        if (bubble == null)
         {
-            Txt_content.text = GlobalFunctions.BubbleMessages[chatId].Title;
+            Txt_content.text = "error";
         }
         else
         {
-            Txt_content.text = "hello";    
+            Txt_content.text = bubble.Title;
         }
 
         _tweener = uiRectTran.DOAnchorPos(new Vector2(x, y), 5.0f).OnComplete(()=>

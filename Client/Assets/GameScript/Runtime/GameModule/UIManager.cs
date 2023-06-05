@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using YooAsset;
 
 
-public class UIManager : IModule
+public class UIManager : SingletonModule<UIManager>
 {
     // public static UIManager Instance => _instance;
     // private static UIManager _instance;
@@ -21,10 +21,10 @@ public class UIManager : IModule
 
     private Transform _guide;
 
-    public CanvasScaler RootCanvasScaler;
+    public CanvasScaler RootCanvasScaler => _rootCanvasScaler;
     private CanvasScaler _rootCanvasScaler;
 
-    public Canvas RootCanvas;
+    public Canvas RootCanvas => _rootCanvas;
     private Canvas _rootCanvas;
 
     public IUIBase Get(UIEnum uiName)
@@ -118,6 +118,7 @@ public class UIManager : IModule
 
     public void DestroyUIComponent(UIComponent component)
     {
+        
         component?.OnHide();
         component?.OnDestroy();
     }
@@ -153,7 +154,7 @@ public class UIManager : IModule
         return uiComponent;
     }
 
-    public void OnCreate(object createParam)
+    public override void OnCreate(object createParam)
     {
         _uiCachedDic = new LRUCache<UIEnum, IUIBase>(10);
         _uiCachedDic.OnRemove += (ui) =>
@@ -173,15 +174,16 @@ public class UIManager : IModule
         _top = uiModule.transform.Find("UIRoot/Top");
         _guide = uiModule.transform.Find("UIRoot/Guide");
         GameObject.DontDestroyOnLoad(uiModule);
+        base.OnCreate(this);
     }
 
-    public void OnUpdate()
+    public override void OnUpdate()
     {
-        
+        base.OnUpdate();   
     }
 
-    public void OnDestroy()
+    public override void OnDestroy()
     {
-        
+        base.OnDestroy();
     }
 }

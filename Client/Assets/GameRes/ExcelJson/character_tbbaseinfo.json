@@ -4,48 +4,48 @@
     "name": "快递员",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/DeliveryManPortrait.png"
   },
   {
     "id": 10002,
     "name": "卖鱼佬",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/FishMan.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/FishManPortrait.png"
   },
   {
     "id": 10003,
     "name": "女士",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/Lady.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/LadyPortrait.png"
   },
   {
     "id": 10004,
     "name": "小萝莉",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/LittleGirl.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/LittleGirlPortrait.png"
   },
   {
     "id": 10005,
     "name": "商人",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/Merchant.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/MerchantPortrait.png"
   },
   {
     "id": 10006,
     "name": "妇女",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/Woman.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/WomanPortrait.png"
   },
   {
     "id": 10007,
     "name": "小胖",
     "desc": "",
     "res_path": "Assets/GameRes/Picture/Character/YoungFatMan.png",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/"
+    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/YoungFatManPortrait.png"
   }
 ]

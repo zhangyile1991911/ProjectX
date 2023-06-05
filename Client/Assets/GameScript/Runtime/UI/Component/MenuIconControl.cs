@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,8 @@ using UnityEngine.UI;
 /// </summary>
 public partial class MenuIcon : UIComponent
 {
+    private Action<int> click;
+    private int menuId;
     public MenuIcon(GameObject go,UIWindow parent):base(go,parent)
     {
 		
@@ -15,7 +19,10 @@ public partial class MenuIcon : UIComponent
     
     public override void OnCreate()
     {
-        
+        Btn_icon.OnClickAsObservable().Subscribe(_ =>
+        {
+            click?.Invoke(menuId);
+        }).AddTo(uiTran);
     }
     
     public override void OnDestroy()
@@ -38,9 +45,11 @@ public partial class MenuIcon : UIComponent
         
     }
 
-    public void SetMenuInfo(cfg.ItemBaseInfo info)
+    public void SetMenuInfo(cfg.ItemBaseInfo info,Action<int> cb)
     {
         uiGo.SetActive(true);
+        menuId = info.Id;
+        click = cb;
         ParentWindow.LoadSpriteAsync(info.UiResPath,Img_icon);
     }
 

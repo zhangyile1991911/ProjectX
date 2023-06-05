@@ -21,14 +21,15 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["title"].IsString) { throw new SerializationException(); }  Title = _json["title"]; }
         { if(!_json["npc_id"].IsNumber) { throw new SerializationException(); }  NpcId = _json["npc_id"]; }
-        { if(!_json["friend_value"].IsNumber) { throw new SerializationException(); }  FriendValue = _json["friend_value"]; }
+        { if(!_json["friend_value"].IsObject) { throw new SerializationException(); }  FriendValue = common.value_region.Deserializevalue_region(_json["friend_value"]);  }
         { if(!_json["bubble_type"].IsNumber) { throw new SerializationException(); }  BubbleType = (common.bubbleType)_json["bubble_type"].AsInt; }
         { if(!_json["bubble_bg"].IsString) { throw new SerializationException(); }  BubbleBg = _json["bubble_bg"]; }
         { var _j = _json["dialogue_content_res"]; if (_j.Tag != JSONNodeType.None && _j.Tag != JSONNodeType.NullValue) { { if(!_j.IsString) { throw new SerializationException(); }  DialogueContentRes = _j; } } else { DialogueContentRes = null; } }
+        { var _j = _json["dialogue_start_node"]; if (_j.Tag != JSONNodeType.None && _j.Tag != JSONNodeType.NullValue) { { if(!_j.IsString) { throw new SerializationException(); }  DialogueStartNode = _j; } } else { DialogueStartNode = null; } }
         PostInit();
     }
 
-    public CharacterBubble(int id, string title, int npc_id, int friend_value, common.bubbleType bubble_type, string bubble_bg, string dialogue_content_res ) 
+    public CharacterBubble(int id, string title, int npc_id, common.value_region friend_value, common.bubbleType bubble_type, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
     {
         this.Id = id;
         this.Title = title;
@@ -37,6 +38,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         this.BubbleType = bubble_type;
         this.BubbleBg = bubble_bg;
         this.DialogueContentRes = dialogue_content_res;
+        this.DialogueStartNode = dialogue_start_node;
         PostInit();
     }
 
@@ -58,7 +60,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     /// </summary>
     public int NpcId { get; private set; }
     public character.CharacterBaseInfo NpcId_Ref { get; private set; }
-    public int FriendValue { get; private set; }
+    public common.value_region FriendValue { get; private set; }
     /// <summary>
     /// 气泡类型
     /// </summary>
@@ -71,6 +73,10 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     /// 剧本路径
     /// </summary>
     public string DialogueContentRes { get; private set; }
+    /// <summary>
+    /// 剧本开始对话节点
+    /// </summary>
+    public string DialogueStartNode { get; private set; }
 
     public const int __ID__ = 918845488;
     public override int GetTypeId() => __ID__;
@@ -78,11 +84,13 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     public  void Resolve(Dictionary<string, object> _tables)
     {
         this.NpcId_Ref = (_tables["character.TbBaseInfo"] as character.TbBaseInfo).GetOrDefault(NpcId);
+        FriendValue?.Resolve(_tables);
         PostResolve();
     }
 
     public  void TranslateText(System.Func<string, string, string> translator)
     {
+        FriendValue?.TranslateText(translator);
     }
 
     public override string ToString()
@@ -95,6 +103,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         + "BubbleType:" + BubbleType + ","
         + "BubbleBg:" + BubbleBg + ","
         + "DialogueContentRes:" + DialogueContentRes + ","
+        + "DialogueStartNode:" + DialogueStartNode + ","
         + "}";
     }
     

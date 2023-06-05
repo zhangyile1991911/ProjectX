@@ -10,7 +10,9 @@
       1006,
       1016
     ],
-    "opposite_tag": []
+    "opposite_tag": [],
+    "difficulty": 1,
+    "cook_scene": "Assets/GameRes/Scenes/FryingPan.unity"
   },
   {
     "id": 10002,
@@ -23,7 +25,9 @@
       1002,
       1005
     ],
-    "opposite_tag": []
+    "opposite_tag": [],
+    "difficulty": 1,
+    "cook_scene": ""
   },
   {
     "id": 10003,
@@ -37,7 +41,9 @@
       1013,
       1024
     ],
-    "opposite_tag": []
+    "opposite_tag": [],
+    "difficulty": 1,
+    "cook_scene": ""
   },
   {
     "id": 10004,
@@ -50,7 +56,9 @@
       1001,
       1006
     ],
-    "opposite_tag": []
+    "opposite_tag": [],
+    "difficulty": 1,
+    "cook_scene": ""
   },
   {
     "id": 10005,
@@ -63,6 +71,8 @@
       1003,
       1006
     ],
-    "opposite_tag": []
+    "opposite_tag": [],
+    "difficulty": 1,
+    "cook_scene": ""
   }
 ]

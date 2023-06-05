@@ -10,16 +10,16 @@ using TMPro;
 [UI(0,"Assets/GameRes/Prefabs/Components/MenuIcon.prefab")]
 public partial class MenuIcon : UIComponent
 {
+	public Button Btn_icon;
 	public Image Img_icon;
-	public TextMeshProUGUI Txt_num;
 
 
 	public override void Init(GameObject go)
 	{
 	    uiGo = go;
 	    
-		Img_icon = go.transform.Find("Img_icon").GetComponent<Image>();
-		Txt_num = go.transform.Find("Txt_num").GetComponent<TextMeshProUGUI>();
+		Btn_icon = go.transform.Find("Btn_Img_icon").GetComponent<Button>();
+		Img_icon = go.transform.Find("Btn_Img_icon").GetComponent<Image>();
 
 	}
 }

@@ -17,20 +17,17 @@ public partial class RestaurantWindow : UIWindow
         }
     }
     private ClockWidget _clockWidget;
-    private List<MealOrderComponent> _mealOrderList;
+    
     private List<ChatBubble> _bubbleList;
     private StateMachine _machine;
     public override void OnCreate()
     {
         base.OnCreate();
-        _mealOrderList = new List<MealOrderComponent>(10);
         
         _bubbleList = new List<ChatBubble>(20);
 
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
         
-        var eventModule = UniModule.GetModule<EventModule>();
-        eventModule.OrderMealSub.Subscribe(AddOrderMealInfo).AddTo(uiTran);
     }
     
     public override void OnDestroy()
@@ -100,14 +97,6 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList.Remove(bubble);
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.DestroyUIComponent(bubble);
-    }
-
-    private async void AddOrderMealInfo(OrderMealInfo info)
-    {
-        var uiManager = UniModule.GetModule<UIManager>();
-        var orderPrefab = await uiManager.CreateUIComponent<MealOrderComponent>(null,Tran_OrderGroup,this);
-        orderPrefab.SetMealOrderInfo(info);
-        _mealOrderList.Add(orderPrefab);
     }
 
 }

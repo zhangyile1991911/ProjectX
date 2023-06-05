@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,9 +40,11 @@ public partial class MealOrderComponent : UIComponent
         
     }
 
-    public void SetMealOrderInfo(OrderMealInfo info)
+    public void SetMealOrderInfo(OrderMealInfo info,Vector3 startPos,Vector3 endPos)
     {
         _orderMealInfo = info;
         Txt_Name.text = _orderMealInfo.Customer.CharacterName;
+        uiRectTran.localPosition = startPos;
+        uiRectTran.DOAnchorPos(endPos,0.5f);
     }
 }

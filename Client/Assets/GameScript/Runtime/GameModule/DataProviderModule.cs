@@ -6,29 +6,31 @@ using cfg;
 using cfg.character;
 using cfg.food;
 using Cysharp.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SimpleJSON;
 using UnityEngine;
 
-public class DataProviderModule : IModule
+public class DataProviderModule : SingletonModule<DataProviderModule>
 {
     public cfg.Tables DataBase=>_database;
     private cfg.Tables _database;
-    public void OnCreate(object createParam)
+    public override void OnCreate(object createParam)
     {
 #if UNITY_EDITOR
         _database = new cfg.Tables(LoadJsonBuf);
 #endif
         initScheduleTable();
+        base.OnCreate(this);
     }
 
-    public void OnUpdate()
+    public override void OnUpdate()
     {
-        
+        base.OnUpdate();
     }
 
-    public void OnDestroy()
+    public override void OnDestroy()
     {
-        
+        base.OnDestroy();
     }
 
     private JSONNode LoadJsonBuf(string file)
@@ -87,6 +89,26 @@ public class DataProviderModule : IModule
         if (_database.TbMaterial.DataMap.TryGetValue(foodId, out var info))
         {
             return info;
+        }
+
+        return null;
+    }
+
+    public CharacterBubble GetCharacterBubble(int chatId)
+    {
+        if (_database.TbCharacterBubble.DataMap.TryGetValue(chatId, out var bubble))
+        {
+            return bubble;
+        }
+
+        return null;
+    }
+
+    public MenuInfo GetMenuInfo(int menuId)
+    {
+        if (_database.TbMenuInfo.DataMap.TryGetValue(menuId, out var menuInfo))
+        {
+            return menuInfo;
         }
 
         return null;

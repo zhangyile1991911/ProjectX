@@ -26,6 +26,7 @@ public class RestaurantEnter : MonoBehaviour
     // private RestaurantWindow _restaurantWindow;
     // private IDisposable _fiveSecondTimer;
     private StateMachine _stateMachine;
+    
     void Start()
     {
         _seatPoints = new List<Transform>(4);
@@ -55,6 +56,7 @@ public class RestaurantEnter : MonoBehaviour
         _stateMachine.AddNode<PrepareStateNode>();
         
         _stateMachine.Run<WaitStateNode>();
+        
         
     }
 
