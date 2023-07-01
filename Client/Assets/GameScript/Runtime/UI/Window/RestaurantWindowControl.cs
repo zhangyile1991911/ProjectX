@@ -19,6 +19,8 @@ public partial class RestaurantWindow : UIWindow
     private ClockWidget _clockWidget;
     
     private List<ChatBubble> _bubbleList;
+    private List<CookResult> _cookResults;
+    private List<DragCookFoodIcon> _dragCookFoodIcons;
     private StateMachine _machine;
     public override void OnCreate()
     {
@@ -27,7 +29,13 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList = new List<ChatBubble>(20);
 
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
+        _cookResults = new List<CookResult>(4);
         
+        _dragCookFoodIcons = new List<DragCookFoodIcon>(4);
+        _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconA.gameObject,this));
+        _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconB.gameObject,this));
+        _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconC.gameObject,this));
+        _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconD.gameObject,this));
     }
     
     public override void OnDestroy()
@@ -39,6 +47,7 @@ public partial class RestaurantWindow : UIWindow
     {
         base.OnShow(openParam);
         Btn_Phone.OnClickAsObservable().Subscribe(ClickPhone).AddTo(handles);
+        EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
         // Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
     }
 
@@ -97,6 +106,14 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList.Remove(bubble);
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.DestroyUIComponent(bubble);
+    }
+
+    private void showCookFood(CookResult result)
+    {
+        if (_cookResults.Count >= 4) return;
+        _cookResults.Add(result);
+        var index = _cookResults.Count - 1;
+        _dragCookFoodIcons[index].ShowFoodIcon(result.menuId);
     }
 
 }

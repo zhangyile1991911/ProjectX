@@ -134,4 +134,9 @@ public class Character : MonoBehaviour
         storageBehaviour.SetValue("$friendliness",_npcData.FriendlyValue);
         // storageBehaviour.SetValue("NPCName",_name);
     }
+
+    public void ReceiveFood(CookResult food)
+    {
+        
+    }
 }
