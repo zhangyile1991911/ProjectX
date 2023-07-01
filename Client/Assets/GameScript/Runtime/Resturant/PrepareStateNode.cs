@@ -26,7 +26,10 @@ public class PrepareStateNode : IStateNode
 
     public void OnUpdate()
     {
-        
+        if (Input.GetKeyDown(KeyCode.LeftArrow)||Input.GetKeyDown(KeyCode.A))
+        {
+            _machine.ChangeState<WaitStateNode>();
+        }
     }
 
     public void OnExit()
@@ -35,27 +38,8 @@ public class PrepareStateNode : IStateNode
         _handle?.Clear();
     }
 
-    private async void StartCook(FoodReceipt foo)
+    private void StartCook(PickFoodAndTools foo)
     {
-        var tb = DataProviderModule.Instance.GetMenuInfo(foo.MenuId);
-        // var sceneHandler = YooAssets.LoadSceneAsync(tb.CookScene,LoadSceneMode.Additive);
-        var sceneHandler = YooAssets.LoadSceneAsync(tb.CookScene);
-        
-        await sceneHandler.ToUniTask();
-        
-        List<GameObject> rootObjects = new (10);
-        sceneHandler.SceneObject.GetRootGameObjects(rootObjects);
-        FryModule fm = null;
-        foreach (var one in rootObjects)
-        {
-            if (one.name.Equals("FryModule"))
-            {
-                fm = one.GetComponent<FryModule>();
-                break;
-            }
-        }
-        Debug.Log(fm.gameObject);
-        
-        _machine.ChangeState<ProduceStateNode>();
+        _machine.ChangeState<ProduceStateNode>(foo);
     }
 }

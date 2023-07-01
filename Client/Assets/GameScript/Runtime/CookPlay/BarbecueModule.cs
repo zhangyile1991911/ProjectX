@@ -36,7 +36,7 @@ namespace GameScript.CookPlay
 
         private bool _isStart;
 
-        private BarbecueRecipe _curRecipe;
+        private BarbecueRecipeDifficulty _curRecipeDifficulty;
         private float _addition;//额外加速
         private Subject<bool> _completeTopic;
 
@@ -74,12 +74,12 @@ namespace GameScript.CookPlay
             
         }
 
-        public void SetBarbecueFood(BarbecueRecipe recipe)
+        public void SetBarbecueFood(BarbecueRecipeDifficulty recipeDifficulty)
         {
-            _curRecipe = recipe;
+            _curRecipeDifficulty = recipeDifficulty;
             _roastFoods?.Clear();
             _roastFoods ??= new List<RoastFood>(10);
-            foreach (var set in recipe.Sets)
+            foreach (var set in recipeDifficulty.Sets)
             {
                 for (int i = 0; i < set.Key; i++)
                 {
@@ -112,7 +112,7 @@ namespace GameScript.CookPlay
 
             _isStart = true;
             _addition = 0;
-            _remainTimer = _curRecipe.duration;
+            _remainTimer = _curRecipeDifficulty.duration;
             GameOverText.gameObject.SetActive(false);
             this.UpdateAsObservable()
                 .Where(_ => _roastFoods.Count > 0&&_isStart)
@@ -123,9 +123,9 @@ namespace GameScript.CookPlay
                 .Where(_ => _isStart && Input.GetKeyDown(KeyCode.Space))
                 .Subscribe(_ =>
                 {//每按一次空格就加速一点
-                    _addition += _curRecipe.FanAddValue;
-                    _addition = Mathf.Clamp(_addition, 0, _curRecipe.AddValueLimit);
-                    AccelerateFanAnimation(1.0f+_addition/_curRecipe.AddValueLimit);
+                    _addition += _curRecipeDifficulty.FanAddValue;
+                    _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
+                    AccelerateFanAnimation(1.0f+_addition/_curRecipeDifficulty.AddValueLimit);
                 })
                 .AddTo(_handler);
 
@@ -134,7 +134,7 @@ namespace GameScript.CookPlay
                 .Subscribe(TemperatureAttenuate).AddTo(_handler);
 
             var timer = Observable
-                .Timer(TimeSpan.FromSeconds(_curRecipe.duration))
+                .Timer(TimeSpan.FromSeconds(_curRecipeDifficulty.duration))
                 .Select(_=>false);
             
             _completeTopic?.Dispose();
@@ -153,8 +153,8 @@ namespace GameScript.CookPlay
         {
             _remainTimer -= 1;
             TimerText.text = ZString.Format("{0}",_remainTimer);
-            _addition -= _curRecipe.Attenuation;
-            _addition = Mathf.Clamp(_addition, 0, _curRecipe.AddValueLimit);
+            _addition -= _curRecipeDifficulty.Attenuation;
+            _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
             if (_addition > 0)
             {
                 StartFanAnimation();

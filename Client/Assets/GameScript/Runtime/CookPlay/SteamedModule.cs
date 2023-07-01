@@ -18,7 +18,7 @@ public class SteamedModule : MonoBehaviour
     private List<SteamedFoodController> _foods;
     private CompositeDisposable _handle;
     private List<List<SteamedFoodController>> _quadtree;
-    private Recipe _curRecipe;
+    private RecipeDifficulty _curRecipeDifficulty;
     private bool _start;
 
     private Subject<bool> _completeTopic;
@@ -46,10 +46,10 @@ public class SteamedModule : MonoBehaviour
         _boundary = SteamShelf.GetComponent<CircleCollider2D>();
     }
 
-    public void SetRecipe(SteamedRecipe recipe)
+    public void SetRecipe(SteamedRecipeDifficulty recipeDifficulty)
     {
-        _curRecipe = recipe;
-        foreach (var one in recipe.Sets)
+        _curRecipeDifficulty = recipeDifficulty;
+        foreach (var one in recipeDifficulty.Sets)
         {
             for (int i = 0; i < one.Key; i++)
             {
@@ -239,7 +239,7 @@ public class SteamedModule : MonoBehaviour
             .AddTo(_handle);
 
         var timer = Observable
-            .Timer(TimeSpan.FromSeconds(_curRecipe.duration))
+            .Timer(TimeSpan.FromSeconds(_curRecipeDifficulty.duration))
             .Select(_ => false);
         this.UpdateAsObservable().Subscribe(CheckGameOver).AddTo(_handle);
         _completeTopic = new Subject<bool>();

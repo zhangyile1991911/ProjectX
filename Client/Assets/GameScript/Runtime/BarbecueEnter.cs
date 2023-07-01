@@ -6,13 +6,14 @@ using PlasticPipe.Tube;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class BarbecueEnter : MonoBehaviour
 {
     public Button startBtn;
     public BarbecueModule module;
-    public BarbecueRecipe recipe;
+    [FormerlySerializedAs("recipe")] public BarbecueRecipeDifficulty recipeDifficulty;
     private bool initYooAsset = false;
     private void Start()
     {
@@ -29,7 +30,7 @@ public class BarbecueEnter : MonoBehaviour
     private void waitYooAssets(bool success)
     {
         initYooAsset = success;
-        module.SetBarbecueFood(recipe);
+        module.SetBarbecueFood(recipeDifficulty);
         
         
             

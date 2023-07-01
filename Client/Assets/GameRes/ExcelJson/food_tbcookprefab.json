@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "tools": 1,
+    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+  },
+  {
+    "id": 2,
+    "tools": 2,
+    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+  },
+  {
+    "id": 3,
+    "tools": 3,
+    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+  },
+  {
+    "id": 4,
+    "tools": 4,
+    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+  },
+  {
+    "id": 5,
+    "tools": 5,
+    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+  }
+]

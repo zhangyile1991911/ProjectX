@@ -113,5 +113,27 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 
         return null;
     }
+
+    public QTEInfo GetQTEInfo(int qteId)
+    {
+        if (_database.TbQTE.DataMap.TryGetValue(qteId, out var qteInfo))
+        {
+            return qteInfo;
+        }
+
+        return null;
+    }
+
+    public CookPrefabInfo GetCookPrefabInfo(cookTools tools)
+    {
+        foreach (var one in _database.TbCookPrefab.DataList)
+        {
+            if (one.Tools == tools)
+                return one;
+        }
+
+        return null;
+    }
     
+
 }

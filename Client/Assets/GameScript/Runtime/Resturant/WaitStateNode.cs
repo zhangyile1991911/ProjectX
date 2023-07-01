@@ -50,7 +50,7 @@ public class WaitStateNode : IStateNode
         // {
         //     one.CurBehaviour.Update();
         // }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.D))
         {
             _machine.ChangeState<PrepareStateNode>();            
         }
@@ -64,7 +64,7 @@ public class WaitStateNode : IStateNode
             man = await CharacterMgr.Instance.CreateCharacter(10005);    
         }
 
-        man.gameObject.transform.position = new(0,0,-11f);
+        man.gameObject.transform.position = new(0,0,-13f);
     }
     private async void TimeGoesOn(DateTime dateTime)
     { //时间流逝

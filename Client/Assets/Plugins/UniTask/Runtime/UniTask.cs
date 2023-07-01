@@ -40,6 +40,11 @@ namespace Cysharp.Threading.Tasks
             this.token = token;
         }
 
+        public UniTask(Action action)
+        {
+            throw new NotImplementedException();
+        }
+
         public UniTaskStatus Status
         {
             [DebuggerHidden]

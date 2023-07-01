@@ -29,6 +29,8 @@ MonoBehaviour:
     typeName: LoopGridView
   - prefixName: LBtn_
     typeName: ButtonLongPress
+  - prefixName: Slider_
+    typeName: Slider
   UIWindowTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIWindowClassTemplate.txt
   UIControlTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIControlClassTemplate.txt
   UIComponentTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIComponentViewTemplate.txt

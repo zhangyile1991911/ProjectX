@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PanSimulator : MonoBehaviour
 {
@@ -61,6 +63,7 @@ public class PanSimulator : MonoBehaviour
     public void AddFood(FoodSimulator food)
     {
         if (food == null) return;
+        food.panSimulator = this;
         _foodList.Add(food);
     }
 
@@ -107,13 +110,24 @@ public class PanSimulator : MonoBehaviour
         return worldPos;
     }
 
+    // private Ray gizomsRay;
+    // private void OnDrawGizmos()
+    // {
+    //     // Debug.Log($"origin = ${gizomsRay.origin} direction = ${gizomsRay.direction}");
+    //     // Gizmos.DrawRay(gizomsRay.origin,gizomsRay.direction);    
+    //     Debug.DrawLine(gizomsRay.origin,gizomsRay.origin+gizomsRay.direction*100f,Color.red);
+    // }
+    
     private void DragHandle()
     {
         if (Input.GetMouseButtonDown(0) && !_isDrag)
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            if (hit && hit.collider.transform == panHandle)
+            // gizomsRay = ray;
+            RaycastHit hit;
+            // RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            if(Physics.Raycast(ray, out hit, 100f))
+            // if (hit && hit.collider.transform == panHandle)
             {
                 Vector3 pos = ScreenToWorld(Input.mousePosition, transform);
                 _offset = transform.position - pos;
@@ -248,32 +262,7 @@ public class PanSimulator : MonoBehaviour
                 }
             }
         }
-        // for (int  x = 0;x < _quadtree.Count;x++)
-        // {
-        //     for(int y = 0;y < _quadtree[x].Count;y++)
-        //     {
-        //         FoodSimulator onefood = _quadtree[x][y];
-        //         for(int z = 0;z < _quadtree[x].Count;z++)
-        //         {
-        //             FoodSimulator otherFood = _quadtree[x][z];
-        //             if (onefood == otherFood) continue;
-        //
-        //             float distance = Vector2.Distance(otherFood.transform.localPosition, onefood.transform.localPosition);
-        //             if (distance > 0.12f) continue;
-        //             
-        //             Vector3 reverseDirection = (onefood.transform.localPosition - otherFood.transform.localPosition).normalized;
-        //             if(reverseDirection.magnitude <= 0.01f)
-        //             {
-        //                 reverseDirection.x = Random.Range(-1f,1f);
-        //                 reverseDirection.y = Random.Range(-1f, 1f);
-        //             }
-        //             float newpower = (1 + (1 - distance / 0.2f)) * otherFood.data.bounce*0.5f;
-        //             onefood.AddVelocityAndDirection(newpower, reverseDirection);
-        //             count++;
-        //         }
-        //     }
-        // }
-
+        
         if (count > 0)
         {
             Debug.Log($"QuadCollision一帧循环了{count}次数");

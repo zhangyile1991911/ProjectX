@@ -118,4 +118,21 @@ public class UIWindow : IUIBase
             image.sprite = handle.AssetObject as Sprite;
         };
     }
+
+    public UniTask LoadPrefabAsync(string prefabPath)
+    {
+        var handler = YooAssets.LoadAssetAsync<GameObject>(prefabPath);
+        _resHandles.Add(handler);
+        return handler.ToUniTask();
+    }
+
+    public void LoadPrefabAsync(string prefabPath,Action<GameObject> complete)
+    {
+        var handler = YooAssets.LoadAssetAsync<GameObject>(prefabPath);
+        _resHandles.Add(handler);
+        handler.Completed += param =>
+        {
+            complete?.Invoke(param.AssetObject as GameObject);
+        };
+    }
 }

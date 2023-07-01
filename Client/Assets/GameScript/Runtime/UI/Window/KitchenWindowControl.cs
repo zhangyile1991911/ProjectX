@@ -24,6 +24,7 @@ public partial class KitchenWindow : UIWindow
     private int _curSelectMenuId;
     private List<FoodIcon> _choicedFoodIcons;
     private List<MenuIcon> _canMakeFoodIcons;
+    private List<CookToolIcon> _cookToolIcons;
     private DataProviderModule _dataProvider;
     public override void OnCreate()
     {
@@ -50,6 +51,13 @@ public partial class KitchenWindow : UIWindow
         _canMakeFoodIcons.Add(new MenuIcon(Ins_MenuIcon7.gameObject,this));
         _canMakeFoodIcons.Add(new MenuIcon(Ins_MenuIcon8.gameObject,this));
 
+        _cookToolIcons = new List<CookToolIcon>(5);
+        _cookToolIcons.Add(new CookToolIcon(Ins_CookToolIconA.gameObject,this));
+        _cookToolIcons.Add(new CookToolIcon(Ins_CookToolIconB.gameObject,this));
+        _cookToolIcons.Add(new CookToolIcon(Ins_CookToolIconC.gameObject,this));
+        _cookToolIcons.Add(new CookToolIcon(Ins_CookToolIconD.gameObject,this));
+        _cookToolIcons.Add(new CookToolIcon(Ins_CookToolIconF.gameObject,this));
+        
         _dataProvider = UniModule.GetModule<DataProviderModule>();
 
     }
@@ -67,26 +75,54 @@ public partial class KitchenWindow : UIWindow
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
-        Btn_ToolA.OnClickAsObservable().Subscribe((param)=>
+
+        //绑定按钮事件
+        ButtonClickBind();
+        //获取当前玩家拥有的食材
+        _ownedFoodItems = UserInfoModule.Instance.OwnFoodMaterials;
+        
+        setFoodView(cfg.food.materialType.Meat);
+
+        foreach (var t in _canMakeFoodIcons)
         {
-            clickCookTool(cfg.food.cookTools.Cook);
+            t.uiGo.SetActive(false);
+        }
+
+        EventModule.Instance.StartCookSub.Subscribe(ClearChoice).AddTo(handles);
+    }
+
+    public override void OnHide()
+    {
+        base.OnHide();
+        foreach (var one in _cacheCells)
+        {
+            one.OnHide();
+        }
+        handles.Clear();
+    }
+
+    private void ButtonClickBind()
+    {
+        _cookToolIcons[0].Btn_Click.OnClickAsObservable().Subscribe((param)=>
+        {
+            clickCookTool(cfg.food.cookTools.Cook,0);
         }).AddTo(handles);
         
-        Btn_ToolB.OnClickAsObservable().Subscribe((param)=>
+        _cookToolIcons[1].Btn_Click.OnClickAsObservable().Subscribe((param)=>
         {
-            clickCookTool(cfg.food.cookTools.Barbecue);
+            clickCookTool(cfg.food.cookTools.Barbecue,1);
         }).AddTo(handles);
-        Btn_ToolC.OnClickAsObservable().Subscribe((param)=>
+        _cookToolIcons[2].Btn_Click.OnClickAsObservable().Subscribe((param)=>
         {
-            clickCookTool(cfg.food.cookTools.Steam);
+            clickCookTool(cfg.food.cookTools.Steam,2);
         }).AddTo(handles);
-        Btn_ToolD.OnClickAsObservable().Subscribe((param)=>
+        _cookToolIcons[3].Btn_Click.OnClickAsObservable().Subscribe((param)=>
         {
-            clickCookTool(cfg.food.cookTools.Fry);
+            clickCookTool(cfg.food.cookTools.Fry,3);
         }).AddTo(handles);
-        Btn_ToolE.OnClickAsObservable().Subscribe((param)=>
+        _cookToolIcons[4].Btn_Click.OnClickAsObservable().Subscribe((param)=>
         {
-            clickCookTool(cfg.food.cookTools.Boil);
+            clickCookTool(cfg.food.cookTools.Boil,4);
         }).AddTo(handles);
 
         Btn_ClassifyA.OnClickAsObservable().Subscribe((param) =>
@@ -105,27 +141,8 @@ public partial class KitchenWindow : UIWindow
         {
             setFoodView(cfg.food.materialType.Other);
         }).AddTo(handles);
-
+        
         Btn_produce.OnClickAsObservable().Subscribe(EnterProduce).AddTo(handles);
-        //获取当前玩家拥有的食材
-        _ownedFoodItems = UserInfoModule.Instance.OwnFoodMaterials;
-
-        setFoodView(cfg.food.materialType.Meat);
-
-        foreach (var t in _canMakeFoodIcons)
-        {
-            t.uiGo.SetActive(false);
-        }
-    }
-
-    public override void OnHide()
-    {
-        base.OnHide();
-        foreach (var one in _cacheCells)
-        {
-            one.OnHide();
-        }
-        handles.Clear();
     }
 
     public override void OnUpdate()
@@ -201,9 +218,14 @@ public partial class KitchenWindow : UIWindow
         checkCanProduce();
     }
 
-    private void clickCookTool(cfg.food.cookTools toolType)
+    private void clickCookTool(cfg.food.cookTools toolType,int index)
     {
         _choicedTools = toolType;
+        for (int i = 0; i < _cookToolIcons.Count; i++)
+        {
+            _cookToolIcons[i].HideHighlight();
+        }
+        _cookToolIcons[index].ShowHighlight();
         checkCanProduce();
     }
 
@@ -257,14 +279,22 @@ public partial class KitchenWindow : UIWindow
             if (checkCount == needMaterial.Count)
             {//满足显示
                 var tbItem = _dataProvider.GetItemBaseInfo(one.Id);
-                _canMakeFoodIcons[showMenuIndex].SetMenuInfo(tbItem,ClickMenuIcon);
+                _canMakeFoodIcons[showMenuIndex].SetMenuInfo(tbItem,ClickMenuIcon,showMenuIndex);
                 showMenuIndex++;
             }
         }
     }
 
-    private void ClickMenuIcon(int menuId)
+    private void ClickMenuIcon(int menuId,int menuIndex)
     {
+        if (_curSelectMenuId == menuId) return;
+
+        foreach (var icon in _canMakeFoodIcons)
+        {
+            icon.HideHighlight();
+        }
+        _canMakeFoodIcons[menuIndex].ShowHighlight();
+        
         _curSelectMenuId = menuId;
     }
 
@@ -285,12 +315,13 @@ public partial class KitchenWindow : UIWindow
         if (_choicedTools == 0) return;
         if (_curSelectMenuId == 0) return;
         
-        var foodReceipt = new FoodReceipt();
+        var foodReceipt = new PickFoodAndTools();
         foodReceipt.MenuId = _curSelectMenuId;
         foodReceipt.CookTools = _choicedTools;
         foodReceipt.CookFoods = new List<ItemDataDef>(_choicedFoodIcons.Count);
         foreach (var icon in _choicedFoodIcons)
         {
+            if(icon.FoodId <= 0)continue;
             var tmp = new ItemDataDef()
             {
                 Id = icon.FoodId,
@@ -299,5 +330,26 @@ public partial class KitchenWindow : UIWindow
             foodReceipt.CookFoods.Add(tmp);
         }
         EventModule.Instance.StartCookTopic.OnNext(foodReceipt);
+    }
+
+    private void ClearChoice(PickFoodAndTools param)
+    {
+        foreach (var one in _choicedFoodIcons)
+        {
+            one.ClearMaterialInfo();
+        }
+
+        foreach (var one in _canMakeFoodIcons)
+        {
+            one.ClearMenuInfo();
+            one.HideHighlight();
+        }
+
+        foreach (var one in _cookToolIcons)
+        {
+            one.HideHighlight();
+        }
+
+        _choicedTools = 0;
     }
 }

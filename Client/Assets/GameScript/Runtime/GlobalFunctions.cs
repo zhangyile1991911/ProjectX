@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
 using UnityEngine;
 using YooAsset;
-
 
 
 public class OrderMealInfo
@@ -13,13 +11,27 @@ public class OrderMealInfo
     public int MealId;
 }
 
-public class FoodReceipt
+public enum Difficulty
+{
+    easy,
+    normal,
+    hard,
+}
+public class PickFoodAndTools
 {
     public int MenuId;
     public cfg.food.cookTools CookTools;
     public List<ItemDataDef> CookFoods;
 }
 
+//炒完的菜
+public class CookResult
+{
+    public int menuId;
+    public float CompletePercent;
+    public HashSet<cfg.food.flavorTag> Tags;
+    public Dictionary<int, bool> QTEResult;//int = QTEId
+}
 
 public static class GlobalFunctions
 {
@@ -31,19 +43,15 @@ public static class GlobalFunctions
 
         var package = YooAssets.CreatePackage("DefaultPackage");
         YooAssets.SetDefaultPackage(package);
-        
+
         var initParameters = new EditorSimulateModeParameters();
         initParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("DefaultPackage");
-        
+
         // var initParameters = new OfflinePlayModeParameters();
         yield return package.InitializeAsync(initParameters);
         Debug.Log($"YooAssets初始化完成");
-    
-        
+
+
         complete?.Invoke(true);
     }
-
-
 }
-
-

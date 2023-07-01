@@ -34,11 +34,12 @@ public partial class KitchenWindow : UIWindow
 	public Button Btn_ClassifyD;
 	public LoopGridView Grid_FoodItem;
 	public Transform Tran_Center;
-	public Button Btn_ToolA;
-	public Button Btn_ToolB;
-	public Button Btn_ToolC;
-	public Button Btn_ToolD;
-	public Button Btn_ToolE;
+	public Transform Ins_CookToolIconA;
+	public Transform Ins_CookToolIconB;
+	public Transform Ins_CookToolIconC;
+	public Transform Ins_CookToolIconD;
+	public Transform Ins_CookToolIconF;
+	public TextMeshProUGUI Txt_num;
 
 	public override void Init(GameObject go)
 	{
@@ -67,11 +68,12 @@ public partial class KitchenWindow : UIWindow
 		Btn_ClassifyD = go.transform.Find("Tran_RightTop/Tran_tagGroup/Btn_ClassifyD").GetComponent<Button>();
 		Grid_FoodItem = go.transform.Find("Tran_RightTop/Grid_FoodItem").GetComponent<LoopGridView>();
 		Tran_Center = go.transform.Find("Tran_Center").GetComponent<Transform>();
-		Btn_ToolA = go.transform.Find("Tran_Center/Btn_ToolA").GetComponent<Button>();
-		Btn_ToolB = go.transform.Find("Tran_Center/Btn_ToolB").GetComponent<Button>();
-		Btn_ToolC = go.transform.Find("Tran_Center/Btn_ToolC").GetComponent<Button>();
-		Btn_ToolD = go.transform.Find("Tran_Center/Btn_ToolD").GetComponent<Button>();
-		Btn_ToolE = go.transform.Find("Tran_Center/Btn_ToolE").GetComponent<Button>();
+		Ins_CookToolIconA = go.transform.Find("Tran_Center/Ins_CookToolIconA").GetComponent<Transform>();
+		Ins_CookToolIconB = go.transform.Find("Tran_Center/Ins_CookToolIconB").GetComponent<Transform>();
+		Ins_CookToolIconC = go.transform.Find("Tran_Center/Ins_CookToolIconC").GetComponent<Transform>();
+		Ins_CookToolIconD = go.transform.Find("Tran_Center/Ins_CookToolIconD").GetComponent<Transform>();
+		Ins_CookToolIconF = go.transform.Find("Tran_Center/Ins_CookToolIconF").GetComponent<Transform>();
+		Txt_num = go.transform.Find("HideNode/FoodBtnCell/Txt_num").GetComponent<TextMeshProUGUI>();
 
 	}
 }

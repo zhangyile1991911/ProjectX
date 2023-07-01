@@ -53,12 +53,37 @@ public class UIManager : SingletonModule<UIManager>
         }
         else
         {
-            LoadUI(uiName,(loadUi)=>
+            LoadUIAsync(uiName,(loadUi)=>
             {
                 loadUi.OnCreate();
                 OnOpenUI(loadUi,onComplete,openParam,layer);
-            },layer,isPermanent);
+            },layer,isPermanent).Forget();
+            // LoadUI(uiName,(loadUi)=>
+            // {
+            //     loadUi.OnCreate();
+            //     OnOpenUI(loadUi,onComplete,openParam,layer);
+            // },layer,isPermanent);
         }
+    }
+    
+    public UniTask OpenUI(UIEnum uiName,UIOpenParam openParam,UILayer layer = UILayer.Bottom,bool isPermanent=false)
+    {
+        IUIBase ui = null;
+        if (_uiCachedDic.TryGetValue(uiName, out ui))
+        {
+            OnOpenUI(ui, null, openParam, layer);
+            return default;
+        }
+        
+        return UniTask.Create(async () =>
+        { 
+            await LoadUIAsync(uiName, (loadUi) =>
+            {
+                loadUi.OnCreate();
+                OnOpenUI(loadUi, null, openParam, layer);
+            }, layer, isPermanent);
+            
+        });
     }
 
     public void CloseUI(UIEnum uiName)
@@ -91,7 +116,30 @@ public class UIManager : SingletonModule<UIManager>
 
         return null;
     }
-    private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent)
+    // private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent)
+    // {
+    //     Type uiType = Type.GetType(uiName.ToString());
+    //     var attributes = uiType.GetCustomAttributes(false);
+    //     var uiPath = attributes
+    //         .Where(one => one is UIAttribute)
+    //         .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
+    //     
+    //     var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
+    //     await handle.ToUniTask();
+    //     
+    //     var uiPrefab = handle.AssetObject;
+    //     var parentNode = getParentNode(layer);
+    //     var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
+    //     uiGameObject.transform.localScale = Vector3.one;
+    //     uiGameObject.transform.SetParent(parentNode,false);
+    //     IUIBase ui = Activator.CreateInstance(uiType) as IUIBase;
+    //     ui.uiLayer = layer;
+    //     ui.Init(uiGameObject);
+    //     onComplete?.Invoke(ui);
+    //     _uiCachedDic.Add(uiName,ui,isPermanent);
+    // }
+    
+    private async UniTask LoadUIAsync(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent)
     {
         Type uiType = Type.GetType(uiName.ToString());
         var attributes = uiType.GetCustomAttributes(false);
@@ -101,8 +149,7 @@ public class UIManager : SingletonModule<UIManager>
         
         var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
         await handle.ToUniTask();
-        // handle.Completed += (result) =>
-        // {
+        
         var uiPrefab = handle.AssetObject;
         var parentNode = getParentNode(layer);
         var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
@@ -113,7 +160,6 @@ public class UIManager : SingletonModule<UIManager>
         ui.Init(uiGameObject);
         onComplete?.Invoke(ui);
         _uiCachedDic.Add(uiName,ui,isPermanent);
-        // };
     }
 
     public void DestroyUIComponent(UIComponent component)

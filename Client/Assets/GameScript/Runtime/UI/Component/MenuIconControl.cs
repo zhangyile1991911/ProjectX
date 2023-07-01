@@ -10,7 +10,7 @@ using UnityEngine.UI;
 /// </summary>
 public partial class MenuIcon : UIComponent
 {
-    private Action<int> click;
+    private Action<int,int> click;
     private int menuId;
     public MenuIcon(GameObject go,UIWindow parent):base(go,parent)
     {
@@ -21,7 +21,7 @@ public partial class MenuIcon : UIComponent
     {
         Btn_icon.OnClickAsObservable().Subscribe(_ =>
         {
-            click?.Invoke(menuId);
+            click?.Invoke(menuId,myIndex);
         }).AddTo(uiTran);
     }
     
@@ -45,16 +45,28 @@ public partial class MenuIcon : UIComponent
         
     }
 
-    public void SetMenuInfo(cfg.ItemBaseInfo info,Action<int> cb)
+    private int myIndex;
+    public void SetMenuInfo(cfg.ItemBaseInfo info,Action<int,int> cb,int curIndex)
     {
         uiGo.SetActive(true);
         menuId = info.Id;
         click = cb;
+        myIndex = curIndex;
         ParentWindow.LoadSpriteAsync(info.UiResPath,Img_icon);
     }
 
     public void ClearMenuInfo()
     {
         Img_icon.sprite = null;
+    }
+
+    public void ShowHighlight()
+    {
+        Img_Highlight.gameObject.SetActive(true);
+    }
+
+    public void HideHighlight()
+    {
+        Img_Highlight.gameObject.SetActive(false);
     }
 }

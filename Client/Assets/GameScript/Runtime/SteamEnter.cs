@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using UnityEngine.Serialization;
+
 public class SteamEnter : MonoBehaviour
 {
     public Button startBtn;
@@ -10,7 +12,7 @@ public class SteamEnter : MonoBehaviour
 
     public SteamedModule module;
 
-    public SteamedRecipe recipe;
+    [FormerlySerializedAs("recipe")] public SteamedRecipeDifficulty recipeDifficulty;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +30,7 @@ public class SteamEnter : MonoBehaviour
     {
         initYooAsset = success;
         module.Init();
-        module.SetRecipe(recipe);
+        module.SetRecipe(recipeDifficulty);
         
     }
     // Update is called once per frame

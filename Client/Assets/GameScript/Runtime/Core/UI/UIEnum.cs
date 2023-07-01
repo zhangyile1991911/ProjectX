@@ -10,4 +10,5 @@ public enum UIEnum
     CharacterDialogWindow,
     KitchenWindow,
     OrderQueueWindow,
+    FryingFoodWindow,
 }

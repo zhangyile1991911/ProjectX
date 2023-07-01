@@ -4,9 +4,8 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Recipe : ScriptableObject
+public class RecipeDifficulty : ScriptableObject
 {
-   public int recipeId;
-   public string recipeName;
-   public float duration;
+    public float duration;
+   
 }

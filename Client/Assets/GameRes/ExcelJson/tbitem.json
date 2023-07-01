@@ -18,7 +18,7 @@
     "type": 1,
     "desc": "牛肉",
     "ui_res_path": "Assets/GameRes/Picture/Food/blue.png",
-    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/cauliflower.prefab",
     "get_method": ""
   },
   {
@@ -29,7 +29,7 @@
     "type": 1,
     "desc": "虾",
     "ui_res_path": "Assets/GameRes/Picture/Food/grey.png",
-    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
     "get_method": ""
   },
   {
@@ -40,7 +40,7 @@
     "type": 1,
     "desc": "鸡蛋",
     "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
-    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -51,7 +51,7 @@
     "type": 1,
     "desc": "辣椒",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
-    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/cauliflower.prefab",
     "get_method": ""
   },
   {
@@ -62,7 +62,7 @@
     "type": 1,
     "desc": "土豆",
     "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
-    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
     "get_method": ""
   },
   {
@@ -73,7 +73,7 @@
     "type": 1,
     "desc": "鸡胸肉",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
     "get_method": ""
   },
   {

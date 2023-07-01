@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using cfg.food;
 using Cysharp.Text;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using YooAsset;
@@ -12,40 +16,30 @@ using Random = UnityEngine.Random;
 
 public class FryModule : MonoBehaviour
 {
-    public Slider temperatureSlider;
-    public Slider progressSlider;
-    public TextMeshProUGUI gameOverText;
-    public Material sliderBgMat;
+    // public Material sliderBgMat;
     public PanSimulator pan;
     public Transform firePointTransform;
-    public RectTransform qteArea;
-    
+
     [InspectorName("距离热度比例")]
     public AnimationCurve heatCurve;
 
     [InspectorName("移动速度降温比例")]
     public AnimationCurve lowerCurve;
 
-    private FriedFoodRecipe _currentRecipe;
+    private FryingDifficulty _currentRecipeDifficulty;
     
-    private float _curTemperature;
-    private float _curProgress;
+    
+    
     private bool _start;
-    // private IDisposable _temperatureDisposal;
-    // private IDisposable _gameFinishDisposal;
-    // private IDisposable _progressValueDisposal;
-    private Subject<bool> progressTopic;
-    private Subject<bool> timeUpTopic;
-    private List<QTEComponent> components;
-    private CompositeDisposable _handler;
-    private List<bool> qteRecords;
-    private List<int> qteKeys;
-    private List<Animation> qteAnimations;
-    private void Start()
-    {
-        Init();
-    }
+    
+    private ReactiveProperty<float> _curProgress;
+    private ReactiveProperty<float> _curTemperature;
+    
+    private Subject<bool> _finishTopic;
+    // private Subject<bool> timeUpTopic;
 
+    private CompositeDisposable _handler;
+    private List<AssetOperationHandle> _cacheHandles;
     private void Init()
     {
         pan.Init();
@@ -55,138 +49,172 @@ public class FryModule : MonoBehaviour
         
         _start = false;
         
-        progressTopic = new Subject<bool>();
+        _finishTopic = new Subject<bool>();
+
+        _cacheHandles?.Clear();
+        _cacheHandles ??= new List<AssetOperationHandle>(20);
+        
+        _qteAnimations?.Clear();
+        _qteAnimations ??= new List<Animation>(5);
+
+        _curProgress = new ReactiveProperty<float>();
+        _curTemperature = new ReactiveProperty<float>();
+        
+        UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,null,null);
+
+        EventModule.Instance.CookGameStartSub.Subscribe(StartFry);
+
+        _result = new CookResult();
+        _result.Tags = new HashSet<flavorTag>(5);
+        _result.QTEResult = new Dictionary<int, bool>();
     }
 
-    public void SetFryRecipe(FriedFoodRecipe recipe)
+    private void loadDifficultyConfig(cookDifficulty difficulty)
     {
-        _currentRecipe = recipe;
-        
-        var min = _currentRecipe.temperatureArea.x;
-        var max = _currentRecipe.temperatureArea.y;
-        sliderBgMat.SetFloat("_low",min);
-        sliderBgMat.SetFloat("_medium",max);
-
-        temperatureSlider.maxValue = _currentRecipe.maxTemperature;
-        temperatureSlider.minValue = 0;
-        progressSlider.maxValue = _currentRecipe.finishValue;
-        progressSlider.minValue = 0;
-        
-        components?.Clear();
-        //初始化QTE相关
-        components ??= new List<QTEComponent>(5);
-        qteKeys = _currentRecipe.SortQTEKey();
-        for(int  i = 0;i < qteKeys.Count;i++)
+        AssetOperationHandle handler = null;
+        switch (difficulty)
         {
-            var handle = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/QTENode.prefab");
-            var node = handle.InstantiateSync(qteArea);
-            var comp = node.GetComponent<QTEComponent>();
-            var progress = (float)qteKeys[i] / _currentRecipe.finishValue;
-            float y = qteArea.rect.height * progress;
-            comp.self.anchoredPosition = new Vector3(0,y,0);
-            comp.tips.text = ZString.Concat("Press ",_currentRecipe.qteDict[qteKeys[i]].pressKey.ToString());
-            comp.gameObject.SetActive(false);
-            components.Add(comp);
+            case cookDifficulty.easy:
+                handler = YooAssets.LoadAssetSync<FryingDifficulty>("Assets/GameRes/SOConfigs/Menu/FryMenu/FryLow.asset");
+                break;
+            case cookDifficulty.normal:
+                handler = YooAssets.LoadAssetSync<FryingDifficulty>("Assets/GameRes/SOConfigs/Menu/FryMenu/FryMiddle.asset");
+                break;
+            case cookDifficulty.hard:
+                handler = YooAssets.LoadAssetSync<FryingDifficulty>("Assets/GameRes/SOConfigs/Menu/FryMenu/FryHigh.asset");
+                break;
+            default:
+                Debug.LogError($"handler == null");
+                break;
         }
-        //QTE动画
-        qteAnimations?.Clear();
-        qteAnimations ??= new List<Animation>(5);
-        for (int i = 0; i < qteKeys.Count; i++)
+        _currentRecipeDifficulty = handler.AssetObject as FryingDifficulty;
+    }
+
+    // private List<bool> qteRecords;
+    // private List<int> qteKeys;
+    private List<Animation> _qteAnimations;
+    private MenuInfo _tbMenuInfo;
+    private CookResult _result;
+    private async void loadQTEConfig(int menuId)
+    {
+        _tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(menuId);
+        if (_tbMenuInfo == null)
         {
-            int key = qteKeys[i];
-            var go = Instantiate(_currentRecipe.qteDict[key].anim,pan.animNode);
+            Debug.LogError($"menuId = {menuId} == null");
+            return;
+        }
+
+        _uiWindow.LoadQTEConfigTips(_tbMenuInfo.QteAppearInfos);
+        
+        //QTE动画
+        _qteAnimations?.Clear();
+        _qteAnimations ??= new List<Animation>(5);
+        for (int i = 0; i < _tbMenuInfo.QteAppearInfos.Count; i++)
+        {
+            var tb = _tbMenuInfo.QteAppearInfos[i];
+            var qteTB = DataProviderModule.Instance.GetQTEInfo(tb.QteId);
+            var loadHandle = YooAssets.LoadAssetAsync<GameObject>(qteTB.AnimResPath);
+            _cacheHandles.Add(loadHandle);
+            
+            await loadHandle.ToUniTask();
+            
+            var prefb = loadHandle.AssetObject as GameObject;
+            var go = Instantiate(prefb,pan.animNode);
             go.gameObject.SetActive(false);
             var ani = go.GetComponent<Animation>();
             ani.clip.legacy = true;
-            qteAnimations.Add(ani);
+            _qteAnimations.Add(ani);
+            _result.QTEResult.Add(tb.QteId,false);
         }
+        
+    }
 
-        foreach (var one in _currentRecipe.qteDict)
-        {
-            Debug.Log($"{one.Key}");
-        }
+    private void loadRawFood(List<ItemDataDef> foods)
+    {
         //炒菜原材料
-        foreach (var food in _currentRecipe.rawFoodDictionary)
+        foreach (var food in foods)
         {
-            var num = food.Key;
-            var pref = food.Value;
+            var tb = DataProviderModule.Instance.GetItemBaseInfo(food.Id);
+            var handle = YooAssets.LoadAssetSync<GameObject>(tb.SceneResPath);
+            _cacheHandles.Add(handle);
+            var num = 5;
             for (int i = 0; i < num; i++)
             {
-                var gameObject = Instantiate(pref,pan.transform);
-                gameObject.transform.localPosition = Random.insideUnitCircle*0.4f;
-                var fs = gameObject.GetComponent<FoodSimulator>();
-                fs.panSimulator = pan;
+                var go = Instantiate(handle.AssetObject as GameObject,pan.transform);
+                Vector3 pos = Random.insideUnitCircle*0.4f;
+                pos.z = 0f;
+                go.transform.localPosition = pos;
+                var fs = go.GetComponent<FoodSimulator>();
                 pan.AddFood(fs);
             }
         }
     }
 
-    public void StartFry()
+    private FryingFoodWindow _uiWindow;
+    private PickFoodAndTools _recipe;
+    public void SetFryRecipe(PickFoodAndTools recipe)
     {
-        _handler?.Clear();
-        _curTemperature = 0;
-        _curProgress = 0;
-        _start = true;
-        
-        qteRecords?.Clear();
-        qteRecords ??= new List<bool>();
-        for (int i = 0; i < qteKeys.Count; i++)
+        Init();
+        _tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(recipe.MenuId);
+        if (_tbMenuInfo == null)
         {
-            qteRecords.Add(false);
+            Debug.LogError($"recipe.MenuId {recipe.MenuId} == null");
         }
         
-        var min = _currentRecipe.temperatureArea.x * _currentRecipe.maxTemperature;
-        var max = _currentRecipe.temperatureArea.y * _currentRecipe.maxTemperature;
+        loadDifficultyConfig(_tbMenuInfo.Difficulty);
+        loadRawFood(recipe.CookFoods);
+        
+        _uiWindow = UIManager.Instance.Get(UIEnum.FryingFoodWindow) as FryingFoodWindow;
+        if (_uiWindow == null)
+        {
+            Debug.LogError("打不开FringFoodWindow");
+        }
+        _uiWindow.SetDifficulty(_currentRecipeDifficulty);
+        loadQTEConfig(recipe.MenuId);
+        _recipe = recipe;
+    }
+
+    public void StartFry(bool param)
+    {
+        _handler?.Clear();
+        
+        _curTemperature.Value = 0;
+        _curProgress.Value = 0;
+        _start = param;
+
+        var min = _currentRecipeDifficulty.temperatureArea.x * _currentRecipeDifficulty.maxTemperature;
+        var max = _currentRecipeDifficulty.temperatureArea.y * _currentRecipeDifficulty.maxTemperature;
 
         this.UpdateAsObservable()
-            .Where(_=>_start&&(_curTemperature >= min && _curTemperature <= max))
-            // .Where(_=>)
-            .Subscribe(HeatFood).AddTo(gameObject);
+            .Where(_=>_start&&(_curTemperature.Value >= min && _curTemperature.Value <= max))
+            .Subscribe(HeatFood).AddTo(_handler);
 
 
-        var gameCounter = Observable.
-            Timer(TimeSpan.FromSeconds(_currentRecipe.duration))
+        var TimeCounter = Observable.
+            Timer(TimeSpan.FromSeconds(_currentRecipeDifficulty.duration))
             .Select(_ => false);
+
+        _uiWindow.SetProgressListener(_curProgress);
+        _uiWindow.SetTemperatureListener(_curTemperature);
         
         Observable.Amb(
-            progressTopic,
-            gameCounter
-            ).Subscribe(_ =>
-        {
-            Debug.Log("GameOver");
-            _start = false;
-            gameOverText.gameObject.SetActive(true);
-            _handler.Clear();
-        }).AddTo(_handler);
-
-        progressSlider.OnValueChangedAsObservable()
-            .Subscribe(ListenProgress)
+            _finishTopic,
+            TimeCounter
+            ).Subscribe(GameOver).AddTo(_handler);
+        
+        this.UpdateAsObservable()
+            .Where(_ => _start && Input.anyKeyDown)
+            .Subscribe(ListenQteInput)
             .AddTo(_handler);
         
+        pan.GameStart(_handler);
+
         this.UpdateAsObservable()
             .Where(_ => _start)
             .Subscribe(CalculateHeat)
             .AddTo(_handler);
-
-        this.UpdateAsObservable()
-            .Where(_ => _start && Input.anyKeyDown)
-            .Subscribe(ListenQTE)
-            .AddTo(_handler);
-        pan.GameStart(_handler);
-        gameOverText.gameObject.SetActive(false);
     }
 
-    private void ListenProgress(float param)
-    {
-        for(int i = 0;i < qteKeys.Count;i++)
-        {
-            if (param >= qteKeys[i])
-            {
-                components[i].gameObject.SetActive(true);    
-            }
-        }
-    }
-    
     private void CalculateHeat(Unit param)
     {
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
@@ -195,46 +223,95 @@ public class FryModule : MonoBehaviour
         // var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         // Debug.Log($"velocity = {pan.velocity} sub = {sub}");
-        _curTemperature += (add+sub);
+        var tmp = _curTemperature.Value;
+        tmp += (add+sub);
         // Debug.Log($"distance = {distance} add = {add} sub = {sub} _curTemperature = {_curTemperature}");
         
-        _curTemperature = Mathf.Clamp(_curTemperature, 0, _currentRecipe.maxTemperature);
-        temperatureSlider.value = _curTemperature;
+        _curTemperature.Value = Mathf.Clamp(tmp, 0, _currentRecipeDifficulty.maxTemperature);
     }
+    
     private void HeatFood(Unit param)
     {
-        _curProgress += _currentRecipe.addValue * Time.deltaTime;
-        _curProgress = Mathf.Clamp(_curProgress, 0, _currentRecipe.finishValue);
-        progressSlider.value = _curProgress;
-        // Debug.Log($"HeatFood!!!!! {_curProgress}");
-        if (_curProgress >= _currentRecipe.finishValue)
+        var temp = _curProgress.Value;
+        temp += _currentRecipeDifficulty.addValue * Time.deltaTime;
+        temp = Mathf.Clamp(temp, 0, _currentRecipeDifficulty.finishValue);
+        _curProgress.Value = temp;
+        
+        //判断是否结束
+        if (_curProgress.Value >= _currentRecipeDifficulty.finishValue)
         {
-            progressTopic.OnNext(true);
+            _finishTopic.OnNext(true);
+            _finishTopic.OnCompleted();
+        }
+
+        ListenProgress(_curProgress.Value);
+    }
+
+    private void GameOver(bool param)
+    {
+        Debug.Log($"GameOver IsSuccess = {param}");
+        _start = false;
+        _handler.Clear();
+        
+        _result.menuId = _tbMenuInfo.Id;
+        _result.CompletePercent = _curProgress.Value;
+        //计算标签
+        for (int i = 0;i < _recipe.CookFoods.Count;i++)
+        {
+            var tb = DataProviderModule.Instance.GetFoodBaseInfo(_recipe.CookFoods[i].Id);
+            foreach (var one in tb.Tag)
+            {
+                _result.Tags.Add(one);    
+            }
+
+            foreach (var one in tb.OppositeTag)
+            {
+                _result.Tags.Add(one);    
+            }
+        }
+
+        _uiWindow.ShowGameOver(_result);
+        EventModule.Instance.CookFinishTopic.OnNext(_result);
+    }
+    
+    private void ListenProgress(float param)
+    {
+        for (int i = 0;i < _tbMenuInfo.QteAppearInfos.Count;i++)
+        {
+            var qteInfo = _tbMenuInfo.QteAppearInfos[i];
+            var percent = _curProgress.Value / _currentRecipeDifficulty.finishValue;
+            if (percent >= qteInfo.StartArea && percent < qteInfo.EndArea)
+            {
+                _uiWindow.ShowQteTips(qteInfo.QteId);
+                break;
+            }
         }
     }
 
-    private void ListenQTE(Unit param)
+    private void ListenQteInput(Unit param)
     {
-        for (int i = 0; i < qteKeys.Count(); i++)
+        for (int i = 0;i < _tbMenuInfo.QteAppearInfos.Count;i++)
         {
-            var p = qteKeys[i];
-            if (_curProgress >= p && !qteRecords[i])
+            var one = _tbMenuInfo.QteAppearInfos[i];
+            var tbQte = DataProviderModule.Instance.GetQTEInfo(one.QteId);
+            var percent = _curProgress.Value / _currentRecipeDifficulty.finishValue;
+            // Debug.Log($" ListenQteInput {percent} one.StartArea = {one.StartArea} one.EndArea = {one.EndArea}");
+            if (percent >= one.StartArea && percent <= one.EndArea)
             {
-                var kc = _currentRecipe.qteDict[p].pressKey;
-                if (Input.GetKeyDown(kc))
+                var keyDown = Input.GetKeyDown(KeyCode.S);
+                var clicked = _result.QTEResult[one.QteId]; 
+                // Debug.Log($" ListenQteInput {percent} keyDown = {keyDown} clicked = {clicked}");
+                if (keyDown&&clicked==false)
                 {
-                    qteRecords[i] = true;
-                    Debug.Log($"进度 {p} 按下了 {kc}");
-                    var one = qteAnimations[i];
-                    one.gameObject.SetActive(true);
-                    one.Play();
-                    var duration = one.clip.length;
-                    Observable.Timer(TimeSpan.FromSeconds(duration)).Subscribe(_ =>
-                    {
-                        one.gameObject.SetActive(false);
-                    }).AddTo(_handler);
+                    // Debug.Log($"ListenQteInput 播放QTE动画");
+                    _qteAnimations[i].gameObject.SetActive(true);
+                    _qteAnimations[i].Play();
+                    _result.QTEResult[one.QteId] = true;
+                    _result.Tags.Add(tbQte.Tag);
+                    break; 
                 }
             }
         }
     }
+    
 }

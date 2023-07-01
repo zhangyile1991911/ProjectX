@@ -20,6 +20,9 @@ public sealed partial class Tables
     public food.TbMaterial TbMaterial {get; }
     public food.TbMenuInfo TbMenuInfo {get; }
     public TbItem TbItem {get; }
+    public TbQTE TbQTE {get; }
+    public food.TbCookPrefab TbCookPrefab {get; }
+    public food.TbFlavour TbFlavour {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -36,6 +39,12 @@ public sealed partial class Tables
         tables.Add("food.TbMenuInfo", TbMenuInfo);
         TbItem = new TbItem(loader("tbitem")); 
         tables.Add("TbItem", TbItem);
+        TbQTE = new TbQTE(loader("tbqte")); 
+        tables.Add("TbQTE", TbQTE);
+        TbCookPrefab = new food.TbCookPrefab(loader("food_tbcookprefab")); 
+        tables.Add("food.TbCookPrefab", TbCookPrefab);
+        TbFlavour = new food.TbFlavour(loader("food_tbflavour")); 
+        tables.Add("food.TbFlavour", TbFlavour);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
@@ -44,6 +53,9 @@ public sealed partial class Tables
         TbMaterial.Resolve(tables); 
         TbMenuInfo.Resolve(tables); 
         TbItem.Resolve(tables); 
+        TbQTE.Resolve(tables); 
+        TbCookPrefab.Resolve(tables); 
+        TbFlavour.Resolve(tables); 
         PostResolve();
     }
 
@@ -55,6 +67,9 @@ public sealed partial class Tables
         TbMaterial.TranslateText(translator); 
         TbMenuInfo.TranslateText(translator); 
         TbItem.TranslateText(translator); 
+        TbQTE.TranslateText(translator); 
+        TbCookPrefab.TranslateText(translator); 
+        TbFlavour.TranslateText(translator); 
     }
     
     partial void PostInit();
