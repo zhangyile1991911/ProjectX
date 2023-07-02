@@ -6,10 +6,13 @@ using UniRx;
 public class EventModule : SingletonModule<EventModule>
 {
     //人物发送气泡
-    public IObserver<Character> CharBubbleTopic => _charBubble;
-    public IObservable<Character> CharBubbleSub => _charBubble;
-    private Subject<Character> _charBubble;
-    
+    public IObserver<RestaurantCharacter> CharBubbleTopic => _charBubble;
+    public IObservable<RestaurantCharacter> CharBubbleSub => _charBubble;
+    private Subject<RestaurantCharacter> _charBubble;
+
+    public IObserver<RestaurantCharacter> CharDialogTopic => _charDialogue;
+    public IObservable<RestaurantCharacter> CharDialogSub => _charDialogue;
+    private Subject<RestaurantCharacter> _charDialogue;
     //发送订单
     public IObserver<OrderMealInfo> OrderMealTopic => _orderMeal;
     public IObservable<OrderMealInfo> OrderMealSub => _orderMeal;
@@ -34,12 +37,13 @@ public class EventModule : SingletonModule<EventModule>
 
     public override void OnCreate(object createParam)
     {
-        _charBubble = new Subject<Character>();
+        _charBubble = new Subject<RestaurantCharacter>();
         _orderMeal = new Subject<OrderMealInfo>();
         _startCook = new Subject<PickFoodAndTools>();
         _cookGameStart = new Subject<bool>();
         _exitKitchen = new Subject<Unit>();
         _cookFinish = new Subject<CookResult>();
+        _charDialogue = new Subject<RestaurantCharacter>();
         base.OnCreate(this);
     }
 

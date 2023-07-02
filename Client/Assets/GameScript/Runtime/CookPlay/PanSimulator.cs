@@ -67,6 +67,17 @@ public class PanSimulator : MonoBehaviour
         _foodList.Add(food);
     }
 
+    public void RemoveAllFood()
+    {
+        foreach (var one in _foodList)
+        {
+            one.panSimulator = null;
+            Destroy(one.gameObject);
+        }
+
+        _foodList.Clear();
+    }
+
     private int InWhichTreeIndex(Vector3 localPos)
     {
         if (localPos is { x: > 0, y: > 0 })

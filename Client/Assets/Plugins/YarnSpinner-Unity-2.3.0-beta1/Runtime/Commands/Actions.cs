@@ -459,8 +459,12 @@ namespace Yarn.Unity
 
         public void RemoveCommandHandler(string commandName)
         {
-            #warning Not implemented
-            throw new NotImplementedException();
+            // #warning Not implemented
+            // throw new NotImplementedException();
+            if (_commands.ContainsKey(commandName))
+            {
+                _commands.Remove(commandName);   
+            }
         }
 
         public void RemoveFunction(string name)

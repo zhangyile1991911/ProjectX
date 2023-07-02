@@ -19,7 +19,7 @@ public partial class KitchenWindow : UIWindow
     private List<ItemDataDef> _ownedFoodItems;
     private List<ItemDataDef> _showFoodItems;
     private List<FoodBtnCell> _cacheCells;
-    private cfg.food.materialType _foodMaterialType;
+    private cfg.food.materialType _foodMaterialType = materialType.Other;
 
     private int _curSelectMenuId;
     private List<FoodIcon> _choicedFoodIcons;
@@ -189,15 +189,8 @@ public partial class KitchenWindow : UIWindow
                 _showFoodItems.Add(one);
             }
         }
-
-        if (Grid_FoodItem.ItemTotalCount != _showFoodItems.Count)
-        {
-            Grid_FoodItem.SetListItemCount(_showFoodItems.Count);    
-        }
-        else
-        {
-            Grid_FoodItem.RefreshAllShownItem();
-        }
+        Grid_FoodItem.SetListItemCount(_showFoodItems.Count);
+        Grid_FoodItem.RefreshAllShownItem();
     }
     
     private void clickFoodMaterial(int foodId)

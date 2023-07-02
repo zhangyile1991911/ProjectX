@@ -7,9 +7,9 @@ using UniRx;
 
 public interface CharacterBehaviour
 {
-    public Character Char { get; }
+    public RestaurantCharacter Char { get; }
 
-    public void Enter(Character character);
+    public void Enter(RestaurantCharacter restaurantCharacter);
 
     public void Update();
 
@@ -19,8 +19,8 @@ public interface CharacterBehaviour
 
 public class CharacterEnterScene : CharacterBehaviour
 {
-    public Character Char => _character;
-    private Character _character;
+    public RestaurantCharacter Char => _restaurantCharacter;
+    private RestaurantCharacter _restaurantCharacter;
     
     private Vector3 destPoint;
     private Vector3 spawnPoint;
@@ -30,19 +30,19 @@ public class CharacterEnterScene : CharacterBehaviour
         spawnPoint = spawn;
     }
     
-    public void Enter(Character character)
+    public void Enter(RestaurantCharacter restaurantCharacter)
     {
-        _character = character;
-        _character.transform.position = spawnPoint;
+        _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter.transform.position = spawnPoint;
 
-        var dest1 = new Vector3(destPoint.x, 0, _character.transform.position.z);
+        var dest1 = new Vector3(destPoint.x, 0, _restaurantCharacter.transform.position.z);
         var dest2 = new Vector3(destPoint.x, 0, destPoint.z);
         var seq = DOTween.Sequence();
-        seq.Append(_character.transform.DOMove(dest1, 7f));
-        seq.Append(_character.transform.DOMove(dest2, 3f));
+        seq.Append(_restaurantCharacter.transform.DOMove(dest1, 7f));
+        seq.Append(_restaurantCharacter.transform.DOMove(dest2, 3f));
         seq.OnComplete(() =>
         {
-            _character.CurBehaviour = new CharacterMakeBubble();
+            _restaurantCharacter.CurBehaviour = new CharacterMakeBubble();
         });
         // seq.Complete();
         // _character.transform.DOMove(dest1, 10f);
@@ -51,7 +51,7 @@ public class CharacterEnterScene : CharacterBehaviour
 
     public void Exit()
     {
-        _character = null;
+        _restaurantCharacter = null;
     }
 
     public void Update()
@@ -62,8 +62,8 @@ public class CharacterEnterScene : CharacterBehaviour
 
 public class CharacterMakeBubble : CharacterBehaviour
 {
-    public Character Char => _character;
-    private Character _character;
+    public RestaurantCharacter Char => _restaurantCharacter;
+    private RestaurantCharacter _restaurantCharacter;
 
     private DateTime preDateTime;
     private IDisposable _disposable;
@@ -72,9 +72,9 @@ public class CharacterMakeBubble : CharacterBehaviour
         
     }
     
-    public void Enter(Character character)
+    public void Enter(RestaurantCharacter restaurantCharacter)
     {
-        _character = character;
+        _restaurantCharacter = restaurantCharacter;
         var clocker = UniModule.GetModule<Clocker>();
         _disposable = clocker.Topic.Subscribe(think);
         preDateTime = clocker.NowDateTime;
@@ -96,7 +96,7 @@ public class CharacterMakeBubble : CharacterBehaviour
         if (minutes >= 3)
         {
             var eventModule = UniModule.GetModule<EventModule>();
-            eventModule.CharBubbleTopic.OnNext(_character);
+            eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
             preDateTime = dateTime;
         }
     }
@@ -104,23 +104,23 @@ public class CharacterMakeBubble : CharacterBehaviour
 
 public class CharacterOnFocus : CharacterBehaviour
 {
-    public Character Char => _character;
-    private Character _character;
+    public RestaurantCharacter Char => _restaurantCharacter;
+    private RestaurantCharacter _restaurantCharacter;
 
     public CharacterOnFocus()
     {
         
     }
     
-    public void Enter(Character character)
+    public void Enter(RestaurantCharacter restaurantCharacter)
     {
-        _character = character;
-        _character.ToLight();
+        _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter.ToLight();
     }
 
     public void Exit()
     {
-        _character = null;
+        _restaurantCharacter = null;
     }
 
     public void Update()
@@ -130,24 +130,24 @@ public class CharacterOnFocus : CharacterBehaviour
 }
 public class CharacterMute : CharacterBehaviour
 {
-    public Character Char => _character;
-    private Character _character;
+    public RestaurantCharacter Char => _restaurantCharacter;
+    private RestaurantCharacter _restaurantCharacter;
 
     public CharacterMute()
     {
         
     }
     
-    public void Enter(Character character)
+    public void Enter(RestaurantCharacter restaurantCharacter)
     {
-        _character = character;
-        _character.ToDark();
+        _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter.ToDark();
     }
 
     public void Exit()
     {
-        _character = null;
-        _character.ToLight();
+        _restaurantCharacter.ToLight();
+        _restaurantCharacter = null;
     }
 
     public void Update()

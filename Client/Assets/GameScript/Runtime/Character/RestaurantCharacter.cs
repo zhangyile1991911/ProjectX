@@ -8,7 +8,7 @@ using Yarn.Unity;
 using YooAsset;
 
 
-public class Character : MonoBehaviour
+public class RestaurantCharacter : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
 
@@ -22,7 +22,6 @@ public class Character : MonoBehaviour
     private int _seatIndex;
     
     public string CharacterName => _baseInfo.Name;
-    
 
     //好感度
     public int Friendliness => _npcData.FriendlyValue;
@@ -32,7 +31,7 @@ public class Character : MonoBehaviour
     private CharacterBaseInfo _baseInfo;
 
     private List<cfg.character.CharacterBubble> _bubbleTB;
-
+    private Queue<int> _chatIdQueue;
     public CharacterBehaviour CurBehaviour
     {
         get => _behaviour;
@@ -52,15 +51,13 @@ public class Character : MonoBehaviour
         }
     }
     private CharacterBehaviour _behaviour;
-    void Start()
-    {
-        
-    }
+    private RestaurantEnter _restaurant;
 
     public void InitCharacter(CharacterBaseInfo info)
     {
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _chatIdQueue = new Queue<int>();
         LoadCharacterSprite();
         LoadTableData();
         LoadDataBase();
@@ -100,6 +97,11 @@ public class Character : MonoBehaviour
 
     public int HaveChatId()
     {
+        if (_chatIdQueue.Count > 0)
+        {
+            return _chatIdQueue.Dequeue();
+        }
+        
         var friendliness = _npcData.FriendlyValue;
         for (int i = 0; i < _bubbleTB.Count; i++)
         {
@@ -125,7 +127,7 @@ public class Character : MonoBehaviour
 
     public override bool Equals(object other)
     {
-        var otherCharacter = other as Character;
+        var otherCharacter = other as RestaurantCharacter;
         return otherCharacter.CharacterId == this.CharacterId;
     }
 
@@ -137,6 +139,26 @@ public class Character : MonoBehaviour
 
     public void ReceiveFood(CookResult food)
     {
+        int score = 0;
+        // 1 根据完成度评价
         
+        // 2 根据标签评价
+        
+        // 3 计算总分
+        
+        // 4 给出对应对话气泡
+        //5 如果第一次出现的对话就 直接进入对话界面
+        _chatIdQueue.Enqueue(10004004);
+        var existed = UserInfoModule.Instance.HaveReadDialogueId(10004004);
+        if (existed)
+        {
+            EventModule.Instance.CharBubbleTopic.OnNext(this);    
+        }
+        else
+        {
+            EventModule.Instance.CharDialogTopic.OnNext(this);
+        }
     }
+    
+    
 }

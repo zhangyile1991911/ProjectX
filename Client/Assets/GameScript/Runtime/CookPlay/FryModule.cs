@@ -253,6 +253,8 @@ public class FryModule : MonoBehaviour
         _start = false;
         _handler.Clear();
         
+        UnloadRes();
+        
         _result.menuId = _tbMenuInfo.Id;
         _result.CompletePercent = _curProgress.Value;
         //计算标签
@@ -270,8 +272,21 @@ public class FryModule : MonoBehaviour
             }
         }
 
+        //消耗时间
+        var clocker = UniModule.GetModule<Clocker>();
+        clocker.AddMinute(_tbMenuInfo.CostTime);
+        
         _uiWindow.ShowGameOver(_result);
         EventModule.Instance.CookFinishTopic.OnNext(_result);
+    }
+
+    private void UnloadRes()
+    {
+        pan.RemoveAllFood();
+        foreach (var handler in _cacheHandles)
+        {
+            handler.Release();
+        }
     }
     
     private void ListenProgress(float param)

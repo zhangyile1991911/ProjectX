@@ -76,5 +76,18 @@
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
     "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
     "dialogue_start_node": "Beginner"
+  },
+  {
+    "id": 10004004,
+    "title": "难以描述",
+    "npc_id": 10004,
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 0
+    },
+    "bubble_type": 3,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
+    "dialogue_start_node": "comment"
   }
 ]

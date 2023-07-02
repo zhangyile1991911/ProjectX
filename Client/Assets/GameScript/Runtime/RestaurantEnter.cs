@@ -31,8 +31,8 @@ public class RestaurantEnter : MonoBehaviour
 
     private List<int> _emptyPoints;
 
-    public IEnumerable<Character> CharacterEnumerable => _characters.Values;
-    private Dictionary<int,Character> _characters;
+    public IEnumerable<RestaurantCharacter> CharacterEnumerable => _characters.Values;
+    private Dictionary<int,RestaurantCharacter> _characters;
 
     // private RestaurantWindow _restaurantWindow;
     // private IDisposable _fiveSecondTimer;
@@ -59,7 +59,7 @@ public class RestaurantEnter : MonoBehaviour
         // var _clocker = UniModule.GetModule<Clocker>();
         // _clocker.Topic.Subscribe(TimeGoesOn).AddTo(gameObject);
 
-        _characters = new Dictionary<int, Character>();
+        _characters = new Dictionary<int, RestaurantCharacter>();
 
         _cookPlayDict = new Dictionary<cookTools, GameObject>();
         
@@ -83,10 +83,10 @@ public class RestaurantEnter : MonoBehaviour
         _stateMachine?.Update();
     }
 
-    public void CharacterTakeRandomSeat(Character character)
+    public void CharacterTakeRandomSeat(RestaurantCharacter restaurantCharacter)
     {
-        character.SeatIndex = RandSeatIndex();
-        _characters.Add(character.CharacterId,character);
+        restaurantCharacter.SeatIndex = RandSeatIndex();
+        _characters.Add(restaurantCharacter.CharacterId,restaurantCharacter);
         
         
     }
@@ -126,7 +126,7 @@ public class RestaurantEnter : MonoBehaviour
         return _spawnPoints[index].position;
     }
 
-    public void FocusOnCharacter(Character c)
+    public void FocusOnCharacter(RestaurantCharacter c)
     {
         foreach (var one in _characters.Values)
         {

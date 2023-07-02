@@ -80,20 +80,20 @@ public partial class RestaurantWindow : UIWindow
         }
     }
 
-    public async void GenerateChatBubble(int chatId,Character character,Action<ChatBubble> ClickBubble)
+    public async void GenerateChatBubble(int chatId,RestaurantCharacter restaurantCharacter,Action<ChatBubble> ClickBubble)
     {
         var uiManager = UniModule.GetModule<UIManager>();
         var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
-        bubble.SetBubbleInfo(chatId,character,ClickBubble);
+        bubble.SetBubbleInfo(chatId,restaurantCharacter,ClickBubble);
         _bubbleList.Add(bubble);
     }
 
-    public void RemoveChatBubble(Character character)
+    public void RemoveChatBubble(RestaurantCharacter restaurantCharacter)
     {
         var uiManager = UniModule.GetModule<UIManager>();
         for (int i = _bubbleList.Count - 1; i >= 0; i--)
         {
-            if (_bubbleList[i].Owner == character)
+            if (_bubbleList[i].Owner == restaurantCharacter)
             {
                 _bubbleList.RemoveAt(i);
                 uiManager.DestroyUIComponent(_bubbleList[i]);
@@ -113,7 +113,7 @@ public partial class RestaurantWindow : UIWindow
         if (_cookResults.Count >= 4) return;
         _cookResults.Add(result);
         var index = _cookResults.Count - 1;
-        _dragCookFoodIcons[index].ShowFoodIcon(result.menuId);
+        _dragCookFoodIcons[index].ShowFoodIcon(result);
     }
 
 }

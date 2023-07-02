@@ -7,7 +7,7 @@ using YooAsset;
 
 public class OrderMealInfo
 {
-    public Character Customer;
+    public RestaurantCharacter Customer;
     public int MealId;
 }
 

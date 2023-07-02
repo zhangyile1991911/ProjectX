@@ -34,7 +34,7 @@ public class WaitStateNode : IStateNode
         UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
-
+        EventModule.Instance.CharDialogSub.Subscribe(EnterDialogue).AddTo(_handles);
         CreateBoss();
     }
 
@@ -100,20 +100,20 @@ public class WaitStateNode : IStateNode
         return module.AtWeekDay((int)dateTime.DayOfWeek);
     }
     
-    private void GenerateChatBubble(Character character)
+    private void GenerateChatBubble(RestaurantCharacter restaurantCharacter)
     {
-        var chatId = character.HaveChatId();
+        var chatId = restaurantCharacter.HaveChatId();
         if (chatId > 0)
         {
             // var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
-            _restaurantWindow.GenerateChatBubble(chatId,character,OnClickBubble);
+            _restaurantWindow.GenerateChatBubble(chatId,restaurantCharacter,OnClickBubble);
         }
     }
 
-    public void OnClickBubble(ChatBubble bubble)
+    private void OnClickBubble(ChatBubble bubble)
     {
         var dm = UniModule.GetModule<DialogueModule>();
-        dm.CurentDialogueCharacter = bubble.Owner;
+        dm.CurentDialogueRestaurantCharacter = bubble.Owner;
 
         _restaurantWindow.RemoveChatBubble(bubble);
         
@@ -124,7 +124,17 @@ public class WaitStateNode : IStateNode
 
         var stateData = new DialogueStateNodeData();
         stateData.ChatId = bubble.ChatId;
-        stateData.ChatCharacter = bubble.Owner;
+        stateData.ChatRestaurantCharacter = bubble.Owner;
+        _machine.ChangeState<DialogueStateNode>(stateData);
+    }
+
+    private void EnterDialogue(RestaurantCharacter character)
+    {
+        var chatId = character.HaveChatId();
+        
+        var stateData = new DialogueStateNodeData();
+        stateData.ChatId = chatId;
+        stateData.ChatRestaurantCharacter = character;
         _machine.ChangeState<DialogueStateNode>(stateData);
     }
 }

@@ -19,6 +19,10 @@ namespace cfg.common
         /// 下单
         /// </summary>
         Order = 2,
+        /// <summary>
+        /// 评论
+        /// </summary>
+        Comment = 3,
     }
 
 } 

@@ -12,6 +12,7 @@ public class CharacterDialogData : UIOpenParam
     public string StoryResPath;
     public string StoryStartNode;
     public Action StoryComplete;
+    public RestaurantCharacter StoryCharacter;
 }
 /// <summary>
 /// Auto Generate Class!!!
@@ -43,8 +44,6 @@ public partial class CharacterDialogWindow : UIWindow
         base.OnShow(openParam);
 
         _openData = openParam as CharacterDialogData;
-        
-        // var handler =  YooAssets.LoadAssetAsync<YarnProject>("Assets/GameRes/Story/NewProject.yarnproject");
         var handler =  YooAssets.LoadAssetAsync<YarnProject>(_openData.StoryResPath);
         await handler.ToUniTask();
 
@@ -53,8 +52,10 @@ public partial class CharacterDialogWindow : UIWindow
         
         _dialogueRunner.onDialogueComplete.AddListener(OnDialogueComplete);
         _dialogueRunner.onNodeComplete.AddListener(OnNodeComplete);
-        var dm = UniModule.GetModule<DialogueModule>();
-        dm.CurentDialogueCharacter.InjectVariable(_dialogueRunner.VariableStorage);
+        
+        // var dm = UniModule.GetModule<DialogueModule>();
+        // dm.CurentDialogueRestaurantCharacter.InjectVariable(_dialogueRunner.VariableStorage);
+        _openData.StoryCharacter.InjectVariable(_dialogueRunner.VariableStorage);
 
         foreach (var oneView in _dialogueRunner.dialogueViews)
         {
@@ -66,6 +67,7 @@ public partial class CharacterDialogWindow : UIWindow
         }
         
         _dialogueRunner.StartDialogue(_openData.StoryStartNode);
+        
         LBtn_Background.onClick.AddListener(NextLine);
         
         
@@ -89,7 +91,9 @@ public partial class CharacterDialogWindow : UIWindow
     {
         Debug.Log($"OnDialogueComplete");
         _openData?.StoryComplete?.Invoke();
-
+        
+        UserInfoModule.Instance.InsertReadDialogueId(10004004);
+        UserInfoModule.Instance.SaveAllData();
     }
 
     private void OnNodeComplete(string nodeName)

@@ -7,10 +7,10 @@ using YooAsset;
 
 public class CharacterMgr : SingletonModule<CharacterMgr>
 {
-    private Dictionary<string,Character> _characters;
+    private Dictionary<string,RestaurantCharacter> _characters;
     public override void OnCreate(object createParam)
     {
-        _characters = new Dictionary<string, Character>();
+        _characters = new Dictionary<string, RestaurantCharacter>();
         base.OnCreate(this);
     }
 
@@ -24,7 +24,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         base.OnDestroy();
     }
 
-    public async UniTask<Character> CreateCharacter(int cid)
+    public async UniTask<RestaurantCharacter> CreateCharacter(int cid)
     {
         var dataProvider = UniModule.GetModule<DataProviderModule>();
         var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
@@ -41,7 +41,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         var go = handle.AssetObject as GameObject;
 
         var ins_character = GameObject.Instantiate(go);
-        character = ins_character.GetComponent<Character>();
+        character = ins_character.GetComponent<RestaurantCharacter>();
         
         character.InitCharacter(tbCharacter);
         
@@ -50,7 +50,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         return character;
     }
 
-    public Character GetCharacterByName(string name)
+    public RestaurantCharacter GetCharacterByName(string name)
     {
         if (_characters.TryGetValue(name, out var character))
         {
@@ -60,7 +60,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         return null;
     }
 
-    public Character GetCharacterById(int cid)
+    public RestaurantCharacter GetCharacterById(int cid)
     {
         var dataProvider = UniModule.GetModule<DataProviderModule>();
         var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);

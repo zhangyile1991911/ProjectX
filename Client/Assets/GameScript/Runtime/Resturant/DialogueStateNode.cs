@@ -4,14 +4,14 @@ using Yarn.Unity;
 
 public class DialogueStateNodeData
 {
-    public Character ChatCharacter;
+    public RestaurantCharacter ChatRestaurantCharacter;
     public int ChatId;
 }
 
 public class DialogueStateNode : IStateNode
 {
     private RestaurantEnter _restaurantEnter;
-    private Character _character;
+    private RestaurantCharacter _restaurantCharacter;
     private int _chatId;
     private StateMachine _machine;
     private CharacterDialogWindow _dialogWindow;
@@ -25,16 +25,17 @@ public class DialogueStateNode : IStateNode
     {
         var stateNodeData = param as DialogueStateNodeData;
         
-        _character = stateNodeData.ChatCharacter;
+        _restaurantCharacter = stateNodeData.ChatRestaurantCharacter;
         _chatId = stateNodeData.ChatId;
         
-        _restaurantEnter.FocusOnCharacter(_character);
+        _restaurantEnter.FocusOnCharacter(_restaurantCharacter);
         
         var openData = new CharacterDialogData();
         var bubbleTB = DataProviderModule.Instance.GetCharacterBubble(_chatId);
         openData.StoryResPath = bubbleTB.DialogueContentRes;
         openData.StoryStartNode = bubbleTB.DialogueStartNode;
-        openData.StoryComplete = DialogueComplete; 
+        openData.StoryComplete = DialogueComplete;
+        openData.StoryCharacter = _restaurantCharacter;
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.OpenUI(UIEnum.CharacterDialogWindow, ui =>
         {
@@ -51,9 +52,10 @@ public class DialogueStateNode : IStateNode
     public void OnExit()
     {
         _restaurantEnter.NoFocusOnCharacter();
-        
-        // _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
-        // _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
+        // _dialogWindow.DialogueRunner.RemoveFunction("OrderMeal");
+        // _dialogWindow.DialogueRunner.RemoveFunction("AddFriend");
         
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
     }
@@ -70,7 +72,7 @@ public class DialogueStateNode : IStateNode
         OrderMealInfo info = new()
         {
             MealId = mealId,
-            Customer = _character
+            Customer = _restaurantCharacter
         };
         EventModule.Instance.OrderMealTopic.OnNext(info);
     }

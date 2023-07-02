@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
@@ -6,6 +7,10 @@ using UnityEngine.EventSystems;
 
 public class UIDragHandler : MonoBehaviour,IBeginDragHandler ,IDragHandler, IEndDragHandler
 {
+    public Action OnBeginDragCB;
+    public Action OnDragCB;
+    public Action OnEndDragCB;
+    
     private RectTransform rectTransform;
     private Canvas canvas;
 
@@ -22,7 +27,8 @@ public class UIDragHandler : MonoBehaviour,IBeginDragHandler ,IDragHandler, IEnd
     {
         if (_canDrag.Value)
         {
-            origin_pos = rectTransform.anchoredPosition;    
+            origin_pos = rectTransform.anchoredPosition;
+            OnBeginDragCB?.Invoke();
         }
     }
     
@@ -30,7 +36,8 @@ public class UIDragHandler : MonoBehaviour,IBeginDragHandler ,IDragHandler, IEnd
     {
         if (_canDrag.Value)
         {
-            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;    
+            rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+            OnDragCB?.Invoke();
         }
     }
 
@@ -40,7 +47,8 @@ public class UIDragHandler : MonoBehaviour,IBeginDragHandler ,IDragHandler, IEnd
         {
             // 处理拖拽释放事件，例如更新位置或触发相应的操作
             Debug.Log("Drag released!");
-            rectTransform.anchoredPosition = origin_pos;    
+            rectTransform.anchoredPosition = origin_pos;
+            OnEndDragCB?.Invoke();
         }
     }
 }
