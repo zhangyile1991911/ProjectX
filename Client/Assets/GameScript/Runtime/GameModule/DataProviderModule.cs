@@ -9,6 +9,7 @@ using Cysharp.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SimpleJSON;
 using UnityEngine;
+using Random = System.Random;
 
 public class DataProviderModule : SingletonModule<DataProviderModule>
 {
@@ -119,6 +120,23 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         if (_database.TbQTE.DataMap.TryGetValue(qteId, out var qteInfo))
         {
             return qteInfo;
+        }
+
+        return null;
+    }
+
+    public int GetQTEGroupId()
+    {
+        var r = new Random();
+        var result = r.Next(0, _database.TbQTEGroup.DataList.Count);
+        return _database.TbQTEGroup.DataList[result].Id;
+    }
+
+    public List<qte_info> GetQTEGroupInfo(int groupId)
+    {
+        if (_database.TbQTEGroup.DataMap.TryGetValue(groupId, out var value))
+        {
+            return value.QteAppearInfos;
         }
 
         return null;

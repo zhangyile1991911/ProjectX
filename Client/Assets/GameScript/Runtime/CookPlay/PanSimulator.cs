@@ -274,9 +274,9 @@ public class PanSimulator : MonoBehaviour
             }
         }
         
-        if (count > 0)
-        {
-            Debug.Log($"QuadCollision一帧循环了{count}次数");
-        }
+        // if (count > 0)
+        // {
+        //     Debug.Log($"QuadCollision一帧循环了{count}次数");
+        // }
     }
 }

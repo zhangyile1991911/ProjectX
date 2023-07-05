@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using SuperScrollView;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using SuperScrollView;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -39,6 +39,9 @@ public partial class KitchenWindow : UIWindow
 	public Transform Ins_CookToolIconC;
 	public Transform Ins_CookToolIconD;
 	public Transform Ins_CookToolIconF;
+	public ToggleGroup ToggleG_Flavor;
+	public Toggle Toggle_A;
+	public Toggle Toggle_B;
 	public TextMeshProUGUI Txt_num;
 
 	public override void Init(GameObject go)
@@ -73,6 +76,9 @@ public partial class KitchenWindow : UIWindow
 		Ins_CookToolIconC = go.transform.Find("Tran_Center/Ins_CookToolIconC").GetComponent<Transform>();
 		Ins_CookToolIconD = go.transform.Find("Tran_Center/Ins_CookToolIconD").GetComponent<Transform>();
 		Ins_CookToolIconF = go.transform.Find("Tran_Center/Ins_CookToolIconF").GetComponent<Transform>();
+		ToggleG_Flavor = go.transform.Find("Tran_Center/ToggleG_Flavor").GetComponent<ToggleGroup>();
+		Toggle_A = go.transform.Find("Tran_Center/ToggleG_Flavor/Toggle_A").GetComponent<Toggle>();
+		Toggle_B = go.transform.Find("Tran_Center/ToggleG_Flavor/Toggle_B").GetComponent<Toggle>();
 		Txt_num = go.transform.Find("HideNode/FoodBtnCell/Txt_num").GetComponent<TextMeshProUGUI>();
 
 	}

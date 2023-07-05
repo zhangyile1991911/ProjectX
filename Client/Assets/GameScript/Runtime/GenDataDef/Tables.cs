@@ -23,6 +23,7 @@ public sealed partial class Tables
     public TbQTE TbQTE {get; }
     public food.TbCookPrefab TbCookPrefab {get; }
     public food.TbFlavour TbFlavour {get; }
+    public food.TbQTEGroup TbQTEGroup {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -45,6 +46,8 @@ public sealed partial class Tables
         tables.Add("food.TbCookPrefab", TbCookPrefab);
         TbFlavour = new food.TbFlavour(loader("food_tbflavour")); 
         tables.Add("food.TbFlavour", TbFlavour);
+        TbQTEGroup = new food.TbQTEGroup(loader("food_tbqtegroup")); 
+        tables.Add("food.TbQTEGroup", TbQTEGroup);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
@@ -56,6 +59,7 @@ public sealed partial class Tables
         TbQTE.Resolve(tables); 
         TbCookPrefab.Resolve(tables); 
         TbFlavour.Resolve(tables); 
+        TbQTEGroup.Resolve(tables); 
         PostResolve();
     }
 
@@ -70,6 +74,7 @@ public sealed partial class Tables
         TbQTE.TranslateText(translator); 
         TbCookPrefab.TranslateText(translator); 
         TbFlavour.TranslateText(translator); 
+        TbQTEGroup.TranslateText(translator); 
     }
     
     partial void PostInit();

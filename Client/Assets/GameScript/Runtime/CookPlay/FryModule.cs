@@ -95,24 +95,32 @@ public class FryModule : MonoBehaviour
     private List<Animation> _qteAnimations;
     private MenuInfo _tbMenuInfo;
     private CookResult _result;
-    private async void loadQTEConfig(int menuId)
+    private List<qte_info> _tbQteInfos;    
+    private async void loadQTEConfig(HashSet<int> qtes)
     {
-        _tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(menuId);
-        if (_tbMenuInfo == null)
+        var groupId = DataProviderModule.Instance.GetQTEGroupId();
+        Debug.Log($"loadQTEConfig = {groupId}");   
+        _tbQteInfos ??= new List<qte_info>(10);
+        _tbQteInfos.Clear();
+        
+        var tmpTb = DataProviderModule.Instance.GetQTEGroupInfo(groupId);
+        for (int i = 0; i < tmpTb.Count; i++)
         {
-            Debug.LogError($"menuId = {menuId} == null");
-            return;
+            if (qtes.Contains(tmpTb[i].QteId))
+            {
+                _tbQteInfos.Add(tmpTb[i]);
+            }
         }
-
-        _uiWindow.LoadQTEConfigTips(_tbMenuInfo.QteAppearInfos);
+        
+        _uiWindow.LoadQTEConfigTips(_tbQteInfos);
         
         //QTE动画
         _qteAnimations?.Clear();
         _qteAnimations ??= new List<Animation>(5);
-        for (int i = 0; i < _tbMenuInfo.QteAppearInfos.Count; i++)
+
+        foreach (var qteId in qtes)
         {
-            var tb = _tbMenuInfo.QteAppearInfos[i];
-            var qteTB = DataProviderModule.Instance.GetQTEInfo(tb.QteId);
+            var qteTB = DataProviderModule.Instance.GetQTEInfo(qteId);
             var loadHandle = YooAssets.LoadAssetAsync<GameObject>(qteTB.AnimResPath);
             _cacheHandles.Add(loadHandle);
             
@@ -124,9 +132,9 @@ public class FryModule : MonoBehaviour
             var ani = go.GetComponent<Animation>();
             ani.clip.legacy = true;
             _qteAnimations.Add(ani);
-            _result.QTEResult.Add(tb.QteId,false);
+            _result.QTEResult.Add(qteId,false);
         }
-        
+
     }
 
     private void loadRawFood(List<ItemDataDef> foods)
@@ -170,7 +178,7 @@ public class FryModule : MonoBehaviour
             Debug.LogError("打不开FringFoodWindow");
         }
         _uiWindow.SetDifficulty(_currentRecipeDifficulty);
-        loadQTEConfig(recipe.MenuId);
+        loadQTEConfig(recipe.QTESets);
         _recipe = recipe;
     }
 
@@ -275,6 +283,7 @@ public class FryModule : MonoBehaviour
         //消耗时间
         var clocker = UniModule.GetModule<Clocker>();
         clocker.AddMinute(_tbMenuInfo.CostTime);
+        _tbQteInfos.Clear();
         
         _uiWindow.ShowGameOver(_result);
         EventModule.Instance.CookFinishTopic.OnNext(_result);
@@ -291,9 +300,9 @@ public class FryModule : MonoBehaviour
     
     private void ListenProgress(float param)
     {
-        for (int i = 0;i < _tbMenuInfo.QteAppearInfos.Count;i++)
+        for (int i = 0;i < _tbQteInfos.Count;i++)
         {
-            var qteInfo = _tbMenuInfo.QteAppearInfos[i];
+            var qteInfo = _tbQteInfos[i];
             var percent = _curProgress.Value / _currentRecipeDifficulty.finishValue;
             if (percent >= qteInfo.StartArea && percent < qteInfo.EndArea)
             {
@@ -305,15 +314,15 @@ public class FryModule : MonoBehaviour
 
     private void ListenQteInput(Unit param)
     {
-        for (int i = 0;i < _tbMenuInfo.QteAppearInfos.Count;i++)
+        for (int i = 0;i < _tbQteInfos.Count;i++)
         {
-            var one = _tbMenuInfo.QteAppearInfos[i];
+            var one = _tbQteInfos[i];
             var tbQte = DataProviderModule.Instance.GetQTEInfo(one.QteId);
             var percent = _curProgress.Value / _currentRecipeDifficulty.finishValue;
             // Debug.Log($" ListenQteInput {percent} one.StartArea = {one.StartArea} one.EndArea = {one.EndArea}");
             if (percent >= one.StartArea && percent <= one.EndArea)
             {
-                var keyDown = Input.GetKeyDown(KeyCode.S);
+                var keyDown = Input.GetKeyDown((KeyCode)tbQte.KeyCode);
                 var clicked = _result.QTEResult[one.QteId]; 
                 // Debug.Log($" ListenQteInput {percent} keyDown = {keyDown} clicked = {clicked}");
                 if (keyDown&&clicked==false)

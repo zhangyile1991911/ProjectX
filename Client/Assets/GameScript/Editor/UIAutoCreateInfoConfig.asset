@@ -31,6 +31,10 @@ MonoBehaviour:
     typeName: ButtonLongPress
   - prefixName: Slider_
     typeName: Slider
+  - prefixName: ToggleG_
+    typeName: ToggleGroup
+  - prefixName: Toggle_
+    typeName: Toggle
   UIWindowTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIWindowClassTemplate.txt
   UIControlTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIControlClassTemplate.txt
   UIComponentTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIComponentViewTemplate.txt

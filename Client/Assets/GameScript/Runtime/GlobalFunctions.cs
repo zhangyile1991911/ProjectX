@@ -22,6 +22,7 @@ public class PickFoodAndTools
     public int MenuId;
     public cfg.food.cookTools CookTools;
     public List<ItemDataDef> CookFoods;
+    public HashSet<int> QTESets;
 }
 
 //炒完的菜

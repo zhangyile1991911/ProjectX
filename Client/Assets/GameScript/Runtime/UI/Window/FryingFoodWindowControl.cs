@@ -12,10 +12,11 @@ using YooAsset;
 /// </summary>
 public partial class FryingFoodWindow : UIWindow
 {
-    
+    private RectTransform rect_qteArea;
     public override void OnCreate()
     {
         base.OnCreate();
+        rect_qteArea = Tran_QTEArea.GetComponent<RectTransform>();
         
     }
     
@@ -58,6 +59,12 @@ public partial class FryingFoodWindow : UIWindow
     public async void LoadQTEConfigTips(List<qte_info> tbQTEInfos)
     {
         qteList ??= new List<QTEInfo>();
+        
+        for (int i = 0; i < qteList.Count; i++)
+        {
+            qteList[i].tip.OnHide();    
+        }
+        
         for (int i = 0; i < tbQTEInfos.Count; i++)
         {
             if (i >= qteList.Count)
@@ -76,7 +83,11 @@ public partial class FryingFoodWindow : UIWindow
                 qteList[i].tip = await UIManager.Instance.CreateUIComponent<QTETips>(null,Tran_QTEArea,
                     this,false);
             }
+
             qteList[i].tip.Txt_tips.text = info.Desc;
+            qteList[i].tip.uiRectTran.anchoredPosition = new Vector2(0,rect_qteArea.sizeDelta.y * tb.StartArea); 
+            Debug.Log($"anchoredPosition = {qteList[i].tip.uiRectTran.anchoredPosition}");
+            qteList[i].tip.OnShow(null);
         }
     }
 
@@ -149,6 +160,7 @@ public partial class FryingFoodWindow : UIWindow
         Slider_Progress.gameObject.SetActive(true);
         Slider_Temperature.gameObject.SetActive(true);
         Tran_QTEArea.gameObject.SetActive(true);
+        
     }
     
     private void ClickFinish(Unit param)
@@ -158,6 +170,11 @@ public partial class FryingFoodWindow : UIWindow
         Slider_Progress.gameObject.SetActive(false);
         Slider_Temperature.gameObject.SetActive(false);
         Tran_QTEArea.gameObject.SetActive(false);
+
+        for (int i = 0;i < qteList.Count;i++)
+        {
+            qteList[i].tip.OnHide();    
+        }
     }
 
     private void UpdateProgressSlider(float progress)

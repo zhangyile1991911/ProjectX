@@ -26,6 +26,7 @@ public partial class KitchenWindow : UIWindow
     private List<MenuIcon> _canMakeFoodIcons;
     private List<CookToolIcon> _cookToolIcons;
     private DataProviderModule _dataProvider;
+    private HashSet<int> _selectedQte;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -60,6 +61,8 @@ public partial class KitchenWindow : UIWindow
         
         _dataProvider = UniModule.GetModule<DataProviderModule>();
 
+        _selectedQte = new();
+        
     }
     
     public override void OnDestroy()
@@ -88,7 +91,10 @@ public partial class KitchenWindow : UIWindow
             t.uiGo.SetActive(false);
         }
 
+        _selectedQte.Clear();
+        
         EventModule.Instance.StartCookSub.Subscribe(ClearChoice).AddTo(handles);
+
     }
 
     public override void OnHide()
@@ -143,6 +149,16 @@ public partial class KitchenWindow : UIWindow
         }).AddTo(handles);
         
         Btn_produce.OnClickAsObservable().Subscribe(EnterProduce).AddTo(handles);
+        
+        Toggle_A.OnValueChangedAsObservable().Skip(1).Subscribe(b=>
+        {
+            AddQTE(1);
+        }).AddTo(handles);
+        
+        Toggle_B.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
+        {
+            AddQTE(2);
+        }).AddTo(handles);
     }
 
     public override void OnUpdate()
@@ -322,6 +338,9 @@ public partial class KitchenWindow : UIWindow
             };
             foodReceipt.CookFoods.Add(tmp);
         }
+
+        foodReceipt.QTESets = _selectedQte;
+        
         EventModule.Instance.StartCookTopic.OnNext(foodReceipt);
     }
 
@@ -342,7 +361,21 @@ public partial class KitchenWindow : UIWindow
         {
             one.HideHighlight();
         }
-
         _choicedTools = 0;
+        Toggle_A.isOn = false;
+        Toggle_B.isOn = false;
     }
+
+    private void AddQTE(int qteId)
+    {
+        if (_selectedQte.Contains(qteId))
+        {
+            _selectedQte.Remove(qteId);
+        }
+        else
+        {
+            _selectedQte.Add(qteId);
+        }
+    }
+
 }
