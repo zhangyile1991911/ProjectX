@@ -5444,6 +5444,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ins_FoodIconA
       objectReference: {fileID: 0}
+    - target: {fileID: 4802975165676605163, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4802975165863659308, guid: 25b0968c68e62604a8bb4876f840cd63, type: 3}
       propertyPath: m_IsActive
       value: 1

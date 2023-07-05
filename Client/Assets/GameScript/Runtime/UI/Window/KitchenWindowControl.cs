@@ -25,6 +25,7 @@ public partial class KitchenWindow : UIWindow
     private List<FoodIcon> _choicedFoodIcons;
     private List<MenuIcon> _canMakeFoodIcons;
     private List<CookToolIcon> _cookToolIcons;
+    private HashSet<flavorTag> _oppositeTags;
     private DataProviderModule _dataProvider;
     private HashSet<int> _selectedQte;
     public override void OnCreate()
@@ -34,6 +35,7 @@ public partial class KitchenWindow : UIWindow
         
         _cacheCells = new List<FoodBtnCell>(10);
         _showFoodItems = new List<ItemDataDef>(10);
+        _oppositeTags = new HashSet<flavorTag>(10);
 
         _choicedFoodIcons = new List<FoodIcon>(5);
         _choicedFoodIcons.Add(new FoodIcon(Ins_FoodIconA.gameObject,this));
@@ -183,7 +185,17 @@ public partial class KitchenWindow : UIWindow
         }
         cell.OnShow(null);
         var data = _showFoodItems[itemIndex];
-        cell.SetFoodInfo(data.Id,data.Num,clickFoodMaterial);
+        var tbFood = DataProviderModule.Instance.GetFoodBaseInfo(data.Id);
+        var canChoice = true;
+        for (int i = 0; i < tbFood.Tag.Count; i++)
+        {
+            if (_oppositeTags.Contains(tbFood.Tag[i]))
+            {
+                canChoice = false;
+                break;
+            }
+        }
+        cell.SetFoodInfo(data.Id,data.Num,canChoice,clickFoodMaterial);
         
         return item;
     }
@@ -222,8 +234,10 @@ public partial class KitchenWindow : UIWindow
         }
 
         if (emptyIndex < 0) return;
-        
         _choicedFoodIcons[emptyIndex].FoodMaterialInfo(foodId,checkCanProduce);
+
+        addOppositeTag(foodId);
+        
         checkCanProduce();
     }
 
@@ -238,6 +252,20 @@ public partial class KitchenWindow : UIWindow
         checkCanProduce();
     }
 
+    private void addOppositeTag(int foodId)
+    {
+        var tbFood = DataProviderModule.Instance.GetFoodBaseInfo(foodId);
+        for (int i = 0; i < tbFood.OppositeTag.Count; i++)
+        {
+            _oppositeTags.Add(tbFood.OppositeTag[i]);
+        }
+    }
+
+    private void clearOppositeTag()
+    {
+        _oppositeTags.Clear();
+    }
+    
     private void checkCanProduce()
     {
         foreach (var t in _canMakeFoodIcons)
@@ -245,10 +273,15 @@ public partial class KitchenWindow : UIWindow
             t.uiGo.SetActive(false);
         }
 
+        clearOppositeTag();
         var tmp = 0;
         foreach (var icon in _choicedFoodIcons)
         {
-            if (icon.FoodId > 0) tmp++;
+            if (icon.FoodId > 0)
+            {
+                tmp++;
+                addOppositeTag(icon.FoodId);    
+            }
         }
         if (tmp <= 0) return;
 

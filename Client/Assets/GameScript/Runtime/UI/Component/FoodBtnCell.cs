@@ -58,7 +58,7 @@ public class FoodBtnCell : UIComponent
         base.OnUpdate();
     }
 
-    public void SetFoodInfo(int foodId,int num,Action<int> click)
+    public void SetFoodInfo(int foodId,int num,bool canChoice,Action<int> click)
     {
         _foodId = foodId;
         _foodNum = num;
@@ -72,6 +72,7 @@ public class FoodBtnCell : UIComponent
         {
             Img_food.sprite = opera.AssetObject as Sprite;
         };
+        Btn_food.interactable = canChoice;
     }
 
     private void onClick(Unit param)
