@@ -134,7 +134,7 @@ public class RestaurantCharacter : MonoBehaviour
     public void InjectVariable(VariableStorageBehaviour storageBehaviour)
     {
         storageBehaviour.SetValue("$friendliness",_npcData.FriendlyValue);
-        // storageBehaviour.SetValue("NPCName",_name);
+        storageBehaviour.SetValue("$appear",_npcData.AppearCount);
     }
 
     public void ReceiveFood(CookResult food)

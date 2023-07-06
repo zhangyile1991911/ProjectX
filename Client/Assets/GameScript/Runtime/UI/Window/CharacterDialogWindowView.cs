@@ -19,7 +19,7 @@ public partial class CharacterDialogWindow : UIWindow
 	{
 	    uiGo = go;
 	    
-		LBtn_Background = go.transform.Find("LineView/LBtn_Background").GetComponent<ButtonLongPress>();
+		LBtn_Background = go.transform.Find("LineView/Btn_Background").GetComponent<ButtonLongPress>();
 		Txt_Line = go.transform.Find("LineView/Txt_Line").GetComponent<TextMeshProUGUI>();
 		Btn_Skip = go.transform.Find("LineView/Btn_Skip").GetComponent<Button>();
 		Btn_SpeedUp = go.transform.Find("LineView/Btn_SpeedUp").GetComponent<Button>();

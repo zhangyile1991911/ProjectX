@@ -2,7 +2,6 @@
   {
     "id": 1,
     "name": "加盐",
-    "score": 5,
     "desc": "按S键/n往菜里加入盐",
     "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
     "tag": 1021,
@@ -11,7 +10,6 @@
   {
     "id": 2,
     "name": "加醋",
-    "score": 3,
     "desc": "按D键/n往菜里加入醋",
     "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
     "tag": 1017,

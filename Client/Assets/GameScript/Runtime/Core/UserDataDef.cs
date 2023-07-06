@@ -20,6 +20,8 @@ public class NPCDataDef
 {
     public int Id { get; set; }
     public int FriendlyValue { get; set; }
+    //出现次数
+    public int AppearCount { get; set; }
 }
 
 public class DialogueDataCollection

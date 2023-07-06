@@ -1,0 +1,53 @@
+﻿title: Start
+tags:
+position: 208,-624
+---
+<<if $appear == 0>>
+<<jump FirstTalk>>
+<<elseif $appear == 1>>> #line:0b5e627 
+<<jump SecondTalk>>
+<<endif>>
+===
+
+title: FirstTalk
+position: -53,-392
+---
+章鱼: 老板，没打烊吧？ 
+老板: 没有没有，您随便坐就行。 
+章鱼: [dialogue_wave=10]好嘞[/dialogue_wave]
+旁白: [show_picture=Doraemon duration=3000]这个身材魁梧的男人从包里掏出一台苹果笔记本.[/show_picture] 
+章鱼: 先来杯生啤，要冰的，然后……嗯……炸猪排，有什么蔬菜推荐吗？
+老板: 炸猪排配新鲜卷心菜沙拉，您看行吗。 
+章鱼: 哦，日剧搭配嘛，可以可以，麻烦多来点沙拉酱。 
+老板: 悉听尊便。  
+===
+
+
+title: SecondTalk
+position: 201,-393
+---
+章鱼: 老板我又来了，还是随便坐吧？ 
+老板: 嗯，请便。  
+章鱼: 哎，今天不喝啤酒了，体检出来脂肪肝了。  
+//选项A
+-> 您太累了，来，今天特别煮的毛豆，您尝尝，我请客。 
+<<AddFriendValue 10>>
+//选项B
+-> 多喝热水  
+
+
+<<jump SecondTalkChoice>>
+===
+title: SecondTalkChoice
+position: 494,-389
+---
+章鱼: 谢谢。  
+老板: 指标怎样？转氨酶都高吗？  
+章鱼: 我出来上班早，不懂这些，不过医生说要多注意了，难啊，互联网这行就是用命换钱，来瓶冰可乐吧。  
+老板: 好嘞，您今晚吃点什么？  
+章鱼: 炸猪排有点不健康……来个素炒什锦吧，再上碗阳春面，啊对，有辣油吗，多给我加点。  
+<<OrderMeal 1001>>//下单
+<<OrderMeal 1002>>
+老板: 马上好。  
+章鱼:【掏出笔记本】【皱起眉头】【在键盘上敲字】【摇头】【吹口哨】 
+===

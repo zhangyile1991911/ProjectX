@@ -20,7 +20,6 @@ public sealed partial class QTEInfo :  Bright.Config.BeanBase
     {
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["name"].IsString) { throw new SerializationException(); }  Name = _json["name"]; }
-        { if(!_json["score"].IsNumber) { throw new SerializationException(); }  Score = _json["score"]; }
         { if(!_json["desc"].IsString) { throw new SerializationException(); }  Desc = _json["desc"]; }
         { if(!_json["anim_res_path"].IsString) { throw new SerializationException(); }  AnimResPath = _json["anim_res_path"]; }
         { if(!_json["tag"].IsNumber) { throw new SerializationException(); }  Tag = (food.flavorTag)_json["tag"].AsInt; }
@@ -28,11 +27,10 @@ public sealed partial class QTEInfo :  Bright.Config.BeanBase
         PostInit();
     }
 
-    public QTEInfo(int id, string name, int score, string desc, string anim_res_path, food.flavorTag tag, int key_code ) 
+    public QTEInfo(int id, string name, string desc, string anim_res_path, food.flavorTag tag, int key_code ) 
     {
         this.Id = id;
         this.Name = name;
-        this.Score = score;
         this.Desc = desc;
         this.AnimResPath = anim_res_path;
         this.Tag = tag;
@@ -53,10 +51,6 @@ public sealed partial class QTEInfo :  Bright.Config.BeanBase
     /// 名字
     /// </summary>
     public string Name { get; private set; }
-    /// <summary>
-    /// 加分
-    /// </summary>
-    public int Score { get; private set; }
     /// <summary>
     /// 描述
     /// </summary>
@@ -91,7 +85,6 @@ public sealed partial class QTEInfo :  Bright.Config.BeanBase
         return "{ "
         + "Id:" + Id + ","
         + "Name:" + Name + ","
-        + "Score:" + Score + ","
         + "Desc:" + Desc + ","
         + "AnimResPath:" + AnimResPath + ","
         + "Tag:" + Tag + ","

@@ -24,12 +24,23 @@ public partial class CharacterDialogWindow : UIWindow
     private DialogueRunner _dialogueRunner;
     private PortraitLineView _portraitLineView;
     private CharacterDialogData _openData;
-    
+    private ComicView _comicView;
     public override void OnCreate()
     {
         base.OnCreate();
-        
         _dialogueRunner = uiTran.GetComponent<DialogueRunner>();
+        // _dialogueRunner.AddCommandHandler<string,int>("ShowPicture",ShowPicture);
+        // _dialogueRunner.AddCommandHandler<string>("ShowAnimation",ShowAnimation);
+    }
+
+    private void ShowPicture(string resPath,int ms)
+    {
+        
+    }
+
+    private void ShowAnimation(string resPath)
+    {
+        
     }
     
     public override void OnDestroy()

@@ -123,34 +123,44 @@ public class PortraitLineView : DialogueViewBase
     public bool PlayTyping => isTyping;
     //是否在演出打字机效果
     private bool isTyping = false;
+    private RectTransform _rectTransform;
     
     private void Awake()
     {
         canvasGroup.alpha = 0;
         canvasGroup.blocksRaycasts = false;
+        _rectTransform = GetComponent<RectTransform>();
     }
 
-    private void HandleMarkup(List<MarkupAttribute> attributes)
+    private void HandleMarkup(MarkupParseResult attributes)
     {
-        foreach (var markupAttribute in attributes)
+        if (attributes.TryGetAttributeWithName("mood", out var mood))
         {
-            switch (markupAttribute.Name)
-            {
-                case "mood":
-                    MoodAnimation(markupAttribute.Properties);
-                    break;
-            }
+            MoodAnimation(mood.Properties);
         }
+        else if (attributes.TryGetAttributeWithName("dialogue_wave",out var dialogue))
+        {
+            DialogueAnimation(dialogue.Properties);    
+        }
+        
     }
 
-    private void MoodAnimation(IReadOnlyDictionary<string,MarkupValue> moods)
+    private void MoodAnimation(IReadOnlyDictionary<string,MarkupValue> properties)
     {
-        switch (moods["mood"].StringValue)
+        var str = properties["mood"].StringValue;
+        switch (str)
         {
             case "angry":
                 LineAngryAnimation();
                 break;
         }
+    }
+
+    private Tweener dialogueWave;
+    private void DialogueAnimation(IReadOnlyDictionary<string,MarkupValue> properties)
+    {
+        var waveVal = properties["dialogue_wave"].IntegerValue;
+        dialogueWave = _rectTransform.DOShakePosition(1, new Vector3(1, waveVal, 0), 10, 90f, false, true);
     }
 
     private Tween lineDoingTween;
@@ -171,7 +181,7 @@ public class PortraitLineView : DialogueViewBase
         cts?.Dispose();
         cts = new CancellationTokenSource();
         
-        HandleMarkup(dialogueLine.Text.Attributes);
+        HandleMarkup(dialogueLine.Text);
 
         await RunLineInternal(dialogueLine,onDialogueLineFinished);
     }
@@ -270,6 +280,9 @@ public class PortraitLineView : DialogueViewBase
         }
 
         lineDoingTween?.Pause();
+        
+        dialogueWave?.Pause();
+        dialogueWave = null;
 
         canvasGroup.alpha = 0;
         canvasGroup.blocksRaycasts = false;

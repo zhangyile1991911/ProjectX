@@ -18,13 +18,13 @@
     "id": 2,
     "qte_appear_infos": [
       {
-        "start_area": 0.3,
-        "end_area": 0.6,
+        "start_area": 0.5,
+        "end_area": 0.8,
         "qte_id": 1
       },
       {
-        "start_area": 0.4,
-        "end_area": 0.9,
+        "start_area": 0.1,
+        "end_area": 0.5,
         "qte_id": 2
       }
     ]
