@@ -4,7 +4,7 @@ position: 208,-624
 ---
 <<if $appear == 0>>
 <<jump FirstTalk>>
-<<elseif $appear == 1>>> #line:0b5e627 
+<<elseif $appear == 1>> 
 <<jump SecondTalk>>
 <<endif>>
 ===
@@ -14,11 +14,11 @@ position: -53,-392
 ---
 章鱼: 老板，没打烊吧？ 
 老板: 没有没有，您随便坐就行。 
-章鱼: [dialogue_wave=10]好嘞[/dialogue_wave]
-旁白: [show_picture=Doraemon duration=3000]这个身材魁梧的男人从包里掏出一台苹果笔记本.[/show_picture] 
+章鱼: [dialogue_wave=10]好~~~~嘞~~~~~~[/dialogue_wave]
+旁白: [show_picture=Doraemon]这个身材魁梧的男人从包里掏出一台苹果笔记本.[/show_picture] 
 章鱼: 先来杯生啤，要冰的，然后……嗯……炸猪排，有什么蔬菜推荐吗？
 老板: 炸猪排配新鲜卷心菜沙拉，您看行吗。 
-章鱼: 哦，日剧搭配嘛，可以可以，麻烦多来点沙拉酱。 
+章鱼: [emoji=whistle]哦，日剧搭配嘛，可以可以，麻烦多来点沙拉酱。 [/emoji]
 老板: 悉听尊便。  
 ===
 
@@ -33,8 +33,7 @@ position: 201,-393
 -> 您太累了，来，今天特别煮的毛豆，您尝尝，我请客。 
 <<AddFriendValue 10>>
 //选项B
--> 多喝热水  
-
+-> 多喝热水
 
 <<jump SecondTalkChoice>>
 ===
@@ -49,5 +48,5 @@ position: 494,-389
 <<OrderMeal 1001>>//下单
 <<OrderMeal 1002>>
 老板: 马上好。  
-章鱼:【掏出笔记本】【皱起眉头】【在键盘上敲字】【摇头】【吹口哨】 
+章鱼:【掏出笔记本】【皱起眉头】【在键盘上敲字】【摇头】[emoji=whistle][/emoji] 
 ===

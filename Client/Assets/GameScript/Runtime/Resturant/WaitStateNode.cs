@@ -36,6 +36,7 @@ public class WaitStateNode : IStateNode
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
         EventModule.Instance.CharDialogSub.Subscribe(EnterDialogue).AddTo(_handles);
         CreateBoss();
+        _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
     }
 
     public void OnExit()

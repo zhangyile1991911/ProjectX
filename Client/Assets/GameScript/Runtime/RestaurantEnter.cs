@@ -210,6 +210,8 @@ public class RestaurantEnter : MonoBehaviour
                 KitchenCamera.Priority = 0;
                 break;
         }
+
+        UIManager.Instance.UICamera.transform.position = RestaurantMainCamera.transform.position;
     }
 
     #region 自定义Command

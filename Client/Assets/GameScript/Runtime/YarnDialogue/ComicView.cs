@@ -32,7 +32,7 @@ public class ComicView : DialogueViewBase
     private void showPicture(MarkupAttribute attribute,Action onDialogueLineFinished)
     {
         var resName = attribute.Properties["show_picture"].StringValue;
-        var duration = attribute.Properties["duration"].IntegerValue;
+        // var duration = attribute.Properties["duration"].IntegerValue;
         handle = YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/"+resName+".jpg");
         handle.Completed += async sp =>
         {

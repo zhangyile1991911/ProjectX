@@ -3,7 +3,7 @@
     "id": 10001,
     "name": "章鱼",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/YoungFatMan.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/YoungFatMan.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/YoungFatManPortrait.png",
     "like_flavour": [
       1006,
@@ -19,7 +19,7 @@
     "id": 10002,
     "name": "卖鱼佬",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/FishMan.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/FishManPortrait.png",
     "like_flavour": [
       1006,
@@ -35,7 +35,7 @@
     "id": 10003,
     "name": "女士",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/Lady.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/LadyPortrait.png",
     "like_flavour": [
       1006,
@@ -51,7 +51,7 @@
     "id": 10004,
     "name": "小萝莉",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/LittleGirl.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/LittleGirlPortrait.png",
     "like_flavour": [
       1006,
@@ -67,7 +67,7 @@
     "id": 10005,
     "name": "老板",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/Merchant.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/MerchantPortrait.png",
     "like_flavour": [
       1006,
@@ -83,7 +83,7 @@
     "id": 10006,
     "name": "妇女",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/Woman.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/WomanPortrait.png",
     "like_flavour": [
       1006,
@@ -99,7 +99,7 @@
     "id": 10007,
     "name": "小胖",
     "desc": "",
-    "res_path": "Assets/GameRes/Picture/Character/YoungFatMan.png",
+    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/YoungFatManPortrait.png",
     "like_flavour": [
       1006,

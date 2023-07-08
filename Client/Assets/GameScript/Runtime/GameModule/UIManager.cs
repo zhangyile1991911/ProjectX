@@ -21,6 +21,8 @@ public class UIManager : SingletonModule<UIManager>
 
     private Transform _guide;
 
+    public Camera UICamera => _uiCamera;
+    private Camera _uiCamera;
     public CanvasScaler RootCanvasScaler => _rootCanvasScaler;
     private CanvasScaler _rootCanvasScaler;
 
@@ -214,6 +216,9 @@ public class UIManager : SingletonModule<UIManager>
         var root = uiModule.transform.Find("UIRoot");
         _rootCanvasScaler = root.GetComponent<CanvasScaler>();
         _rootCanvas = root.GetComponent<Canvas>();
+
+        var cam = GameObject.Find("UICamera");
+        _uiCamera = cam.GetComponent<Camera>();
         
         _bottom = uiModule.transform.Find("UIRoot/Bottom");
         _center = uiModule.transform.Find("UIRoot/Center");

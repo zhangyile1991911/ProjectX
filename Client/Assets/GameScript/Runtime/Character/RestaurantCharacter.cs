@@ -11,7 +11,12 @@ using YooAsset;
 public class RestaurantCharacter : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
+    private Transform _emojiNode;
 
+    public Vector3 EmojiWorldPosition
+    {
+        get => _emojiNode.transform.position;
+    }
     public cfg.character.CharacterBaseInfo TBBaseInfo => _baseInfo;
     
     public int SeatIndex
@@ -57,19 +62,20 @@ public class RestaurantCharacter : MonoBehaviour
     {
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _emojiNode = transform.Find("EMojiNode");
         _chatIdQueue = new Queue<int>();
-        LoadCharacterSprite();
+        // LoadCharacterSprite();
         LoadTableData();
         LoadDataBase();
     }
     
-    private async void LoadCharacterSprite()
-    {
-        var handler = YooAssets.LoadAssetAsync<Sprite>(_baseInfo.ResPath);
-        await handler.ToUniTask();
-        var sp = handler.AssetObject as Sprite;
-        _spriteRenderer.sprite = sp;
-    }
+    // private async void LoadCharacterSprite()
+    // {
+    //     var handler = YooAssets.LoadAssetAsync<Sprite>(_baseInfo.ResPath);
+    //     await handler.ToUniTask();
+    //     var sp = handler.AssetObject as Sprite;
+    //     _spriteRenderer.sprite = sp;
+    // }
 
     private void LoadTableData()
     {
@@ -159,6 +165,11 @@ public class RestaurantCharacter : MonoBehaviour
             EventModule.Instance.CharDialogTopic.OnNext(this);
         }
     }
+
+    public void ShowEmoji(string emoji)
+    {
+        
+    }
     
-    
+
 }

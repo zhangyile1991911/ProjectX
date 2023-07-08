@@ -54,6 +54,7 @@ public class DialogueStateNode : IStateNode
         _restaurantEnter.NoFocusOnCharacter();
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterMoji");
         // _dialogWindow.DialogueRunner.RemoveFunction("OrderMeal");
         // _dialogWindow.DialogueRunner.RemoveFunction("AddFriend");
         
@@ -64,8 +65,7 @@ public class DialogueStateNode : IStateNode
     {
         _machine.ChangeState<WaitStateNode>();
     }
-
-    // [YarnCommand("OrderMeal")]
+    
     private void OrderMealCommand(int mealId)
     {
         Debug.Log($"OrderMealCommand {mealId}");
@@ -84,4 +84,5 @@ public class DialogueStateNode : IStateNode
         if (chr == null) return;
         chr.AddFriendly(val);
     }
+    
 }
