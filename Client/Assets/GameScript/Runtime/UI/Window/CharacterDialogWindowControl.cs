@@ -29,20 +29,8 @@ public partial class CharacterDialogWindow : UIWindow
     {
         base.OnCreate();
         _dialogueRunner = uiTran.GetComponent<DialogueRunner>();
-        // _dialogueRunner.AddCommandHandler<string,int>("ShowPicture",ShowPicture);
-        // _dialogueRunner.AddCommandHandler<string>("ShowAnimation",ShowAnimation);
     }
 
-    private void ShowPicture(string resPath,int ms)
-    {
-        
-    }
-
-    private void ShowAnimation(string resPath)
-    {
-        
-    }
-    
     public override void OnDestroy()
     {
         _dialogueRunner.onDialogueComplete.RemoveAllListeners();
@@ -102,9 +90,6 @@ public partial class CharacterDialogWindow : UIWindow
     {
         Debug.Log($"OnDialogueComplete");
         _openData?.StoryComplete?.Invoke();
-        
-        UserInfoModule.Instance.InsertReadDialogueId(10004004);
-        UserInfoModule.Instance.SaveAllData();
     }
 
     private void OnNodeComplete(string nodeName)

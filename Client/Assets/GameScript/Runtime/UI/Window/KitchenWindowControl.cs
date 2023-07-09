@@ -16,8 +16,8 @@ using YooAsset;
 public partial class KitchenWindow : UIWindow
 {
     private cfg.food.cookTools _choicedTools;
-    private List<ItemDataDef> _ownedFoodItems;
-    private List<ItemDataDef> _showFoodItems;
+    private List<ItemTableData> _ownedFoodItems;
+    private List<ItemTableData> _showFoodItems;
     private List<FoodBtnCell> _cacheCells;
     private cfg.food.materialType _foodMaterialType = materialType.Other;
 
@@ -34,7 +34,7 @@ public partial class KitchenWindow : UIWindow
         Grid_FoodItem.InitGridView(0,getFoodItem);
         
         _cacheCells = new List<FoodBtnCell>(10);
-        _showFoodItems = new List<ItemDataDef>(10);
+        _showFoodItems = new List<ItemTableData>(10);
         _oppositeTags = new HashSet<flavorTag>(10);
 
         _choicedFoodIcons = new List<FoodIcon>(5);

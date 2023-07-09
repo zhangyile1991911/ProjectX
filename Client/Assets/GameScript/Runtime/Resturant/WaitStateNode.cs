@@ -121,7 +121,7 @@ public class WaitStateNode : IStateNode
         var read = UserInfoModule.Instance.HaveReadDialogueId(bubble.ChatId);
         if (read) return;
         
-        UserInfoModule.Instance.InsertReadDialogueId(bubble.ChatId);
+        // UserInfoModule.Instance.InsertReadDialogueId(bubble.ChatId);
 
         var stateData = new DialogueStateNodeData();
         stateData.ChatId = bubble.ChatId;

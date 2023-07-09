@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.ComTypes;
 using cfg;
 using cfg.character;
 using cfg.food;
+using cfg.item;
 using Cysharp.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SimpleJSON;
@@ -58,6 +59,12 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         }
 
         return null;
+    }
+
+    public bool IsFood(int itemId)
+    {
+        var tmp = GetItemBaseInfo(itemId);
+        return tmp.Type == itemType.FoodMaterial;
     }
     
     private List<List<int>> weekdaySchedule;

@@ -1,31 +1,36 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using cfg.item;
-using LiteDB;
 using UnityEngine;
+using SQLite;
 
 public class UserInfoModule : SingletonModule<UserInfoModule>
 {
-    public List<ItemDataDef> OwnFoodMaterials => _foodmaterialDatas.Values.ToList();
-    // private Dictionary<int, int> _ownFoods;
-    
-    private LiteDatabase _liteDatabase;
-    private ILiteCollection<ItemDataDef> _bagDatas;
-    private ILiteCollection<NPCDataDef> _npcDatas;
-    private ILiteCollection<DialogueDataCollection> _dialogueCollection;
+    public List<ItemTableData> OwnFoodMaterials { get; private set; }
 
+    public long Now => _userTableData.now;
 
-    private Dictionary<int,ItemDataDef> _foodmaterialDatas;//key = itemId
+    //--------------------------------------------------------------------
+    private SQLiteConnection _sqLite;
+
+    private UserTableData _userTableData;
+
+    private Dictionary<int, NPCTableData> _npcTableDatas;
+
+    private Dictionary<int, ItemTableData> _itemTableDatas;
+
+    private Dictionary<int, DialogueTableData> _dialogueTableDatas;
+    //--------------------------------------------------------------------
     public override void OnCreate(object createParam)
     {
-        //连接数据库
-        _liteDatabase = new LiteDatabase(Application.dataPath + "/playerDB");
-
-        _foodmaterialDatas = new Dictionary<int,ItemDataDef>();
-        
-        initPlayerData();
         base.OnCreate(this);
+        //连接数据库
+        var dbPath = Application.dataPath + "/userDB.db";
+        Debug.Log($"dbPath = {dbPath}");
+        var options = new SQLiteConnectionString(dbPath, false);
+        _sqLite = new SQLiteConnection(options);
+        initPlayerData();
+        
     }
 
     public override void OnUpdate()
@@ -36,77 +41,91 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     public override void OnDestroy()
     {
         base.OnDestroy();
-        _liteDatabase.Dispose();
+        // _liteDatabase.Dispose();
+        _sqLite.Close();
     }
 
     private void initPlayerData()
     {
-        var exist = _liteDatabase.CollectionExists("ItemDataDef");
-        _bagDatas = _liteDatabase.GetCollection<ItemDataDef>();
-        if (!exist)
-        {
-            initBagData();
-        }
-        _npcDatas = _liteDatabase.GetCollection<NPCDataDef>();
+        _sqLite.CreateTable<UserTableData>();
+        _sqLite.CreateTable<NPCTableData>();
+        _sqLite.CreateTable<ItemTableData>();
+        _sqLite.CreateTable<DialogueTableData>();
 
-        exist = _liteDatabase.CollectionExists("DialogueDataCollection");
-        _dialogueCollection = _liteDatabase.GetCollection<DialogueDataCollection>();
-        if (!exist)
+        var userQuery = $"SELECT * FROM UserTableData;";
+        _userTableData = _sqLite.Query<UserTableData>(userQuery).FirstOrDefault();
+        if (_userTableData == null)
         {
-            var newDialogueData = new DialogueDataCollection();
-            newDialogueData.ReadDialogue = new Dictionary<int, OneDialogueDef>();
-            _dialogueCollection.Insert(newDialogueData);
+            _userTableData = new ();
+            _userTableData.Id = 11111;
+            _userTableData.now = 1682155171369;
+            _userTableData.money = 500;
+            _sqLite.Insert(_userTableData);
         }
-        classifyItem();
-    }
 
-    private void initBagData()
-    {
-        ItemDataDef a = new ItemDataDef()
-        {
-            Id = 1001,
-            Num = 10,
-        };
-        _bagDatas.Insert(a);
-        ItemDataDef b = new ItemDataDef()
-        {
-            Id = 1002,
-            Num = 10,
-        };
-        _bagDatas.Insert(b);
-        ItemDataDef c = new ItemDataDef()
-        {
-            Id = 1003,
-            Num = 10,
-        };
-        _bagDatas.Insert(c);
-        ItemDataDef d = new ItemDataDef()
-        {
-            Id = 1004,
-            Num = 10,
-        };
-        _bagDatas.Insert(d);
-        ItemDataDef e = new ItemDataDef()
-        {
-            Id = 1005,
-            Num = 10,
-        };
-        _bagDatas.Insert(e);
-        ItemDataDef f = new ItemDataDef()
-        {
-            Id = 1006,
-            Num = 10,
-        };
-        _bagDatas.Insert(f);
+        var npcQuery = $"select * from NPCTableData;";
+        var npcList = _sqLite.Query<NPCTableData>(npcQuery);
+        initNPC(npcList);
         
-        _foodmaterialDatas.Add(a.Id,a);
-        _foodmaterialDatas.Add(b.Id,b);
-        _foodmaterialDatas.Add(c.Id,c);
-        _foodmaterialDatas.Add(d.Id,d);
-        _foodmaterialDatas.Add(e.Id,e);
-        _foodmaterialDatas.Add(f.Id,f);
+        var itemQuery = $"select * from ItemTableData;";
+        var itemList = _sqLite.Query<ItemTableData>(itemQuery);
+        initItem(itemList);
+
+        var dialogue = $"select * from DialogueTableData";
+        var dialogueList = _sqLite.Query<DialogueTableData>(dialogue);
+        initDialogue(dialogueList);
+        
     }
 
+    private void initItem(List<ItemTableData> items)
+    {
+        if (items.Count <= 0)
+        {
+            items.Add(new ItemTableData(){Id = 1001,Num = 10});
+            items.Add(new ItemTableData(){Id = 1002,Num = 10});
+            items.Add(new ItemTableData(){Id = 1003,Num = 10});
+            items.Add(new ItemTableData(){Id = 1004,Num = 10});
+            items.Add(new ItemTableData(){Id = 1005,Num = 10});
+            items.Add(new ItemTableData(){Id = 1006,Num = 10});
+            _sqLite.InsertAll(items);
+        }
+
+        _itemTableDatas ??= new Dictionary<int, ItemTableData>();
+        OwnFoodMaterials ??= new(10);
+        foreach (var one in items)
+        {
+            _itemTableDatas.Add(one.Id,one);
+            if (DataProviderModule.Instance.IsFood(one.Id))
+            {
+                OwnFoodMaterials.Add(one);
+            }
+        }
+    }
+
+    public void initNPC(List<NPCTableData> npcList)
+    {
+        _npcTableDatas ??= new();
+        if (npcList.Count <= 0)
+        {
+            return;
+        }
+        
+        foreach (var one in npcList)
+        {
+            _npcTableDatas.Add(one.Id,one);
+        }
+        
+    }
+
+    public void initDialogue(List<DialogueTableData> dialogueList)
+    {
+        _dialogueTableDatas ??= new Dictionary<int, DialogueTableData>();
+        foreach (var one in dialogueList)
+        {
+            _dialogueTableDatas.Add(one.Id,one);
+        }
+    }
+    
     public bool IsEnoughItem(int itemId,int needNum)
     {
         int curNum = ItemNum(itemId);
@@ -115,92 +134,119 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     
     public int ItemNum(int itemId)
     {
-        var result = _bagDatas.FindOne(x => x.Id == itemId);
-        return result?.Num ?? 0;
+        if (_itemTableDatas.TryGetValue(itemId, out var data))
+        {
+            return data.Num;
+        }
+
+        return 0;
     }
 
-    public void AddItemNum(int itemId,int add)
+    public void AddItemNum(int itemId,uint num)
     {
-        var result = _bagDatas.FindOne(x => x.Id == itemId);
-        var tmp = result.Num + add;
-        if (tmp > 0)
+        if (_itemTableDatas.TryGetValue(itemId, out var data))
         {
-            result.Num = tmp;
-            UpdateItem(result);
-            if(!_foodmaterialDatas.ContainsKey(itemId))_foodmaterialDatas.Add(itemId,result);
+            data.Num += (int)num;
+            _sqLite.Update(data);
         }
         else
         {
-            _bagDatas.Delete(itemId);
-            if(_foodmaterialDatas.ContainsKey(itemId)) _foodmaterialDatas.Remove(itemId);
+            var tmp = new ItemTableData() { Id = itemId, Num = (int)num };
+            _itemTableDatas.Add(itemId,tmp);
+            if (DataProviderModule.Instance.IsFood(itemId))
+            {
+                OwnFoodMaterials.Add(tmp);
+            }
+            _sqLite.Insert(tmp);
         }
-    }
-    
-    private void UpdateItem(ItemDataDef item)
-    {
-        _bagDatas.Upsert(item);
     }
 
-    private void classifyItem()
+    public bool SubItemNum(int itemId,uint num)
     {
-        var p = UniModule.GetModule<DataProviderModule>();
-        foreach (var item in _bagDatas.FindAll())
+        if (!_itemTableDatas.TryGetValue(itemId, out var data))
         {
-            var info = p.GetItemBaseInfo(item.Id);
-            if (info == null) return;
-            if (info.Type != itemType.FoodMaterial) return;
-            _foodmaterialDatas[item.Id] = item;
+            return false;
         }
-        
-    }
-    // private void AddFoodItem(ItemDataDef item)
-    // {
-    //     var p = UniModule.GetModule<DataProviderModule>();
-    //     var info = p.GetItemBaseInfo(item.Id);
-    //     if (info == null) return;
-    //     if (info.Type != itemType.FoodMaterial) return;
-    //     if (_foodDatas.ContainsKey(item.Id))
-    //     {
-    //         _foodDatas[item.Id] = item;    
-    //     }
-    //     
-    // }
 
-    // private void ReduceFoodItem(ItemDataDef item)
-    // {
-    //     
-    // }
-    
-    public NPCDataDef NpcData(int npcId)
-    {
-        var result = _npcDatas.FindOne(x => x.Id == npcId);
-        if (result == null)
+        if (data.Num > num)
         {
-            result = new NPCDataDef();
-            result.Id = npcId;
-            result.FriendlyValue = 0;
-            _npcDatas.Insert(result);
+            data.Num -= (int)num;
+            _sqLite.Update(data);
+            return true;
         }
-        return result;
+        else if (data.Num == num)
+        {
+            _itemTableDatas.Remove(itemId);
+            if (DataProviderModule.Instance.IsFood(itemId))
+            {
+                OwnFoodMaterials.Remove(data);
+            }
+            _sqLite.Delete(data);
+            return true;
+        }
+
+        return false;
+    }
+
+    public NPCTableData NpcData(int npcId)
+    {
+        if (_npcTableDatas.TryGetValue(npcId, out var data))
+        {
+            return data;
+        }
+
+        var newNpc = new NPCTableData();
+        newNpc.Id = npcId;
+        newNpc.FriendlyValue = 0;
+        newNpc.AppearCount = 0;
+        _npcTableDatas.Add(npcId,newNpc);
+        _sqLite.Insert(newNpc);
+        return newNpc;
     }
 
     public bool HaveReadDialogueId(int did)
     {
-        var tmp = _dialogueCollection.FindOne(x=> true);
-        return tmp.ReadDialogue.ContainsKey(did);
+        return _dialogueTableDatas.ContainsKey(did);
     }
 
     public void InsertReadDialogueId(int did)
     {
-        var tmp = _dialogueCollection.FindOne(x=> true);
-        tmp.ReadDialogue.Add(did,new OneDialogueDef());
+        if (_dialogueTableDatas.ContainsKey(did))
+            return;
+        var newDialogue = new DialogueTableData();
+        newDialogue.Id = did;
+        _dialogueTableDatas.Add(did,newDialogue);
+        _sqLite.Insert(newDialogue);
     }
 
-    public void SaveAllData()
-    {
-        
-        // private ILiteCollection<ItemDataDef> _bagDatas;
-        // private ILiteCollection<NPCDataDef> _npcDatas;
-        // private ILiteCollection<DialogueDataCollection> _dialogueCollection;
-    }
+    // public void SaveAllData()
+    // {
+    //     updateUserTableData();
+    //     updateDialogueTableData();
+    //     updateNPCTableData();
+    //     updateItemTableData();
+    // }
+    //
+    // private void updateUserTableData()
+    // {
+    //     _sqLite.Update(_userTableData);
+    // }
+    //
+    // private void updateDialogueTableData()
+    // {
+    //     //todo 可能有性能问题 只更新需要更新的
+    //     _sqLite.UpdateAll(_dialogueTableDatas.Values);
+    // }
+    //
+    // private void updateNPCTableData()
+    // {
+    //     //todo 可能有性能问题 只更新需要更新的
+    //     _sqLite.UpdateAll(_npcTableDatas.Values);
+    // }
+    //
+    // private void updateItemTableData()
+    // {
+    //     //todo 可能有性能问题 只更新需要更新的        
+    //     _sqLite.UpdateAll(_itemTableDatas.Values);
+    // }
 }

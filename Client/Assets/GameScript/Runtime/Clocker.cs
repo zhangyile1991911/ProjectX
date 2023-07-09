@@ -13,8 +13,8 @@ public class Clocker : IModule
     {
         _subject = new Subject<DateTime>();
         Topic = _subject;
-        //读取数据库或者json
-        _nowMs = 1682155171369;
+        
+        _nowMs = UserInfoModule.Instance.Now;
         _nowDate = new DateTime(1970, 1, 1, 8, 0, 0).AddMilliseconds(_nowMs);
 
     }
