@@ -84,7 +84,19 @@ public class EmojiView : DialogueViewBase
                     .SetLoops(-1,LoopType.Yoyo);
                 break;
             case "sleep":
+                handle = YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/sleep.png");
+                await handle.ToUniTask();
+                var emojiSpSleep = handle.AssetObject as Sprite;
+                Img_Emoji.sprite = emojiSpSleep;
+                Img_Emoji.gameObject.SetActive(true);
+
+                Rect_Emoji.anchoredPosition = localPos;
+                localPos.y += 20f;
+                _tween = Rect_Emoji
+                    .DOLocalJump(localPos, 5, 2, 2.5f)
+                    .SetLoops(-1, LoopType.Yoyo);
                 break;
+
         }
 
         onDialogueLineFinished();
