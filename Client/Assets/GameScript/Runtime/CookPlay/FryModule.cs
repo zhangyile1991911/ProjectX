@@ -29,7 +29,6 @@ public class FryModule : MonoBehaviour
     private FryingDifficulty _currentRecipeDifficulty;
     
     
-    
     private bool _start;
     
     private ReactiveProperty<float> _curProgress;
@@ -137,7 +136,7 @@ public class FryModule : MonoBehaviour
 
     }
 
-    private void loadRawFood(List<ItemDataDef> foods)
+    private void loadRawFood(List<ItemTableData> foods)
     {
         //炒菜原材料
         foreach (var food in foods)

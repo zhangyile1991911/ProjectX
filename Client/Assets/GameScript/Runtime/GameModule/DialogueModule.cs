@@ -20,19 +20,19 @@ public class DialogueModule : IModule
         
     }
 
-    public RestaurantCharacter CurentDialogueRestaurantCharacter
-    {
-        get
-        {
-            return _curDialogueRestaurantCharacter;
-        }
-        set
-        {
-            _curDialogueRestaurantCharacter = value;    
-        }
-    }
-
-    private RestaurantCharacter _curDialogueRestaurantCharacter;
+    // public RestaurantCharacter CurentDialogueRestaurantCharacter
+    // {
+    //     get
+    //     {
+    //         return _curDialogueRestaurantCharacter;
+    //     }
+    //     set
+    //     {
+    //         _curDialogueRestaurantCharacter = value;    
+    //     }
+    // }
+    //
+    // private RestaurantCharacter _curDialogueRestaurantCharacter;
 
     
 }

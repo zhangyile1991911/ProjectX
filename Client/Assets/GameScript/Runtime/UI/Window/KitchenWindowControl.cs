@@ -360,11 +360,11 @@ public partial class KitchenWindow : UIWindow
         var foodReceipt = new PickFoodAndTools();
         foodReceipt.MenuId = _curSelectMenuId;
         foodReceipt.CookTools = _choicedTools;
-        foodReceipt.CookFoods = new List<ItemDataDef>(_choicedFoodIcons.Count);
+        foodReceipt.CookFoods = new List<ItemTableData>(_choicedFoodIcons.Count);
         foreach (var icon in _choicedFoodIcons)
         {
             if(icon.FoodId <= 0)continue;
-            var tmp = new ItemDataDef()
+            var tmp = new ItemTableData()
             {
                 Id = icon.FoodId,
                 Num = 1
