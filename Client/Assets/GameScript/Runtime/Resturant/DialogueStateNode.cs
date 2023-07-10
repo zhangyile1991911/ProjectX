@@ -72,6 +72,7 @@ public class DialogueStateNode : IStateNode
             MealId = mealId,
             Customer = _restaurantCharacter
         };
+        _restaurantCharacter.OrderedMenuId = mealId;
         EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 

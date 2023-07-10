@@ -31,18 +31,31 @@ public class EmojiView : DialogueViewBase
     {
         string emojiType="";
         string characterName="";
+        int emojiSeqCount = 0;
         if (dialogueLine.Text.TryGetAttributeWithName("character",out var charAttribute))
         {
             characterName = charAttribute.Properties["name"].StringValue;
         }
-        if(dialogueLine.Text.TryGetAttributeWithName("emoji",out var attribute))
+        if(dialogueLine.Text.TryGetAttributeWithName("emoji",out var emojiAttribute))
         {
-            emojiType = attribute.Properties["emoji"].StringValue;
+            emojiType = emojiAttribute.Properties["emoji"].StringValue;
         }
 
-        if (!characterName.IsNullOrEmpty() && !emojiType.IsNullOrEmpty())
+        if (dialogueLine.Text.TryGetAttributeWithName("emoji_seq", out var emojiSeqattribute))
+        {
+            emojiSeqCount = emojiSeqattribute.Properties["emoji_seq"].IntegerValue;
+        }
+
+        if (characterName.IsNullOrEmpty()) return;
+        
+        if (!emojiType.IsNullOrEmpty())
         {
             ShowEmoji(emojiType,characterName,onDialogueLineFinished);    
+        }
+
+        if (emojiSeqCount > 0)
+        {
+            DoEmojiSeq(emojiSeqCount,emojiSeqattribute.Properties);
         }
     }
     
@@ -56,17 +69,20 @@ public class EmojiView : DialogueViewBase
         onDismissalComplete();
     }
 
-    private async void ShowEmoji(string emojiType,string characterName,Action onDialogueLineFinished)
+    private Vector2 worldPositionToUI(string characterName)
     {
-        //获得当前角色
         var mgr = UniModule.GetModule<CharacterMgr>();
         var chr = mgr.GetCharacterByName(characterName);
         //将世界坐标转换到UI坐标
         var uiCamera = UIManager.Instance.UICamera;
         var uiCanvas = UIManager.Instance.RootCanvas;
         var screenPosition = uiCamera.WorldToScreenPoint(chr.EmojiWorldPosition);
-        Vector2 localPos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.GetComponent<RectTransform>(),screenPosition,uiCamera,out localPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.GetComponent<RectTransform>(),screenPosition,uiCamera,out var localPos);
+        return localPos;
+    }
+    private async void ShowEmoji(string emojiType,string characterName,Action onDialogueLineFinished)
+    {
+        Vector2 localPos = worldPositionToUI(characterName);
         Debug.Log($"ShowEmoji pos = {localPos}");
         switch (emojiType)
         {
@@ -102,5 +118,10 @@ public class EmojiView : DialogueViewBase
         }
 
         onDialogueLineFinished();
+    }
+
+    private async void DoEmojiSeq(int total,IReadOnlyDictionary<string,MarkupValue> prop)
+    {
+        
     }
 }

@@ -219,6 +219,11 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.Insert(newDialogue);
     }
 
+    public void AddSecond(int sec)
+    {
+        _userTableData.now += sec;
+        _sqLite.Update(_userTableData);
+    }
     // public void SaveAllData()
     // {
     //     updateUserTableData();

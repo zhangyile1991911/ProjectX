@@ -16,7 +16,6 @@ public class Clocker : IModule
         
         _nowMs = UserInfoModule.Instance.Now;
         _nowDate = new DateTime(1970, 1, 1, 8, 0, 0).AddMilliseconds(_nowMs);
-
     }
 
     public void AddOneSecond()
@@ -27,6 +26,7 @@ public class Clocker : IModule
     public void AddSecond(int i)
     {
         _nowDate = _nowDate.AddSeconds(i);
+        UserInfoModule.Instance.AddSecond(i);
         _subject.OnNext(_nowDate);
     }
 

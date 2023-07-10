@@ -45,7 +45,14 @@ public class ProduceStateNode : IStateNode
         {
             _machine.ChangeState<PrepareStateNode>();
         }).AddTo(_handle);
-        
+
+        EventModule.Instance.CookGameStartSub.Subscribe(_ =>
+        {
+            foreach (var one in _data.CookFoods)
+            {
+                UserInfoModule.Instance.SubItemNum(one.Id,(uint)one.Num);    
+            }
+        }).AddTo(_handle);
     }
     
     public void OnExit()

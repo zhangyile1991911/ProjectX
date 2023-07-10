@@ -113,8 +113,8 @@ public class WaitStateNode : IStateNode
 
     private void OnClickBubble(ChatBubble bubble)
     {
-        var dm = UniModule.GetModule<DialogueModule>();
-        dm.CurentDialogueRestaurantCharacter = bubble.Owner;
+        // var dm = UniModule.GetModule<DialogueModule>();
+        // dm.CurentDialogueRestaurantCharacter = bubble.Owner;
 
         _restaurantWindow.RemoveChatBubble(bubble);
         

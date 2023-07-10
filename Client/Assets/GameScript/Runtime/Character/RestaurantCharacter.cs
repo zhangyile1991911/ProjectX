@@ -17,7 +17,7 @@ public class RestaurantCharacter : MonoBehaviour
     {
         get => _emojiNode.transform.position;
     }
-    public cfg.character.CharacterBaseInfo TBBaseInfo => _baseInfo;
+    public CharacterBaseInfo TBBaseInfo => _baseInfo;
     
     public int SeatIndex
     {
@@ -35,8 +35,11 @@ public class RestaurantCharacter : MonoBehaviour
     public int CharacterId => _baseInfo.Id;
     private CharacterBaseInfo _baseInfo;
 
-    private List<cfg.character.CharacterBubble> _bubbleTB;
+    private List<CharacterBubble> _bubbleTB;
     private Queue<int> _chatIdQueue;
+
+    public int OrderedMenuId { get; set; }
+
     public CharacterBehaviour CurBehaviour
     {
         get => _behaviour;
@@ -62,7 +65,7 @@ public class RestaurantCharacter : MonoBehaviour
     {
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _emojiNode = transform.Find("EMojiNode");
+        _emojiNode = transform.Find("EmojiNode");
         _chatIdQueue = new Queue<int>();
         // LoadCharacterSprite();
         LoadTableData();
@@ -145,7 +148,7 @@ public class RestaurantCharacter : MonoBehaviour
 
     public void ReceiveFood(CookResult food)
     {
-        int score = 0;
+        // int score = 0;
         // 1 根据完成度评价
         
         // 2 根据标签评价
@@ -154,16 +157,16 @@ public class RestaurantCharacter : MonoBehaviour
         
         // 4 给出对应对话气泡
         //5 如果第一次出现的对话就 直接进入对话界面
-        _chatIdQueue.Enqueue(10004004);
-        var existed = UserInfoModule.Instance.HaveReadDialogueId(10004004);
-        if (existed)
-        {
-            EventModule.Instance.CharBubbleTopic.OnNext(this);    
-        }
-        else
-        {
-            EventModule.Instance.CharDialogTopic.OnNext(this);
-        }
+        // _chatIdQueue.Enqueue(10004004);
+        // var existed = UserInfoModule.Instance.HaveReadDialogueId(10004004);
+        // if (existed)
+        // {
+        //     EventModule.Instance.CharBubbleTopic.OnNext(this);    
+        // }
+        // else
+        // {
+        //     EventModule.Instance.CharDialogTopic.OnNext(this);
+        // }
     }
 
     public void ShowEmoji(string emoji)
