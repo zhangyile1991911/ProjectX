@@ -54,16 +54,14 @@ public class DialogueStateNode : IStateNode
         _restaurantEnter.NoFocusOnCharacter();
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
-        _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterMoji");
-        // _dialogWindow.DialogueRunner.RemoveFunction("OrderMeal");
-        // _dialogWindow.DialogueRunner.RemoveFunction("AddFriend");
-        
+
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
     }
 
     private void DialogueComplete()
     {
         _machine.ChangeState<WaitStateNode>();
+        UserInfoModule.Instance.InsertReadDialogueId(_chatId);
     }
     
     private void OrderMealCommand(int mealId)

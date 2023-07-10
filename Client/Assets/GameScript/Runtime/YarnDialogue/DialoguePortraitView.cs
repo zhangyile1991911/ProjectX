@@ -20,36 +20,6 @@ public class DialoguePortraitView : DialogueViewBase
     
     private void HandleMarkup(MarkupParseResult text,Action onDialogueLineFinish)
     {
-        // foreach (var markupAttribute in attributes)
-        // {
-        //     if(markupAttribute.Name != "character")
-        //     {
-        //         continue;
-        //     }
-        //
-        //     var properties = markupAttribute.Properties;
-        //     if (!properties.ContainsKey("name"))
-        //     {
-        //         continue;
-        //     }
-        //     
-        //     var characterName = properties["name"].StringValue;
-        //     var mgr = UniModule.GetModule<CharacterMgr>();
-        //     var chr = mgr.GetCharacterByName(characterName);
-        //     var showPortrait = chr != null;
-        //     CharacterPortrait.gameObject.SetActive(showPortrait);
-        //     if (showPortrait)
-        //     {
-        //         var loadSpriteHandle = YooAssets.LoadAssetAsync<Sprite>(chr.TBBaseInfo.PortraitPath);
-        //         loadSpriteHandle.Completed += sp =>
-        //         {
-        //             CharacterPortrait.sprite = sp.AssetObject as Sprite;
-        //             CharacterPortrait.gameObject.SetActive(true);
-        //             onDialogueLineFinish();
-        //         };    
-        //     }
-        // }
-
         if (text.TryGetAttributeWithName("character", out var attribute))
         {
             if (attribute.Properties.ContainsKey("name"))

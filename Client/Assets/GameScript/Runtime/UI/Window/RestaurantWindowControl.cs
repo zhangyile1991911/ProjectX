@@ -21,6 +21,7 @@ public partial class RestaurantWindow : UIWindow
     private List<ChatBubble> _bubbleList;
     private List<CookResult> _cookResults;
     private List<DragCookFoodIcon> _dragCookFoodIcons;
+    private HashSet<int> _floatingBubbleChatId;
     private StateMachine _machine;
     public override void OnCreate()
     {
@@ -30,6 +31,8 @@ public partial class RestaurantWindow : UIWindow
 
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
         _cookResults = new List<CookResult>(4);
+
+        _floatingBubbleChatId = new HashSet<int>(20);
         
         _dragCookFoodIcons = new List<DragCookFoodIcon>(4);
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconA.gameObject,this));
@@ -82,10 +85,12 @@ public partial class RestaurantWindow : UIWindow
 
     public async void GenerateChatBubble(int chatId,RestaurantCharacter restaurantCharacter,Action<ChatBubble> ClickBubble)
     {
+        if (_floatingBubbleChatId.Contains(chatId)) return;
         var uiManager = UniModule.GetModule<UIManager>();
         var bubble = await uiManager.CreateUIComponent<ChatBubble>(null,Tran_BubbleGroup,this);
         bubble.SetBubbleInfo(chatId,restaurantCharacter,ClickBubble);
         _bubbleList.Add(bubble);
+        _floatingBubbleChatId.Add(chatId);
     }
 
     public void RemoveChatBubble(RestaurantCharacter restaurantCharacter)
@@ -106,6 +111,7 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList.Remove(bubble);
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.DestroyUIComponent(bubble);
+        _floatingBubbleChatId.Add(bubble.ChatId);
     }
 
     private void showCookFood(CookResult result)

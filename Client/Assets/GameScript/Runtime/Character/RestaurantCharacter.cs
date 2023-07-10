@@ -30,7 +30,7 @@ public class RestaurantCharacter : MonoBehaviour
 
     //好感度
     public int Friendliness => _npcData.FriendlyValue;
-    private NPCDataDef _npcData;
+    private NPCTableData _npcData;
 
     public int CharacterId => _baseInfo.Id;
     private CharacterBaseInfo _baseInfo;
