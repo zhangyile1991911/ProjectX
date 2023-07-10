@@ -93,8 +93,10 @@ public class EmojiView : DialogueViewBase
                 Rect_Emoji.anchoredPosition = localPos;
                 localPos.y += 20f;
                 _tween = Rect_Emoji
-                    .DOLocalJump(localPos, 5, 2, 2.5f)
-                    .SetLoops(-1, LoopType.Yoyo);
+                    //.DOLocalJump(localPos, 5, 2, 2.5f)
+                    //.SetLoops(-1, LoopType.Yoyo);
+                    .DOShakeAnchorPos(1f,30,10)
+                    .SetLoops(-1,LoopType.Yoyo);
                 break;
 
         }
