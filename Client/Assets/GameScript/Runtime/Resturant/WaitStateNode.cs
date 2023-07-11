@@ -36,7 +36,7 @@ public class WaitStateNode : IStateNode
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
         EventModule.Instance.CharDialogSub.Subscribe(EnterDialogue).AddTo(_handles);
-        CreateBoss();
+        // CreateBoss();
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
     }
 
@@ -127,6 +127,7 @@ public class WaitStateNode : IStateNode
         {
             case bubbleType.MainLine:
             case bubbleType.Talk:
+            case bubbleType.Comment:
                 var stateData = new DialogueStateNodeData();
                 stateData.ChatId = bubble.ChatId;
                 stateData.ChatRestaurantCharacter = bubble.Owner;

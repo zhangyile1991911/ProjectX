@@ -248,7 +248,7 @@ public class FryModule : MonoBehaviour
         if (_curProgress.Value >= _currentRecipeDifficulty.finishValue)
         {
             _finishTopic.OnNext(true);
-            _finishTopic.OnCompleted();
+            // _finishTopic.OnCompleted();
         }
 
         ListenProgress(_curProgress.Value);
@@ -258,10 +258,7 @@ public class FryModule : MonoBehaviour
     {
         Debug.Log($"GameOver IsSuccess = {param}");
         _start = false;
-        _handler.Clear();
-        
-        UnloadRes();
-        
+
         _result.menuId = _tbMenuInfo.Id;
         _result.CompletePercent = _curProgress.Value;
         //计算标签
@@ -286,6 +283,8 @@ public class FryModule : MonoBehaviour
         
         _uiWindow.ShowGameOver(_result);
         EventModule.Instance.CookFinishTopic.OnNext(_result);
+        UnloadRes();
+        _handler.Clear();
     }
 
     private void UnloadRes()

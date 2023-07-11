@@ -34,19 +34,38 @@ public class DialoguePortraitView : DialogueViewBase
     private void loadPortrait(string characterName,Action onDialogueLineFinish)
     {
         var mgr = UniModule.GetModule<CharacterMgr>();
-        var chr = mgr.GetCharacterByName(characterName);
-        var showPortrait = chr != null;
-        CharacterPortrait.gameObject.SetActive(showPortrait);
-        if (showPortrait)
+        switch (characterName)
         {
-            var loadSpriteHandle = YooAssets.LoadAssetAsync<Sprite>(chr.TBBaseInfo.PortraitPath);
-            loadSpriteHandle.Completed += sp =>
-            {
-                CharacterPortrait.sprite = sp.AssetObject as Sprite;
+            case "老板":
                 CharacterPortrait.gameObject.SetActive(true);
-                onDialogueLineFinish();
-            };    
+                var bossHandle = YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Character/Portrait/MerchantPortrait.png");
+                bossHandle.Completed += sp =>
+                {
+                    CharacterPortrait.sprite = sp.AssetObject as Sprite;
+                    CharacterPortrait.gameObject.SetActive(true);
+                    onDialogueLineFinish();
+                };
+                break;
+            case "旁白":
+                CharacterPortrait.gameObject.SetActive(false);
+                break;
+            default:
+                var chr = mgr.GetCharacterByName(characterName);
+                var showPortrait = chr != null;
+                CharacterPortrait.gameObject.SetActive(showPortrait);
+                if (showPortrait)
+                {
+                    var loadSpriteHandle = YooAssets.LoadAssetAsync<Sprite>(chr.TBBaseInfo.PortraitPath);
+                    loadSpriteHandle.Completed += sp =>
+                    {
+                        CharacterPortrait.sprite = sp.AssetObject as Sprite;
+                        CharacterPortrait.gameObject.SetActive(true);
+                        onDialogueLineFinish();
+                    };    
+                }
+                break;
         }
+        
     }
     
 }

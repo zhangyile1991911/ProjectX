@@ -44,7 +44,7 @@ public partial class ChatBubble : UIComponent
     
     public override void OnCreate()
     {
-        var uiManager = UniModule.GetModule<UIManager>();
+        // var uiManager = UniModule.GetModule<UIManager>();
         _doTweenAnimation = uiTran.GetComponent<DOTweenAnimation>();
         _btn = uiTran.GetComponent<Button>();
         _btn.OnClickAsObservable().Subscribe(onBubbleClick).AddTo(uiTran);

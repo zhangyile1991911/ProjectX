@@ -155,3 +155,22 @@ public class CharacterMute : CharacterBehaviour
         
     }
 }
+
+public class CharacterLeave : CharacterBehaviour
+{
+    public RestaurantCharacter Char { get; }
+    public void Enter(RestaurantCharacter restaurantCharacter)
+    {
+        
+    }
+
+    public void Update()
+    {
+        
+    }
+
+    public void Exit()
+    {
+        
+    }
+}

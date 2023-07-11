@@ -6,11 +6,11 @@ position: -636,-628
 <<declare $foodscore = 0>>
 <<if $cookFoodId != $orderedId>>
     <<jump ErrorDialogue>>
-<<elseif $cookFoodId == 1001 >>
+<<elseif $cookFoodId == 10001 >>
     <<jump Food1001>>
-<<elseif $cookFoodId == 1002 >>
+<<elseif $cookFoodId == 10002 >>
     <<jump Food1002>>
-<<elseif $cookFoodId == 1003 >>
+<<elseif $cookFoodId == 10003 >>
     <<jump Food1003>>
 <<else>>
     <<jump DependOnFoodScore>>
@@ -31,13 +31,13 @@ position: -636,-628
     老板: 感觉您是第一次来吧。 
     章鱼: 对的，同事推荐过来的。
     老板: 这个时间的客人还挺少见的。
-    <<AddFriendValue 10>>
+    <<AddFriend 10>>
 <<else>>
     章鱼: 啊哈哈，今天和合伙人开会，所以比较晚。  
     老板: 辛苦了，来，趁热吃吧。  
     章鱼: 好的好的，啊，老板，加瓶啤酒  
     老板: OK。 
-    <<AddFriendValue -10>>
+    <<AddFriend -10>>
 <<endif>>
 ===
 
