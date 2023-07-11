@@ -3,11 +3,14 @@
     "id": 10001001,
     "title": "老板，没打烊吧？",
     "npc_id": 10001,
+    "repeated": false,
+    "pre_condition": 0,
     "friend_value": {
       "start_value": 0,
       "end_value": 10
     },
-    "bubble_type": 1,
+    "bubble_type": 3,
+    "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "Start"
@@ -16,37 +19,126 @@
     "id": 10001002,
     "title": "老板我又来了",
     "npc_id": 10001,
+    "repeated": false,
+    "pre_condition": 10001001,
     "friend_value": {
       "start_value": 20,
       "end_value": 30
     },
-    "bubble_type": 1,
+    "bubble_type": 3,
+    "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "Start"
   },
   {
+    "id": 10001003,
+    "title": "来个蛋炒饭",
+    "npc_id": 10001,
+    "repeated": true,
+    "pre_condition": 10001001,
+    "friend_value": {
+      "start_value": 5,
+      "end_value": 10
+    },
+    "bubble_type": 2,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 10001004,
+    "title": "来个炒虾",
+    "npc_id": 10001,
+    "repeated": true,
+    "pre_condition": 10001002,
+    "friend_value": {
+      "start_value": 5,
+      "end_value": 10
+    },
+    "bubble_type": 2,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 10001005,
+    "title": "魔王又半夜找我",
+    "npc_id": 10001,
+    "repeated": true,
+    "pre_condition": 10001002,
+    "friend_value": {
+      "start_value": 10,
+      "end_value": 20
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "complaintA"
+  },
+  {
+    "id": 10001006,
+    "title": "山梨又发布了新的电脑了",
+    "npc_id": 10001,
+    "repeated": true,
+    "pre_condition": 10001002,
+    "friend_value": {
+      "start_value": 15,
+      "end_value": 30
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "complaintB"
+  },
+  {
+    "id": 10001007,
+    "title": "这个菜的味道.....",
+    "npc_id": 10001,
+    "repeated": true,
+    "pre_condition": 0,
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 0
+    },
+    "bubble_type": 4,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "ZhangyuComment"
+  },
+  {
     "id": 10004001,
     "title": "你好....",
     "npc_id": 10004,
+    "repeated": false,
+    "pre_condition": 0,
     "friend_value": {
       "start_value": 0,
       "end_value": 100
     },
     "bubble_type": 1,
+    "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
     "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
-    "dialogue_start_node": "Beginner"
+    "dialogue_start_node": "Start"
   },
   {
     "id": 10004002,
     "title": "来个蛋炒饭",
     "npc_id": 10004,
+    "repeated": true,
+    "pre_condition": 10004001,
     "friend_value": {
       "start_value": 101,
       "end_value": 200
     },
     "bubble_type": 2,
+    "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
@@ -55,24 +147,30 @@
     "id": 10004003,
     "title": "这里什么时候...",
     "npc_id": 10004,
+    "repeated": false,
+    "pre_condition": 10004001,
     "friend_value": {
       "start_value": 201,
       "end_value": 300
     },
     "bubble_type": 1,
+    "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
     "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
-    "dialogue_start_node": "Beginner"
+    "dialogue_start_node": "Start"
   },
   {
     "id": 10004004,
     "title": "难以描述",
     "npc_id": 10004,
+    "repeated": true,
+    "pre_condition": 10001002,
     "friend_value": {
       "start_value": 0,
       "end_value": 0
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
+    "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
     "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
     "dialogue_start_node": "comment"

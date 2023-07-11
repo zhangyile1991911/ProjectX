@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using cfg.common;
 using UniRx;
 using UnityEngine;
 
@@ -92,6 +93,7 @@ public class WaitStateNode : IStateNode
             var spawnPoint = _restaurant.RandSpawnPoint();
             
             man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
+            man.AddAppearCount();
         }
     }
 
@@ -103,7 +105,7 @@ public class WaitStateNode : IStateNode
     
     private void GenerateChatBubble(RestaurantCharacter restaurantCharacter)
     {
-        var chatId = restaurantCharacter.HaveChatId();
+        var chatId = restaurantCharacter.GenerateChatId();
         if (chatId > 0)
         {
             // var uiWindow = _uiManager.Get(UIEnum.RestaurantWindow) as RestaurantWindow;
@@ -118,20 +120,32 @@ public class WaitStateNode : IStateNode
 
         _restaurantWindow.RemoveChatBubble(bubble);
         
+        var tbbubble = DataProviderModule.Instance.GetCharacterBubble(bubble.ChatId);
         var read = UserInfoModule.Instance.HaveReadDialogueId(bubble.ChatId);
         if (read) return;
-        
-        // UserInfoModule.Instance.InsertReadDialogueId(bubble.ChatId);
-
-        var stateData = new DialogueStateNodeData();
-        stateData.ChatId = bubble.ChatId;
-        stateData.ChatRestaurantCharacter = bubble.Owner;
-        _machine.ChangeState<DialogueStateNode>(stateData);
+        switch (tbbubble.BubbleType)
+        {
+            case bubbleType.MainLine:
+            case bubbleType.Talk:
+                var stateData = new DialogueStateNodeData();
+                stateData.ChatId = bubble.ChatId;
+                stateData.ChatRestaurantCharacter = bubble.Owner;
+                _machine.ChangeState<DialogueStateNode>(stateData);
+                break;
+            case bubbleType.Order:
+                OrderMealInfo info = new()
+                {
+                    MealId = tbbubble.MenuId,
+                    Customer = bubble.Owner
+                };
+                EventModule.Instance.OrderMealTopic.OnNext(info);
+                break;
+        }
     }
 
     private void EnterDialogue(RestaurantCharacter character)
     {
-        var chatId = character.HaveChatId();
+        var chatId = character.GenerateChatId();
         
         var stateData = new DialogueStateNodeData();
         stateData.ChatId = chatId;

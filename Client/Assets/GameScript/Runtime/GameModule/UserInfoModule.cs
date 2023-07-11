@@ -188,7 +188,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         return false;
     }
 
-    public NPCTableData NpcData(int npcId)
+    public NPCTableData NPCData(int npcId)
     {
         if (_npcTableDatas.TryGetValue(npcId, out var data))
         {
@@ -224,6 +224,15 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _userTableData.now += sec;
         _sqLite.Update(_userTableData);
     }
+
+    public void UpdateNPCData(int npcId)
+    {
+        var d = NPCData(npcId);
+        if (d == null) return;
+        _sqLite.Update(d);
+    }
+    
+    
     // public void SaveAllData()
     // {
     //     updateUserTableData();

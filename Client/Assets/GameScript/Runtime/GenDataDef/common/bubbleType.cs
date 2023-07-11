@@ -20,9 +20,13 @@ namespace cfg.common
         /// </summary>
         Order = 2,
         /// <summary>
+        /// 主线
+        /// </summary>
+        MainLine = 3,
+        /// <summary>
         /// 评论
         /// </summary>
-        Comment = 3,
+        Comment = 4,
     }
 
 } 

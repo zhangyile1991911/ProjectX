@@ -61,7 +61,11 @@ public class DialogueStateNode : IStateNode
     private void DialogueComplete()
     {
         _machine.ChangeState<WaitStateNode>();
-        UserInfoModule.Instance.InsertReadDialogueId(_chatId);
+        var tb = DataProviderModule.Instance.GetCharacterBubble(_chatId);
+        if (!tb.Repeated)
+        {
+            UserInfoModule.Instance.InsertReadDialogueId(_chatId);    
+        }
     }
     
     private void OrderMealCommand(int mealId)
@@ -72,7 +76,6 @@ public class DialogueStateNode : IStateNode
             MealId = mealId,
             Customer = _restaurantCharacter
         };
-        _restaurantCharacter.OrderedMenuId = mealId;
         EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 

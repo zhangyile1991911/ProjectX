@@ -2,9 +2,9 @@
 tags:
 position: 208,-624
 ---
-<<if $appear == 0>>
+<<if $appear == 1>>
 <<jump FirstTalk>>
-<<elseif $appear == 1>> 
+<<elseif $appear == 2>> 
 <<jump SecondTalk>>
 <<endif>>
 ===
@@ -15,7 +15,7 @@ position: -53,-392
 章鱼: 老板，没打烊吧？ 
 章鱼: [emoji=sleep]好困啊 [/emoji]
 老板: 没有没有，您随便坐就行。 
-章鱼: [dialogue_wave=10]好~~~~嘞~~~~~~[/dialogue_wave]
+章鱼: [dialogue_wave=10]<shake>好~~~~嘞~~~~~~</shake>[/dialogue_wave]
 旁白: [show_picture=Doraemon]这个身材魁梧的男人从包里掏出一台苹果笔记本.[/show_picture] 
 章鱼: 先来杯生啤，要冰的，然后……嗯……炸猪排，有什么蔬菜推荐吗？
 老板: 炸猪排配新鲜卷心菜沙拉，您看行吗。 
@@ -56,3 +56,5 @@ position: 494,-389
 老板: 马上好。  
 章鱼:【掏出笔记本】【在键盘上敲字】【皱起眉头】【摇头】[emoji_seq=2 first= second=][/emoji_seq] 
 ===
+
+

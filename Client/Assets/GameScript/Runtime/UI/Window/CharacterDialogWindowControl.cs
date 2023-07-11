@@ -69,7 +69,6 @@ public partial class CharacterDialogWindow : UIWindow
         
         LBtn_Background.onClick.AddListener(NextLine);
         
-        
         // _portraitLineView.autoAdvance = true;
         // _portraitLineView.typewriterEffectSpeed = typewriterEffectSpeed;
     }

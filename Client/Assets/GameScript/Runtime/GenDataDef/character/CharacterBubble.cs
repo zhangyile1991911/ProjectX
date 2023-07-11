@@ -21,21 +21,27 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["title"].IsString) { throw new SerializationException(); }  Title = _json["title"]; }
         { if(!_json["npc_id"].IsNumber) { throw new SerializationException(); }  NpcId = _json["npc_id"]; }
+        { if(!_json["repeated"].IsBoolean) { throw new SerializationException(); }  Repeated = _json["repeated"]; }
+        { if(!_json["pre_condition"].IsNumber) { throw new SerializationException(); }  PreCondition = _json["pre_condition"]; }
         { if(!_json["friend_value"].IsObject) { throw new SerializationException(); }  FriendValue = common.value_region.Deserializevalue_region(_json["friend_value"]);  }
         { if(!_json["bubble_type"].IsNumber) { throw new SerializationException(); }  BubbleType = (common.bubbleType)_json["bubble_type"].AsInt; }
+        { if(!_json["menu_id"].IsNumber) { throw new SerializationException(); }  MenuId = _json["menu_id"]; }
         { if(!_json["bubble_bg"].IsString) { throw new SerializationException(); }  BubbleBg = _json["bubble_bg"]; }
         { var _j = _json["dialogue_content_res"]; if (_j.Tag != JSONNodeType.None && _j.Tag != JSONNodeType.NullValue) { { if(!_j.IsString) { throw new SerializationException(); }  DialogueContentRes = _j; } } else { DialogueContentRes = null; } }
         { var _j = _json["dialogue_start_node"]; if (_j.Tag != JSONNodeType.None && _j.Tag != JSONNodeType.NullValue) { { if(!_j.IsString) { throw new SerializationException(); }  DialogueStartNode = _j; } } else { DialogueStartNode = null; } }
         PostInit();
     }
 
-    public CharacterBubble(int id, string title, int npc_id, common.value_region friend_value, common.bubbleType bubble_type, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
+    public CharacterBubble(int id, string title, int npc_id, bool repeated, int pre_condition, common.value_region friend_value, common.bubbleType bubble_type, int menu_id, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
     {
         this.Id = id;
         this.Title = title;
         this.NpcId = npc_id;
+        this.Repeated = repeated;
+        this.PreCondition = pre_condition;
         this.FriendValue = friend_value;
         this.BubbleType = bubble_type;
+        this.MenuId = menu_id;
         this.BubbleBg = bubble_bg;
         this.DialogueContentRes = dialogue_content_res;
         this.DialogueStartNode = dialogue_start_node;
@@ -60,11 +66,23 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     /// </summary>
     public int NpcId { get; private set; }
     public character.CharacterBaseInfo NpcId_Ref { get; private set; }
+    /// <summary>
+    /// 是否反复阅读
+    /// </summary>
+    public bool Repeated { get; private set; }
+    /// <summary>
+    /// 前置条件
+    /// </summary>
+    public int PreCondition { get; private set; }
     public common.value_region FriendValue { get; private set; }
     /// <summary>
     /// 气泡类型
     /// </summary>
     public common.bubbleType BubbleType { get; private set; }
+    /// <summary>
+    /// 下单
+    /// </summary>
+    public int MenuId { get; private set; }
     /// <summary>
     /// 气泡背景图
     /// </summary>
@@ -99,8 +117,11 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         + "Id:" + Id + ","
         + "Title:" + Title + ","
         + "NpcId:" + NpcId + ","
+        + "Repeated:" + Repeated + ","
+        + "PreCondition:" + PreCondition + ","
         + "FriendValue:" + FriendValue + ","
         + "BubbleType:" + BubbleType + ","
+        + "MenuId:" + MenuId + ","
         + "BubbleBg:" + BubbleBg + ","
         + "DialogueContentRes:" + DialogueContentRes + ","
         + "DialogueStartNode:" + DialogueStartNode + ","
