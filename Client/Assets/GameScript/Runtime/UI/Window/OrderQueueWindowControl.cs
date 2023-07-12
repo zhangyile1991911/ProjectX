@@ -29,7 +29,7 @@ public partial class OrderQueueWindow : UIWindow
     {
         base.OnShow(openParam);
         _eventModule = UniModule.GetModule<EventModule>();
-        _eventModule.OrderMealSub.Subscribe(NewOrderMeal).AddTo(handles);
+        _eventModule.OrderMealSub.Subscribe(handleOrderMeal).AddTo(handles);
     }
 
     public override void OnHide()
@@ -42,7 +42,22 @@ public partial class OrderQueueWindow : UIWindow
         base.OnUpdate();
     }
     private List<MealOrderComponent> _mealOrderList;
-    private async void NewOrderMeal(OrderMealInfo mealInfo)
+    private void handleOrderMeal(OrderMealInfo mealInfo)
+    {
+        switch (mealInfo.operation)
+        {
+            case 0:
+                newOrderMeal(mealInfo);
+                break;
+            case 1:
+                delOderMeal(mealInfo);
+                break;
+        }
+        
+       
+    }
+
+    private async void newOrderMeal(OrderMealInfo mealInfo)
     {
         var uiManager = UIManager.Instance;
         var orderPrefab = await uiManager.CreateUIComponent<MealOrderComponent>(null,Tran_Queue,this);
@@ -56,5 +71,17 @@ public partial class OrderQueueWindow : UIWindow
         // Debug.Log($"uiManager.RootCanvas.pixelRect.width ={uiManager.RootCanvas.pixelRect.width}");
         // Debug.Log($"uiManager.RootCanvas.pixelRect.height ={uiManager.RootCanvas.pixelRect.height}");
         _mealOrderList.Add(orderPrefab);
+    }
+
+    private void delOderMeal(OrderMealInfo mealInfo)
+    {
+        foreach (var one in _mealOrderList)
+        {
+            if (one.OrderMealInfo.Equals(mealInfo))
+            {
+                _mealOrderList.Remove(one);
+                break;
+            }
+        }
     }
 }

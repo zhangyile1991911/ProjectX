@@ -42,6 +42,7 @@ public class CharacterEnterScene : CharacterBehaviour
         seq.Append(_restaurantCharacter.transform.DOMove(dest2, 3f));
         seq.OnComplete(() =>
         {
+            _restaurantCharacter.AddAppearCount();
             _restaurantCharacter.CurBehaviour = new CharacterMakeBubble();
         });
         // seq.Complete();
@@ -95,9 +96,15 @@ public class CharacterMakeBubble : CharacterBehaviour
         var minutes = (dateTime - preDateTime).TotalMinutes;
         if (minutes >= 3)
         {
-            var eventModule = UniModule.GetModule<EventModule>();
-            eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
+            // var eventModule = UniModule.GetModule<EventModule>();
+            // eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
+            
             preDateTime = dateTime;
+            var chatId = _restaurantCharacter.GenerateChatId();
+            if (chatId > 0)
+            {
+                EventModule.Instance.CharBubbleTopic.OnNext(chatId);    
+            }
         }
     }
 }
@@ -158,10 +165,18 @@ public class CharacterMute : CharacterBehaviour
 
 public class CharacterLeave : CharacterBehaviour
 {
-    public RestaurantCharacter Char { get; }
+    public RestaurantCharacter Char => _restaurantCharacter;
+    private RestaurantCharacter _restaurantCharacter;
     public void Enter(RestaurantCharacter restaurantCharacter)
     {
-        
+        _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter.Sprite.DOFade(0, 1.5f)
+            .OnComplete(() =>
+            {
+                _restaurantCharacter.LeaveRestaurant();
+                CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
+                _restaurantCharacter = null;
+            });
     }
 
     public void Update()

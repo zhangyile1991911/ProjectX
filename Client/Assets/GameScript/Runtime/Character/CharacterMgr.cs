@@ -17,6 +17,11 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
     public override void OnUpdate()
     {
         base.OnUpdate();
+        // Debug.Log("CharacterMgr");
+        // foreach (var one in _characters.Values)
+        // {
+        //     one.IsTimeToLeave();
+        // }
     }
 
     public override void OnDestroy()
@@ -65,6 +70,18 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         var dataProvider = UniModule.GetModule<DataProviderModule>();
         var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
         return GetCharacterByName(tbCharacter.Name);
+    }
+
+    public void RemoveCharacter(RestaurantCharacter character)
+    {
+        _characters.Remove(character.CharacterName);
+        character.ReleaseCharacter();
+    }
+    
+    public void RemoveCharacter(int cid)
+    {
+        var character = GetCharacterById(cid);
+        RemoveCharacter(character);
     }
     
 }

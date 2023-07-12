@@ -8,7 +8,18 @@ using YooAsset;
 public class OrderMealInfo
 {
     public RestaurantCharacter Customer;
-    public int MealId;
+    public int MenuId;
+    public int operation;// 0 添加 1 删除
+
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null) return false;
+        var tmp = obj as OrderMealInfo;
+        var isSameMenu = tmp.MenuId == this.MenuId;
+        var isSamePerson = tmp.Customer.CharacterId == this.Customer.CharacterId;
+        return isSameMenu && isSamePerson;
+    }
 }
 
 public enum Difficulty

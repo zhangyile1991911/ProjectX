@@ -68,12 +68,12 @@ public class DialogueStateNode : IStateNode
         }
     }
     
-    private void OrderMealCommand(int mealId)
+    private void OrderMealCommand(int meunId)
     {
-        Debug.Log($"OrderMealCommand {mealId}");
+        Debug.Log($"OrderMealCommand {meunId}");
         OrderMealInfo info = new()
         {
-            MealId = mealId,
+            MenuId = meunId,
             Customer = _restaurantCharacter
         };
         EventModule.Instance.OrderMealTopic.OnNext(info);

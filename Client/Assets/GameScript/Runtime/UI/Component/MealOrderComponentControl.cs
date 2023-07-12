@@ -9,6 +9,7 @@ using UnityEngine.UI;
 /// </summary>
 public partial class MealOrderComponent : UIComponent
 {
+    public OrderMealInfo OrderMealInfo => _orderMealInfo;
     private OrderMealInfo _orderMealInfo;
     public MealOrderComponent(GameObject go,UIWindow parent):base(go,parent)
     {

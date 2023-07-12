@@ -11,6 +11,7 @@ using YooAsset;
 
 public class RestaurantCharacter : MonoBehaviour
 {
+    public SpriteRenderer Sprite;
     private SpriteRenderer _spriteRenderer;
     private Transform _emojiNode;
 
@@ -89,6 +90,20 @@ public class RestaurantCharacter : MonoBehaviour
         LoadDataBase();
     }
 
+    public void ReleaseCharacter()
+    {
+        _baseInfo = null;
+        _spriteRenderer.sprite = null;
+        _spriteRenderer = null;
+        _curCommentChatId = 0;
+        curTalkChatId = null;
+        curOrderChatId = 0;
+        curMainLineChatId = 0;
+        UnLoadTableData();
+        UnLoadDataBase();
+        Destroy(gameObject);
+    }
+
     // private async void LoadCharacterSprite()
     // {
     //     var handler = YooAssets.LoadAssetAsync<Sprite>(_baseInfo.ResPath);
@@ -96,7 +111,17 @@ public class RestaurantCharacter : MonoBehaviour
     //     var sp = handler.AssetObject as Sprite;
     //     _spriteRenderer.sprite = sp;
     // }
-
+    private void UnLoadTableData()
+    {
+        _mainLineBubbleTB?.Clear();
+        _mainLineBubbleTB = null;
+        
+        _talkBubbleTB?.Clear();
+        _talkBubbleTB = null;
+        
+        _orderBubbleTB?.Clear();
+        _orderBubbleTB = null;
+    }
     private void LoadTableData()
     {
         _mainLineBubbleTB = new(10);
@@ -125,6 +150,12 @@ public class RestaurantCharacter : MonoBehaviour
         }
     }
 
+    private void UnLoadDataBase()
+    {
+        UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
+        _npcData = null;
+    }
+    
     private void LoadDataBase()
     {
         var userInfoModule = UniModule.GetModule<UserInfoModule>();
@@ -272,6 +303,16 @@ public class RestaurantCharacter : MonoBehaviour
     {
         _receivedFood = food;
         _curCommentChatId = _commentBubbleTB.Id;
-        EventModule.Instance.CharBubbleTopic.OnNext(this);
+        EventModule.Instance.CharBubbleTopic.OnNext(_curCommentChatId);
+    }
+
+    public void IsTimeToLeave()
+    {
+        _behaviour.Update();
+    }
+
+    public void LeaveRestaurant()
+    {
+        _restaurant.ReturnSeat(_seatIndex);
     }
 }
