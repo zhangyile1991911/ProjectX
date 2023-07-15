@@ -39,6 +39,10 @@ namespace cfg.common
         /// 周日
         /// </summary>
         Sunday = 0,
+        /// <summary>
+        /// 全部
+        /// </summary>
+        AllWeekDay = 7,
     }
 
 } 

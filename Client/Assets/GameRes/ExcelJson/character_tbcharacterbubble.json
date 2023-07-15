@@ -5,6 +5,9 @@
     "npc_id": 10001,
     "repeated": false,
     "pre_condition": 0,
+    "week_day": [
+      7
+    ],
     "friend_value": {
       "start_value": 0,
       "end_value": 10
@@ -21,6 +24,9 @@
     "npc_id": 10001,
     "repeated": false,
     "pre_condition": 10001001,
+    "week_day": [
+      7
+    ],
     "friend_value": {
       "start_value": 20,
       "end_value": 30
@@ -37,9 +43,12 @@
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": 10001001,
+    "week_day": [
+      6
+    ],
     "friend_value": {
       "start_value": 5,
-      "end_value": 10
+      "end_value": 99999
     },
     "bubble_type": 2,
     "menu_id": 10002,
@@ -53,9 +62,13 @@
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": 10001002,
+    "week_day": [
+      0,
+      2
+    ],
     "friend_value": {
       "start_value": 5,
-      "end_value": 10
+      "end_value": 99999
     },
     "bubble_type": 2,
     "menu_id": 10002,
@@ -69,6 +82,11 @@
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": 10001002,
+    "week_day": [
+      6,
+      0,
+      1
+    ],
     "friend_value": {
       "start_value": 10,
       "end_value": 20
@@ -85,6 +103,10 @@
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": 10001002,
+    "week_day": [
+      1,
+      2
+    ],
     "friend_value": {
       "start_value": 15,
       "end_value": 30
@@ -101,6 +123,9 @@
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": 0,
+    "week_day": [
+      7
+    ],
     "friend_value": {
       "start_value": 0,
       "end_value": 0
@@ -117,14 +142,17 @@
     "npc_id": 10004,
     "repeated": false,
     "pre_condition": 0,
+    "week_day": [
+      7
+    ],
     "friend_value": {
       "start_value": 0,
-      "end_value": 100
+      "end_value": 10
     },
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "Start"
   },
   {
@@ -133,9 +161,12 @@
     "npc_id": 10004,
     "repeated": true,
     "pre_condition": 10004001,
+    "week_day": [
+      7
+    ],
     "friend_value": {
-      "start_value": 101,
-      "end_value": 200
+      "start_value": 20,
+      "end_value": 30
     },
     "bubble_type": 2,
     "menu_id": 10002,
@@ -149,15 +180,18 @@
     "npc_id": 10004,
     "repeated": false,
     "pre_condition": 10004001,
+    "week_day": [
+      6
+    ],
     "friend_value": {
-      "start_value": 201,
-      "end_value": 300
+      "start_value": 5,
+      "end_value": 99999
     },
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
-    "dialogue_start_node": "Start"
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "complaintA"
   },
   {
     "id": 10004004,
@@ -165,14 +199,18 @@
     "npc_id": 10004,
     "repeated": true,
     "pre_condition": 10001002,
+    "week_day": [
+      0,
+      2
+    ],
     "friend_value": {
-      "start_value": 0,
-      "end_value": 0
+      "start_value": 5,
+      "end_value": 99999
     },
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
-    "dialogue_content_res": "Assets/GameRes/Story/NewProject.yarnproject",
-    "dialogue_start_node": "comment"
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "complaintB"
   }
 ]

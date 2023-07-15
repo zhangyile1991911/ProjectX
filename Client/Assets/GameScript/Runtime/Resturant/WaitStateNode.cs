@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using cfg.common;
 using UniRx;
 using UnityEngine;
@@ -35,6 +35,7 @@ public class WaitStateNode : IStateNode
         UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
+        
         // EventModule.Instance.CharDialogSub.Subscribe(EnterDialogue).AddTo(_handles);
         // CreateBoss();
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
@@ -68,15 +69,24 @@ public class WaitStateNode : IStateNode
     //
     //     man.gameObject.transform.position = new(0,0,-13f);
     // }
-    private async void TimeGoesOn(DateTime dateTime)
+    private void TimeGoesOn(DateTime dateTime)
     { //时间流逝
+        if (TimeToClose(dateTime))
+        {
+            return;
+        }
+        
+        handleCharacter(dateTime);
+    }
+
+    private async void handleCharacter(DateTime dateTime)
+    {
         var ids = pickWhoAppear(dateTime);
         if (ids is not { Count: > 0 }) return;
-        
-        // var module = UniModule.GetModule<DataProviderModule>();
 
         foreach (var CharacterId in ids)
         {
+            
             if (_restaurant.ExistCharacter(CharacterId))
             {
                 continue;
@@ -94,13 +104,51 @@ public class WaitStateNode : IStateNode
             
             man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
         }
-        
     }
 
+    private bool TimeToClose(DateTime dateTime)
+    {
+        //暂定三点关门
+        if (dateTime.Hour == 3)
+        {
+            _machine.ChangeState<StatementStateNode>(null);
+            return true;    
+        }
+        return false;
+    }
+    
     private List<int> pickWhoAppear(DateTime dateTime)
     {
         var module = UniModule.GetModule<DataProviderModule>();
-        return module.AtWeekDay((int)dateTime.DayOfWeek);
+        var characterIds = module.AtWeekDay((int)dateTime.DayOfWeek);
+        var result = new List<int>(4);
+        for (int i = 0; i < characterIds.Count; i++)
+        {
+            var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(characterIds[i]);
+            foreach (var info in tbScheduler.CharacterAppearInfos)
+            {
+                if((DayOfWeek)info.Weekday != dateTime.DayOfWeek)continue;
+
+                if (info.EnterTime.Hour == dateTime.Hour)
+                {
+                    if (dateTime.Minute < info.EnterTime.Minutes) continue;
+                    result.Add(characterIds[i]);
+                    break;
+                }
+                if(info.EnterTime.Hour > dateTime.Hour && dateTime.Hour < info.LeaveTime.Hour)
+                {
+                    result.Add(characterIds[i]);
+                    break;
+                }
+
+                if (dateTime.Hour != info.LeaveTime.Hour) continue;
+                if (dateTime.Minute >= info.LeaveTime.Minutes) continue;
+                result.Add(characterIds[i]);
+                break;
+            }
+        }
+
+        return result;
     }
     
     private void GenerateChatBubble(int chatId)

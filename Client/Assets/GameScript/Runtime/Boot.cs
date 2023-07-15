@@ -27,8 +27,6 @@ public class Boot : MonoBehaviour
         UniModule.CreateModule<Clocker>();
         // UniModule.CreateModule<DialogueModule>();
         
-        
-        
         UniModule.GetModule<UIManager>().OpenUI(UIEnum.BootWindow,null,null);
     }
 

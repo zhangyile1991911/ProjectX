@@ -221,7 +221,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     public void AddSecond(int sec)
     {
-        _userTableData.now += sec;
+        _userTableData.now += sec*1000;
         _sqLite.Update(_userTableData);
     }
 

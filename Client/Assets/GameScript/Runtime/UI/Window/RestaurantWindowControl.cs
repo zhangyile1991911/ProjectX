@@ -51,6 +51,7 @@ public partial class RestaurantWindow : UIWindow
         base.OnShow(openParam);
         Btn_Phone.OnClickAsObservable().Subscribe(ClickPhone).AddTo(handles);
         EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
+        EventModule.Instance.CharacterLeaveSub.Subscribe(RemoveChatBubble).AddTo(uiTran);
         // Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
     }
 

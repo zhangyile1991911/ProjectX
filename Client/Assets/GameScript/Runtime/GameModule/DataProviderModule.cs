@@ -51,6 +51,16 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         return null;
     }
 
+    public CharacterSchedule GetCharacterScheduler(int characterId)
+    {
+        if (_database.TbSchedule.DataMap.ContainsKey(characterId))
+        {
+            return _database.TbSchedule.DataMap[characterId];
+        }
+
+        return null;
+    }
+
     public ItemBaseInfo GetItemBaseInfo(int itemId)
     {
         if (_database.TbItem.DataMap.ContainsKey(itemId))

@@ -21,7 +21,7 @@
     "id": 10002,
     "name": "卖鱼佬",
     "desc": "",
-    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
+    "res_path": "Assets/GameRes/Prefabs/NPC/FishMan.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/FishManPortrait.png",
     "like_flavour": [
       1006,
@@ -57,7 +57,7 @@
     "id": 10004,
     "name": "小萝莉",
     "desc": "",
-    "res_path": "Assets/GameRes/Prefabs/NPC/Character.prefab",
+    "res_path": "Assets/GameRes/Prefabs/NPC/LittleGirl.prefab",
     "portrait_path": "Assets/GameRes/Picture/Character/Portrait/LittleGirlPortrait.png",
     "like_flavour": [
       1006,

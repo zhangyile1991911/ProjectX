@@ -15,6 +15,7 @@ public class DialogueStateNode : IStateNode
     private int _chatId;
     private StateMachine _machine;
     private CharacterDialogWindow _dialogWindow;
+    private Clocker _clocker;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -42,7 +43,10 @@ public class DialogueStateNode : IStateNode
             _dialogWindow = ui as CharacterDialogWindow;
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderMeal",OrderMealCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<string,int>("AddFriend",AddNPCFriendlyValue);
+            _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
         },openData,UILayer.Center);
+        
+        _clocker = UniModule.GetModule<Clocker>();
     }
 
     public void OnUpdate()
@@ -54,18 +58,21 @@ public class DialogueStateNode : IStateNode
         _restaurantEnter.NoFocusOnCharacter();
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterLeave");
 
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
+        _clocker = null;
     }
 
     private void DialogueComplete()
     {
-        _machine.ChangeState<WaitStateNode>();
         var tb = DataProviderModule.Instance.GetCharacterBubble(_chatId);
         if (!tb.Repeated)
         {
             UserInfoModule.Instance.InsertReadDialogueId(_chatId);    
         }
+        _clocker.AddMinute(5);
+        _machine.ChangeState<WaitStateNode>();
     }
     
     private void OrderMealCommand(int meunId)
@@ -86,5 +93,9 @@ public class DialogueStateNode : IStateNode
         if (chr == null) return;
         chr.AddFriendly(val);
     }
-    
+
+    private void CharacterLeave()
+    {
+        _restaurantCharacter.SetLeave();
+    }
 }

@@ -30,6 +30,7 @@ public partial class OrderQueueWindow : UIWindow
         base.OnShow(openParam);
         _eventModule = UniModule.GetModule<EventModule>();
         _eventModule.OrderMealSub.Subscribe(handleOrderMeal).AddTo(handles);
+        _eventModule.CharacterLeaveSub.Subscribe(RemoveCharacterOrder).AddTo(handles);
     }
 
     public override void OnHide()
@@ -81,6 +82,20 @@ public partial class OrderQueueWindow : UIWindow
             {
                 _mealOrderList.Remove(one);
                 break;
+            }
+        }
+    }
+
+    private void RemoveCharacterOrder(RestaurantCharacter character)
+    {
+        var uiManager = UniModule.GetModule<UIManager>();
+        for (int i = _mealOrderList.Count - 1; i >= 0; i--)
+        {
+            var one = _mealOrderList[i];
+            if (one.OrderMealInfo.Customer == character)
+            {
+                _mealOrderList.RemoveAt(i);
+                uiManager.DestroyUIComponent(one);
             }
         }
     }

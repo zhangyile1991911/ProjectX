@@ -93,17 +93,23 @@ public class CharacterMakeBubble : CharacterBehaviour
 
     private void think(DateTime dateTime)
     {
-        var minutes = (dateTime - preDateTime).TotalMinutes;
-        if (minutes >= 3)
+        if (_restaurantCharacter.IsTimeToLeave())
         {
-            // var eventModule = UniModule.GetModule<EventModule>();
-            // eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
-            
-            preDateTime = dateTime;
-            var chatId = _restaurantCharacter.GenerateChatId();
-            if (chatId > 0)
+            _restaurantCharacter.CurBehaviour = new CharacterLeave();
+        }
+        else
+        {
+            var minutes = (dateTime - preDateTime).TotalMinutes;
+            if (minutes >= 3)
             {
-                EventModule.Instance.CharBubbleTopic.OnNext(chatId);    
+                // var eventModule = UniModule.GetModule<EventModule>();
+                // eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
+                preDateTime = dateTime;
+                var chatId = _restaurantCharacter.GenerateChatId();
+                if (chatId > 0)
+                {
+                    EventModule.Instance.CharBubbleTopic.OnNext(chatId);    
+                }
             }
         }
     }
@@ -170,13 +176,14 @@ public class CharacterLeave : CharacterBehaviour
     public void Enter(RestaurantCharacter restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
-        _restaurantCharacter.Sprite.DOFade(0, 1.5f)
-            .OnComplete(() =>
-            {
-                _restaurantCharacter.LeaveRestaurant();
-                CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
-                _restaurantCharacter = null;
-            });
+        _restaurantCharacter.Sprite
+        .DOFade(0, 1.5f)
+        .OnComplete(() =>
+        {
+            _restaurantCharacter.CurBehaviour = null;
+            EventModule.Instance.CharacterLeaveTopic.OnNext(_restaurantCharacter);
+            CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
+        });
     }
 
     public void Update()

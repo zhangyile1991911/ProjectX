@@ -11,7 +11,7 @@ using YooAsset;
 
 public class RestaurantCharacter : MonoBehaviour
 {
-    public SpriteRenderer Sprite;
+    public SpriteRenderer Sprite => _spriteRenderer;
     private SpriteRenderer _spriteRenderer;
     private Transform _emojiNode;
 
@@ -62,19 +62,19 @@ public class RestaurantCharacter : MonoBehaviour
             if (_behaviour == null)
             {
                 _behaviour = value;
-                _behaviour.Enter(this);
+                _behaviour?.Enter(this);
             }
             else
             {
                 _behaviour.Exit();
                 _behaviour = value;
-                _behaviour.Enter(this);
+                _behaviour?.Enter(this);
             }
         }
     }
 
     private CharacterBehaviour _behaviour;
-    private RestaurantEnter _restaurant;
+    // private RestaurantEnter _restaurant;
 
     public void InitCharacter(CharacterBaseInfo info)
     {
@@ -99,6 +99,7 @@ public class RestaurantCharacter : MonoBehaviour
         curTalkChatId = null;
         curOrderChatId = 0;
         curMainLineChatId = 0;
+        // _restaurant = null;
         UnLoadTableData();
         UnLoadDataBase();
         Destroy(gameObject);
@@ -306,13 +307,23 @@ public class RestaurantCharacter : MonoBehaviour
         EventModule.Instance.CharBubbleTopic.OnNext(_curCommentChatId);
     }
 
-    public void IsTimeToLeave()
+    private bool willLeave = false;
+    public void SetLeave()
     {
-        _behaviour.Update();
+        willLeave = true;
+    }
+    
+    public bool IsTimeToLeave()
+    {
+        if (willLeave)
+        {
+            return true;
+        }
+        return false;
     }
 
-    public void LeaveRestaurant()
-    {
-        _restaurant.ReturnSeat(_seatIndex);
-    }
+    // public void LeaveRestaurant()
+    // {
+    //     _restaurant.ReturnSeat(_seatIndex);
+    // }
 }

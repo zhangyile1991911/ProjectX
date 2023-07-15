@@ -6,8 +6,8 @@
       {
         "weekday": 1,
         "enter_time": {
-          "hour": 17,
-          "minutes": 52
+          "hour": 21,
+          "minutes": 1
         },
         "leave_time": {
           "hour": 22,
@@ -17,8 +17,8 @@
       {
         "weekday": 2,
         "enter_time": {
-          "hour": 18,
-          "minutes": 16
+          "hour": 21,
+          "minutes": 36
         },
         "leave_time": {
           "hour": 23,
@@ -26,10 +26,82 @@
         }
       },
       {
+        "weekday": 3,
+        "enter_time": {
+          "hour": 21,
+          "minutes": 45
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 30
+        }
+      },
+      {
+        "weekday": 4,
+        "enter_time": {
+          "hour": 21,
+          "minutes": 50
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 12
+        }
+      },
+      {
         "weekday": 6,
         "enter_time": {
-          "hour": 17,
+          "hour": 22,
+          "minutes": 30
+        },
+        "leave_time": {
+          "hour": 1,
+          "minutes": 1
+        }
+      },
+      {
+        "weekday": 0,
+        "enter_time": {
+          "hour": 21,
+          "minutes": 10
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 10002,
+    "name": "卖鱼佬",
+    "character_appear_infos": [
+      {
+        "weekday": 3,
+        "enter_time": {
+          "hour": 21,
           "minutes": 22
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 0
+        }
+      },
+      {
+        "weekday": 6,
+        "enter_time": {
+          "hour": 22,
+          "minutes": 1
+        },
+        "leave_time": {
+          "hour": 23,
+          "minutes": 30
+        }
+      },
+      {
+        "weekday": 0,
+        "enter_time": {
+          "hour": 21,
+          "minutes": 1
         },
         "leave_time": {
           "hour": 22,
@@ -45,8 +117,30 @@
       {
         "weekday": 3,
         "enter_time": {
-          "hour": 17,
+          "hour": 21,
           "minutes": 22
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 0
+        }
+      },
+      {
+        "weekday": 6,
+        "enter_time": {
+          "hour": 21,
+          "minutes": 15
+        },
+        "leave_time": {
+          "hour": 22,
+          "minutes": 12
+        }
+      },
+      {
+        "weekday": 0,
+        "enter_time": {
+          "hour": 21,
+          "minutes": 1
         },
         "leave_time": {
           "hour": 22,

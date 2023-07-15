@@ -56,9 +56,6 @@ public class RestaurantEnter : MonoBehaviour
             _spawnPoints.Add(spawnGroup.GetChild(i));
         }
         
-        // var _clocker = UniModule.GetModule<Clocker>();
-        // _clocker.Topic.Subscribe(TimeGoesOn).AddTo(gameObject);
-
         _characters = new Dictionary<int, RestaurantCharacter>();
 
         _cookPlayDict = new Dictionary<cookTools, GameObject>();
@@ -71,12 +68,12 @@ public class RestaurantEnter : MonoBehaviour
         _stateMachine.AddNode<DialogueStateNode>();
         _stateMachine.AddNode<PrepareStateNode>();
         _stateMachine.AddNode<ProduceStateNode>();
+        _stateMachine.AddNode<StatementStateNode>();
         
         _stateMachine.Run<WaitStateNode>();
-        
-        
-    }
 
+        EventModule.Instance.CharacterLeaveSub.Subscribe(CharacterLeave).AddTo(this);
+    }
 
     private void Update()
     {
@@ -115,6 +112,11 @@ public class RestaurantEnter : MonoBehaviour
         _emptyPoints.Add(index);
     }
 
+    public void CharacterLeave(RestaurantCharacter character)
+    {
+        ReturnSeat(character.SeatIndex);
+    }
+
     public bool HaveEmptySeat()
     {
         return _emptyPoints.Count > 0;
@@ -145,7 +147,7 @@ public class RestaurantEnter : MonoBehaviour
     {
         foreach (var one in _characters.Values)
         {
-            one.CurBehaviour = new CharacterOnFocus();
+            one.CurBehaviour = new CharacterMakeBubble();
         }
     }
 
@@ -214,58 +216,4 @@ public class RestaurantEnter : MonoBehaviour
         UIManager.Instance.UICamera.transform.position = RestaurantMainCamera.transform.position;
     }
 
-    #region 自定义Command
-    //加载Actor是异步的 可能图片还没加载完 执行了后面的命令
-    //所以加一个计数器 等到人物都加载完后 在执行后面的演出命令
-    //暂时还没想到更好的解决方式
-    // private static uint LoadActorCounter = 0;
-    // [YarnCommand("LoadActor")]
-    // public static async void LoadActor(string nodeName,string characterName,bool show)
-    // {
-    //     var trans = Instance.findNode(nodeName);
-    //     if (trans == null)
-    //     {
-    //         Debug.LogError($"找不到{nodeName}节点");
-    //         return;
-    //     }
-    //
-    //     LoadActorCounter++;
-    //     var spName = string.Concat("Assets/Art/Character/Picture/", characterName,".png");
-    //     var characterSp = await Addressables.LoadAssetAsync<Sprite>(spName).ToUniTask();
-    //     LoadActorCounter--;
-    //     
-    //     var spriteRenderer = trans.GetComponent<SpriteRenderer>();
-    //     spriteRenderer.sprite = characterSp;
-    //     trans.gameObject.SetActive(show);
-    //     // Debug.Log($"LoadActor {show}");
-    // }
-
-    // [YarnCommand("ActorFadeIn")]
-    // public static async void ActorFadeIn(string actorName,float x,float y,float duration)
-    // {
-    //     await UniTask.WaitUntil(()=>LoadActorCounter == 0);
-    //     var actor = Instance.findNode(actorName);
-    //     actor.transform.position = new Vector3(x, y,0);
-    //     var spriteRenderer = actor.GetComponent<SpriteRenderer>();
-    //     spriteRenderer.color = new Color(1,1,1,0);
-    //     spriteRenderer.DOFade(1, duration);
-    //     actor.gameObject.SetActive(true);
-    //     // Debug.Log($"ActorFadeIn");
-    // }
-    
-    // [YarnCommand("CharacterFadeOut")]
-    // public static void ActorFadeOut(string actorName,float x,float y,float duration)
-    // {
-    //     var actor = Instance.findNode(actorName);
-    //     actor.transform.position = new Vector3(x, y,0);
-    //     var spriteRenderer = actor.GetComponent<SpriteRenderer>();
-    //     spriteRenderer.DOFade(0, duration);
-    // }
-    // [YarnCommand("OrderMeal")]
-    // public void OrderMeal(string menuName)
-    // {
-    //     
-    // }
-    #endregion
-    
 }
