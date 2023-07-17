@@ -42,6 +42,7 @@ public class DialogueStateNode : IStateNode
         {
             _dialogWindow = ui as CharacterDialogWindow;
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderMeal",OrderMealCommand);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderDrink",OrderDrinkCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<string,int>("AddFriend",AddNPCFriendlyValue);
             _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
         },openData,UILayer.Center);
@@ -57,6 +58,7 @@ public class DialogueStateNode : IStateNode
     {
         _restaurantEnter.NoFocusOnCharacter();
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderDrink");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterLeave");
 
@@ -75,15 +77,21 @@ public class DialogueStateNode : IStateNode
         _machine.ChangeState<WaitStateNode>();
     }
     
-    private void OrderMealCommand(int meunId)
+    private void OrderMealCommand(int menuId)
     {
-        Debug.Log($"OrderMealCommand {meunId}");
+        Debug.Log($"OrderMealCommand {menuId}");
         OrderMealInfo info = new()
         {
-            MenuId = meunId,
+            MenuId = menuId,
             Customer = _restaurantCharacter
         };
         EventModule.Instance.OrderMealTopic.OnNext(info);
+        _restaurantCharacter.DialogueOrder(menuId);
+    }
+
+    private void OrderDrinkCommand(int drinkId)
+    {
+        
     }
 
     private void AddNPCFriendlyValue(string name,int val)

@@ -22,7 +22,7 @@ public partial class RestaurantWindow : UIWindow
     private List<CookResult> _cookResults;
     private List<DragCookFoodIcon> _dragCookFoodIcons;
     private HashSet<int> _floatingBubbleChatId;
-    private StateMachine _machine;
+    // private StateMachine _machine;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -39,6 +39,9 @@ public partial class RestaurantWindow : UIWindow
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconB.gameObject,this));
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconC.gameObject,this));
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconD.gameObject,this));
+        
+        EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
+        
     }
     
     public override void OnDestroy()
@@ -50,8 +53,9 @@ public partial class RestaurantWindow : UIWindow
     {
         base.OnShow(openParam);
         Btn_Phone.OnClickAsObservable().Subscribe(ClickPhone).AddTo(handles);
-        EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
-        EventModule.Instance.CharacterLeaveSub.Subscribe(RemoveChatBubble).AddTo(uiTran);
+        Btn_Close.OnClickAsObservable().Subscribe(ClickClose).AddTo(handles);
+        
+        EventModule.Instance.CharacterLeaveSub.Subscribe(RemoveChatBubble).AddTo(handles);
         // Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
     }
 
@@ -65,6 +69,26 @@ public partial class RestaurantWindow : UIWindow
         base.OnUpdate();
     }
 
+    private void ClickClose(Unit param)
+    {
+        UIManager.Instance.OpenUI(UIEnum.ConfirmTipsWindow, 
+(IUIBase ui) =>
+            {
+                var win = ui as ConfirmTipsWindow;
+                win.SetTipsInfo("是否现在就要闭店",ClickConfirm,ClickCancel);
+            }, null,UILayer.Top);
+    }
+
+    private void ClickConfirm()
+    {
+        EventModule.Instance.CloseRestaurantTopic.OnNext(Unit.Default);
+    }
+
+    private void ClickCancel()
+    {
+        UIManager.Instance.CloseUI(UIEnum.ConfirmTipsWindow);
+    }
+    
     private void ClickPhone(Unit param)
     {
         UniModule.GetModule<Clocker>().AddOneMinute();

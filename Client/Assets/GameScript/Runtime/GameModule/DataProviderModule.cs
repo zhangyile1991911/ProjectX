@@ -22,6 +22,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         _database = new cfg.Tables(LoadJsonBuf);
 #endif
         initScheduleTable();
+        initCharacterBubble();
         base.OnCreate(this);
     }
 
@@ -95,6 +96,27 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
                 weekdaySchedule[(int)day.Weekday].Add(one.Id);
             }
         }
+    }
+
+    private Dictionary<int, List<CharacterBubble>> characterBubbleDict;
+    private void initCharacterBubble()
+    {
+        characterBubbleDict = new Dictionary<int, List<CharacterBubble>>();
+        foreach (var one in _database.TbCharacterBubble.DataList)
+        {
+            if (!characterBubbleDict.TryGetValue(one.NpcId, out var value))
+            {
+                value = new List<CharacterBubble>();
+                characterBubbleDict.Add(one.NpcId,value);
+            }
+            value.Add(one);
+        }
+    }
+
+    public List<CharacterBubble> GetCharacterBubbleList(int characterId)
+    {
+        characterBubbleDict.TryGetValue(characterId, out var value);
+        return value;
     }
 
     public List<int> AtWeekDay(int weekDay)

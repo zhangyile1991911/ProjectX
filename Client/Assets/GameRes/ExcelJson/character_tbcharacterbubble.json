@@ -16,7 +16,7 @@
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
-    "dialogue_start_node": "Start"
+    "dialogue_start_node": "FirstTalk"
   },
   {
     "id": 10001002,
@@ -35,7 +35,7 @@
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
-    "dialogue_start_node": "Start"
+    "dialogue_start_node": "SecondTalk"
   },
   {
     "id": 10001003,
@@ -149,14 +149,33 @@
       "start_value": 0,
       "end_value": 10
     },
-    "bubble_type": 1,
+    "bubble_type": 3,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
-    "dialogue_start_node": "Start"
+    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_start_node": "LittleGirl_First"
   },
   {
     "id": 10004002,
+    "title": "老板,你好",
+    "npc_id": 10004,
+    "repeated": false,
+    "pre_condition": 10004001,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 10,
+      "end_value": 30
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_start_node": "LittleGirl_Second"
+  },
+  {
+    "id": 10004003,
     "title": "来个蛋炒饭",
     "npc_id": 10004,
     "repeated": true,
@@ -165,8 +184,122 @@
       7
     ],
     "friend_value": {
+      "start_value": 5,
+      "end_value": 99999
+    },
+    "bubble_type": 2,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 10004004,
+    "title": "最近 又被客户...",
+    "npc_id": 10004,
+    "repeated": false,
+    "pre_condition": 0,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 30
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_start_node": "LittleGirl_talkA"
+  },
+  {
+    "id": 10004005,
+    "title": "今天又被喂了奇...",
+    "npc_id": 10004,
+    "repeated": true,
+    "pre_condition": 0,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 45
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_start_node": "LittleGirl_talkB"
+  },
+  {
+    "id": 10004006,
+    "title": "这个菜的口味",
+    "npc_id": 10004,
+    "repeated": true,
+    "pre_condition": 0,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 0
+    },
+    "bubble_type": 4,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_start_node": "LittleGirl_comment"
+  },
+  {
+    "id": 10002001,
+    "title": "这里的新开了一家店啊",
+    "npc_id": 10002,
+    "repeated": false,
+    "pre_condition": 0,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 10
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "Start"
+  },
+  {
+    "id": 10002002,
+    "title": "老板我又来了",
+    "npc_id": 10002,
+    "repeated": false,
+    "pre_condition": 10002001,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
       "start_value": 20,
       "end_value": 30
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "Start"
+  },
+  {
+    "id": 10002003,
+    "title": "来个蛋炒饭",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": 10002001,
+    "week_day": [
+      6
+    ],
+    "friend_value": {
+      "start_value": 5,
+      "end_value": 99999
     },
     "bubble_type": 2,
     "menu_id": 10002,
@@ -175,28 +308,9 @@
     "dialogue_start_node": ""
   },
   {
-    "id": 10004003,
-    "title": "这里什么时候...",
-    "npc_id": 10004,
-    "repeated": false,
-    "pre_condition": 10004001,
-    "week_day": [
-      6
-    ],
-    "friend_value": {
-      "start_value": 5,
-      "end_value": 99999
-    },
-    "bubble_type": 1,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
-    "dialogue_start_node": "complaintA"
-  },
-  {
-    "id": 10004004,
-    "title": "难以描述",
-    "npc_id": 10004,
+    "id": 10002004,
+    "title": "来个拍黄瓜",
+    "npc_id": 10002,
     "repeated": true,
     "pre_condition": 10001002,
     "week_day": [
@@ -207,10 +321,70 @@
       "start_value": 5,
       "end_value": 99999
     },
+    "bubble_type": 2,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 10002005,
+    "title": "老婆又开始唠叨",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": 10001002,
+    "week_day": [
+      6,
+      0,
+      1
+    ],
+    "friend_value": {
+      "start_value": 10,
+      "end_value": 20
+    },
     "bubble_type": 1,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "complaintA"
+  },
+  {
+    "id": 10002006,
+    "title": "小孩子的书包好贵",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": 10001002,
+    "week_day": [
+      1,
+      2
+    ],
+    "friend_value": {
+      "start_value": 15,
+      "end_value": 30
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "complaintB"
+  },
+  {
+    "id": 10002007,
+    "title": "现在学校真是....",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": 0,
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 0
+    },
+    "bubble_type": 4,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_start_node": "ZhangyuComment"
   }
 ]

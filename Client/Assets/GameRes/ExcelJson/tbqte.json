@@ -14,5 +14,21 @@
     "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
     "tag": 1017,
     "key_code": 100
+  },
+  {
+    "id": 3,
+    "name": "加糖",
+    "desc": "按A键/n往菜里加入醋",
+    "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
+    "tag": 1018,
+    "key_code": 97
+  },
+  {
+    "id": 4,
+    "name": "加辣",
+    "desc": "按Q键/n往菜里加入醋",
+    "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
+    "tag": 1020,
+    "key_code": 113
   }
 ]

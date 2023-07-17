@@ -15,6 +15,9 @@ public class StatementStateNode : IStateNode
     public void OnEnter(object param)
     {
         UIManager.Instance.OpenUI(UIEnum.RestaurantStatementWindow, null, null);
+        //todo 清理角色资源
+        //todo 清理菜单
+        //todo 清理
         
     }
 

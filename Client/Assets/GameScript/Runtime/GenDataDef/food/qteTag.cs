@@ -19,6 +19,14 @@ namespace cfg.food
         /// 加醋
         /// </summary>
         Vinegar = 2,
+        /// <summary>
+        /// 加糖
+        /// </summary>
+        Sugar = 3,
+        /// <summary>
+        /// 加辣
+        /// </summary>
+        Spicy = 4,
     }
 
 } 

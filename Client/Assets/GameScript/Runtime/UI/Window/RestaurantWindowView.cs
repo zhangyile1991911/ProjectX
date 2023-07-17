@@ -21,6 +21,7 @@ public partial class RestaurantWindow : UIWindow
 	public Transform Ins_DragCookFoodIconB;
 	public Transform Ins_DragCookFoodIconC;
 	public Transform Ins_DragCookFoodIconD;
+	public Button Btn_Close;
 
 	public override void Init(GameObject go)
 	{
@@ -36,6 +37,7 @@ public partial class RestaurantWindow : UIWindow
 		Ins_DragCookFoodIconB = go.transform.Find("Tran_CookFoodGroup/Ins_DragCookFoodIconB").GetComponent<Transform>();
 		Ins_DragCookFoodIconC = go.transform.Find("Tran_CookFoodGroup/Ins_DragCookFoodIconC").GetComponent<Transform>();
 		Ins_DragCookFoodIconD = go.transform.Find("Tran_CookFoodGroup/Ins_DragCookFoodIconD").GetComponent<Transform>();
+		Btn_Close = go.transform.Find("Btn_Close").GetComponent<Button>();
 
 	}
 }

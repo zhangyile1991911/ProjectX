@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using YooAsset;
+using Object = UnityEngine.Object;
 
 
 public class UIManager : SingletonModule<UIManager>
@@ -29,6 +30,7 @@ public class UIManager : SingletonModule<UIManager>
     public Canvas RootCanvas => _rootCanvas;
     private Canvas _rootCanvas;
 
+    private UIDriver _uiDriver;
     public IUIBase Get(UIEnum uiName)
     {
         IUIBase ui = null;
@@ -150,7 +152,7 @@ public class UIManager : SingletonModule<UIManager>
             .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
         
         var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
-        await handle.ToUniTask();
+        await handle.ToUniTask(_uiDriver);
         
         var uiPrefab = handle.AssetObject;
         var parentNode = getParentNode(layer);
@@ -171,6 +173,7 @@ public class UIManager : SingletonModule<UIManager>
         component?.OnDestroy();
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     public async UniTask<T> CreateUIComponent<T>(UIOpenParam openParam,Transform node,UIWindow parent,bool show=true)where T : UIComponent
     {
         var componentType = typeof(T);
@@ -181,11 +184,11 @@ public class UIManager : SingletonModule<UIManager>
             .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
         
         var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
-        await handle.ToUniTask();
+        await handle.ToUniTask(_uiDriver);
         
         var uiPrefab = handle.AssetObject;
         
-        var uiGameObject = GameObject.Instantiate(uiPrefab,node) as GameObject;
+        var uiGameObject = Object.Instantiate(uiPrefab,node) as GameObject;
         uiGameObject.transform.localPosition = Vector3.zero;
         uiGameObject.transform.localScale = Vector3.one;
         T uiComponent = Activator.CreateInstance(componentType,new object[]{uiGameObject,parent}) as T;
@@ -216,7 +219,9 @@ public class UIManager : SingletonModule<UIManager>
         var root = uiModule.transform.Find("UIRoot");
         _rootCanvasScaler = root.GetComponent<CanvasScaler>();
         _rootCanvas = root.GetComponent<Canvas>();
+        _uiDriver = root.GetComponent<UIDriver>();
 
+        
         var cam = GameObject.Find("UICamera");
         _uiCamera = cam.GetComponent<Camera>();
         

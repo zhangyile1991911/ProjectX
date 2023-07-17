@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using cfg.character;
@@ -7,6 +8,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Yarn.Unity;
 using YooAsset;
+using Random = UnityEngine.Random;
 
 
 public class RestaurantCharacter : MonoBehaviour
@@ -46,14 +48,16 @@ public class RestaurantCharacter : MonoBehaviour
     private CharacterBubble _commentBubbleTB;
     
     //记录当前已经生成的chatid
-    private int _curCommentChatId;
+    private int curCommentChatId;
     private int curMainLineChatId;
     private List<int> curTalkChatId;
     private int curOrderChatId;
     
-    //
+    //收到的料理
     private CookResult _receivedFood = null;
-
+    //记录在对话过程中产生的订单
+    private int _dialogueOrderId;
+    
     public CharacterBehaviour CurBehaviour
     {
         get => _behaviour;
@@ -74,18 +78,20 @@ public class RestaurantCharacter : MonoBehaviour
     }
 
     private CharacterBehaviour _behaviour;
-    // private RestaurantEnter _restaurant;
+    private Clocker _clocker;
 
     public void InitCharacter(CharacterBaseInfo info)
     {
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _emojiNode = transform.Find("EmojiNode");
-        _curCommentChatId = 0;
+        curCommentChatId = 0;
         // LoadCharacterSprite();
         curTalkChatId = new List<int>(5);
         curOrderChatId = 0;
         curMainLineChatId = 0;
+        _dialogueOrderId = 0;
+        _clocker = UniModule.GetModule<Clocker>();
         LoadTableData();
         LoadDataBase();
     }
@@ -95,11 +101,11 @@ public class RestaurantCharacter : MonoBehaviour
         _baseInfo = null;
         _spriteRenderer.sprite = null;
         _spriteRenderer = null;
-        _curCommentChatId = 0;
+        curCommentChatId = 0;
         curTalkChatId = null;
         curOrderChatId = 0;
         curMainLineChatId = 0;
-        // _restaurant = null;
+        _dialogueOrderId = 0;
         UnLoadTableData();
         UnLoadDataBase();
         Destroy(gameObject);
@@ -129,10 +135,9 @@ public class RestaurantCharacter : MonoBehaviour
         _talkBubbleTB = new(10);
         _orderBubbleTB = new(10);
         var dataProvider = UniModule.GetModule<DataProviderModule>();
-        var dataList = dataProvider.DataBase.TbCharacterBubble.DataList;
+        var dataList = dataProvider.GetCharacterBubbleList(CharacterId);
         for (int i = 0; i < dataList.Count; i++)
         {
-            if (dataList[i].NpcId != CharacterId) continue;
             switch (dataList[i].BubbleType)
             {
                 case bubbleType.Talk:
@@ -186,11 +191,26 @@ public class RestaurantCharacter : MonoBehaviour
             var isEnough = Friendliness >= one.FriendValue.StartValue &&
                            Friendliness <= one.FriendValue.EndValue;
             if(!isEnough)continue;
-            var isCondition = one.PreCondition == 0 || UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition);
-            if (isCondition)
+
+            //如果没有前置条件
+            //当前这条有没有读过
+            //如果没有读过就这条
+            if (one.PreCondition == 0)
             {
-                return one.Id;    
+                if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition))
+                {
+                    return one.Id;
+                }
+
+                continue;
             }
+
+            if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition)) continue;
+            if (!UserInfoModule.Instance.HaveReadDialogueId(one.Id))
+            {
+                return one.Id;
+            }
+
         }
 
         return -1;
@@ -199,15 +219,22 @@ public class RestaurantCharacter : MonoBehaviour
     private int generateTalk()
     {
         int index = Random.Range(0, _talkBubbleTB.Count);
-        var isEnough = Friendliness >= _talkBubbleTB[index].FriendValue.StartValue &&
-                       Friendliness <= _talkBubbleTB[index].FriendValue.EndValue;
+
+        var choiced = _talkBubbleTB[index];
+        var isEnough = Friendliness >= choiced.FriendValue.StartValue &&
+                       Friendliness <= choiced.FriendValue.EndValue;
 
         if (!isEnough) return -1;
         
-        var isCondition = _talkBubbleTB[index].PreCondition == 0 || 
-                          UserInfoModule.Instance.HaveReadDialogueId(_talkBubbleTB[index].PreCondition);
+        var isCondition = choiced.PreCondition == 0 || 
+                          UserInfoModule.Instance.HaveReadDialogueId(choiced.PreCondition);
+
+        if (!isCondition) return -1;
         
-        return isCondition ? _talkBubbleTB[index].Id : -1;
+        if (checkWeekday(choiced.WeekDay))
+            return choiced.Id;
+
+        return -1;
     }
 
     private int generateOrderChatId()
@@ -221,20 +248,40 @@ public class RestaurantCharacter : MonoBehaviour
             
             var isCondition = one.PreCondition == 0 || 
                               UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition);
-            if(isCondition)
+            if(!isCondition)continue;
+            
+            if (checkWeekday(one.WeekDay))
                 result.Add(one.Id);
         }
+
+        if (result.Count <= 0) return -1;
 
         var index = Random.Range(0, result.Count);
         return _orderBubbleTB[index].Id;
     }
+
+    private bool checkWeekday(List<WeekDay> weekDays)
+    {
+        if (weekDays.Count == 1)
+        {
+            return weekDays[0] == WeekDay.AllWeekDay;
+        }
+        
+        foreach (var one in weekDays)
+        {
+            if ((DayOfWeek)one == _clocker.NowDateTime.DayOfWeek)
+                return true;
+        }
+
+        return false;
+    }
     
     public int GenerateChatId()
     {
-        if (_curCommentChatId > 0)
+        if (curCommentChatId > 0)
         {
-            var tmp = _curCommentChatId;
-            _curCommentChatId = 0;
+            var tmp = curCommentChatId;
+            curCommentChatId = 0;
             return tmp;
         }
         //气泡生成规则
@@ -260,7 +307,7 @@ public class RestaurantCharacter : MonoBehaviour
         }
         
         //下单
-        if (curOrderChatId <= 0)
+        if (curOrderChatId <= 0 && _dialogueOrderId <= 0)
         {
             curOrderChatId = generateOrderChatId();
             return curOrderChatId;
@@ -288,23 +335,36 @@ public class RestaurantCharacter : MonoBehaviour
     public void InjectVariable(VariableStorageBehaviour storageBehaviour)
     {
         storageBehaviour.SetValue("$friendliness", _npcData.FriendlyValue);
-        storageBehaviour.SetValue("$appear", _npcData.AppearCount);
+        // storageBehaviour.SetValue("$appear", _npcData.AppearCount);
         
         if (_receivedFood != null)
         {
-            var tb = DataProviderModule.Instance.GetCharacterBubble(curOrderChatId);
-            storageBehaviour.SetValue("$orderedId",tb.MenuId);
+            if (curOrderChatId > 0)
+            {
+                var tb = DataProviderModule.Instance.GetCharacterBubble(curOrderChatId);
+                storageBehaviour.SetValue("$orderedId",tb.MenuId);    
+            }
+            else if(_dialogueOrderId > 0)
+            {
+                storageBehaviour.SetValue("$orderedId",_dialogueOrderId);
+            }
+            
             storageBehaviour.SetValue("$foodscore",100);
             storageBehaviour.SetValue("$cookFoodId",_receivedFood.menuId);
             _receivedFood = null;
         }
     }
+
+    public void DialogueOrder(int menuId)
+    {
+        _dialogueOrderId = menuId;
+    }
     
     public void ReceiveFood(CookResult food)
     {
         _receivedFood = food;
-        _curCommentChatId = _commentBubbleTB.Id;
-        EventModule.Instance.CharBubbleTopic.OnNext(_curCommentChatId);
+        curCommentChatId = _commentBubbleTB.Id;
+        EventModule.Instance.CharBubbleTopic.OnNext(curCommentChatId);
     }
 
     private bool willLeave = false;

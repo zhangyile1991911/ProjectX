@@ -1160,7 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showDebug: 1
+  showDebug: 0
   debugTextView: {fileID: 0}
 --- !u!1 &6374942116624161746
 GameObject:
@@ -1770,7 +1770,7 @@ MonoBehaviour:
   onCharacterTyped:
     m_PersistentCalls:
       m_Calls: []
-  typewriterEffectSpeed: 30
+  typewriterEffectSpeed: 15
   holdTime: 1
   autoAdvance: 0
 --- !u!225 &6374942117335729536

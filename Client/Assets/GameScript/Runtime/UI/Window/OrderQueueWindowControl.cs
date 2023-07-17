@@ -10,27 +10,28 @@ using UniRx;
 /// </summary>
 public partial class OrderQueueWindow : UIWindow
 {
-    private EventModule _eventModule;
-    private const float top_padding = 10f;
-    private const float left_padding = 20f;
+    private const float top_padding = -15f;
+    private const float left_padding = 15f;
     public override void OnCreate()
     {
         base.OnCreate();
         _mealOrderList = new List<MealOrderComponent>(10);
-
+        EventModule.Instance.OrderMealSub.Subscribe(handleOrderMeal).AddTo(uiTran);
+        EventModule.Instance.CharacterLeaveSub.Subscribe(RemoveCharacterOrder).AddTo(uiTran);
     }
     
     public override void OnDestroy()
     {
         base.OnDestroy();
+        foreach (var one in _mealOrderList)
+        {
+            
+        }
     }
     
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
-        _eventModule = UniModule.GetModule<EventModule>();
-        _eventModule.OrderMealSub.Subscribe(handleOrderMeal).AddTo(handles);
-        _eventModule.CharacterLeaveSub.Subscribe(RemoveCharacterOrder).AddTo(handles);
     }
 
     public override void OnHide()
@@ -64,13 +65,13 @@ public partial class OrderQueueWindow : UIWindow
         var orderPrefab = await uiManager.CreateUIComponent<MealOrderComponent>(null,Tran_Queue,this);
         Vector3 startPos = new Vector3(
             uiManager.RootCanvas.pixelRect.width, 
-            0,
+            top_padding,
             0);
         Vector3 endPos = new Vector3();
-        endPos.x = _mealOrderList.Count * left_padding;
+        endPos.x = (_mealOrderList.Count+1) * left_padding + _mealOrderList.Count * 100f;
+        endPos.y = top_padding;
+        Debug.Log($"newOrdermeal {endPos}");
         orderPrefab.SetMealOrderInfo(mealInfo,startPos,endPos);
-        // Debug.Log($"uiManager.RootCanvas.pixelRect.width ={uiManager.RootCanvas.pixelRect.width}");
-        // Debug.Log($"uiManager.RootCanvas.pixelRect.height ={uiManager.RootCanvas.pixelRect.height}");
         _mealOrderList.Add(orderPrefab);
     }
 
@@ -98,5 +99,15 @@ public partial class OrderQueueWindow : UIWindow
                 uiManager.DestroyUIComponent(one);
             }
         }
+
+        Vector3 newPos = new Vector3();
+        for (int i = 0; i < _mealOrderList.Count; i++)
+        {
+            var one = _mealOrderList[i];
+            newPos.x = (i+1) * left_padding + i * 100f;
+            newPos.y = top_padding;
+            one.RearrangeOrderInfo(newPos);
+        }
     }
+    
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -115,7 +116,8 @@ public class PortraitLineView : DialogueViewBase
     
     //用来保存当前正在显示的对话内容
     LocalizedLine currentLine = null;
-    private CancellationTokenSource cts;
+    private CancellationTokenSource fadeEffectCts;
+    private CancellationTokenSource typewriteCts;
 
     public Action<string> DialogueLineComplete;
     public Action<string> DialogueLineStar;
@@ -175,19 +177,20 @@ public class PortraitLineView : DialogueViewBase
             lineDoingTween.Restart();
         }
     }
-
+    
     public override async void RunLine(LocalizedLine dialogueLine,Action onDialogueLineFinished)
     {
-        cts?.Dispose();
-        cts = new CancellationTokenSource();
+        // cts?.Dispose();
+        // cts = new CancellationTokenSource();
         
         HandleMarkup(dialogueLine.Text);
-
         await RunLineInternal(dialogueLine,onDialogueLineFinished);
+        
     }
     
     private async UniTask RunLineInternal(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
+        Debug.Log("######RunLineInternal######");
         currentLine = dialogueLine;
         
         DialogueLineStar?.Invoke(dialogueLine.TextID);
@@ -217,6 +220,7 @@ public class PortraitLineView : DialogueViewBase
         }
 
         onDialogueLineFinished();
+        Debug.Log("------RunLineInternal------");
     }
 
     private async UniTask PresentLine(LocalizedLine dialogueLine)
@@ -234,29 +238,35 @@ public class PortraitLineView : DialogueViewBase
         }
 
         lineText.text = dialogueLine.TextWithoutCharacterName.Text;
-        
+
         if (useFadeEffect)
         {//演出渐入效果
-            // Debug.Log($"演出渐入效果");
-            if(cts.IsCancellationRequested) cts = new CancellationTokenSource();
-            await EffectsAsync.FadeAlpha(canvasGroup, 0, 1, fadeInTime,cts);
+            Debug.Log($"开始演出渐入效果");
+            fadeEffectCts = new ();
+            await EffectsAsync.FadeAlpha(canvasGroup, 0, 1, fadeInTime,fadeEffectCts);
+            Debug.Log($"结束演出渐入效果");
         }
         
+
         if (useTypewriterEffect)
         {
+            Debug.Log($"开始演出打字机效果");
             isTyping = true;
             // setting the canvas all back to its defaults because if we didn't also fade we don't have anything visible
             canvasGroup.alpha = 1f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
-            if (cts.IsCancellationRequested) cts = new();
+            
+            typewriteCts = new();
             // Debug.Log($"演出打字机效果");
             await EffectsAsync.Typewriter(
                 lineText,
                 ()=>typewriterEffectSpeed,
                 () => onCharacterTyped.Invoke(),
-                cts);
+                typewriteCts);
+            Debug.Log($"结束演出打字机效果");
         }
+        
     }
 
     public override void DismissLine(Action onDismissalComplete)
@@ -271,13 +281,13 @@ public class PortraitLineView : DialogueViewBase
         var interactable = canvasGroup.interactable;
         canvasGroup.interactable = false;
         
-
         if (useFadeEffect)
         {
-            // Debug.Log($"当前文字展示渐出效果");
-            if (cts.IsCancellationRequested) cts = new ();
-            await EffectsAsync.FadeAlpha(canvasGroup, 1, 0, fadeOutTime,cts);
+            Debug.Log($"开始DismissLineInternal当前文字展示渐出效果");
+            fadeEffectCts = new ();
+            await EffectsAsync.FadeAlpha(canvasGroup, 1, 0, fadeOutTime,fadeEffectCts);
         }
+        Debug.Log($"结束DismissLineInternal当前文字展示渐出效果");
 
         lineDoingTween?.Pause();
         
@@ -292,7 +302,7 @@ public class PortraitLineView : DialogueViewBase
 
     public override void InterruptLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
-        // Debug.Log($"当前文字打断");
+        Debug.Log($"######当前文字打断######");
         currentLine = dialogueLine;
 
         lineText.gameObject.SetActive(true);
@@ -310,17 +320,47 @@ public class PortraitLineView : DialogueViewBase
             isTyping = false;
             return;
         }
-        
-        cts?.Cancel();
-        
+
+        if (fadeEffectCts.IsCancellationRequested)
+        {
+            fadeEffectCts.Cancel();
+            fadeEffectCts = null;    
+        }
+
+        if (typewriteCts.IsCancellationRequested)
+        {
+            typewriteCts.Cancel();
+            typewriteCts = null;    
+        }
+
         onDialogueLineFinished();
+        Debug.Log($"-----当前文字打断-----");
     }
     
     public override void UserRequestedViewAdvancement()
     {
         if (currentLine == null)
             return;
+        Debug.Log("用户前进 UserRequestedViewAdvancement()");
+        
+        if (fadeEffectCts.IsCancellationRequested)
+        {
+            fadeEffectCts.Cancel();
+            fadeEffectCts = null;    
+        }
 
+        if (typewriteCts.IsCancellationRequested)
+        {
+            typewriteCts.Cancel();
+            typewriteCts = null;    
+        }
+        
         requestInterrupt?.Invoke();
+    }
+
+    public override void DialogueComplete()
+    {
+        Debug.Log($"PortraitLineView::DialogueComplete()");
+        // runLineTask.SuppressCancellationThrow();
     }
 }

@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 42e5bcee9d4a32a4c82a2025881d8b3a
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 053561912b1654d80a424bb0696a74ae, type: 3}
+  sourceScripts:
+  - {fileID: 6391573757903218779, guid: 6d01e835aad73e94b8809594a37189c7, type: 3}
+  - {fileID: 6391573757903218779, guid: 1a5c9c9b883e00043a0f84452920f644, type: 3}
+  - {fileID: 6391573757903218779, guid: fdc8e71c4f91b7845994457012d04b60, type: 3}
+  compileErrors: []
+  serializedDeclarations:
+  - name: $friendliness
+    typeName: Number
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in Peter_main.yarn, node Peter_main
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: 1a5c9c9b883e00043a0f84452920f644, type: 3}
+  defaultLanguage: zh-CN
+  languagesToSourceAssets: []
+  useAddressableAssets: 0

@@ -161,6 +161,16 @@ public partial class KitchenWindow : UIWindow
         {
             AddQTE(2);
         }).AddTo(handles);
+        
+        Toggle_C.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
+        {
+            AddQTE(3);
+        }).AddTo(handles);
+        
+        Toggle_D.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
+        {
+            AddQTE(4);
+        }).AddTo(handles);
     }
 
     public override void OnUpdate()
@@ -397,6 +407,8 @@ public partial class KitchenWindow : UIWindow
         _choicedTools = 0;
         Toggle_A.isOn = false;
         Toggle_B.isOn = false;
+        Toggle_C.isOn = false;
+        Toggle_D.isOn = false;
     }
 
     private void AddQTE(int qteId)

@@ -1,15 +1,4 @@
-﻿title: Start
-tags:
-position: 208,-624
----
-<<if $appear == 1>>
-<<jump FirstTalk>>
-<<elseif $appear == 2>> 
-<<jump SecondTalk>>
-<<endif>>
-===
-
-title: FirstTalk
+﻿title: FirstTalk
 position: -53,-392
 ---
 章鱼: 老板，没打烊吧？ 

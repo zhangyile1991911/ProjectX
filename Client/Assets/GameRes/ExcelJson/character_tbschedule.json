@@ -72,45 +72,6 @@
     ]
   },
   {
-    "id": 10002,
-    "name": "卖鱼佬",
-    "character_appear_infos": [
-      {
-        "weekday": 3,
-        "enter_time": {
-          "hour": 21,
-          "minutes": 22
-        },
-        "leave_time": {
-          "hour": 22,
-          "minutes": 0
-        }
-      },
-      {
-        "weekday": 6,
-        "enter_time": {
-          "hour": 22,
-          "minutes": 1
-        },
-        "leave_time": {
-          "hour": 23,
-          "minutes": 30
-        }
-      },
-      {
-        "weekday": 0,
-        "enter_time": {
-          "hour": 21,
-          "minutes": 1
-        },
-        "leave_time": {
-          "hour": 22,
-          "minutes": 0
-        }
-      }
-    ]
-  },
-  {
     "id": 10004,
     "name": "小萝莉",
     "character_appear_infos": [

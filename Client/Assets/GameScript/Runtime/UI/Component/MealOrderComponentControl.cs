@@ -46,6 +46,11 @@ public partial class MealOrderComponent : UIComponent
         _orderMealInfo = info;
         Txt_Name.text = _orderMealInfo.Customer.CharacterName;
         uiRectTran.localPosition = startPos;
-        uiRectTran.DOAnchorPos(endPos,0.5f);
+        uiRectTran.DOAnchorPos(endPos,0.5f).SetAutoKill(true);
+    }
+
+    public void RearrangeOrderInfo(Vector3 endPos)
+    {
+        uiRectTran.DOAnchorPos(endPos,0.5f).SetAutoKill(true);
     }
 }

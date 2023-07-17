@@ -10,9 +10,9 @@ public class EventModule : SingletonModule<EventModule>
     public IObservable<int> CharBubbleSub => _charBubble;
     private Subject<int> _charBubble;
 
-    public IObserver<RestaurantCharacter> CharDialogTopic => _charDialogue;
-    public IObservable<RestaurantCharacter> CharDialogSub => _charDialogue;
-    private Subject<RestaurantCharacter> _charDialogue;
+    // public IObserver<RestaurantCharacter> CharDialogTopic => _charDialogue;
+    // public IObservable<RestaurantCharacter> CharDialogSub => _charDialogue;
+    // private Subject<RestaurantCharacter> _charDialogue;
     
     //当客人离开时候消息
     public IObserver<RestaurantCharacter> CharacterLeaveTopic => _characterLeave;
@@ -41,6 +41,12 @@ public class EventModule : SingletonModule<EventModule>
     public IObserver<Unit> ExitKitchenTopic => _exitKitchen;
     private Subject<Unit> _exitKitchen;
 
+
+    public IObservable<Unit> CloseRestaurantSub => _closeRestaurant;
+    public IObserver<Unit> CloseRestaurantTopic => _closeRestaurant;
+    //玩家主动闭店
+    private Subject<Unit> _closeRestaurant;
+
     public override void OnCreate(object createParam)
     {
         _charBubble = new Subject<int>();
@@ -49,8 +55,9 @@ public class EventModule : SingletonModule<EventModule>
         _cookGameStart = new Subject<bool>();
         _exitKitchen = new Subject<Unit>();
         _cookFinish = new Subject<CookResult>();
-        _charDialogue = new Subject<RestaurantCharacter>();
+        // _charDialogue = new Subject<RestaurantCharacter>();
         _characterLeave = new Subject<RestaurantCharacter>();
+        _closeRestaurant = new();
         base.OnCreate(this);
     }
 
@@ -68,7 +75,8 @@ public class EventModule : SingletonModule<EventModule>
         _cookGameStart.OnCompleted();
         _exitKitchen.OnCompleted();
         _cookFinish.OnCompleted();
-        _charDialogue.OnCompleted();
+        // _charDialogue.OnCompleted();
         _characterLeave.OnCompleted();
+        _closeRestaurant.OnCompleted();
     }
 }

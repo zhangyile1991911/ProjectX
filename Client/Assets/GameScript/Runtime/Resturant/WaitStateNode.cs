@@ -35,7 +35,7 @@ public class WaitStateNode : IStateNode
         UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
-        
+        EventModule.Instance.CloseRestaurantSub.Subscribe(CloseRestaurant).AddTo(_handles);
         // EventModule.Instance.CharDialogSub.Subscribe(EnterDialogue).AddTo(_handles);
         // CreateBoss();
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
@@ -49,26 +49,12 @@ public class WaitStateNode : IStateNode
     
     public void OnUpdate()
     {
-        // foreach (var one in _restaurant.CharacterEnumerable)
-        // {
-        //     one.CurBehaviour.Update();
-        // }
         if (Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.D))
         {
             _machine.ChangeState<PrepareStateNode>();            
         }
     }
-
-    // private async void CreateBoss()
-    // {
-    //     var man = CharacterMgr.Instance.GetCharacterById(10005);
-    //     if (man == null)
-    //     {
-    //         man = await CharacterMgr.Instance.CreateCharacter(10005);    
-    //     }
-    //
-    //     man.gameObject.transform.position = new(0,0,-13f);
-    // }
+    
     private void TimeGoesOn(DateTime dateTime)
     { //时间流逝
         if (TimeToClose(dateTime))
@@ -117,33 +103,35 @@ public class WaitStateNode : IStateNode
         return false;
     }
     
-    private List<int> pickWhoAppear(DateTime dateTime)
+    private List<int> pickWhoAppear(DateTime nowTime)
     {
-        var module = UniModule.GetModule<DataProviderModule>();
-        var characterIds = module.AtWeekDay((int)dateTime.DayOfWeek);
+        var characterIds = DataProviderModule.Instance.AtWeekDay((int)nowTime.DayOfWeek);
         var result = new List<int>(4);
-        for (int i = 0; i < characterIds.Count; i++)
+        foreach (var cid in characterIds)
         {
-            var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(characterIds[i]);
+            var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
             foreach (var info in tbScheduler.CharacterAppearInfos)
             {
-                if((DayOfWeek)info.Weekday != dateTime.DayOfWeek)continue;
+                if((DayOfWeek)info.Weekday != nowTime.DayOfWeek)continue;
 
-                if (info.EnterTime.Hour == dateTime.Hour)
+                if (info.EnterTime.Hour == nowTime.Hour)
                 {
-                    if (dateTime.Minute < info.EnterTime.Minutes) continue;
-                    result.Add(characterIds[i]);
-                    break;
-                }
-                if(info.EnterTime.Hour > dateTime.Hour && dateTime.Hour < info.LeaveTime.Hour)
-                {
-                    result.Add(characterIds[i]);
+                    if (nowTime.Minute < info.EnterTime.Minutes) continue;
+                    result.Add(cid);
                     break;
                 }
 
-                if (dateTime.Hour != info.LeaveTime.Hour) continue;
-                if (dateTime.Minute >= info.LeaveTime.Minutes) continue;
-                result.Add(characterIds[i]);
+                var startHour = info.EnterTime.Hour < 6 ? info.EnterTime.Hour + 24 : info.EnterTime.Hour;
+                var leaveHour = info.LeaveTime.Hour < 6 ? info.LeaveTime.Hour + 24 : info.LeaveTime.Hour;
+                if(nowTime.Hour > startHour  && nowTime.Hour < leaveHour)
+                {
+                    result.Add(cid);
+                    break;
+                }
+
+                if (nowTime.Hour != info.LeaveTime.Hour) continue;
+                if (nowTime.Minute >= info.LeaveTime.Minutes) continue;
+                result.Add(cid);
                 break;
             }
         }
@@ -159,6 +147,12 @@ public class WaitStateNode : IStateNode
         {
             _restaurantWindow.GenerateChatBubble(chatId,restaurantCharacter,OnClickBubble);
         }
+    }
+
+    private void CloseRestaurant(Unit param)
+    {
+        Debug.Log("WaitStateNode CloseRestaurant");
+        _machine.ChangeState<StatementStateNode>(null);
     }
 
     private void OnClickBubble(ChatBubble bubble)
