@@ -41,6 +41,23 @@ public class Clocker : IModule
         AddSecond(i*60);
     }
 
+    public void MoveToNextDay()
+    {
+        DateTime nextDay;
+        if (_nowDate.Hour <= 23)
+        { 
+            nextDay = _nowDate.AddDays(1);
+            nextDay = new DateTime(nextDay.Year,nextDay.Month,nextDay.Day,21,0,0);
+        }
+        else
+        {
+            nextDay = new DateTime(_nowDate.Year,_nowDate.Month,_nowDate.Day,21,0,0);   
+        }
+
+        var distance = (nextDay - _nowDate).TotalSeconds;
+        AddSecond((int)distance);
+    }
+
     public void OnUpdate()
     {
         

@@ -14,20 +14,52 @@ public class StatementStateNode : IStateNode
 
     public void OnEnter(object param)
     {
-        UIManager.Instance.OpenUI(UIEnum.RestaurantStatementWindow, null, null);
-        //todo 清理角色资源
-        //todo 清理菜单
-        //todo 清理
-        
+        var openData = new FlowControlWindowData();
+        openData.StateMachine = _machine;
+        UIManager.Instance.OpenUI(UIEnum.RestaurantStatementWindow, null, openData);
     }
 
     public void OnUpdate()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _machine.ChangeState<WaitStateNode>();
+        }
     }
 
     public void OnExit()
     {
         UIManager.Instance.CloseUI(UIEnum.RestaurantStatementWindow);
+        
+        //清理角色资源
+        CharacterMgr.Instance.ClearAllCharacter();
+        //清理下单条
+        UIManager.Instance.DestroyUI(UIEnum.OrderQueueWindow);
+        
+        //计算收入
+        calculate();
+        UserInfoModule.Instance.ClearRestaurantData();
+        //日期往前走
+        handleDate();
+    }
+
+    private void calculate()
+    {//结算
+        var soldMenuId = UserInfoModule.Instance.GetRestaurantSoldMenuId();
+        int total = 0;
+        foreach (var id in soldMenuId)
+        {
+            var itemTb = DataProviderModule.Instance.GetItemBaseInfo(id);
+            total += itemTb.Sell;
+        }
+
+        UserInfoModule.Instance.AddMoney(total);
+        UserInfoModule.Instance.ClearRestaurantData();
+    }
+
+    private void handleDate()
+    {
+        var clocker = UniModule.GetModule<Clocker>();
+        clocker.MoveToNextDay();
     }
 }

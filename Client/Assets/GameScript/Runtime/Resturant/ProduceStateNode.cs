@@ -24,10 +24,12 @@ public class ProduceStateNode : IStateNode
         _data = param as PickFoodAndTools;
         // var menuTb = DataProviderModule.Instance.GetMenuInfo(_data.MenuId);
         GameObject go = null;
+        var openWindowParam = new CookWindowParamData();
+        openWindowParam.StateMachine = _machine;
         switch (_data.CookTools)
         {
             case cookTools.Cook:
-                await UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,null,UILayer.Bottom);
+                await UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,openWindowParam,UILayer.Bottom);
                 go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
                 // go = await _restaurant.LoadCookGamePrefab(_data.CookTools);
                 _fryModule = go.GetComponent<FryModule>();
@@ -41,10 +43,10 @@ public class ProduceStateNode : IStateNode
         
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
         
-        EventModule.Instance.ExitKitchenSub.Subscribe(_ =>
-        {
-            _machine.ChangeState<PrepareStateNode>();
-        }).AddTo(_handle);
+        // EventModule.Instance.ExitKitchenSub.Subscribe(_ =>
+        // {
+        //     _machine.ChangeState<PrepareStateNode>();
+        // }).AddTo(_handle);
 
         EventModule.Instance.CookGameStartSub.Subscribe(_ =>
         {
@@ -76,6 +78,9 @@ public class ProduceStateNode : IStateNode
     
     public void OnUpdate()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _machine.ChangeState<PrepareStateNode>();
+        }
     }
 }

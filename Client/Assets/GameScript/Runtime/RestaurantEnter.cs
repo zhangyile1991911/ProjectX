@@ -31,7 +31,7 @@ public class RestaurantEnter : MonoBehaviour
 
     private List<int> _emptyPoints;
 
-    public IEnumerable<RestaurantCharacter> CharacterEnumerable => _characters.Values;
+    // public IEnumerable<RestaurantCharacter> CharacterEnumerable => _characters.Values;
     private Dictionary<int,RestaurantCharacter> _characters;
 
     // private RestaurantWindow _restaurantWindow;
@@ -115,6 +115,7 @@ public class RestaurantEnter : MonoBehaviour
     public void CharacterLeave(RestaurantCharacter character)
     {
         ReturnSeat(character.SeatIndex);
+        _characters.Remove(character.CharacterId);
     }
 
     public bool HaveEmptySeat()
@@ -178,6 +179,16 @@ public class RestaurantEnter : MonoBehaviour
         _cookPlayDict.Remove(tools);
     }
 
+    public void CloseRestaurant()
+    {
+        _emptyPoints.Clear();
+        for (int i = 0;i < _seatPoints.Count;i++)
+        {
+            _emptyPoints.Add(i);
+        }
+        _characters.Clear();
+    }
+    
     public async UniTask<GameObject> ShowCookGamePrefab(cookTools tools)
     {
         if (_cookPlayDict.TryGetValue(tools, out var prefab))

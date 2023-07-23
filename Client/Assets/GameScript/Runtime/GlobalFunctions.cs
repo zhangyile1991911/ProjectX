@@ -5,9 +5,26 @@ using UnityEngine;
 using YooAsset;
 
 
+public class CookWindowParamData:UIOpenParam
+{
+    public StateMachine StateMachine;
+}
+
+public class FlowControlWindowData : UIOpenParam
+{
+    public StateMachine StateMachine;
+}
+
+public class DialogueData:UIOpenParam
+{
+    public RestaurantCharacter Character;
+    public int FriendValue;
+}
+
 public class OrderMealInfo
 {
-    public RestaurantCharacter Customer;
+    // public RestaurantCharacter Customer;
+    public int CharacterId;
     public int MenuId;
     public int operation;// 0 添加 1 删除
 
@@ -16,9 +33,9 @@ public class OrderMealInfo
     {
         if (obj == null) return false;
         var tmp = obj as OrderMealInfo;
-        var isSameMenu = tmp.MenuId == this.MenuId;
-        var isSamePerson = tmp.Customer.CharacterId == this.Customer.CharacterId;
-        return isSameMenu && isSamePerson;
+        // var isSameMenu = tmp.MenuId == this.MenuId;
+        // var isSamePerson = tmp.CharacterId == this.CharacterId;
+        return tmp.CharacterId == this.CharacterId;
     }
 }
 
@@ -37,13 +54,7 @@ public class PickFoodAndTools
 }
 
 //炒完的菜
-public class CookResult
-{
-    public int menuId;
-    public float CompletePercent;
-    public HashSet<cfg.food.flavorTag> Tags;
-    public Dictionary<int, bool> QTEResult;//int = QTEId
-}
+
 
 public static class GlobalFunctions
 {

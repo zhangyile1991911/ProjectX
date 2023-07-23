@@ -20,11 +20,12 @@ public partial class ClockWidget : UIComponent
     {
         base.OnCreate();
         var clocker = UniModule.GetModule<Clocker>();
-        Txt_timer.text = ZString.Format("{0}:{1:D2}",clocker.NowDateTime.Hour,clocker.NowDateTime.Minute);
+        Txt_timer.text = ZString.Format("{0:D2}:{1:D2}",clocker.NowDateTime.Hour,clocker.NowDateTime.Minute);
         Txt_weekday.text = WeekDay(clocker.NowDateTime.DayOfWeek);
         clocker.Topic.Subscribe(nowms =>
         {
-            Txt_timer.text = ZString.Format("{0}:{1:D2}",nowms.Hour,nowms.Minute);
+            Txt_weekday.text = WeekDay(clocker.NowDateTime.DayOfWeek);
+            Txt_timer.text = ZString.Format("{0:D2}:{1:D2}",nowms.Hour,nowms.Minute);
         }).AddTo(uiTran);
     }
 
@@ -34,11 +35,11 @@ public partial class ClockWidget : UIComponent
         {
             case DayOfWeek.Monday:
                 return "周一";
-            case DayOfWeek.Thursday:
+            case DayOfWeek.Tuesday:
                 return "周二";
             case DayOfWeek.Wednesday:
                 return "周三";
-            case DayOfWeek.Tuesday:
+            case DayOfWeek.Thursday:
                 return "周四";
             case DayOfWeek.Friday:
                 return "周五";

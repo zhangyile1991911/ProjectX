@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
+
 public partial class RestaurantWindow : UIWindow
 {
-    class ChatBubbleComparer : Comparer<ChatBubble>
-    {
-        public override int Compare(ChatBubble x, ChatBubble y)
-        {
-            return 1;
-        }
-    }
+    // class ChatBubbleComparer : Comparer<ChatBubble>
+    // {
+    //     public override int Compare(ChatBubble x, ChatBubble y)
+    //     {
+    //         return 1;
+    //     }
+    // }
     private ClockWidget _clockWidget;
     
     private List<ChatBubble> _bubbleList;
@@ -41,17 +43,18 @@ public partial class RestaurantWindow : UIWindow
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconD.gameObject,this));
         
         EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
-        
     }
     
     public override void OnDestroy()
     {
         base.OnDestroy();
     }
-    
+
+    private FlowControlWindowData openData;
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
+        openData = openParam as FlowControlWindowData;
         Btn_Phone.OnClickAsObservable().Subscribe(ClickPhone).AddTo(handles);
         Btn_Close.OnClickAsObservable().Subscribe(ClickClose).AddTo(handles);
         
@@ -81,7 +84,9 @@ public partial class RestaurantWindow : UIWindow
 
     private void ClickConfirm()
     {
-        EventModule.Instance.CloseRestaurantTopic.OnNext(Unit.Default);
+        UIManager.Instance.CloseUI(UIEnum.ConfirmTipsWindow);
+        // EventModule.Instance.CloseRestaurantTopic.OnNext(Unit.Default);
+        openData.StateMachine.ChangeState<StatementStateNode>();
     }
 
     private void ClickCancel()
@@ -144,7 +149,16 @@ public partial class RestaurantWindow : UIWindow
         if (_cookResults.Count >= 4) return;
         _cookResults.Add(result);
         var index = _cookResults.Count - 1;
-        _dragCookFoodIcons[index].ShowFoodIcon(result);
+        _dragCookFoodIcons[index].ShowFoodIcon(result,soldCustomerFood);
     }
 
+    private void soldCustomerFood(CookResult result,int characterId)
+    {
+        UserInfoModule.Instance.SoldMealId(result.menuId);
+        OrderMealInfo info = new();
+        info.MenuId = result.menuId;
+        info.operation = 1;
+        info.CharacterId = characterId;
+        EventModule.Instance.OrderMealTopic.OnNext(info);
+    }
 }

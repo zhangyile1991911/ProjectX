@@ -18,12 +18,12 @@ public partial class MealOrderComponent : UIComponent
 
     public override void OnCreate()
     {
-        
+        base.OnCreate();
     }
     
     public override void OnDestroy()
     {
-        
+        base.OnDestroy();
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -44,7 +44,8 @@ public partial class MealOrderComponent : UIComponent
     public void SetMealOrderInfo(OrderMealInfo info,Vector3 startPos,Vector3 endPos)
     {
         _orderMealInfo = info;
-        Txt_Name.text = _orderMealInfo.Customer.CharacterName;
+        var tbCharacter = DataProviderModule.Instance.GetCharacterBaseInfo(_orderMealInfo.CharacterId);
+        Txt_Name.text = tbCharacter.Name;
         uiRectTran.localPosition = startPos;
         uiRectTran.DOAnchorPos(endPos,0.5f).SetAutoKill(true);
     }

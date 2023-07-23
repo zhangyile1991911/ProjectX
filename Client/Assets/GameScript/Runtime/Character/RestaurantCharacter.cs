@@ -5,6 +5,7 @@ using cfg.character;
 using cfg.common;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
+using UniRx;
 using UnityEngine;
 using Yarn.Unity;
 using YooAsset;
@@ -17,10 +18,7 @@ public class RestaurantCharacter : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Transform _emojiNode;
 
-    public Vector3 EmojiWorldPosition
-    {
-        get => _emojiNode.transform.position;
-    }
+    public Transform EmojiNode => _emojiNode;
 
     public CharacterBaseInfo TBBaseInfo => _baseInfo;
 
@@ -52,11 +50,15 @@ public class RestaurantCharacter : MonoBehaviour
     private int curMainLineChatId;
     private List<int> curTalkChatId;
     private int curOrderChatId;
-    
+
+    private int curOrderMenuId;
     //收到的料理
     private CookResult _receivedFood = null;
     //记录在对话过程中产生的订单
-    private int _dialogueOrderId;
+    public int DialogueOrder
+    {
+        set => curOrderMenuId = value;
+    }
     
     public CharacterBehaviour CurBehaviour
     {
@@ -79,6 +81,7 @@ public class RestaurantCharacter : MonoBehaviour
 
     private CharacterBehaviour _behaviour;
     private Clocker _clocker;
+    private int foodScore;
 
     public void InitCharacter(CharacterBaseInfo info)
     {
@@ -90,7 +93,8 @@ public class RestaurantCharacter : MonoBehaviour
         curTalkChatId = new List<int>(5);
         curOrderChatId = 0;
         curMainLineChatId = 0;
-        _dialogueOrderId = 0;
+        curOrderMenuId = 0;
+        foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
         LoadTableData();
         LoadDataBase();
@@ -105,7 +109,8 @@ public class RestaurantCharacter : MonoBehaviour
         curTalkChatId = null;
         curOrderChatId = 0;
         curMainLineChatId = 0;
-        _dialogueOrderId = 0;
+        foodScore = 0;
+        curOrderMenuId = 0;
         UnLoadTableData();
         UnLoadDataBase();
         Destroy(gameObject);
@@ -257,6 +262,7 @@ public class RestaurantCharacter : MonoBehaviour
         if (result.Count <= 0) return -1;
 
         var index = Random.Range(0, result.Count);
+        curOrderMenuId = _orderBubbleTB[index].MenuId;
         return _orderBubbleTB[index].Id;
     }
 
@@ -307,7 +313,7 @@ public class RestaurantCharacter : MonoBehaviour
         }
         
         //下单
-        if (curOrderChatId <= 0 && _dialogueOrderId <= 0)
+        if (curOrderChatId <= 0)
         {
             curOrderChatId = generateOrderChatId();
             return curOrderChatId;
@@ -339,32 +345,44 @@ public class RestaurantCharacter : MonoBehaviour
         
         if (_receivedFood != null)
         {
-            if (curOrderChatId > 0)
-            {
-                var tb = DataProviderModule.Instance.GetCharacterBubble(curOrderChatId);
-                storageBehaviour.SetValue("$orderedId",tb.MenuId);    
-            }
-            else if(_dialogueOrderId > 0)
-            {
-                storageBehaviour.SetValue("$orderedId",_dialogueOrderId);
-            }
-            
-            storageBehaviour.SetValue("$foodscore",100);
+            storageBehaviour.SetValue("$orderedId",curOrderMenuId);
+            storageBehaviour.SetValue("$foodscore",foodScore);
             storageBehaviour.SetValue("$cookFoodId",_receivedFood.menuId);
             _receivedFood = null;
         }
     }
 
-    public void DialogueOrder(int menuId)
-    {
-        _dialogueOrderId = menuId;
-    }
+    // public void DialogueOrder(int menuId)
+    // {
+    //     _dialogueOrderId = menuId;
+    // }
     
     public void ReceiveFood(CookResult food)
     {
         _receivedFood = food;
         curCommentChatId = _commentBubbleTB.Id;
         EventModule.Instance.CharBubbleTopic.OnNext(curCommentChatId);
+        commentFood(food);
+    }
+
+    private void commentFood(CookResult food)
+    {
+        foodScore = 0;
+        //时间内完成获得50分基础分
+        foodScore = food.CompletePercent >= 1.0 ? 50 : 0;
+        //标签评分：每个正向标签+10分，每个负面标签-10分，无关联标签0分
+        foreach (var tag in food.Tags)
+        {
+            foodScore += TBBaseInfo.LikeFlavour.Contains(tag) ? 10 : 0;
+            foodScore += TBBaseInfo.UnlikeFlavour.Contains(tag) ? -10 : 0;
+        }
+        //QTE评分：完成一个+5分 失败一个-5分
+        foreach (var success in food.QTEResult.Values)
+        {
+            foodScore += success ? 5 : -5;
+        }
+        
+        
     }
 
     private bool willLeave = false;
@@ -381,9 +399,4 @@ public class RestaurantCharacter : MonoBehaviour
         }
         return false;
     }
-
-    // public void LeaveRestaurant()
-    // {
-    //     _restaurant.ReturnSeat(_seatIndex);
-    // }
 }

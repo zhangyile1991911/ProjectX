@@ -22,8 +22,7 @@ public partial class PhoneWindow : UIWindow
         
         var newsAPP = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
         newsAPP.SetAPPInfo("新闻",OnClickNewsApp);
-        _appList.Add(newsAPP);
-        
+        _appList.Add(newsAPP);    
         
     }
     
@@ -79,6 +78,6 @@ public partial class PhoneWindow : UIWindow
             NewsApp.OnShow(null);
             _clocker.AddSecond(10);
         }
-        
     }
+    
 }

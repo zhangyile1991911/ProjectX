@@ -13,6 +13,7 @@ using YooAsset;
 public partial class FryingFoodWindow : UIWindow
 {
     private RectTransform rect_qteArea;
+    private StateMachine _stateMachine;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -31,11 +32,14 @@ public partial class FryingFoodWindow : UIWindow
         Btn_Start.OnClickAsObservable().Subscribe(ClickStart).AddTo(handles);
         Btn_Close.OnClickAsObservable().Subscribe(ClickFinish).AddTo(handles);
         Tran_Result.gameObject.SetActive(false);
+        var tmp = openParam as CookWindowParamData;
+        _stateMachine = tmp.StateMachine;
     }
 
     public override void OnHide()
     {
         base.OnHide();
+        _stateMachine = null;
         Btn_Start.gameObject.SetActive(true);
         Slider_Progress.gameObject.SetActive(false);
         Slider_Temperature.gameObject.SetActive(false);
@@ -165,7 +169,9 @@ public partial class FryingFoodWindow : UIWindow
     
     private void ClickFinish(Unit param)
     {
-        EventModule.Instance.ExitKitchenTopic.OnNext(Unit.Default);
+        // EventModule.Instance.ExitKitchenTopic.OnNext(Unit.Default);
+        _stateMachine.ChangeState<PrepareStateNode>();
+        
         Btn_Start.gameObject.SetActive(true);
         Slider_Progress.gameObject.SetActive(false);
         Slider_Temperature.gameObject.SetActive(false);

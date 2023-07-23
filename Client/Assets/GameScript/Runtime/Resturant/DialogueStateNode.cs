@@ -1,4 +1,6 @@
 
+using Cysharp.Threading.Tasks;
+using PlasticGui.WorkspaceWindow.NotificationBar;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -83,10 +85,10 @@ public class DialogueStateNode : IStateNode
         OrderMealInfo info = new()
         {
             MenuId = menuId,
-            Customer = _restaurantCharacter
+            CharacterId = _restaurantCharacter.CharacterId
         };
         EventModule.Instance.OrderMealTopic.OnNext(info);
-        _restaurantCharacter.DialogueOrder(menuId);
+        _restaurantCharacter.DialogueOrder = menuId;
     }
 
     private void OrderDrinkCommand(int drinkId)
@@ -100,10 +102,24 @@ public class DialogueStateNode : IStateNode
         var chr = mgr.GetCharacterByName(name);
         if (chr == null) return;
         chr.AddFriendly(val);
+        PlayAddFriend(chr,val);
+        // DialogueNotification notification = new ();
+        // notification.Character = chr;
+        // notification.FriendValue = val;
+        // EventModule.Instance.DialogueMsgTopic.OnNext(notification);
+
     }
 
     private void CharacterLeave()
     {
         _restaurantCharacter.SetLeave();
+    }
+
+    private void PlayAddFriend(RestaurantCharacter character,int val)
+    {
+        var openParam = new DialogueData();
+        openParam.Character = character;
+        openParam.FriendValue = val;
+        UIManager.Instance.CreateTip<TipAddFriendValue>(openParam).Forget();
     }
 }

@@ -38,7 +38,7 @@ public class ComicView : DialogueViewBase
         {
             Img_display.sprite = sp.AssetObject as Sprite;
             Img_display.gameObject.SetActive(true);
-            Img_display.SetNativeSize();
+            // Img_display.SetNativeSize();
             // await UniTask.Delay(duration);
             // Img_display.gameObject.SetActive(false);
             onDialogueLineFinished();

@@ -25,19 +25,21 @@ public class WaitStateNode : IStateNode
     
     public void OnEnter(object param = null)
     {
-
         var _clocker = UniModule.GetModule<Clocker>();
         _clocker.Topic.Subscribe(TimeGoesOn).AddTo(_handles);
-
-        // _fiveSecondTimer = Observable.Interval(TimeSpan.FromSeconds(5)).Subscribe(fiveSecondLoop);
         
-        UIManager.Instance.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, null);
+        var openData = new FlowControlWindowData();
+        openData.StateMachine = _machine;
+        UIManager.Instance.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, openData);
         UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
-        EventModule.Instance.CloseRestaurantSub.Subscribe(CloseRestaurant).AddTo(_handles);
-        // EventModule.Instance.CharDialogSub.Subscribe(EnterDialogue).AddTo(_handles);
-        // CreateBoss();
+        // EventModule.Instance.CloseRestaurantSub.Subscribe(CloseRestaurant).AddTo(_handles);
+        EventModule.Instance.CharacterLeaveSub.Subscribe(character =>
+        {
+            UserInfoModule.Instance.RemoveWaitingCharacter(character.CharacterId);
+        }).AddTo(_handles);
+        
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
     }
 
@@ -89,6 +91,9 @@ public class WaitStateNode : IStateNode
             var spawnPoint = _restaurant.RandSpawnPoint();
             
             man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
+
+            UserInfoModule.Instance.AddCharacterArrived(CharacterId);
+            UserInfoModule.Instance.AddWaitingCharacter(CharacterId);
         }
     }
 
@@ -98,7 +103,7 @@ public class WaitStateNode : IStateNode
         if (dateTime.Hour == 3)
         {
             _machine.ChangeState<StatementStateNode>(null);
-            return true;    
+            return true;
         }
         return false;
     }
@@ -109,6 +114,9 @@ public class WaitStateNode : IStateNode
         var result = new List<int>(4);
         foreach (var cid in characterIds)
         {
+            var arrived = UserInfoModule.Instance.RestaurantCharacterArrived(cid);
+            if(arrived)continue;
+            
             var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
             foreach (var info in tbScheduler.CharacterAppearInfos)
             {
@@ -149,11 +157,11 @@ public class WaitStateNode : IStateNode
         }
     }
 
-    private void CloseRestaurant(Unit param)
-    {
-        Debug.Log("WaitStateNode CloseRestaurant");
-        _machine.ChangeState<StatementStateNode>(null);
-    }
+    // private void CloseRestaurant(Unit param)
+    // {
+    //     Debug.Log("WaitStateNode CloseRestaurant");
+    //     _machine.ChangeState<StatementStateNode>(null);
+    // }
 
     private void OnClickBubble(ChatBubble bubble)
     {
@@ -179,7 +187,8 @@ public class WaitStateNode : IStateNode
                 OrderMealInfo info = new()
                 {
                     MenuId = tbbubble.MenuId,
-                    Customer = bubble.Owner
+                    CharacterId = bubble.Owner.CharacterId,
+                    
                 };
                 EventModule.Instance.OrderMealTopic.OnNext(info);
                 break;

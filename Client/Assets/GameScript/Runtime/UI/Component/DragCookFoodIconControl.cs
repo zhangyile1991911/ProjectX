@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -18,6 +19,8 @@ public partial class DragCookFoodIcon : UIComponent
     private ReactiveProperty<bool> _canDrag;
     private Camera _mainCamera;
     private CookResult _cookResult;
+
+    public Action<CookResult,int> GiveAction;
     public override void OnCreate()
     {
         _dragableComp = Img_Icon.GetComponent<UIDragHandler>();
@@ -28,7 +31,7 @@ public partial class DragCookFoodIcon : UIComponent
     
     public override void OnDestroy()
     {
-        
+        GiveAction = null;
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -49,12 +52,13 @@ public partial class DragCookFoodIcon : UIComponent
         
     }
 
-    public void ShowFoodIcon(CookResult food)
+    public void ShowFoodIcon(CookResult food,Action<CookResult,int> cb)
     {
         _cookResult = food;
         var tbItem = DataProviderModule.Instance.GetItemBaseInfo(_cookResult.menuId);
         ParentWindow.LoadSpriteAsync(tbItem.UiResPath,Img_Icon);
         _canDrag.Value = true;
+        GiveAction = cb;
     }
 
     public void ClearFoodIcon()
@@ -86,6 +90,7 @@ public partial class DragCookFoodIcon : UIComponent
         {
             var character = hit.transform.GetComponent<RestaurantCharacter>();
             character.ReceiveFood(_cookResult);
+            GiveAction?.Invoke(_cookResult,character.CharacterId);
             ClearFoodIcon();
         }
     }

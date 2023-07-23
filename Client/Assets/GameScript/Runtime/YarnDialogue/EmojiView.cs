@@ -69,20 +69,22 @@ public class EmojiView : DialogueViewBase
         onDismissalComplete();
     }
 
-    private Vector2 worldPositionToUI(string characterName)
+    // private Vector2 worldPositionToUI(string characterName)
+    // {
+    //     var mgr = UniModule.GetModule<CharacterMgr>();
+    //     var chr = mgr.GetCharacterByName(characterName);
+    //     //将世界坐标转换到UI坐标
+    //     var uiCamera = UIManager.Instance.UICamera;
+    //     var uiCanvas = UIManager.Instance.RootCanvas;
+    //     var screenPosition = uiCamera.WorldToScreenPoint(chr.EmojiWorldPosition);
+    //     RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.GetComponent<RectTransform>(),screenPosition,uiCamera,out var localPos);
+    //     return localPos;
+    // }
+    private async void ShowEmoji(string emojiType,string characterName,Action onDialogueLineFinished)
     {
         var mgr = UniModule.GetModule<CharacterMgr>();
         var chr = mgr.GetCharacterByName(characterName);
-        //将世界坐标转换到UI坐标
-        var uiCamera = UIManager.Instance.UICamera;
-        var uiCanvas = UIManager.Instance.RootCanvas;
-        var screenPosition = uiCamera.WorldToScreenPoint(chr.EmojiWorldPosition);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.GetComponent<RectTransform>(),screenPosition,uiCamera,out var localPos);
-        return localPos;
-    }
-    private async void ShowEmoji(string emojiType,string characterName,Action onDialogueLineFinished)
-    {
-        Vector2 localPos = worldPositionToUI(characterName);
+        Vector2 localPos = UIManager.Instance.WorldPositionToUI(chr.EmojiNode);
         Debug.Log($"ShowEmoji pos = {localPos}");
         switch (emojiType)
         {

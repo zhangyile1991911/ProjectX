@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
-public partial class StatementWidget : UIComponent
+public partial class TipAddFriendValue : UIComponent
 {
-    public StatementWidget(GameObject go,UIWindow parent):base(go,parent)
+    public TipAddFriendValue(GameObject go,UIWindow parent):base(go,parent)
     {
 		
     }
@@ -26,6 +27,11 @@ public partial class StatementWidget : UIComponent
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
+        var tmp = openParam as DialogueData;
+        var startPos = UIManager.Instance.WorldPositionToUI(tmp.Character.EmojiNode);
+        uiRectTran.anchoredPosition = startPos;
+        var doTweenAnimation = uiGo.GetComponent<DOTweenAnimation>();
+        doTweenAnimation.DOPlay();
     }
 
     public override void OnHide()
@@ -36,16 +42,5 @@ public partial class StatementWidget : UIComponent
     public override void OnUpdate()
     {
         
-    }
-
-    public void SetStatementInfo(int id,int num)
-    {
-        var tb = DataProviderModule.Instance.GetItemBaseInfo(id);
-        var total = tb.Sell * num;
-        
-        Txt_Name.text = tb.Name;
-        Txt_Num.text = total.ToString();
-        
-        ParentWindow.LoadSpriteAsync(tb.UiResPath,Img_Icon);
     }
 }

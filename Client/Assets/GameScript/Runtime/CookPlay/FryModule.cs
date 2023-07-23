@@ -59,7 +59,7 @@ public class FryModule : MonoBehaviour
         _curProgress = new ReactiveProperty<float>();
         _curTemperature = new ReactiveProperty<float>();
         
-        UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,null,null);
+        // UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,null,null);
 
         EventModule.Instance.CookGameStartSub.Subscribe(StartFry);
 

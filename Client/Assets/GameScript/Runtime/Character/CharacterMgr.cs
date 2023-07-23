@@ -27,6 +27,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
     public override void OnDestroy()
     {
         base.OnDestroy();
+        ClearAllCharacter();
     }
 
     public async UniTask<RestaurantCharacter> CreateCharacter(int cid)
@@ -82,6 +83,15 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
     {
         var character = GetCharacterById(cid);
         RemoveCharacter(character);
+    }
+
+    public void ClearAllCharacter()
+    {
+        foreach (var cha in _characters.Values)
+        {
+            cha.ReleaseCharacter();
+        }
+        _characters.Clear();
     }
     
 }

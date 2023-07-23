@@ -120,29 +120,7 @@ public class UIManager : SingletonModule<UIManager>
 
         return null;
     }
-    // private async void LoadUI(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent)
-    // {
-    //     Type uiType = Type.GetType(uiName.ToString());
-    //     var attributes = uiType.GetCustomAttributes(false);
-    //     var uiPath = attributes
-    //         .Where(one => one is UIAttribute)
-    //         .Select(tmp=> (tmp as UIAttribute).ResPath).FirstOrDefault();
-    //     
-    //     var handle = YooAssets.LoadAssetAsync<GameObject>(uiPath);
-    //     await handle.ToUniTask();
-    //     
-    //     var uiPrefab = handle.AssetObject;
-    //     var parentNode = getParentNode(layer);
-    //     var uiGameObject = GameObject.Instantiate(uiPrefab,parentNode) as GameObject;
-    //     uiGameObject.transform.localScale = Vector3.one;
-    //     uiGameObject.transform.SetParent(parentNode,false);
-    //     IUIBase ui = Activator.CreateInstance(uiType) as IUIBase;
-    //     ui.uiLayer = layer;
-    //     ui.Init(uiGameObject);
-    //     onComplete?.Invoke(ui);
-    //     _uiCachedDic.Add(uiName,ui,isPermanent);
-    // }
-    
+
     private async UniTask LoadUIAsync(UIEnum uiName, Action<IUIBase> onComplete,UILayer layer,bool isPermanent)
     {
         Type uiType = Type.GetType(uiName.ToString());
@@ -205,6 +183,12 @@ public class UIManager : SingletonModule<UIManager>
         return uiComponent;
     }
 
+    public async UniTask<T> CreateTip<T>(UIOpenParam openParam)where T : UIComponent
+    {
+        var tip = CreateUIComponent<T>(openParam, _top, null) as T;
+        return tip;
+    }
+
     public override void OnCreate(object createParam)
     {
         _uiCachedDic = new LRUCache<UIEnum, IUIBase>(10);
@@ -235,11 +219,25 @@ public class UIManager : SingletonModule<UIManager>
 
     public override void OnUpdate()
     {
-        base.OnUpdate();   
+        base.OnUpdate();
+        // Debug.Log("UIManager::OnUpdate");
+        // foreach (var VARIABLE in _uiCachedDic)
+        // {
+        //     
+        // }
     }
 
     public override void OnDestroy()
     {
         base.OnDestroy();
+    }
+    
+    public Vector2 WorldPositionToUI(Transform transform)
+    {
+        //将世界坐标转换到UI坐标
+        var screenPosition = _uiCamera.WorldToScreenPoint(transform.position);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _rootCanvas.GetComponent<RectTransform>(),screenPosition,_uiCamera,out var localPos);
+        return localPos;
     }
 }

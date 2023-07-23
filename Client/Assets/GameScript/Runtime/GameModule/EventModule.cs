@@ -37,15 +37,19 @@ public class EventModule : SingletonModule<EventModule>
     public IObserver<CookResult> CookFinishTopic => _cookFinish;
     private Subject<CookResult> _cookFinish;
 
-    public IObservable<Unit> ExitKitchenSub => _exitKitchen;
-    public IObserver<Unit> ExitKitchenTopic => _exitKitchen;
-    private Subject<Unit> _exitKitchen;
+    // public IObservable<DialogueNotification> DialogueMsgSub => _dialogueMsg;
+    // public IObserver<DialogueNotification> DialogueMsgTopic => _dialogueMsg;
+    //
+    // private Subject<DialogueNotification> _dialogueMsg;
+    // public IObservable<Unit> ExitKitchenSub => _exitKitchen;
+    // public IObserver<Unit> ExitKitchenTopic => _exitKitchen;
+    // private Subject<Unit> _exitKitchen;
 
 
-    public IObservable<Unit> CloseRestaurantSub => _closeRestaurant;
-    public IObserver<Unit> CloseRestaurantTopic => _closeRestaurant;
-    //玩家主动闭店
-    private Subject<Unit> _closeRestaurant;
+    // public IObservable<Unit> CloseRestaurantSub => _closeRestaurant;
+    // public IObserver<Unit> CloseRestaurantTopic => _closeRestaurant;
+    // //玩家主动闭店
+    // private Subject<Unit> _closeRestaurant;
 
     public override void OnCreate(object createParam)
     {
@@ -53,11 +57,11 @@ public class EventModule : SingletonModule<EventModule>
         _orderMeal = new Subject<OrderMealInfo>();
         _startCook = new Subject<PickFoodAndTools>();
         _cookGameStart = new Subject<bool>();
-        _exitKitchen = new Subject<Unit>();
+        // _exitKitchen = new Subject<Unit>();
         _cookFinish = new Subject<CookResult>();
         // _charDialogue = new Subject<RestaurantCharacter>();
         _characterLeave = new Subject<RestaurantCharacter>();
-        _closeRestaurant = new();
+        // _closeRestaurant = new();
         base.OnCreate(this);
     }
 
@@ -73,10 +77,10 @@ public class EventModule : SingletonModule<EventModule>
         _orderMeal.OnCompleted();
         _startCook.OnCompleted();
         _cookGameStart.OnCompleted();
-        _exitKitchen.OnCompleted();
+        // _exitKitchen.OnCompleted();
         _cookFinish.OnCompleted();
         // _charDialogue.OnCompleted();
         _characterLeave.OnCompleted();
-        _closeRestaurant.OnCompleted();
+        // _closeRestaurant.OnCompleted();
     }
 }

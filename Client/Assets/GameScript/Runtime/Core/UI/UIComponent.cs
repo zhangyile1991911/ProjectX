@@ -40,7 +40,7 @@ public class UIComponent : IUIBase
     {
         _uiGo = go;
         _parentWindow = parent;
-        _parentWindow.AddChildComponent(this);
+        _parentWindow?.AddChildComponent(this);
         _rectTransform = go.GetComponent<RectTransform>();
         
         Init(go);
@@ -59,7 +59,8 @@ public class UIComponent : IUIBase
 
     public virtual void OnDestroy()
     {
-        _parentWindow.RemoveChildComponent(this);
+        _parentWindow?.RemoveChildComponent(this);
+        GameObject.Destroy(uiGo);
     }
 
     public virtual void OnShow(UIOpenParam openParam)
@@ -74,6 +75,5 @@ public class UIComponent : IUIBase
 
     public virtual void OnUpdate()
     {
-        
     }
 }

@@ -23,10 +23,7 @@ public partial class OrderQueueWindow : UIWindow
     public override void OnDestroy()
     {
         base.OnDestroy();
-        foreach (var one in _mealOrderList)
-        {
-            
-        }
+        clearAllOrderMeal();
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -43,6 +40,16 @@ public partial class OrderQueueWindow : UIWindow
     {
         base.OnUpdate();
     }
+
+    private void clearAllOrderMeal()
+    {
+        foreach (var one in _mealOrderList)
+        {
+               UIManager.Instance.DestroyUIComponent(one);
+        }
+        _mealOrderList.Clear();
+    }
+    
     private List<MealOrderComponent> _mealOrderList;
     private void handleOrderMeal(OrderMealInfo mealInfo)
     {
@@ -77,23 +84,21 @@ public partial class OrderQueueWindow : UIWindow
 
     private void delOderMeal(OrderMealInfo mealInfo)
     {
-        foreach (var one in _mealOrderList)
-        {
-            if (one.OrderMealInfo.Equals(mealInfo))
-            {
-                _mealOrderList.Remove(one);
-                break;
-            }
-        }
+        RemoveCharacterOrder(mealInfo.CharacterId);
     }
 
     private void RemoveCharacterOrder(RestaurantCharacter character)
+    {
+        RemoveCharacterOrder(character.CharacterId);
+    }
+
+    private void RemoveCharacterOrder(int characterId)
     {
         var uiManager = UniModule.GetModule<UIManager>();
         for (int i = _mealOrderList.Count - 1; i >= 0; i--)
         {
             var one = _mealOrderList[i];
-            if (one.OrderMealInfo.Customer == character)
+            if (one.OrderMealInfo.CharacterId == characterId)
             {
                 _mealOrderList.RemoveAt(i);
                 uiManager.DestroyUIComponent(one);

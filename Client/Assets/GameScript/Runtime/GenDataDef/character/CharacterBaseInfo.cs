@@ -23,14 +23,14 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         { if(!_json["desc"].IsString) { throw new SerializationException(); }  Desc = _json["desc"]; }
         { if(!_json["res_path"].IsString) { throw new SerializationException(); }  ResPath = _json["res_path"]; }
         { if(!_json["portrait_path"].IsString) { throw new SerializationException(); }  PortraitPath = _json["portrait_path"]; }
-        { var __json0 = _json["like_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } LikeFlavour = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  LikeFlavour.Add(__v0); }   }
-        { var __json0 = _json["unlike_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlikeFlavour = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  UnlikeFlavour.Add(__v0); }   }
+        { var __json0 = _json["like_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } LikeFlavour = new System.Collections.Generic.HashSet<food.flavorTag>(/*__json0.Count*/); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  LikeFlavour.Add(__v0); }   }
+        { var __json0 = _json["unlike_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlikeFlavour = new System.Collections.Generic.HashSet<food.flavorTag>(/*__json0.Count*/); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  UnlikeFlavour.Add(__v0); }   }
         { if(!_json["main_dialogue"].IsString) { throw new SerializationException(); }  MainDialogue = _json["main_dialogue"]; }
         { if(!_json["comment_dialogue"].IsString) { throw new SerializationException(); }  CommentDialogue = _json["comment_dialogue"]; }
         PostInit();
     }
 
-    public CharacterBaseInfo(int id, string name, string desc, string res_path, string portrait_path, System.Collections.Generic.List<food.flavorTag> like_flavour, System.Collections.Generic.List<food.flavorTag> unlike_flavour, string main_dialogue, string comment_dialogue ) 
+    public CharacterBaseInfo(int id, string name, string desc, string res_path, string portrait_path, System.Collections.Generic.HashSet<food.flavorTag> like_flavour, System.Collections.Generic.HashSet<food.flavorTag> unlike_flavour, string main_dialogue, string comment_dialogue ) 
     {
         this.Id = id;
         this.Name = name;
@@ -72,11 +72,11 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
     /// <summary>
     /// 喜欢的口味
     /// </summary>
-    public System.Collections.Generic.List<food.flavorTag> LikeFlavour { get; private set; }
+    public System.Collections.Generic.HashSet<food.flavorTag> LikeFlavour { get; private set; }
     /// <summary>
     /// 讨厌的口味
     /// </summary>
-    public System.Collections.Generic.List<food.flavorTag> UnlikeFlavour { get; private set; }
+    public System.Collections.Generic.HashSet<food.flavorTag> UnlikeFlavour { get; private set; }
     /// <summary>
     /// 主线剧情
     /// </summary>

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using SuperScrollView;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using YooAsset;
@@ -82,6 +84,7 @@ public partial class NewsAppWidget : UIComponent
         }
         
         _clocker = UniModule.GetModule<Clocker>();
+
     }
 
     public override async void OnHide()

@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
+using SimpleJSON;
 using UnityEngine;
 using SQLite;
+using Unity.Collections;
+using UnityEngine.PlayerLoop;
 
 public class UserInfoModule : SingletonModule<UserInfoModule>
 {
@@ -20,6 +24,9 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     private Dictionary<int, ItemTableData> _itemTableDatas;
 
     private Dictionary<int, DialogueTableData> _dialogueTableDatas;
+
+    private RestaurantTableData _restaurantTableData;
+    private RestaurantRuntimeData _restaurantRuntimeData;
     //--------------------------------------------------------------------
     public override void OnCreate(object createParam)
     {
@@ -51,6 +58,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.CreateTable<NPCTableData>();
         _sqLite.CreateTable<ItemTableData>();
         _sqLite.CreateTable<DialogueTableData>();
+        _sqLite.CreateTable<RestaurantTableData>();
 
         var userQuery = $"SELECT * FROM UserTableData;";
         _userTableData = _sqLite.Query<UserTableData>(userQuery).FirstOrDefault();
@@ -74,6 +82,10 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var dialogue = $"select * from DialogueTableData";
         var dialogueList = _sqLite.Query<DialogueTableData>(dialogue);
         initDialogue(dialogueList);
+
+        var restaurant = $"select * from RestaurantTableData";
+        _restaurantTableData =_sqLite.Query<RestaurantTableData>(restaurant).FirstOrDefault();
+        initRestaurantData();
         
     }
 
@@ -125,7 +137,79 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             _dialogueTableDatas.Add(one.Id,one);
         }
     }
+
+    public void initRestaurantData()
+    {
+        if (_restaurantTableData == null)
+        {
+            _restaurantTableData = new RestaurantTableData();
+            _restaurantTableData.Id = 1;
+        }
+
+        if (string.IsNullOrEmpty(_restaurantTableData.RestaurantRuntimeData))
+        {
+            _restaurantRuntimeData = new RestaurantRuntimeData();
+            _restaurantRuntimeData.HaveArrivedCustomer = new List<int>();
+            _restaurantRuntimeData.WaitingCustomer = new List<int>();
+            _restaurantRuntimeData.cookedMeal = new List<CookResult>();
+            _restaurantRuntimeData.SoldMenuId = new List<int>();
+            _restaurantTableData.RestaurantRuntimeData = JsonUtility.ToJson(_restaurantRuntimeData);
+            _sqLite.Insert(_restaurantTableData);
+        }
+        else
+        {
+            _restaurantRuntimeData = JsonUtility.FromJson<RestaurantRuntimeData>(_restaurantTableData.RestaurantRuntimeData);    
+        }
+    }
+
+    public void ClearRestaurantData()
+    {
+        _restaurantRuntimeData.SoldMenuId.Clear();
+        _restaurantRuntimeData.WaitingCustomer.Clear();
+        _restaurantRuntimeData.cookedMeal.Clear();
+        _restaurantRuntimeData.HaveArrivedCustomer.Clear();
+        updateRestaurantRuntimeData();
+    }
     
+    public List<int> GetRestaurantSoldMenuId()
+    {
+        return _restaurantRuntimeData.SoldMenuId;
+    }
+
+    public bool RestaurantCharacterArrived(int characterId)
+    {
+        return _restaurantRuntimeData.HaveArrivedCustomer.Count((one)=> one == characterId) > 0;
+    }
+
+    public void AddCharacterArrived(int characterId)
+    {
+        var count = _restaurantRuntimeData.HaveArrivedCustomer.Count(one=>one == characterId);
+        if (count <= 0)
+        {
+            _restaurantRuntimeData.HaveArrivedCustomer.Add(characterId);
+            updateRestaurantRuntimeData();
+        }
+    }
+
+    public void AddWaitingCharacter(int characterId)
+    {
+        var count = _restaurantRuntimeData.WaitingCustomer.Count(one=>one == characterId);
+        if (count <= 0)
+        {
+            _restaurantRuntimeData.WaitingCustomer.Add(characterId);
+            updateRestaurantRuntimeData();
+        }
+    }
+
+    public void RemoveWaitingCharacter(int characterId)
+    {
+        var result = _restaurantRuntimeData.WaitingCustomer.Remove(characterId);
+        if (result)
+        {
+            updateRestaurantRuntimeData();    
+        }
+    }
+
     public bool IsEnoughItem(int itemId,int needNum)
     {
         int curNum = ItemNum(itemId);
@@ -225,6 +309,24 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.Update(_userTableData);
     }
 
+    public void AddMoney(int num)
+    {
+        if (num > 0)
+        {
+            _userTableData.money += num;
+        }
+        else if (num < 0)
+        {
+            if (_userTableData.money > Mathf.Abs(num))
+            {
+                _userTableData.money += num;
+            }
+        }
+
+        _sqLite.Update(_userTableData);
+    }
+    
+
     public void UpdateNPCData(int npcId)
     {
         var d = NPCData(npcId);
@@ -232,6 +334,25 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.Update(d);
     }
     
+    void updateRestaurantRuntimeData()
+    {//todo 这个地方可能是个性能点 考虑用异步完成
+        _restaurantTableData.RestaurantRuntimeData = JsonUtility.ToJson(_restaurantRuntimeData);
+        _sqLite.Update(_restaurantTableData);
+    }
+ 
+    public void SoldMealId(int menuId)
+    {
+        _restaurantRuntimeData.SoldMenuId ??= new List<int>();
+        _restaurantRuntimeData.SoldMenuId.Add(menuId);
+        
+        updateRestaurantRuntimeData();
+    }
+    
+
+    public List<int> SoldMealIdList()
+    {
+        return _restaurantRuntimeData.SoldMenuId;
+    }
     
     // public void SaveAllData()
     // {

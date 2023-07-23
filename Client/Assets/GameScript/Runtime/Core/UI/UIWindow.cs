@@ -50,7 +50,7 @@ public class UIWindow : IUIBase
             h.Release();
             h.Dispose();
         }
-        GameObject.DestroyImmediate(uiGo);
+        GameObject.Destroy(uiGo);
     }
 
     public virtual void OnShow(UIOpenParam openParam)
