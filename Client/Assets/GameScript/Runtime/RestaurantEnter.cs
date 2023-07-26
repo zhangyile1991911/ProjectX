@@ -29,10 +29,10 @@ public class RestaurantEnter : MonoBehaviour
     private List<Transform> _seatPoints;
     private List<Transform> _spawnPoints;
 
-    private List<int> _emptyPoints;
+    private List<int> _seatStatus;
 
     // public IEnumerable<RestaurantCharacter> CharacterEnumerable => _characters.Values;
-    private Dictionary<int,RestaurantCharacter> _characters;
+    private Dictionary<int,RestaurantCharacter> _waitingCharacters;
 
     // private RestaurantWindow _restaurantWindow;
     // private IDisposable _fiveSecondTimer;
@@ -42,12 +42,11 @@ public class RestaurantEnter : MonoBehaviour
     private Dictionary<cookTools, GameObject> _cookPlayDict;
     void Start()
     {
-        _seatPoints = new List<Transform>(4);
-        _emptyPoints = new List<int>(4);
+        _seatPoints = new List<Transform>(standGroup.childCount);
+        // _emptyPoints = new List<int>(4);
         for (int i = 0; i < standGroup.childCount; i++)
         {
             _seatPoints.Add(standGroup.GetChild(i));
-            _emptyPoints.Add(i);
         }
         
         _spawnPoints = new List<Transform>(4);
@@ -56,7 +55,7 @@ public class RestaurantEnter : MonoBehaviour
             _spawnPoints.Add(spawnGroup.GetChild(i));
         }
         
-        _characters = new Dictionary<int, RestaurantCharacter>();
+        _waitingCharacters = new Dictionary<int, RestaurantCharacter>();
 
         _cookPlayDict = new Dictionary<cookTools, GameObject>();
         
@@ -73,54 +72,109 @@ public class RestaurantEnter : MonoBehaviour
         _stateMachine.Run<WaitStateNode>();
 
         EventModule.Instance.CharacterLeaveSub.Subscribe(CharacterLeave).AddTo(this);
+        _seatStatus = new List<int>(_seatPoints.Count);
+        for (int i = 0; i < _seatPoints.Count; i++)
+        {
+            _seatStatus.Add(0);
+        }
+        
+        //加载当前已经在店里的客人
+        loadWaitingCharacter();
     }
 
+    private async void loadWaitingCharacter()
+    {
+        foreach (var one in UserInfoModule.Instance.RestaurantWaitingCharacter)
+        {
+            var handler = await CharacterMgr.Instance.CreateCharacter(one.CharacterId);
+            var chara = handler as RestaurantCharacter;
+            
+            for (int i = 0; i < _seatPoints.Count; i++)
+            {
+                int tmp = 1 << i;
+                if ((chara.SeatOccupy | tmp) == 1)
+                {
+                    var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, i);
+                    chara.transform.position = seatWorldPosition;
+                    chara.CurBehaviour = new CharacterMakeBubble();
+                }
+            }
+        }
+    }
+    
     private void Update()
     {
         _stateMachine?.Update();
     }
 
-    public void CharacterTakeRandomSeat(RestaurantCharacter restaurantCharacter)
-    {
-        restaurantCharacter.SeatIndex = RandSeatIndex();
-        _characters.Add(restaurantCharacter.CharacterId,restaurantCharacter);
-        
-        
-    }
+    // public void CharacterTakeRandomSeat(RestaurantCharacter restaurantCharacter)
+    // {
+    //     restaurantCharacter.SeatIndex = FindEmptySeatIndex();
+    //     _waitingCharacters.Add(restaurantCharacter.CharacterId,restaurantCharacter);
+    // }
 
-    public bool ExistCharacter(int characterId)
+    public bool ExistWaitingCharacter(int characterId)
     {
-        return _characters.ContainsKey(characterId);
+        return _waitingCharacters.ContainsKey(characterId);
     }
     
-    public int RandSeatIndex()
+    public int FindEmptySeatIndex()
     {
-        int index = Random.Range(0, _emptyPoints.Count);
-        return index;
+        for (int i = 0; i < _seatStatus.Count; i++)
+        {
+            if (_seatStatus[i] == 0)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    public Vector3 TakeSeatPoint(int sindex)
+    public bool IsEmptySeat(int seatIndex)
     {
-        int tmp = _emptyPoints[sindex];
-        var v = _seatPoints[tmp];
-        _emptyPoints.RemoveAt(sindex);
-        return v.position;
+        if (seatIndex >= _seatStatus.Count)
+            throw new Exception($"IsEmptySeat = {seatIndex}");
+        return _seatStatus[seatIndex] == 0;
     }
 
-    public void ReturnSeat(int index)
+    public Vector3 CharacterTakeSeatPoint(int characterId,int sindex)
     {
-        _emptyPoints.Add(index);
+        if (IsEmptySeat(sindex))
+        {
+            _seatStatus[sindex] = characterId;
+            return _seatPoints[sindex].position;    
+        }
+        Debug.LogError($"TakeSeatPoint error characterId = {characterId} sindex = {sindex}");
+        return Vector3.zero;
+    }
+
+    public void CharacterReturnSeat(int characterSeat)
+    {
+        for (int i = 0; i < _seatStatus.Count; i++)
+        {
+            int tmp = 1 << i;
+            if ((characterSeat | tmp) == 1)
+            {
+                _seatStatus[i]= 0;        
+            }
+        }
+        // _seatStatus[seatIndex] = 0;
     }
 
     public void CharacterLeave(RestaurantCharacter character)
     {
-        ReturnSeat(character.SeatIndex);
-        _characters.Remove(character.CharacterId);
+        CharacterReturnSeat(character.SeatOccupy);
+        _waitingCharacters.Remove(character.CharacterId);
     }
 
     public bool HaveEmptySeat()
     {
-        return _emptyPoints.Count > 0;
+        foreach (var one in _seatStatus)
+        {
+            if (one == 0) return true;
+        }
+
+        return false;
     }
 
     public Vector3 RandSpawnPoint()
@@ -131,7 +185,7 @@ public class RestaurantEnter : MonoBehaviour
 
     public void FocusOnCharacter(RestaurantCharacter c)
     {
-        foreach (var one in _characters.Values)
+        foreach (var one in _waitingCharacters.Values)
         {
             if (one == c)
             {
@@ -139,14 +193,14 @@ public class RestaurantEnter : MonoBehaviour
             }
             else
             {
-                one.CurBehaviour = new CharacterMute();    
+                one.CurBehaviour = new CharacterMute();
             }
         }
     }
 
     public void NoFocusOnCharacter()
     {
-        foreach (var one in _characters.Values)
+        foreach (var one in _waitingCharacters.Values)
         {
             one.CurBehaviour = new CharacterMakeBubble();
         }
@@ -181,12 +235,11 @@ public class RestaurantEnter : MonoBehaviour
 
     public void CloseRestaurant()
     {
-        _emptyPoints.Clear();
         for (int i = 0;i < _seatPoints.Count;i++)
         {
-            _emptyPoints.Add(i);
+            _seatStatus[i] = 0;
         }
-        _characters.Clear();
+        _waitingCharacters.Clear();
     }
     
     public async UniTask<GameObject> ShowCookGamePrefab(cookTools tools)

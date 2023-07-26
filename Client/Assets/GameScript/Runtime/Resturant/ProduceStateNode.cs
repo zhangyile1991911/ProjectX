@@ -36,6 +36,9 @@ public class ProduceStateNode : IStateNode
                 _fryModule.SetFryRecipe(_data);
                 _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
                 break;
+            case cookTools.Barbecue:
+                
+                break;
             default:
                 Debug.LogError("其他玩法暂时没有实现");
                 break;

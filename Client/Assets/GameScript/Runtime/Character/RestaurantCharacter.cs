@@ -22,13 +22,13 @@ public class RestaurantCharacter : MonoBehaviour
 
     public CharacterBaseInfo TBBaseInfo => _baseInfo;
 
-    public int SeatIndex
+    public int SeatOccupy
     {
-        get => _seatIndex;
-        set => _seatIndex = value;
+        get => _seatOccupy;
+        set => _seatOccupy = _seatOccupy | (1 << value);
     }
 
-    private int _seatIndex;
+    private int _seatOccupy;
 
     public string CharacterName => _baseInfo.Name;
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
@@ -8,6 +9,7 @@ using YooAsset;
 public class CharacterMgr : SingletonModule<CharacterMgr>
 {
     private Dictionary<string,RestaurantCharacter> _characters;
+    public List<RestaurantCharacter> Characters => _characters.Values.ToList();
     public override void OnCreate(object createParam)
     {
         _characters = new Dictionary<string, RestaurantCharacter>();

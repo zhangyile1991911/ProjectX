@@ -297,10 +297,10 @@ public class FryModule : MonoBehaviour
     }
     
     private void ListenProgress(float param)
-    {
+    { 
         for (int i = 0;i < _tbQteInfos.Count;i++)
         {
-            var qteInfo = _tbQteInfos[i];
+            var qteInfo = _tbQteInfos[i];  
             var percent = _curProgress.Value / _currentRecipeDifficulty.finishValue;
             if (percent >= qteInfo.StartArea && percent < qteInfo.EndArea)
             {

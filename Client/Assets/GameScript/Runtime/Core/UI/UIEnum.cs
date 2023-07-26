@@ -13,4 +13,5 @@ public enum UIEnum
     FryingFoodWindow,
     RestaurantStatementWindow,
     ConfirmTipsWindow,
+    BarbecueWindow,
 }

@@ -75,7 +75,7 @@ public class WaitStateNode : IStateNode
         foreach (var CharacterId in ids)
         {
             
-            if (_restaurant.ExistCharacter(CharacterId))
+            if (_restaurant.ExistWaitingCharacter(CharacterId))
             {
                 continue;
             }
@@ -85,15 +85,16 @@ public class WaitStateNode : IStateNode
             }
             
             var man = await CharacterMgr.Instance.CreateCharacter(CharacterId);
-            _restaurant.CharacterTakeRandomSeat(man);
-        
-            var seatPoint = _restaurant.TakeSeatPoint(man.SeatIndex);
+            // _restaurant.CharacterTakeRandomSeat(man);
+            var emptySeatIndex = _restaurant.FindEmptySeatIndex();
+            man.SeatOccupy = emptySeatIndex;
+            var seatPoint = _restaurant.CharacterTakeSeatPoint(man.SeatOccupy,emptySeatIndex);
             var spawnPoint = _restaurant.RandSpawnPoint();
             
             man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
 
             UserInfoModule.Instance.AddCharacterArrived(CharacterId);
-            UserInfoModule.Instance.AddWaitingCharacter(CharacterId);
+            UserInfoModule.Instance.AddWaitingCharacter(CharacterId,man.SeatOccupy);
         }
     }
 

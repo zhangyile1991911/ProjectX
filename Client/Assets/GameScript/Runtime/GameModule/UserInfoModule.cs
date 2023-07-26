@@ -27,6 +27,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     private RestaurantTableData _restaurantTableData;
     private RestaurantRuntimeData _restaurantRuntimeData;
+    public List<WaitingCustomerInfo> RestaurantWaitingCharacter => _restaurantRuntimeData.WaitingCustomers;
     //--------------------------------------------------------------------
     public override void OnCreate(object createParam)
     {
@@ -150,7 +151,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             _restaurantRuntimeData = new RestaurantRuntimeData();
             _restaurantRuntimeData.HaveArrivedCustomer = new List<int>();
-            _restaurantRuntimeData.WaitingCustomer = new List<int>();
+            _restaurantRuntimeData.WaitingCustomers = new List<WaitingCustomerInfo>();
             _restaurantRuntimeData.cookedMeal = new List<CookResult>();
             _restaurantRuntimeData.SoldMenuId = new List<int>();
             _restaurantTableData.RestaurantRuntimeData = JsonUtility.ToJson(_restaurantRuntimeData);
@@ -165,7 +166,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     public void ClearRestaurantData()
     {
         _restaurantRuntimeData.SoldMenuId.Clear();
-        _restaurantRuntimeData.WaitingCustomer.Clear();
+        _restaurantRuntimeData.WaitingCustomers.Clear();
         _restaurantRuntimeData.cookedMeal.Clear();
         _restaurantRuntimeData.HaveArrivedCustomer.Clear();
         updateRestaurantRuntimeData();
@@ -191,22 +192,30 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         }
     }
 
-    public void AddWaitingCharacter(int characterId)
+    public void AddWaitingCharacter(int characterId,int seatOccupy)
     {
-        var count = _restaurantRuntimeData.WaitingCustomer.Count(one=>one == characterId);
+        var count = _restaurantRuntimeData.WaitingCustomers.Count(one=>one.CharacterId == characterId);
         if (count <= 0)
         {
-            _restaurantRuntimeData.WaitingCustomer.Add(characterId);
+            _restaurantRuntimeData.WaitingCustomers.Add(new WaitingCustomerInfo()
+            {
+                CharacterId = characterId,
+                SeatOccupy = seatOccupy
+            });
             updateRestaurantRuntimeData();
         }
     }
 
     public void RemoveWaitingCharacter(int characterId)
     {
-        var result = _restaurantRuntimeData.WaitingCustomer.Remove(characterId);
-        if (result)
+        foreach (var one in _restaurantRuntimeData.WaitingCustomers)
         {
-            updateRestaurantRuntimeData();    
+            if (one.CharacterId == characterId)
+            {
+                _restaurantRuntimeData.WaitingCustomers.Remove(one);
+                updateRestaurantRuntimeData();
+                break;
+            }
         }
     }
 

@@ -35,15 +35,21 @@ public class RestaurantTableData
 //3 记录当前还在店里的客人
 //2 记录当前已经做好的菜
 //4 记录已经卖给客人的菜
+[System.Serializable]
 public class RestaurantRuntimeData
 {
     public List<int> HaveArrivedCustomer;
-    public List<int> WaitingCustomer;
+    public List<WaitingCustomerInfo> WaitingCustomers;
     public List<CookResult> cookedMeal;
     public List<int> SoldMenuId;
 
 }
-
+[System.Serializable]
+public class WaitingCustomerInfo
+{
+    public int CharacterId;
+    public int SeatOccupy;
+}
 [System.Serializable]
 public class CookResult
 {

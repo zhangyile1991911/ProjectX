@@ -20,8 +20,8 @@ namespace GameScript.CookPlay
         public TileBase Obstacle;
         public Transform FoodGroup;
         public List<Animation> FanAnimations;
-        public TextMeshProUGUI GameOverText;
-        public TextMeshProUGUI TimerText;
+        // public TextMeshProUGUI GameOverText;
+        // public TextMeshProUGUI TimerText;
         [InspectorName("距离热度比例")]
         public AnimationCurve heatCurve;
 
@@ -113,7 +113,7 @@ namespace GameScript.CookPlay
             _isStart = true;
             _addition = 0;
             _remainTimer = _curRecipeDifficulty.duration;
-            GameOverText.gameObject.SetActive(false);
+            
             this.UpdateAsObservable()
                 .Where(_ => _roastFoods.Count > 0&&_isStart)
                 .Subscribe(RoastFood)
@@ -146,13 +146,11 @@ namespace GameScript.CookPlay
         {//todo 清理资源
             _isStart = false;
             _handler.Clear();
-            GameOverText.gameObject.SetActive(true);
         }
 
         private void TemperatureAttenuate(long param)
         {
             _remainTimer -= 1;
-            TimerText.text = ZString.Format("{0}",_remainTimer);
             _addition -= _curRecipeDifficulty.Attenuation;
             _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
             if (_addition > 0)

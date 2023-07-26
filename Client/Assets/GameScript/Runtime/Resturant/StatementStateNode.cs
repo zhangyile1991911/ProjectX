@@ -31,6 +31,12 @@ public class StatementStateNode : IStateNode
     {
         UIManager.Instance.CloseUI(UIEnum.RestaurantStatementWindow);
         
+        //清理角色占座
+        var characters = CharacterMgr.Instance.Characters;
+        foreach (var chara in characters)
+        {
+            _restaurant.CharacterReturnSeat(chara.SeatOccupy);
+        }
         //清理角色资源
         CharacterMgr.Instance.ClearAllCharacter();
         //清理下单条
@@ -41,6 +47,7 @@ public class StatementStateNode : IStateNode
         UserInfoModule.Instance.ClearRestaurantData();
         //日期往前走
         handleDate();
+        _restaurant.CloseRestaurant();
     }
 
     private void calculate()
