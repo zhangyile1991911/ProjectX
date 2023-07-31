@@ -206,6 +206,12 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         }
     }
 
+    public WaitingCustomerInfo GetWaitingCharacter(int characterId)
+    {
+        var result = _restaurantRuntimeData.WaitingCustomers.Find(one => one.CharacterId == characterId);
+        return result;
+    }
+
     public void RemoveWaitingCharacter(int characterId)
     {
         foreach (var one in _restaurantRuntimeData.WaitingCustomers)

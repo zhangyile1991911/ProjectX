@@ -92,11 +92,12 @@ public class RestaurantEnter : MonoBehaviour
             for (int i = 0; i < _seatPoints.Count; i++)
             {
                 int tmp = 1 << i;
-                if ((chara.SeatOccupy | tmp) == 1)
+                if ((chara.SeatOccupy | tmp) >> i == 1)
                 {
                     var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, i);
                     chara.transform.position = seatWorldPosition;
                     chara.CurBehaviour = new CharacterMakeBubble();
+                    break;
                 }
             }
         }
@@ -144,7 +145,7 @@ public class RestaurantEnter : MonoBehaviour
             _seatStatus[sindex] = characterId;
             return _seatPoints[sindex].position;    
         }
-        Debug.LogError($"TakeSeatPoint error characterId = {characterId} sindex = {sindex}");
+        Debug.LogError($"TakeSeatPoint error enter characterId = {characterId} sindex = {sindex} occupy character {_seatStatus[sindex]}");
         return Vector3.zero;
     }
 

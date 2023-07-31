@@ -171,6 +171,8 @@ public class RestaurantCharacter : MonoBehaviour
     {
         var userInfoModule = UniModule.GetModule<UserInfoModule>();
         _npcData = userInfoModule.NPCData(CharacterId);
+        var waitingInfo = userInfoModule.GetWaitingCharacter(CharacterId);
+        if(waitingInfo != null)_seatOccupy = waitingInfo.SeatOccupy;
     }
 
     //增加好感度

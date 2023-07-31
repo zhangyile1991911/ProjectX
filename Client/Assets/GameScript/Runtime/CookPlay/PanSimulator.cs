@@ -46,13 +46,17 @@ public class PanSimulator : MonoBehaviour
 
         _foodList ??= new List<FoodSimulator>();
 
-        _quadtree = new List<List<FoodSimulator>>
+        _quadtree ??= new List<List<FoodSimulator>>
         {
             new List<FoodSimulator>(),
             new List<FoodSimulator>(),
             new List<FoodSimulator>(),
             new List<FoodSimulator>()
         };
+        foreach (var tree in _quadtree)
+        {
+            tree.Clear();
+        }
     }
 
     private Vector2 leftTop = new Vector2();

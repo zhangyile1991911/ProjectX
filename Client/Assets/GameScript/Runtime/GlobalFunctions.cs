@@ -93,4 +93,6 @@ public interface CookWindowUI
     public void LoadQTEConfigTips(List<qte_info> tbQTEInfos);
     public void ShowQTETip(int qteId);
     public void HideQTETip(int qteId);
+
+    public void SetDifficulty(RecipeDifficulty difficulty);
 }

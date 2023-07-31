@@ -160,5 +160,18 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
         }
     }
     
-    
+    public void SetDifficulty(RecipeDifficulty difficulty)
+    {
+        // var tmp = difficulty as FryingDifficulty;
+        // Slider_Temperature.maxValue = tmp.maxTemperature;
+        // Slider_Temperature.minValue = 0;
+        //
+        // Slider_Progress.maxValue = tmp.finishValue;
+        // Slider_Progress.minValue = 0;
+        //
+        // var min = tmp.temperatureArea.x;
+        // var max = tmp.temperatureArea.y;
+        // Img_Temperature.material.SetFloat("_low",min);
+        // Img_Temperature.material.SetFloat("_medium",max);
+    }
 }

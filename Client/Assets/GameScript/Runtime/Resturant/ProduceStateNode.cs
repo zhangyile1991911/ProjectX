@@ -37,7 +37,7 @@ public class ProduceStateNode : IStateNode
         
         switch (_data.CookTools)
         {
-            case cookTools.Cook:
+            case cookTools.Fry:
                 UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,OnLoadUIComplete,openWindowParam,UILayer.Bottom);
                 go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
                 _curCookModule = go.GetComponent<FryModule>();
@@ -73,7 +73,7 @@ public class ProduceStateNode : IStateNode
         
         switch (_data.CookTools)
         {
-            case cookTools.Cook:
+            case cookTools.Fry:
                 UIManager.Instance.CloseUI(UIEnum.FryingFoodWindow);
                 _restaurant.HideCookGamePrefab(_data.CookTools);
                 break;
@@ -114,6 +114,7 @@ public class ProduceStateNode : IStateNode
                 _curCookWindowUI = barbecueWnd;
                 break;
         }
+        _curCookWindowUI.SetDifficulty(_currentRecipeDifficulty);
         
         var groupId = DataProviderModule.Instance.GetQTEGroupId();
         Debug.Log($"loadQTEConfig = {groupId}");   

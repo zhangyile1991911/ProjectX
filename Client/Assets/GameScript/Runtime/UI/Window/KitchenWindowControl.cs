@@ -113,7 +113,7 @@ public partial class KitchenWindow : UIWindow
     {
         _cookToolIcons[0].Btn_Click.OnClickAsObservable().Subscribe((param)=>
         {
-            clickCookTool(cfg.food.cookTools.Cook,0);
+            clickCookTool(cfg.food.cookTools.Fry,0);
         }).AddTo(handles);
         
         _cookToolIcons[1].Btn_Click.OnClickAsObservable().Subscribe((param)=>
@@ -354,7 +354,7 @@ public partial class KitchenWindow : UIWindow
     {
         switch (_choicedTools)
         {
-            case cookTools.Cook:
+            case cookTools.Fry:
                 break;
             case cookTools.Barbecue:
                 break;

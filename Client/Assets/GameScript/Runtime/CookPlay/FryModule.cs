@@ -105,6 +105,8 @@ public class FryModule : CookModule
         loadRawFood(recipe.CookFoods);
         LoadQTEConfig(recipe.QTESets,pan.animNode);
         _recipe = recipe;
+
+        _uiWindow = UIManager.Instance.Get(UIEnum.FryingFoodWindow) as FryingFoodWindow;
     }
 
     public void StartFry()
@@ -150,7 +152,7 @@ public class FryModule : CookModule
     {
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
         var add = heatCurve.Evaluate(distance)*Time.deltaTime;
-        // Debug.Log($"distance = {distance} add = {add}");
+        Debug.Log($"distance = {distance} add = {add}");
         // var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         // Debug.Log($"velocity = {pan.velocity} sub = {sub}");
@@ -172,7 +174,6 @@ public class FryModule : CookModule
         if (_curProgress.Value >= _currentRecipeDifficulty.finishValue)
         {
             _finishTopic.OnNext(true);
-            // _finishTopic.OnCompleted();
         }
 
         ListenProgress(_curProgress.Value);
@@ -267,13 +268,13 @@ public class FryModule : CookModule
         
         IsCooking = false;
         
-        _finishTopic = new Subject<bool>();
+        _finishTopic ??= new Subject<bool>();
         
         _qteAnimations?.Clear();
         _qteAnimations ??= new List<Animation>(5);
 
-        _curProgress = new ReactiveProperty<float>();
-        _curTemperature = new ReactiveProperty<float>();
+        _curProgress ??= new ReactiveProperty<float>();
+        _curTemperature ??= new ReactiveProperty<float>();
         
 
         _result = new CookResult();
@@ -281,6 +282,7 @@ public class FryModule : CookModule
         _result.QTEResult = new Dictionary<int, bool>();
         
         _currentRecipeDifficulty = difficulty as FryingDifficulty;
+        pan.transform.localPosition = Vector3.zero;
         SetFryRecipe(foodAndTools);
     }
     

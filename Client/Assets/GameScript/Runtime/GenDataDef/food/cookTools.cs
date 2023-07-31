@@ -14,7 +14,7 @@ namespace cfg.food
         /// <summary>
         /// 炒锅
         /// </summary>
-        Cook = 1,
+        Fry = 1,
         /// <summary>
         /// 煮锅
         /// </summary>
@@ -22,7 +22,7 @@ namespace cfg.food
         /// <summary>
         /// 炸锅
         /// </summary>
-        Fry = 3,
+        Deepfry = 3,
         /// <summary>
         /// 蒸笼
         /// </summary>
