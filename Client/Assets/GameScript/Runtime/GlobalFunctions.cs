@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using cfg.food;
 using UnityEngine;
 using YooAsset;
 
 
 public class CookWindowParamData:UIOpenParam
 {
-    public StateMachine StateMachine;
+    // public StateMachine StateMachine;
+    public RecipeDifficulty Difficulty;
 }
 
 public class FlowControlWindowData : UIOpenParam
@@ -77,4 +79,18 @@ public static class GlobalFunctions
 
         complete?.Invoke(true);
     }
+}
+
+public class QTEInfoRecord
+{
+    public int Id;
+    public QTETips tip;
+}
+
+public interface CookWindowUI
+{
+    public void ShowGameOver(CookResult cookResult);
+    public void LoadQTEConfigTips(List<qte_info> tbQTEInfos);
+    public void ShowQTETip(int qteId);
+    public void HideQTETip(int qteId);
 }

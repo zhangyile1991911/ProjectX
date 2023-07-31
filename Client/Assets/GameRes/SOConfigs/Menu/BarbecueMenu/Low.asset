@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 209abdeb8b9b649488583a4555b599c4, type: 3}
-  m_Name: MenuMiddle
+  m_Name: Low
   m_EditorClassIdentifier: 
   recipeId: 0
-  recipeName: "\u4E2D\u7EA7\u70E7\u70E4"
+  recipeName: "\u7B80\u5355\u70E7\u70E4"
   duration: 20
   FanAddValue: 2
   Attenuation: 1
   AddValueLimit: 6
-  Sets: {fileID: 11400000, guid: cb50ea5c1c0d3e540bbb64774a6a6bc6, type: 2}
+  Sets: {fileID: 11400000, guid: 3ecf336fbf96f3a418438c95d17bb5f6, type: 2}

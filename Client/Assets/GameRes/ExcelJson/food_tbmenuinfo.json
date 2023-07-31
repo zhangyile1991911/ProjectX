@@ -45,8 +45,8 @@
   },
   {
     "id": 10003,
-    "name": "炸鸡柳",
-    "make_method": 3,
+    "name": "烤羊肉",
+    "make_method": 5,
     "related_material": [
       1006
     ],

@@ -61,7 +61,7 @@
     "sell": 5,
     "type": 1,
     "desc": "土豆",
-    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
     "get_method": ""
   },
@@ -74,6 +74,17 @@
     "desc": "鸡胸肉",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "get_method": ""
+  },
+  {
+    "id": 1007,
+    "name": "羊肉",
+    "buy": 30,
+    "sell": 10,
+    "type": 1,
+    "desc": "羊肉",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/Barbecue/RoastFood.prefab",
     "get_method": ""
   },
   {

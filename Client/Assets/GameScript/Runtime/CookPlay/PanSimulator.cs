@@ -135,10 +135,10 @@ public class PanSimulator : MonoBehaviour
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             // gizomsRay = ray;
-            RaycastHit hit;
-            // RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            if(Physics.Raycast(ray, out hit, 100f))
-            // if (hit && hit.collider.transform == panHandle)
+            // RaycastHit hit;
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            // if(Physics.Raycast(ray, out hit, 100f))
+            if (hit && hit.collider.transform == panHandle)
             {
                 Vector3 pos = ScreenToWorld(Input.mousePosition, transform);
                 _offset = transform.position - pos;

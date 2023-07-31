@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using SuperScrollView;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -16,10 +17,7 @@ public partial class FryingFoodWindow : UIWindow
 	public Image Img_Temperature;
 	public Transform Tran_QTEArea;
 	public TextMeshProUGUI Txt_Tips;
-	public Transform Tran_Result;
-	public Button Btn_Close;
-	public TextMeshProUGUI Txt_Menu;
-	public TextMeshProUGUI Txt_Result;
+	public Transform Ins_CookResultWidget;
 
 	public override void Init(GameObject go)
 	{
@@ -31,10 +29,7 @@ public partial class FryingFoodWindow : UIWindow
 		Img_Temperature = go.transform.Find("Slider_Temperature/Img_Temperature").GetComponent<Image>();
 		Tran_QTEArea = go.transform.Find("Tran_QTEArea").GetComponent<Transform>();
 		Txt_Tips = go.transform.Find("Txt_Tips").GetComponent<TextMeshProUGUI>();
-		Tran_Result = go.transform.Find("Tran_Result").GetComponent<Transform>();
-		Btn_Close = go.transform.Find("Tran_Result/Btn_Close").GetComponent<Button>();
-		Txt_Menu = go.transform.Find("Tran_Result/Txt_Menu").GetComponent<TextMeshProUGUI>();
-		Txt_Result = go.transform.Find("Tran_Result/Txt_Result").GetComponent<TextMeshProUGUI>();
+		Ins_CookResultWidget = go.transform.Find("Ins_CookResultWidget").GetComponent<Transform>();
 
 	}
 }

@@ -47,6 +47,7 @@ public class WaitStateNode : IStateNode
     {
         _handles?.Clear();
         UIManager.Instance.CloseUI(UIEnum.RestaurantWindow);
+        UIManager.Instance.CloseUI(UIEnum.PhoneWindow);
     }
     
     public void OnUpdate()

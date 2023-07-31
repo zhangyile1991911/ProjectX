@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using cfg.food;
 using Cysharp.Text;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
@@ -11,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace GameScript.CookPlay
 {
-    public class BarbecueModule : MonoBehaviour
+    public class BarbecueModule : CookModule
     {
         public Grid BarbecueGrid;
         public Tilemap BarbecueMap;
@@ -20,8 +23,7 @@ namespace GameScript.CookPlay
         public TileBase Obstacle;
         public Transform FoodGroup;
         public List<Animation> FanAnimations;
-        // public TextMeshProUGUI GameOverText;
-        // public TextMeshProUGUI TimerText;
+
         [InspectorName("距离热度比例")]
         public AnimationCurve heatCurve;
 
@@ -31,96 +33,100 @@ namespace GameScript.CookPlay
         private Vector2 _rightTop;
 
         private List<RoastFood> _roastFoods;
-
-        private CompositeDisposable _handler;
-
-        private bool _isStart;
+        
 
         private BarbecueRecipeDifficulty _curRecipeDifficulty;
         private float _addition;//额外加速
         private Subject<bool> _completeTopic;
 
         private float _remainTimer;
-        // Start is called before the first frame update
-        void Start()
-        {
-            Init();
-        }
+
+        private BarbecueWindow _barbecueWindow;
 
         private void Init()
         {
-            var size = RoastArea.size;
-            var offset = RoastArea.offset;
-            var halfWidth = (size.x + offset.x) / 2f;
-            var halfHeight = (size.y + offset.y) / 2f;
-            Debug.Log($"halfWidth = {halfWidth} halfHeight = {halfHeight}");
-
-            var position = RoastArea.transform.position;
-            _leftBottom = new Vector2
-            {
-                x = position.x - halfWidth,
-                y = position.y - halfHeight
-            };
-
-            _rightTop = new Vector2
-            {
-                x = position.x + halfWidth,
-                y = position.y + halfHeight
-            };
-            _occupiedGrid = new HashSet<Vector3Int>();
-            _roastFoods = new List<RoastFood>();
-
-            _handler = new CompositeDisposable();
             
+            
+
         }
 
-        public void SetBarbecueFood(BarbecueRecipeDifficulty recipeDifficulty)
+        private MenuInfo _tbMenuInfo;
+        void SetBarbecueInfo(PickFoodAndTools recipe)
         {
-            _curRecipeDifficulty = recipeDifficulty;
-            _roastFoods?.Clear();
-            _roastFoods ??= new List<RoastFood>(10);
-            foreach (var set in recipeDifficulty.Sets)
+            Init();
+            _tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(recipe.MenuId);
+            if (_tbMenuInfo == null)
             {
-                for (int i = 0; i < set.Key; i++)
-                {
-                    var ins = Instantiate(set.Value,FoodGroup);
-                    var rf = ins.GetComponent<RoastFood>();
-                    AddRoastFood(rf);    
-                }
+                Debug.LogError($"recipe.MenuId {recipe.MenuId} == null");
             }
-        }
 
-        // public void AddRoastFood(int fid)
-        // {
-        //     var go = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/RoastGrape.prefab").AssetObject as GameObject;
-        //     var ins = Instantiate(go,FoodGroup);
-        //     var rf = ins.GetComponent<RoastFood>();
-        //     AddRoastFood(rf);
-        // }
-
-        public void AddRoastFood(RoastFood food)
-        {
-            var x = Random.Range(4.0f, 7.0f);
-            food.transform.localPosition = new Vector3(x, 0, 0);
-            food.Module = this;
-            _roastFoods.Add(food);
+            loadRoastFood(recipe.CookFoods);
+            LoadQTEConfig(recipe.QTESets,RoastArea.transform);
+            _recipe = recipe;
+            
+            _barbecueWindow = UIManager.Instance.Get(UIEnum.BarbecueWindow) as BarbecueWindow;
+            
         }
         
+
+        private async void loadRoastFood(List<ItemTableData> foods)
+        {
+            var handler = YooAssets.LoadAssetAsync<GameObject>("Assets/GameRes/Prefabs/AllFood/BarbecueFood/RoastFood.prefab");
+            await handler.ToUniTask(this);
+            var roastFoodPrefab = handler.AssetObject as GameObject;
+            var mainCamera = Camera.main;
+            int i = 0;
+            for (; i < foods.Count; i++)
+            {
+                RoastFood roastFoodObj = null;
+                if (i < _roastFoods.Count)
+                {
+                    roastFoodObj = _roastFoods[i];
+                    roastFoodObj.gameObject.SetActive(true);
+                }
+                else
+                {
+                    var go = Instantiate(roastFoodPrefab,FoodGroup);
+                    roastFoodObj = go.GetComponent<RoastFood>();
+                    _roastFoods.Add(roastFoodObj);
+                }
+                
+                var tbItem = DataProviderModule.Instance.GetItemBaseInfo(foods[i].Id);
+                roastFoodObj.Init(tbItem.UiResPath,mainCamera);
+                
+                var x = Random.Range(8.9f, 12.74f);
+                roastFoodObj.transform.localPosition = new Vector3(x, 0, 0);
+                roastFoodObj.Module = this;
+            }
+
+            for (;i < _roastFoods.Count;i++)
+            {
+                _roastFoods[i].gameObject.SetActive(false);
+            }
+            
+        }
+
         public void StartBarbecue()
         {
-            _handler?.Clear();
-
-            _isStart = true;
+            IsCooking = true;
             _addition = 0;
-            _remainTimer = _curRecipeDifficulty.duration;
+            _remainTimer = 0;
+            
+            
+            for (int i = 0; i < _recipe.CookFoods.Count; i++)
+            {
+                _roastFoods[i].StartRoast(_handler);
+            }
+
+            _barbecueWindow = UIManager.Instance.Get(UIEnum.BarbecueWindow) as BarbecueWindow;
             
             this.UpdateAsObservable()
-                .Where(_ => _roastFoods.Count > 0&&_isStart)
+                .Where(_ => _roastFoods.Count > 0&&IsCooking)
                 .Subscribe(RoastFood)
                 .AddTo(_handler);
             
             this.UpdateAsObservable()
-                .Where(_ => _isStart && Input.GetKeyDown(KeyCode.Space))
+                .Where(_ => IsCooking && Input.GetKeyDown(KeyCode.Space))
                 .Subscribe(_ =>
                 {//每按一次空格就加速一点
                     _addition += _curRecipeDifficulty.FanAddValue;
@@ -128,29 +134,33 @@ namespace GameScript.CookPlay
                     AccelerateFanAnimation(1.0f+_addition/_curRecipeDifficulty.AddValueLimit);
                 })
                 .AddTo(_handler);
+            
+            this.UpdateAsObservable()
+                .Where(_ => IsCooking && Input.anyKeyDown)
+                .Subscribe(ListenQteInput)
+                .AddTo(_handler);
 
             Observable.Interval(TimeSpan.FromSeconds(1))
-                .Where(_=>_isStart)
+                .Where(_=>IsCooking)
                 .Subscribe(TemperatureAttenuate).AddTo(_handler);
+            
+            Observable.Interval(TimeSpan.FromSeconds(1))
+                .Where(_=>IsCooking)
+                .Subscribe(ListenProgress).AddTo(_handler);
 
             var timer = Observable
                 .Timer(TimeSpan.FromSeconds(_curRecipeDifficulty.duration))
                 .Select(_=>false);
-            
+
+
             _completeTopic?.Dispose();
             _completeTopic = new Subject<bool>();
             Observable.Amb(timer, _completeTopic).Subscribe(GameOver).AddTo(_handler);
         }
-
-        private void GameOver(bool success)
-        {//todo 清理资源
-            _isStart = false;
-            _handler.Clear();
-        }
+        
 
         private void TemperatureAttenuate(long param)
         {
-            _remainTimer -= 1;
             _addition -= _curRecipeDifficulty.Attenuation;
             _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
             if (_addition > 0)
@@ -160,6 +170,22 @@ namespace GameScript.CookPlay
             else
             {
                 StopFanAnimation();
+            }
+        }
+
+        private void ListenProgress(long param)
+        {
+            _remainTimer += 1;
+            float percent = _remainTimer / _curRecipeDifficulty.duration;
+            
+            for (int i = 0;i < _tbQteInfos.Count;i++)
+            {
+                var qteInfo = _tbQteInfos[i];
+                if (percent >= qteInfo.StartArea && percent < qteInfo.EndArea)
+                {
+                    _barbecueWindow.ShowQTETip(qteInfo.QteId);
+                    break;
+                }
             }
         }
 
@@ -216,7 +242,6 @@ namespace GameScript.CookPlay
                 _completeTopic.OnNext(true);
                 _completeTopic.OnCompleted();
             }
-
         }
         
         public bool EntireInArea(Vector2 lb,Vector2 rt)
@@ -241,10 +266,10 @@ namespace GameScript.CookPlay
             return BarbecueGrid.WorldToCell(position);
         }
 
-        public Vector3 CellCenterInWorld(Vector3Int cellPos)
-        {
-            return BarbecueGrid.GetCellCenterWorld(cellPos);
-        }
+        // public Vector3 CellCenterInWorld(Vector3Int cellPos)
+        // {
+        //     return BarbecueGrid.GetCellCenterWorld(cellPos);
+        // }
         
         public void FillArea(BoundsInt box)
         {
@@ -293,6 +318,99 @@ namespace GameScript.CookPlay
             _roastFoods.Remove(food);
         }
         
+        private void ListenQteInput(Unit param)
+        {
+            for (int i = 0;i < _tbQteInfos.Count;i++)
+            {
+                var one = _tbQteInfos[i];
+                var tbQte = DataProviderModule.Instance.GetQTEInfo(one.QteId);
+                var percent = _remainTimer / _curRecipeDifficulty.duration;
+                // Debug.Log($" ListenQteInput {percent} one.StartArea = {one.StartArea} one.EndArea = {one.EndArea}");
+                if (percent >= one.StartArea && percent <= one.EndArea)
+                {
+                    var keyDown = Input.GetKeyDown((KeyCode)tbQte.KeyCode);
+                    var clicked = _result.QTEResult[one.QteId]; 
+                    // Debug.Log($" ListenQteInput {percent} keyDown = {keyDown} clicked = {clicked}");
+                    if (keyDown&&clicked==false)
+                    {
+                        Debug.Log($"ListenQteInput 播放QTE动画");
+                        _qteAnimations[i].gameObject.SetActive(true);
+                        _qteAnimations[i].Play();
+                        _result.QTEResult[one.QteId] = true;
+                        _result.Tags.Add(tbQte.Tag);
+                        break; 
+                    }
+                }
+            }
+        }
         
+        public override void Init(PickFoodAndTools foodAndTools,RecipeDifficulty difficulty)
+        {
+            base.Init(foodAndTools,difficulty);
+            
+            var size = RoastArea.size;
+            var offset = RoastArea.offset;
+            var halfWidth = (size.x + offset.x) / 2f;
+            var halfHeight = (size.y + offset.y) / 2f;
+            Debug.Log($"halfWidth = {halfWidth} halfHeight = {halfHeight}");
+
+            var position = RoastArea.transform.position;
+            _leftBottom = new Vector2
+            {
+                x = position.x - halfWidth,
+                y = position.y - halfHeight
+            };
+
+            _rightTop = new Vector2
+            {
+                x = position.x + halfWidth,
+                y = position.y + halfHeight
+            };
+            _occupiedGrid = new HashSet<Vector3Int>();
+            _roastFoods ??= new List<RoastFood>();
+            
+            SetBarbecueInfo(foodAndTools);
+            _curRecipeDifficulty = difficulty as BarbecueRecipeDifficulty;
+        }
+        
+        public override void StartCook()
+        {
+            StartBarbecue();
+        }
+        
+        private void GameOver(bool success)
+        {//todo 清理资源
+            IsCooking = false;
+            _barbecueWindow = null;
+
+            //生成评分
+            var provider = DataProviderModule.Instance;
+            foreach (var food in _recipe.CookFoods)
+            {
+                var tbFood = provider.GetFoodBaseInfo(food.Id);
+                foreach (var one in tbFood.Tag)
+                {
+                    _result.Tags.Add(one);
+                }
+                foreach (var one in tbFood.OppositeTag)
+                {
+                    _result.Tags.Add(one);    
+                }
+            }
+            
+            
+            //消耗时间
+            var clocker = UniModule.GetModule<Clocker>();
+            clocker.AddMinute(_tbMenuInfo.CostTime);
+            
+            FinishCook?.Invoke(_result);
+            
+            base.UnloadRes();
+        }
     }
 }
+
+/*
+ *
+
+ */

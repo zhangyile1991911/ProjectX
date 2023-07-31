@@ -21,7 +21,7 @@ public partial class RestaurantWindow : UIWindow
     private ClockWidget _clockWidget;
     
     private List<ChatBubble> _bubbleList;
-    private List<CookResult> _cookResults;
+    // private List<CookResult> _cookResults;
     private List<DragCookFoodIcon> _dragCookFoodIcons;
     private HashSet<int> _floatingBubbleChatId;
     // private StateMachine _machine;
@@ -32,7 +32,7 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList = new List<ChatBubble>(20);
 
         _clockWidget = new ClockWidget(Ins_ClockWidget.gameObject,this);
-        _cookResults = new List<CookResult>(4);
+        // _cookResults = new List<CookResult>(4);
 
         _floatingBubbleChatId = new HashSet<int>(20);
         
@@ -42,7 +42,7 @@ public partial class RestaurantWindow : UIWindow
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconC.gameObject,this));
         _dragCookFoodIcons.Add(new DragCookFoodIcon(Ins_DragCookFoodIconD.gameObject,this));
         
-        EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
+        // EventModule.Instance.CookFinishSub.Subscribe(showCookFood).AddTo(uiTran);
     }
     
     public override void OnDestroy()
@@ -59,6 +59,7 @@ public partial class RestaurantWindow : UIWindow
         Btn_Close.OnClickAsObservable().Subscribe(ClickClose).AddTo(handles);
         
         EventModule.Instance.CharacterLeaveSub.Subscribe(RemoveChatBubble).AddTo(handles);
+        showCookFood();
         // Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
     }
 
@@ -98,7 +99,7 @@ public partial class RestaurantWindow : UIWindow
     {
         UniModule.GetModule<Clocker>().AddOneMinute();
         var uiManager = UniModule.GetModule<UIManager>();
-        var phone = uiManager.Get(UIEnum.PhoneWindow);
+        var phone = UIManager.Instance.Get(UIEnum.PhoneWindow);
         if (phone == null)
         {
             uiManager.OpenUI(UIEnum.PhoneWindow,null,null,UILayer.Center);   
@@ -144,12 +145,25 @@ public partial class RestaurantWindow : UIWindow
         _floatingBubbleChatId.Add(bubble.ChatId);
     }
 
-    private void showCookFood(CookResult result)
+    private void showCookFood()
     {
-        if (_cookResults.Count >= 4) return;
-        _cookResults.Add(result);
-        var index = _cookResults.Count - 1;
-        _dragCookFoodIcons[index].ShowFoodIcon(result,soldCustomerFood);
+        // if (_cookResults.Count >= 4) return;
+        // _cookResults.Add(result);
+        // var index = _cookResults.Count - 1;
+        // _dragCookFoodIcons[index].ShowFoodIcon(result,soldCustomerFood);
+        var list = UserInfoModule.Instance.CookResults;
+        for (int i = 0; i < 4; i++)
+        {
+            if (i < list.Count)
+            {
+                var one = list[i];
+                _dragCookFoodIcons[i].ShowFoodIcon(one,soldCustomerFood);    
+            }
+            else
+            {
+                _dragCookFoodIcons[i].ClearFoodIcon();
+            }
+        }
     }
 
     private void soldCustomerFood(CookResult result,int characterId)

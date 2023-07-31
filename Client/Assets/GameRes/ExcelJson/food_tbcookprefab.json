@@ -7,7 +7,7 @@
   {
     "id": 2,
     "tools": 2,
-    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+    "cook_prefab": "Assets/GameRes/Prefabs/BarbecueModule.prefab"
   },
   {
     "id": 3,
@@ -22,6 +22,6 @@
   {
     "id": 5,
     "tools": 5,
-    "cook_prefab": "Assets/GameRes/Prefabs/FryModule.prefab"
+    "cook_prefab": "Assets/GameRes/Prefabs/BarbecueModule.prefab"
   }
 ]

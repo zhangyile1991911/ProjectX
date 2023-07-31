@@ -582,7 +582,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7232291213317639298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -654,7 +654,7 @@ GameObject:
   - component: {fileID: 7232291213462785359}
   - component: {fileID: 7232291213462785358}
   m_Layer: 0
-  m_Name: Food1
+  m_Name: RoastFood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Module: {fileID: 0}
-  FoodData: {fileID: 11400000, guid: 4fb75f2fd7e6ddc4c9b0df955092e86c, type: 2}
+  FoodData: {fileID: 11400000, guid: de687806a3c3fb24e97610f22888d47f, type: 2}
   frontProgressImage: {fileID: 7232291213014119825}
   frontOverProgressImage: {fileID: 5077788066925215252}
   backProgressImage: {fileID: 7232291212481306374}
@@ -702,6 +702,7 @@ MonoBehaviour:
   - {fileID: 7232291214072437886}
   - {fileID: 7232291212984998636}
   - {fileID: 7232291213299070588}
+  progressCanvas: {fileID: 7232291213317639301}
 --- !u!61 &7232291213462785358
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using GameScript.CookPlay;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
+using YooAsset;
 
 
 public class RoastFood : MonoBehaviour
@@ -14,6 +17,8 @@ public class RoastFood : MonoBehaviour
     public Image frontOverProgressImage;
     public Image backProgressImage;
     public Image backOverProgressImage;
+    public List<SpriteRenderer> foodSpriteList;
+    public Canvas progressCanvas;
     public bool inBox { get; private set; }
     private BoxCollider2D _collider2D;
     private BoundsInt _curBounds;
@@ -30,20 +35,22 @@ public class RoastFood : MonoBehaviour
     private Vector2 _objectSize;
     
     // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
+    // void Start()
+    // {
+    //     Init();
+    // }
 
-    private void Init()
+    public void Init(string resPath,Camera camera)
     {
         _collider2D = GetComponent<BoxCollider2D>();
         _curBounds = new BoundsInt();
         _leftBottom = new Vector2();
         _rightTop = new Vector2();
-        _mainCamera = Camera.main;
+        _mainCamera = camera;
         _isDrag = false;
 
+        progressCanvas.worldCamera = _mainCamera;
+        
         var size = _collider2D.size;
         var offset = _collider2D.offset;
         _objectSize = new Vector2(
@@ -52,20 +59,47 @@ public class RoastFood : MonoBehaviour
         _halfSize = new Vector2(_objectSize.x / 2f, _objectSize.y / 2f);
         _heatValue = new Vector2(0, 0);
         _currentFace = true;
+        
+        LoadFoodSprite(resPath);
+    }
+    
+    public void Destroy()
+    {
+        foreach (var foodSp in foodSpriteList)
+        {
+            foodSp.sprite = null;
+            foodSp.gameObject.SetActive(false);
+        }
+    }
+
+    private async void LoadFoodSprite(string resPath)
+    {
+        var handle = YooAssets.LoadAssetAsync<Sprite>(resPath);
+        await handle.ToUniTask(this);
+        var  sp = handle.AssetObject as Sprite;
+        foreach (var foodSp in foodSpriteList)
+        {
+            foodSp.sprite = sp;
+            foodSp.gameObject.SetActive(true);
+        }
+    }
+
+    public void StartRoast(CompositeDisposable handler)
+    {
         this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButtonDown(0))
-            .Subscribe(CheckHit);
+            .Subscribe(CheckHit).AddTo(handler);
         this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButton(0) && _isDrag)
-            .Subscribe(MoveFood);
+            .Subscribe(MoveFood).AddTo(handler);
         this.UpdateAsObservable()
-            .Where(_ => Input.GetMouseButtonUp(0) && _isDrag)
-            .Subscribe(PutFood);
+            .Where(_ => Input.GetMouseButtonUp(0) && _isDrag) 
+            .Subscribe(PutFood).AddTo(handler);
         this.UpdateAsObservable()
             .Where(_=>Input.GetMouseButtonDown(1))
-            .Subscribe(CheckFlip);
-        // HeatTopic.Subscribe(AddHeat);
+            .Subscribe(CheckFlip).AddTo(handler);
     }
+    
 
     private void CalculateBoxPosition()
     {
@@ -81,13 +115,14 @@ public class RoastFood : MonoBehaviour
     private void MoveFood(Unit param)
     {
         // Debug.Log($"{name} is Moving");
-        Vector3 camToObjDir = transform.position - _mainCamera.transform.position;
+        var pos = transform.position;
+        Vector3 camToObjDir = pos - _mainCamera.transform.position;
         Vector3 normalDir = Vector3.Project(camToObjDir, _mainCamera.transform.forward);
         Vector3 worldPos = _mainCamera.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y, normalDir.magnitude));
         Vector3 newPos = worldPos + _dragOffset;
-        newPos.z = 0;
-
+        newPos.z = pos.z;
+        
         transform.position = newPos;
 
         Module.ClearArea(_curBounds);
@@ -169,7 +204,7 @@ public class RoastFood : MonoBehaviour
         if (hit && hit.collider.transform == transform)
         {
             // Debug.Log($"{name} CheckFlip");
-            TurnOver();
+            FlipOver();
         }
     }
 
@@ -207,7 +242,7 @@ public class RoastFood : MonoBehaviour
             progressImg.fillAmount = overheatProgress;
         }
     }
-    private void TurnOver()
+    private void FlipOver()
     {
         _currentFace = !_currentFace;
     }
@@ -217,4 +252,6 @@ public class RoastFood : MonoBehaviour
         return _heatValue[0] >= FoodData.CookedHeatCapacity
             && _heatValue[1] >= FoodData.CookedHeatCapacity;
     }
+
+    
 }

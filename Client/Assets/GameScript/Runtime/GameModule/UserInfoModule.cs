@@ -219,6 +219,21 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         }
     }
 
+    public List<CookResult> CookResults => _restaurantRuntimeData.cookedMeal;
+    public void AddCookedMeal(CookResult oneMeal)
+    {
+        if (oneMeal == null) return;
+        
+        _restaurantRuntimeData.cookedMeal.Add(oneMeal);
+    }
+
+    public void RemoveCookedMeal(CookResult oneMeal)
+    {
+        if (oneMeal == null) return;
+        _restaurantRuntimeData.cookedMeal.Remove(oneMeal);
+    }
+    
+
     public bool IsEnoughItem(int itemId,int needNum)
     {
         int curNum = ItemNum(itemId);

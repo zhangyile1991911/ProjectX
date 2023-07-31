@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using cfg.food;
 using Cysharp.Text;
@@ -10,14 +11,18 @@ using YooAsset;
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
-public partial class FryingFoodWindow : UIWindow
+public partial class FryingFoodWindow : UIWindow,CookWindowUI
 {
+    public Action ClickStart;
+    public Action ClickFinish;
     private RectTransform rect_qteArea;
-    private StateMachine _stateMachine;
+    // private StateMachine _stateMachine;
+    private CookResultWidget _resultWidget;
     public override void OnCreate()
     {
         base.OnCreate();
         rect_qteArea = Tran_QTEArea.GetComponent<RectTransform>();
+        _resultWidget = new CookResultWidget(Ins_CookResultWidget.gameObject, this);
         
     }
     
@@ -29,22 +34,22 @@ public partial class FryingFoodWindow : UIWindow
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
-        Btn_Start.OnClickAsObservable().Subscribe(ClickStart).AddTo(handles);
-        Btn_Close.OnClickAsObservable().Subscribe(ClickFinish).AddTo(handles);
-        Tran_Result.gameObject.SetActive(false);
+        Btn_Start.OnClickAsObservable().Subscribe(clickStart).AddTo(handles);
+        _resultWidget.Btn_Close.OnClickAsObservable().Subscribe(clickFinish).AddTo(handles);
+        
+        _resultWidget.OnHide();
         var tmp = openParam as CookWindowParamData;
-        _stateMachine = tmp.StateMachine;
+        // _stateMachine = tmp.StateMachine;
     }
 
     public override void OnHide()
     {
         base.OnHide();
-        _stateMachine = null;
+        // _stateMachine = null;
         Btn_Start.gameObject.SetActive(true);
         Slider_Progress.gameObject.SetActive(false);
         Slider_Temperature.gameObject.SetActive(false);
         Tran_QTEArea.gameObject.SetActive(false);
-        Tran_Result.gameObject.SetActive(false);
         handles.Clear();
     }
 
@@ -52,17 +57,11 @@ public partial class FryingFoodWindow : UIWindow
     {
         base.OnUpdate();
     }
-
-    class QTEInfo
-    {
-        public int Id;
-        public QTETips tip;
-    }
-
-    private List< QTEInfo> qteList;
+    
+    private List< QTEInfoRecord> qteList;
     public async void LoadQTEConfigTips(List<qte_info> tbQTEInfos)
     {
-        qteList ??= new List<QTEInfo>();
+        qteList ??= new List<QTEInfoRecord>();
         
         for (int i = 0; i < qteList.Count; i++)
         {
@@ -73,7 +72,7 @@ public partial class FryingFoodWindow : UIWindow
         {
             if (i >= qteList.Count)
             {
-                qteList.Add(new QTEInfo());    
+                qteList.Add(new QTEInfoRecord());    
             }
 
             var tb = tbQTEInfos[i];
@@ -94,6 +93,8 @@ public partial class FryingFoodWindow : UIWindow
             qteList[i].tip.OnShow(null);
         }
     }
+    
+    
 
     public void SetDifficulty(FryingDifficulty difficulty)
     {
@@ -119,33 +120,8 @@ public partial class FryingFoodWindow : UIWindow
         temperatureVal.Subscribe(UpdateTemperatureSlider).AddTo(handles);
     }
     
-    public void ShowGameOver(CookResult cookResult)
-    {
-        //标题
-        var tbMenu = DataProviderModule.Instance.GetMenuInfo(cookResult.menuId);
-        Txt_Menu.name = tbMenu.Name; 
-        //评分
-        StringBuilder sb = new StringBuilder();
-        sb.Append(ZString.Format("完成度\t\t{0}\n", cookResult.CompletePercent));
-        foreach (var pair in cookResult.QTEResult)
-        {
-            var tb = DataProviderModule.Instance.GetQTEInfo(pair.Key);
-            sb.Append(ZString.Format("{0}\t\t\t{1}\n",tb.Name,pair.Value?"成功":"失败"));
-        }
-
-        foreach (var tag in cookResult.Tags)
-        {
-            var tb = DataProviderModule.Instance.DataBase.TbFlavour.DataMap[(int)tag];
-            sb.Append(" ");
-            sb.Append(tb.Desc);
-        }
-
-        sb.Append("\n");
-        Txt_Result.text = sb.ToString();
-        Tran_Result.gameObject.SetActive(true);
-    }
-
-    public void ShowQteTips(int qteId)
+    
+    public void ShowQTETip(int qteId)
     {
         foreach (var one in qteList)
         {
@@ -157,20 +133,32 @@ public partial class FryingFoodWindow : UIWindow
         }
     }
     
-    private void ClickStart(Unit param)
+    public void HideQTETip(int qteId)
     {
-        EventModule.Instance.CookGameStartTopic.OnNext(true);
+        foreach (var one in qteList)
+        {
+            if (one.Id == qteId)
+            {
+                one.tip.OnHide();
+                break;
+            }
+        }
+    }
+    
+    private void clickStart(Unit param)
+    {
+        // EventModule.Instance.CookGameStartTopic.OnNext(true);
         Btn_Start.gameObject.SetActive(false);
         Slider_Progress.gameObject.SetActive(true);
         Slider_Temperature.gameObject.SetActive(true);
         Tran_QTEArea.gameObject.SetActive(true);
-        
+        ClickStart?.Invoke();
     }
     
-    private void ClickFinish(Unit param)
+    private void clickFinish(Unit param)
     {
         // EventModule.Instance.ExitKitchenTopic.OnNext(Unit.Default);
-        _stateMachine.ChangeState<PrepareStateNode>();
+        // _stateMachine.ChangeState<PrepareStateNode>();
         
         Btn_Start.gameObject.SetActive(true);
         Slider_Progress.gameObject.SetActive(false);
@@ -181,7 +169,9 @@ public partial class FryingFoodWindow : UIWindow
         {
             qteList[i].tip.OnHide();    
         }
+        ClickFinish?.Invoke();
     }
+    
 
     private void UpdateProgressSlider(float progress)
     {
@@ -191,6 +181,12 @@ public partial class FryingFoodWindow : UIWindow
     private void UpdateTemperatureSlider(float temperature)
     {
         Slider_Temperature.value = temperature;
+    }
+
+    public void ShowGameOver(CookResult cookResult)
+    {
+        _resultWidget.OnShow(null);
+        _resultWidget.ShowGameOver(cookResult);
     }
 
 }

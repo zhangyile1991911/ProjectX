@@ -30,10 +30,6 @@ public class BarbecueEnter : MonoBehaviour
     private void waitYooAssets(bool success)
     {
         initYooAsset = success;
-        module.SetBarbecueFood(recipeDifficulty);
-        
-        
-            
-        
+        // module.SetBarbecueFood(recipeDifficulty);
     }
 }

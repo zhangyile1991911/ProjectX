@@ -24,11 +24,11 @@ namespace cfg.food
         /// </summary>
         Fry = 3,
         /// <summary>
-        /// 蒸锅
+        /// 蒸笼
         /// </summary>
         Steam = 4,
         /// <summary>
-        /// 烤锅
+        /// 烤架
         /// </summary>
         Barbecue = 5,
     }
