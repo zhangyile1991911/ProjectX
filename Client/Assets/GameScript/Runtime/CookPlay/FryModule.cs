@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class FryModule : CookModule
 {
+    public bool IsDebugMode = false;
     // public Material sliderBgMat;
     public PanSimulator pan;
     public Transform firePointTransform;
@@ -118,6 +119,7 @@ public class FryModule : CookModule
         var min = _currentRecipeDifficulty.temperatureArea.x * _currentRecipeDifficulty.maxTemperature;
         var max = _currentRecipeDifficulty.temperatureArea.y * _currentRecipeDifficulty.maxTemperature;
         Debug.Log($"min = {min} max = {max} _currentRecipeDifficulty.temperatureArea = {_currentRecipeDifficulty.temperatureArea} _currentRecipeDifficulty.maxTemperature = {_currentRecipeDifficulty.maxTemperature}");
+        Debug.Log($"_handler = {_handler.Count} {_handler.GetHashCode()}");
         this.UpdateAsObservable()
             .Where(_=>IsCooking&&(_curTemperature.Value >= min && _curTemperature.Value <= max))
             .Subscribe(HeatFood).AddTo(_handler);
@@ -147,6 +149,11 @@ public class FryModule : CookModule
             .Subscribe(CalculateHeat)
             .AddTo(_handler);
     }
+
+    // private void LateUpdate()
+    // {
+    //     Debug.Log("Update++++++");
+    // }
 
     private void CalculateHeat(Unit param)
     {
@@ -213,10 +220,17 @@ public class FryModule : CookModule
             }
         }
 
-        //消耗时间
-        var clocker = UniModule.GetModule<Clocker>();
-        clocker.AddMinute(_tbMenuInfo.CostTime);
+        _curTemperature.Value = 0;
+        _curProgress.Value = 0;
+        _currentRecipeDifficulty = null;
 
+        if (!IsDebugMode)
+        {
+            //消耗时间
+            var clocker = UniModule.GetModule<Clocker>();
+            clocker.AddMinute(_tbMenuInfo.CostTime);    
+        }
+        
         FinishCook?.Invoke(_result);
         
         
@@ -274,10 +288,7 @@ public class FryModule : CookModule
         base.Init(foodAndTools,difficulty);
 
         pan.Init();
-        
-        _handler?.Clear();
-        _handler ??= new CompositeDisposable();
-        
+
         IsCooking = false;
         
         _finishTopic ??= new Subject<bool>();

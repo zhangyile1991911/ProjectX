@@ -156,7 +156,7 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         ClickStart?.Invoke();
     }
     
-    private void clickFinish(Unit param)
+    public void clickFinish(Unit param)
     {
         // EventModule.Instance.ExitKitchenTopic.OnNext(Unit.Default);
         // _stateMachine.ChangeState<PrepareStateNode>();
@@ -170,6 +170,9 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         {
             qteList[i].tip.OnHide();    
         }
+
+        Slider_Progress.value = 0;
+        Slider_Temperature.value = 0;
         ClickFinish?.Invoke();
     }
     

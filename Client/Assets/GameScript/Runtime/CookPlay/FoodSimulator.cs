@@ -11,7 +11,7 @@ public class FoodSimulator : MonoBehaviour
     public PanSimulator panSimulator;
     public FriedFooData data;
     
-    private Vector2 _previousCircleDirection;
+    // private Vector2 _previousCircleDirection;
     private Vector3 _direction;
 
     private float _velocity;
@@ -45,7 +45,7 @@ public class FoodSimulator : MonoBehaviour
     private void Simulator(Unit param)
     {
         _velocity -= (panSimulator.friction+data.friction)*Time.fixedDeltaTime;
-        _previousCircleDirection = transform.localPosition.normalized;
+        // _previousCircleDirection = transform.localPosition.normalized;
     }
 
     private void Move(Unit param)

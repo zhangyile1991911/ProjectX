@@ -30,7 +30,7 @@ public class UIWindow : IUIBase
 
     private List<UIComponent> _childComponent = new List<UIComponent>(10);
     private List<AssetOperationHandle> _resHandles = new List<AssetOperationHandle>(10);
-    protected CompositeDisposable handles = new CompositeDisposable(10);
+    protected CompositeDisposable handles = null;
     private UILayer _uiLayer;
     public virtual void Init(GameObject go)
     {
@@ -44,17 +44,18 @@ public class UIWindow : IUIBase
 
     public virtual void OnDestroy()
     {
-        handles.Clear();
         foreach (var h in _resHandles)
         {
             h.Release();
             h.Dispose();
         }
+        //todo 清理子widget
         GameObject.Destroy(uiGo);
     }
 
     public virtual void OnShow(UIOpenParam openParam)
     {
+        handles = new CompositeDisposable(10);
         uiGo.SetActive(true);
         for (int i = 0; i < _childComponent.Count; i++)
         {
@@ -65,6 +66,7 @@ public class UIWindow : IUIBase
     public virtual void OnHide()
     {
         uiGo.SetActive(false);
+        handles.Dispose();
         handles.Clear();
         for (int i = 0; i < _childComponent.Count; i++)
         {

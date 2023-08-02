@@ -78,12 +78,12 @@ public class FryEnter : MonoBehaviour
         var openUITask = UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,null);
         await openUITask;
         _fryingFoodWindow = UIManager.Instance.Get(UIEnum.FryingFoodWindow) as FryingFoodWindow;
-        _fryingFoodWindow.ClickStart += () =>
+        _fryingFoodWindow.ClickStart = () =>
         {
             _fryModule.StartCook();
         };
 
-        _fryingFoodWindow.ClickFinish += () =>
+        _fryingFoodWindow.ClickFinish = () =>
         {
             TestCanvas.gameObject.SetActive(true);
             UIManager.Instance.CloseUI(UIEnum.FryingFoodWindow);
@@ -149,6 +149,7 @@ public class FryEnter : MonoBehaviour
         _fryModule.FinishCook += result =>
         {
             TestCanvas.gameObject.SetActive(true);
+            _fryingFoodWindow.clickFinish(Unit.Default);
         };
         
         _selectedQte.Clear();

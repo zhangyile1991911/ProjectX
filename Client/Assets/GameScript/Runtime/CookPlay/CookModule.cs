@@ -29,8 +29,9 @@ public class CookModule : MonoBehaviour
         _cacheHandles?.Clear();
         _cacheHandles ??= new List<AssetOperationHandle>(20);
         
-        _handler?.Clear();
-        _handler ??= new CompositeDisposable(20);
+        // _handler?.Dispose();
+        // _handler?.Clear();
+        _handler = new CompositeDisposable(20);
         
         _result = new CookResult();
         _result.menuId = foodAndTools.MenuId;
@@ -100,7 +101,8 @@ public class CookModule : MonoBehaviour
             handler.Release();
         }
         
-        _handler?.Clear();
+        _handler.Dispose();
+        _handler.Clear();
     }
 
 }
