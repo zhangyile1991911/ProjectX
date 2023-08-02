@@ -44,29 +44,29 @@ public class CookModule : MonoBehaviour
     }
 
 
-    public virtual async void LoadQTEConfig(HashSet<int> qtes, Transform qteRoot)
+    public virtual async void LoadQTEConfig(List<qte_info> selectQTE, Transform qteRoot)
     {
         var groupId = DataProviderModule.Instance.GetQTEGroupId();
         Debug.Log($"loadQTEConfig = {groupId}");
-        _tbQteInfos ??= new List<qte_info>(10);
-        _tbQteInfos.Clear();
-
-        var tmpTb = DataProviderModule.Instance.GetQTEGroupInfo(groupId);
-        for (int i = 0; i < tmpTb.Count; i++)
-        {
-            if (qtes.Contains(tmpTb[i].QteId))
-            {
-                _tbQteInfos.Add(tmpTb[i]);
-            }
-        }
+        _tbQteInfos = selectQTE;
+        // _tbQteInfos.Clear();
+        //
+        // var tmpTb = DataProviderModule.Instance.GetQTEGroupInfo(groupId);
+        // for (int i = 0; i < tmpTb.Count; i++)
+        // {
+        //     if (qtes.Contains(tmpTb[i].QteId))
+        //     {
+        //         _tbQteInfos.Add(tmpTb[i]);
+        //     }
+        // }
 
         //QTE动画
         _qteAnimations ??= new List<Animation>(5);
         _qteAnimations?.Clear();
 
-        foreach (var qteId in qtes)
+        foreach (var one in selectQTE)
         {
-            var qteTB = DataProviderModule.Instance.GetQTEInfo(qteId);
+            var qteTB = DataProviderModule.Instance.GetQTEInfo(one.QteId);
             var loadHandle = YooAssets.LoadAssetAsync<GameObject>(qteTB.AnimResPath);
             _cacheHandles.Add(loadHandle);
 
@@ -78,7 +78,7 @@ public class CookModule : MonoBehaviour
             var ani = go.GetComponent<Animation>();
             ani.clip.legacy = true;
             _qteAnimations.Add(ani);
-            _result.QTEResult.Add(qteId, false);
+            _result.QTEResult.Add(one.QteId, false);
         }
     }
 

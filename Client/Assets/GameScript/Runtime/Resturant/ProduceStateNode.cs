@@ -16,6 +16,7 @@ public class ProduceStateNode : IStateNode
     private CookModule _curCookModule;
     private CookWindowUI _curCookWindowUI;
     private CompositeDisposable _handle;
+    
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -28,22 +29,24 @@ public class ProduceStateNode : IStateNode
         _data = param as PickFoodAndTools;
         // var menuTb = DataProviderModule.Instance.GetMenuInfo(_data.MenuId);
         GameObject go = null;
-        
+
+
+        loadQTEConfig();
         loadDifficultyConfig(_data.MenuId);
         
-        var openWindowParam = new CookWindowParamData();
+        // var openWindowParam = new CookWindowParamData();
         // openWindowParam.StateMachine = _machine;
-        openWindowParam.Difficulty = _currentRecipeDifficulty;
+        // openWindowParam.Difficulty = _currentRecipeDifficulty;
         
         switch (_data.CookTools)
         {
             case cookTools.Fry:
-                UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,OnLoadUIComplete,openWindowParam,UILayer.Bottom);
+                UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,OnLoadUIComplete,null,UILayer.Bottom);
                 go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
                 _curCookModule = go.GetComponent<FryModule>();
                 break;
             case cookTools.Barbecue:
-                UIManager.Instance.OpenUI(UIEnum.BarbecueWindow, OnLoadUIComplete,openWindowParam);
+                UIManager.Instance.OpenUI(UIEnum.BarbecueWindow, OnLoadUIComplete,null);
                 go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
                 _curCookModule = go.GetComponent<BarbecueModule>();
                 break;
@@ -115,21 +118,7 @@ public class ProduceStateNode : IStateNode
                 break;
         }
         _curCookWindowUI.SetDifficulty(_currentRecipeDifficulty);
-        
-        var groupId = DataProviderModule.Instance.GetQTEGroupId();
-        Debug.Log($"loadQTEConfig = {groupId}");   
-        var _tbQteInfos = new List<qte_info>(10);
-        _tbQteInfos.Clear();
-        
-        var tmpTb = DataProviderModule.Instance.GetQTEGroupInfo(groupId);
-        for (int i = 0; i < tmpTb.Count; i++)
-        {
-            if (_data.QTESets.Contains(tmpTb[i].QteId))
-            {
-                _tbQteInfos.Add(tmpTb[i]);
-            }
-        }
-        _curCookWindowUI.LoadQTEConfigTips(_tbQteInfos);
+        _curCookWindowUI.LoadQTEConfigTips(_data.QTEConfigs);
     }
 
     private void ClickStartCook()
@@ -178,5 +167,20 @@ public class ProduceStateNode : IStateNode
                 break;
         }
         _currentRecipeDifficulty = handler.AssetObject as RecipeDifficulty;
+    }
+
+    private void loadQTEConfig()
+    {
+        var groupId = DataProviderModule.Instance.GetQTEGroupId();
+        Debug.Log($"loadQTEConfig = {groupId}");
+        _data.QTEConfigs = new List<qte_info>();
+        var tmpTb = DataProviderModule.Instance.GetQTEGroupInfo(groupId);
+        for (int i = 0; i < tmpTb.Count; i++)
+        {
+            if (_data.QTESets.Contains(tmpTb[i].QteId))
+            {
+                _data.QTEConfigs.Add(tmpTb[i]);
+            }
+        }
     }
 }

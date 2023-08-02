@@ -53,6 +53,8 @@ public class PickFoodAndTools
     public cfg.food.cookTools CookTools;
     public List<ItemTableData> CookFoods;
     public HashSet<int> QTESets;
+    public List<qte_info> QTEConfigs;
+
 }
 
 //炒完的菜

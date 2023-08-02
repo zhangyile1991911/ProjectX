@@ -103,7 +103,7 @@ public class FryModule : CookModule
         }
         
         loadRawFood(recipe.CookFoods);
-        LoadQTEConfig(recipe.QTESets,pan.animNode);
+        LoadQTEConfig(recipe.QTEConfigs,pan.animNode);
         _recipe = recipe;
 
         _uiWindow = UIManager.Instance.Get(UIEnum.FryingFoodWindow) as FryingFoodWindow;
@@ -117,7 +117,7 @@ public class FryModule : CookModule
 
         var min = _currentRecipeDifficulty.temperatureArea.x * _currentRecipeDifficulty.maxTemperature;
         var max = _currentRecipeDifficulty.temperatureArea.y * _currentRecipeDifficulty.maxTemperature;
-
+        Debug.Log($"min = {min} max = {max} _currentRecipeDifficulty.temperatureArea = {_currentRecipeDifficulty.temperatureArea} _currentRecipeDifficulty.maxTemperature = {_currentRecipeDifficulty.maxTemperature}");
         this.UpdateAsObservable()
             .Where(_=>IsCooking&&(_curTemperature.Value >= min && _curTemperature.Value <= max))
             .Subscribe(HeatFood).AddTo(_handler);
@@ -150,17 +150,29 @@ public class FryModule : CookModule
 
     private void CalculateHeat(Unit param)
     {
+        // Debug.Log("=========Start CalculateHeat=========");
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
         var add = heatCurve.Evaluate(distance)*Time.deltaTime;
-        Debug.Log($"distance = {distance} add = {add}");
+        // Debug.Log($"distance = {distance} add = {add}");
         // var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         // Debug.Log($"velocity = {pan.velocity} sub = {sub}");
         var tmp = _curTemperature.Value;
-        tmp += (add+sub);
-        // Debug.Log($"distance = {distance} add = {add} sub = {sub} _curTemperature = {_curTemperature}");
+        tmp += (add+sub) * _currentRecipeDifficulty.maxTemperature;
+        Debug.Log($"_curTemperature.Value = {_curTemperature.Value}");      
+        Debug.Log($"distance = {distance} result = {add+sub} ");
+        Debug.Log($"mul = {(add+sub)*_currentRecipeDifficulty.maxTemperature}");
+        // Debug.Log($"_curTemperature.Value = {_curTemperature.Value}");
+        // tmp *= _currentRecipeDifficulty.maxTemperature;
         
+        // var result = add + sub;
+        // result = result > 0 ? result : 0;
+        // var tmp = _curTemperature.Value;
+        // tmp += result;
+        // Debug.Log($"before temperature = {_curTemperature}");
         _curTemperature.Value = Mathf.Clamp(tmp, 0, _currentRecipeDifficulty.maxTemperature);
+        Debug.Log($"after temperature = {_curTemperature}");
+        // Debug.Log("=========Finish CalculateHeat=========");
     }
     
     private void HeatFood(Unit param)
@@ -169,7 +181,7 @@ public class FryModule : CookModule
         temp += _currentRecipeDifficulty.addValue * Time.deltaTime;
         temp = Mathf.Clamp(temp, 0, _currentRecipeDifficulty.finishValue);
         _curProgress.Value = temp;
-        
+        Debug.Log($"HeatFood add value = {_currentRecipeDifficulty.addValue} progress {_curProgress.Value}");
         //判断是否结束
         if (_curProgress.Value >= _currentRecipeDifficulty.finishValue)
         {

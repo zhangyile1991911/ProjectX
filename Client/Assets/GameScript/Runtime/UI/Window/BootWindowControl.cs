@@ -13,12 +13,6 @@ public partial class BootWindow : UIWindow
     public override void OnCreate()
     {
         base.OnCreate();
-        Btn_Restaurant.OnClickAsObservable()
-            .Subscribe(ClickRestaurant).AddTo(handles);
-        Btn_FryFood.OnClickAsObservable()
-            .Subscribe(ClickFry).AddTo(handles);
-        Btn_Barbecue.OnClickAsObservable()
-            .Subscribe(ClickBarbecue).AddTo(handles);    
     }
     
     public override void OnDestroy()
@@ -29,6 +23,12 @@ public partial class BootWindow : UIWindow
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
+        Btn_Restaurant.OnClickAsObservable()
+            .Subscribe(ClickRestaurant).AddTo(handles);
+        Btn_FryFood.OnClickAsObservable()
+            .Subscribe(ClickFry).AddTo(handles);
+        Btn_Barbecue.OnClickAsObservable()
+            .Subscribe(ClickBarbecue).AddTo(handles);    
     }
 
     public override void OnHide()
@@ -51,10 +51,12 @@ public partial class BootWindow : UIWindow
     void ClickFry(Unit param)
     {
         YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/FryingPan.unity");
+        UIManager.Instance.DestroyUI(UIEnum.BootWindow);
     }
 
     void ClickBarbecue(Unit param)
     {
         YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Barbecue.unity");
+        UIManager.Instance.DestroyUI(UIEnum.BootWindow);
     }
 }

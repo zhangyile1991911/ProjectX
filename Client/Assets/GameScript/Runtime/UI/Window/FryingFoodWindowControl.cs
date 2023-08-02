@@ -38,7 +38,7 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         _resultWidget.Btn_Close.OnClickAsObservable().Subscribe(clickFinish).AddTo(handles);
         
         _resultWidget.OnHide();
-        var tmp = openParam as CookWindowParamData;
+        // var tmp = openParam as CookWindowParamData;
         // _stateMachine = tmp.StateMachine;
     }
 
@@ -101,7 +101,7 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         var tmp = difficulty as FryingDifficulty;
         Slider_Temperature.maxValue = tmp.maxTemperature;
         Slider_Temperature.minValue = 0;
-        
+        Debug.Log($"Slider_Temperature.maxValue = {Slider_Temperature.maxValue}");
         Slider_Progress.maxValue = tmp.finishValue;
         Slider_Progress.minValue = 0;
         
@@ -181,6 +181,7 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
 
     private void UpdateTemperatureSlider(float temperature)
     {
+        Debug.Log($"FryingFoodWindowControl UpdateTemperatureSlider = {temperature}");
         Slider_Temperature.value = temperature;
     }
 

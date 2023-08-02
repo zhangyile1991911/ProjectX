@@ -61,7 +61,7 @@ namespace GameScript.CookPlay
             }
 
             loadRoastFood(recipe.CookFoods);
-            LoadQTEConfig(recipe.QTESets,RoastArea.transform);
+            LoadQTEConfig(recipe.QTEConfigs,RoastArea.transform);
             _recipe = recipe;
             
             _barbecueWindow = UIManager.Instance.Get(UIEnum.BarbecueWindow) as BarbecueWindow;
