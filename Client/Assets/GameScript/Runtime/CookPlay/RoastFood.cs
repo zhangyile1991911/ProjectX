@@ -114,7 +114,7 @@ public class RoastFood : MonoBehaviour
     
     private void MoveFood(Unit param)
     {
-        // Debug.Log($"{name} is Moving");
+        Debug.Log($"{name} is Moving");
         var pos = transform.position;
         Vector3 camToObjDir = pos - _mainCamera.transform.position;
         Vector3 normalDir = Vector3.Project(camToObjDir, _mainCamera.transform.forward);
@@ -177,35 +177,42 @@ public class RoastFood : MonoBehaviour
     
     private void CheckHit(Unit param)
     {
-        RaycastHit2D hit;
+        // Debug.Log($"CheckHit Start {name}");
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (hit = Physics2D.Raycast(ray.origin, ray.direction))
-        {
-            if (hit.collider.transform == transform)
-            {
-                var position = transform.position;
-                var mainCameraTransform = _mainCamera.transform;
-                Vector3 camToObjDir = position - mainCameraTransform.position;
-                Vector3 normalDir = Vector3.Project(camToObjDir, mainCameraTransform.forward);
-                Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y, normalDir.magnitude));
-                Module.UnlockArea(_curBounds,this);
-                _dragOffset = position - worldPos;
-                _oldPosition = position;
-                _oldBounds = _curBounds;
-                _isDrag = true;
-            }
-        }
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+        
+        if (!hit) return;
+        if (hit.collider.transform != transform) return;
+        
+        var position = transform.position;
+        var mainCameraTransform = _mainCamera.transform;
+        Vector3 camToObjDir = position - mainCameraTransform.position;
+        Vector3 normalDir = Vector3.Project(camToObjDir, mainCameraTransform.forward);
+        Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,Input.mousePosition.y, normalDir.magnitude));
+        Module.UnlockArea(_curBounds,this);
+        _dragOffset = position - worldPos;
+        _oldPosition = position;
+        _oldBounds = _curBounds;
+        _isDrag = true;
+        // Debug.Log($"CheckHit Finish {name}");
     }
 
     private void CheckFlip(Unit param)
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-        if (hit && hit.collider.transform == transform)
+        if (hit.collider != null)
         {
-            // Debug.Log($"{name} CheckFlip");
-            FlipOver();
+            Debug.Log("Hit Object: " + hit.collider.gameObject.name);
+            Debug.Log("Hit Point: " + hit.point);
+            Debug.Log("Hit Normal: " + hit.normal);
+            
+            // Add more properties as needed
         }
+        if (!hit) return;
+        if (hit.collider.transform != transform) return;
+        // Debug.Log($"CheckFlip = {name}");   
+        FlipOver();
     }
 
     public void AddHeat(float heat)

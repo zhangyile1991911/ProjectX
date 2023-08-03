@@ -43,22 +43,39 @@ public class FryEnter : MonoBehaviour
         
         Salt.OnValueChangedAsObservable().Skip(1).Subscribe(b=>
         {
-            _selectedQte.Add(1);
+            if (b)
+            {
+                _selectedQte.Add(1);
+            }
+            else
+            {
+                _selectedQte.Remove(1);    
+            }
         });
         
         Vinegar.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
         {
-            _selectedQte.Add(2);
+            if(b)
+                _selectedQte.Add(2);
+            else
+                _selectedQte.Remove(2);
         });
 
         Sugar.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
         {
-            _selectedQte.Add(3);
+            if(b)
+                _selectedQte.Add(3);
+            else
+                _selectedQte.Remove(3);
+            
         });
         
         Spicy.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
         {
-            _selectedQte.Add(4);
+            if (b)
+                _selectedQte.Add(4);
+            else
+                _selectedQte.Remove(4);
         });
 
         TestBtn.OnClickAsObservable().Subscribe(ClickTest);
@@ -158,7 +175,7 @@ public class FryEnter : MonoBehaviour
             _fryingFoodWindow.clickFinish(Unit.Default);
         };
         
-        _selectedQte.Clear();
+        
     }
 
     // private void OnLoadUIComplete(IUIBase wnd)

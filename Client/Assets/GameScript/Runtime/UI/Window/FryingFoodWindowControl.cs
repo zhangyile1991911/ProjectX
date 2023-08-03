@@ -89,8 +89,8 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
 
             qteList[i].tip.Txt_tips.text = info.Desc;
             qteList[i].tip.uiRectTran.anchoredPosition = new Vector2(0,rect_qteArea.sizeDelta.y * tb.StartArea); 
-            Debug.Log($"anchoredPosition = {qteList[i].tip.uiRectTran.anchoredPosition}");
-            qteList[i].tip.OnShow(null);
+            // Debug.Log($"anchoredPosition = {qteList[i].tip.uiRectTran.anchoredPosition}");
+            // qteList[i].tip.OnShow(null);
         }
     }
     

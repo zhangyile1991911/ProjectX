@@ -224,7 +224,7 @@ MonoBehaviour:
   TestBtn: {fileID: 701550884}
   MenuIdInput: {fileID: 653914603}
   QteGroupInput: {fileID: 419142802}
-  DiffcultyDropdown: {fileID: 433653654}
+  DifficultyDropdown: {fileID: 433653654}
   Salt: {fileID: 483144406}
   Vinegar: {fileID: 1892493951}
   Sugar: {fileID: 907609664}

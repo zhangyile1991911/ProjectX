@@ -602,6 +602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87c5315f0262c5419dfaf809d8401ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsDebug: 0
   BarbecueGrid: {fileID: 2091607635041340838}
   BarbecueMap: {fileID: 2091607634997749958}
   RoastArea: {fileID: 2091607633180064585}
@@ -1440,7 +1441,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091607635041340839}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

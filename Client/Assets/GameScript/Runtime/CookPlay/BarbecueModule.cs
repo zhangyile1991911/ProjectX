@@ -76,33 +76,38 @@ namespace GameScript.CookPlay
             await handler.ToUniTask(this);
             var roastFoodPrefab = handler.AssetObject as GameObject;
             var mainCamera = Camera.main;
-            int i = 0;
-            for (; i < foods.Count; i++)
+            int total = 0;
+            for (int i = 0; i < foods.Count; i++)
             {
-                RoastFood roastFoodObj = null;
-                if (i < _roastFoods.Count)
+                for (int y = 0; y < foods[i].Num; y++)
                 {
-                    roastFoodObj = _roastFoods[i];
-                    roastFoodObj.gameObject.SetActive(true);
-                }
-                else
-                {
-                    var go = Instantiate(roastFoodPrefab,FoodGroup);
-                    roastFoodObj = go.GetComponent<RoastFood>();
-                    _roastFoods.Add(roastFoodObj);
-                }
+                    RoastFood roastFoodObj = null;
+                    if (total < _roastFoods.Count)
+                    {
+                        roastFoodObj = _roastFoods[total];
+                        roastFoodObj.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        var go = Instantiate(roastFoodPrefab,FoodGroup);
+                        go.name = ZString.Format("food{0}", total);
+                        roastFoodObj = go.GetComponent<RoastFood>();
+                        _roastFoods.Add(roastFoodObj);
+                    }
                 
-                var tbItem = DataProviderModule.Instance.GetItemBaseInfo(foods[i].Id);
-                roastFoodObj.Init(tbItem.UiResPath,mainCamera);
+                    var tbItem = DataProviderModule.Instance.GetItemBaseInfo(foods[i].Id);
+                    roastFoodObj.Init(tbItem.UiResPath,mainCamera);
                 
-                var x = Random.Range(8.9f, 12.74f);
-                roastFoodObj.transform.localPosition = new Vector3(x, 0, 0);
-                roastFoodObj.Module = this;
+                    var x = Random.Range(8.9f, 12.74f);
+                    roastFoodObj.transform.localPosition = new Vector3(x, 0, 0);
+                    roastFoodObj.Module = this;
+                    total++;
+                }
             }
 
-            for (;i < _roastFoods.Count;i++)
+            for (;total < _roastFoods.Count;total++)
             {
-                _roastFoods[i].gameObject.SetActive(false);
+                _roastFoods[total].gameObject.SetActive(false);
             }
             
         }
@@ -113,8 +118,20 @@ namespace GameScript.CookPlay
             _addition = 0;
             _remainTimer = 0;
             
+            // this.UpdateAsObservable()
+            //     .Where(_ => Input.GetMouseButtonDown(0))
+            //     .Subscribe(CheckHit).AddTo(_handler);
+            // this.UpdateAsObservable()
+            //     .Where(_ => Input.GetMouseButton(0) && _isDrag)
+            //     .Subscribe(MoveFood).AddTo(_handler);
+            // this.UpdateAsObservable()
+            //     .Where(_ => Input.GetMouseButtonUp(0) && _isDrag) 
+            //     .Subscribe(PutFood).AddTo(_handler);
+            // this.UpdateAsObservable()
+            //     .Where(_=>Input.GetMouseButtonDown(1))
+            //     .Subscribe(CheckFlip).AddTo(_handler);
             
-            for (int i = 0; i < _recipe.CookFoods.Count; i++)
+            for (int i = 0; i < _roastFoods.Count; i++)
             {
                 _roastFoods[i].StartRoast(_handler);
             }
@@ -391,7 +408,6 @@ namespace GameScript.CookPlay
                 one.gameObject.SetActive(false);
             }
 
-            
             //生成评分
             var provider = DataProviderModule.Instance;
             foreach (var food in _recipe.CookFoods)

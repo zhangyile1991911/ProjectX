@@ -11,6 +11,16 @@
         "start_area": 0.6,
         "end_area": 0.8,
         "qte_id": 2
+      },
+      {
+        "start_area": 0.7,
+        "end_area": 0.9,
+        "qte_id": 3
+      },
+      {
+        "start_area": 0.5,
+        "end_area": 0.8,
+        "qte_id": 4
       }
     ]
   },
@@ -26,6 +36,16 @@
         "start_area": 0.1,
         "end_area": 0.5,
         "qte_id": 2
+      },
+      {
+        "start_area": 0.1,
+        "end_area": 0.5,
+        "qte_id": 3
+      },
+      {
+        "start_area": 0.3,
+        "end_area": 0.8,
+        "qte_id": 4
       }
     ]
   }
