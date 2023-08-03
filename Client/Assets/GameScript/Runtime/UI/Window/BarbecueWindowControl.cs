@@ -21,6 +21,7 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
     private CookWindowParamData _openData;
     private CookResultWidget _cookResultWidget;
     private RectTransform rect_qteArea;
+    private BarbecueRecipeDifficulty _difficulty;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -37,10 +38,10 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
     {
         base.OnShow(openParam);
         
-        _openData = openParam as CookWindowParamData;
-
-        Slider_Progress.maxValue = _openData.Difficulty.duration;
-        Slider_Progress.value = 0;
+        // _openData = openParam as CookWindowParamData;
+        //
+        // Slider_Progress.maxValue = _openData.Difficulty.duration;
+        // Slider_Progress.value = 0;
         
         Btn_start.gameObject.SetActive(true);
         Btn_start.OnClickAsObservable().Subscribe(clickStart).AddTo(handles);
@@ -68,13 +69,12 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
         ClickStart?.Invoke();
         
         Btn_start.gameObject.SetActive(false);
-
-        _counterHandle?.Dispose();
-        _counterHandle = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(Counter).AddTo(handles);
+        
+        _counterHandle = Observable.Interval(TimeSpan.FromSeconds(1)).Subscribe(Counter);
         _remainDuration = 0;
     }
 
-    private void clickFinish(Unit param)
+    public void clickFinish(Unit param)
     {
         ClickFinish?.Invoke();
     }
@@ -82,14 +82,14 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
     private void Counter(long param)
     {
         _remainDuration += 1;
-        if (_remainDuration >= _openData.Difficulty.duration)
+        if (_remainDuration >= _difficulty.duration)
         {
             _counterHandle?.Dispose();
             _counterHandle = null;
         }
 
         Slider_Progress.value = _remainDuration;
-        Txt_timer.text = ZString.Format("{0}", _openData.Difficulty.duration - _remainDuration);
+        Txt_timer.text = ZString.Format("{0}", _difficulty.duration - _remainDuration);
     }
     
 
@@ -97,6 +97,16 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
     {
         _cookResultWidget.OnShow(null);
         _cookResultWidget.ShowGameOver(cookResult);
+        
+        Slider_Progress.value = 0;
+        Txt_timer.text = ZString.Format("{0}", 0);
+        for (int i = 0;i < qteList.Count;i++)
+        {
+            qteList[i].tip.OnHide();
+        }
+        qteList.Clear();
+        _counterHandle?.Dispose();
+        _counterHandle = null;
     }
     
     private List< QTEInfoRecord> qteList;
@@ -162,16 +172,8 @@ public partial class BarbecueWindow : UIWindow,CookWindowUI
     
     public void SetDifficulty(RecipeDifficulty difficulty)
     {
-        // var tmp = difficulty as FryingDifficulty;
-        // Slider_Temperature.maxValue = tmp.maxTemperature;
-        // Slider_Temperature.minValue = 0;
-        //
-        // Slider_Progress.maxValue = tmp.finishValue;
-        // Slider_Progress.minValue = 0;
-        //
-        // var min = tmp.temperatureArea.x;
-        // var max = tmp.temperatureArea.y;
-        // Img_Temperature.material.SetFloat("_low",min);
-        // Img_Temperature.material.SetFloat("_medium",max);
+        _difficulty = difficulty as BarbecueRecipeDifficulty;
+        Slider_Progress.maxValue = _difficulty.duration;
+        Slider_Progress.value = 0;
     }
 }

@@ -16,6 +16,7 @@ namespace GameScript.CookPlay
 {
     public class BarbecueModule : CookModule
     {
+        public bool IsDebug = false;
         public Grid BarbecueGrid;
         public Tilemap BarbecueMap;
         public BoxCollider2D RoastArea;
@@ -43,17 +44,17 @@ namespace GameScript.CookPlay
 
         private BarbecueWindow _barbecueWindow;
 
-        private void Init()
-        {
-            
-            
-
-        }
+        // private void Init()
+        // {
+        //     
+        //     
+        //
+        // }
 
         private MenuInfo _tbMenuInfo;
         void SetBarbecueInfo(PickFoodAndTools recipe)
         {
-            Init();
+            // Init();
             _tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(recipe.MenuId);
             if (_tbMenuInfo == null)
             {
@@ -106,7 +107,7 @@ namespace GameScript.CookPlay
             
         }
 
-        public void StartBarbecue()
+        private void StartBarbecue()
         {
             IsCooking = true;
             _addition = 0;
@@ -383,6 +384,14 @@ namespace GameScript.CookPlay
             IsCooking = false;
             _barbecueWindow = null;
 
+            //隐藏
+            foreach (var one in _roastFoods)
+            {
+                one.Reset();
+                one.gameObject.SetActive(false);
+            }
+
+            
             //生成评分
             var provider = DataProviderModule.Instance;
             foreach (var food in _recipe.CookFoods)
@@ -397,15 +406,19 @@ namespace GameScript.CookPlay
                     _result.Tags.Add(one);    
                 }
             }
-            
-            
-            //消耗时间
-            var clocker = UniModule.GetModule<Clocker>();
-            clocker.AddMinute(_tbMenuInfo.CostTime);
+
+            if (IsDebug)
+            {
+                //消耗时间
+                var clocker = UniModule.GetModule<Clocker>();
+                clocker.AddMinute(_tbMenuInfo.CostTime);    
+            }
             
             FinishCook?.Invoke(_result);
             
             base.UnloadRes();
+
+            StopFanAnimation();
         }
     }
 }

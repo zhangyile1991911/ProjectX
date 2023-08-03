@@ -13,7 +13,7 @@ public class FryEnter : MonoBehaviour
     public Button TestBtn;
     public TMP_InputField MenuIdInput;
     public TMP_InputField QteGroupInput;
-    public TMP_Dropdown DiffcultyDropdown;
+    public TMP_Dropdown DifficultyDropdown;
 
 
     public Toggle Salt;
@@ -24,13 +24,13 @@ public class FryEnter : MonoBehaviour
     private RecipeDifficulty _currentRecipeDifficulty;
     private FryingFoodWindow _fryingFoodWindow;
     private CookWindowUI _curCookWindowUI;
-    private CompositeDisposable _handle;
+    // private CompositeDisposable _handle;
     private FryModule _fryModule;
     private AssetOperationHandle _handler;
     private HashSet<int> _selectedQte;
     private void Awake()
     {
-        _handle = new CompositeDisposable();
+        // _handle = new CompositeDisposable();
         
     }
 
@@ -73,6 +73,12 @@ public class FryEnter : MonoBehaviour
             Debug.LogError($"menuId = {menuId} config is empty");
             return;
         }
+        
+        if (tbMenuInfo.MakeMethod != cookTools.Fry)
+        {
+            Debug.LogError($"菜谱id错误 不是烧烤");
+            return;
+        }
 
         //打开界面
         var openUITask = UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,null);
@@ -100,12 +106,12 @@ public class FryEnter : MonoBehaviour
         }
 
         string filePath = "Assets/GameRes/SOConfigs/Menu/FryMenu/";
-        Debug.Log($"DiffcultyDropdown.value = {DiffcultyDropdown.value}");
+        Debug.Log($"DiffcultyDropdown.value = {DifficultyDropdown.value}");
         
         _handler?.Release();
-        _handle?.Dispose();
+        // _handle?.Dispose();
 
-        switch (DiffcultyDropdown.value)
+        switch (DifficultyDropdown.value)
         {
             case 0:
                 _handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"Low.asset");

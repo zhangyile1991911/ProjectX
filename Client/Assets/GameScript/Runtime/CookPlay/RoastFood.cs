@@ -253,5 +253,16 @@ public class RoastFood : MonoBehaviour
             && _heatValue[1] >= FoodData.CookedHeatCapacity;
     }
 
+    public void Reset()
+    {
+        _currentFace = true;
+        inBox = false;
+        _heatValue = Vector2.zero;
+        frontProgressImage.fillAmount = 0;
+        frontOverProgressImage.fillAmount = 0;
+        backProgressImage.fillAmount = 0;
+        backOverProgressImage.fillAmount = 0;
+    }
+
     
 }
