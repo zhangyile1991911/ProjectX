@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using cfg.common;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
@@ -70,33 +72,57 @@ public class WaitStateNode : IStateNode
 
     private async void handleCharacter(DateTime dateTime)
     {
-        var ids = pickWhoAppear(dateTime);
-        if (ids is not { Count: > 0 }) return;
+        //检查是否有空位--->检查出场条件--->创建角色
+        var seatNum = _restaurant.EmptySeatNum();
+        if (seatNum <= 0) return;
 
-        foreach (var CharacterId in ids)
+        while (seatNum > 0)
         {
-            
-            if (_restaurant.ExistWaitingCharacter(CharacterId))
-            {
-                continue;
-            }
-            if (!_restaurant.HaveEmptySeat())
-            {
-                break;
-            }
-            
-            var man = await CharacterMgr.Instance.CreateCharacter(CharacterId);
-            // _restaurant.CharacterTakeRandomSeat(man);
-            var emptySeatIndex = _restaurant.FindEmptySeatIndex();
-            man.SeatOccupy = emptySeatIndex;
-            var seatPoint = _restaurant.CharacterTakeSeatPoint(man.SeatOccupy,emptySeatIndex);
-            var spawnPoint = _restaurant.RandSpawnPoint();
-            
-            man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
-
-            UserInfoModule.Instance.AddCharacterArrived(CharacterId);
-            UserInfoModule.Instance.AddWaitingCharacter(CharacterId,man.SeatOccupy);
+            var CharacterId = filterNPCAppear(dateTime,ref seatNum);
+            Debug.Log($"filterNPCAppear = {CharacterId}");
+            if (CharacterId == 0) break;
+            await loadCharacter(CharacterId);
         }
+        
+        // if (ids is not { Count: > 0 }) return;
+
+        // foreach (var CharacterId in ids)
+        // {
+            // var man = await CharacterMgr.Instance.CreateCharacter(CharacterId);
+            // // _restaurant.CharacterTakeRandomSeat(man);
+            // var emptySeatIndex = _restaurant.FindEmptySeatIndex();
+            // man.SeatOccupy = emptySeatIndex;
+            // var seatPoint = _restaurant.CharacterTakeSeatPoint(man.SeatOccupy,emptySeatIndex);
+            // var spawnPoint = _restaurant.RandSpawnPoint();
+            //
+            // man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
+            //
+            // UserInfoModule.Instance.AddCharacterArrived(CharacterId);
+            // UserInfoModule.Instance.AddWaitingCharacter(CharacterId,man.SeatOccupy);
+        // }
+    }
+
+    private async UniTask loadCharacter(int CharacterId)
+    {
+        Debug.Log($"loadCharacter = {CharacterId}");
+        var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(CharacterId);
+        //一般NPC  
+        var character = await CharacterMgr.Instance.CreateCharacter(CharacterId);
+        Debug.Log($"await CharacterMgr.Instance.CreateCharacter");
+        var seatPoint = _restaurant.CharacterTakeSeat(character);
+        
+        var spawnPoint = _restaurant.RandSpawnPoint();
+        character.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
+      
+        UserInfoModule.Instance.AddCharacterArrivedAndWaiting(CharacterId);
+        //特别NPC
+        if (tbScheduler.PartnerId <= 0) return;
+
+        var partner = await CharacterMgr.Instance.CreateCharacter(tbScheduler.PartnerId);
+        var partnerSeatPoint = _restaurant.CharacterTakeSeat(partner);
+        partner.CurBehaviour = new FollowCharacter(character,partnerSeatPoint);
+        
+        UserInfoModule.Instance.AddCharacterArrivedAndWaiting(tbScheduler.PartnerId);
     }
 
     private bool TimeToClose(DateTime dateTime)
@@ -110,45 +136,106 @@ public class WaitStateNode : IStateNode
         return false;
     }
     
-    private List<int> pickWhoAppear(DateTime nowTime)
+    private int filterNPCAppear(DateTime nowTime,ref int seatNum)
     {
         var characterIds = DataProviderModule.Instance.AtWeekDay((int)nowTime.DayOfWeek);
-        var result = new List<int>(4);
+        // var result = new List<int>(4);
         foreach (var cid in characterIds)
         {
+            if (_restaurant.ExistWaitingCharacter(cid)) continue;
+
             var arrived = UserInfoModule.Instance.RestaurantCharacterArrived(cid);
             if(arrived)continue;
-            
-            var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
-            foreach (var info in tbScheduler.CharacterAppearInfos)
+
+            var onTime = checkCharacterAppearTime(cid, nowTime);
+            if(!onTime)continue;
+
+            var canSeat = checkSeatNum(cid,ref seatNum);
+            if (!canSeat) continue;
+
+            return cid;
+            // result.Add(cid);
+            // var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
+            // foreach (var info in tbScheduler.CharacterAppearInfos)
+            // {
+            //     if((DayOfWeek)info.Weekday != nowTime.DayOfWeek)continue;
+            //
+            //     if (info.EnterTime.Hour == nowTime.Hour)
+            //     {
+            //         if (nowTime.Minute < info.EnterTime.Minutes) continue;
+            //         seatNum--;
+            //         result.Add(cid);
+            //         break;
+            //     }
+            //
+            //     var startHour = info.EnterTime.Hour < 6 ? info.EnterTime.Hour + 24 : info.EnterTime.Hour;
+            //     var leaveHour = info.LeaveTime.Hour < 6 ? info.LeaveTime.Hour + 24 : info.LeaveTime.Hour;
+            //     if(nowTime.Hour > startHour  && nowTime.Hour < leaveHour)
+            //     {
+            //         seatNum--;
+            //         result.Add(cid);
+            //         break;
+            //     }
+            //
+            //     if (nowTime.Hour != info.LeaveTime.Hour) continue;
+            //     if (nowTime.Minute >= info.LeaveTime.Minutes) continue;
+            //     seatNum--;
+            //     result.Add(cid);
+            //     break;
+            // }
+        }
+
+        return 0;
+    }
+
+    private bool checkSeatNum(int cid,ref int curSeatNum)
+    {
+        if (cid == 10002)
+        {//假设这是喵老师
+            if (curSeatNum >= 2)
             {
-                if((DayOfWeek)info.Weekday != nowTime.DayOfWeek)continue;
-
-                if (info.EnterTime.Hour == nowTime.Hour)
-                {
-                    if (nowTime.Minute < info.EnterTime.Minutes) continue;
-                    result.Add(cid);
-                    break;
-                }
-
-                var startHour = info.EnterTime.Hour < 6 ? info.EnterTime.Hour + 24 : info.EnterTime.Hour;
-                var leaveHour = info.LeaveTime.Hour < 6 ? info.LeaveTime.Hour + 24 : info.LeaveTime.Hour;
-                if(nowTime.Hour > startHour  && nowTime.Hour < leaveHour)
-                {
-                    result.Add(cid);
-                    break;
-                }
-
-                if (nowTime.Hour != info.LeaveTime.Hour) continue;
-                if (nowTime.Minute >= info.LeaveTime.Minutes) continue;
-                result.Add(cid);
-                break;
+                curSeatNum -= 2;
+                return true;
             }
         }
 
-        return result;
+        if (curSeatNum >= 1)
+        {
+            curSeatNum -= 1;
+            return true;
+        }
+
+        return false;
     }
-    
+    private bool checkCharacterAppearTime(int cid,DateTime nowTime)
+    {
+        var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
+        foreach (var info in tbScheduler.CharacterAppearInfos)
+        {
+            if((DayOfWeek)info.Weekday != nowTime.DayOfWeek)continue;
+
+            if (info.EnterTime.Hour == nowTime.Hour)
+            {
+                if (nowTime.Minute < info.EnterTime.Minutes) continue;
+                return true;
+            }
+
+            var startHour = info.EnterTime.Hour < 6 ? info.EnterTime.Hour + 24 : info.EnterTime.Hour;
+            var leaveHour = info.LeaveTime.Hour < 6 ? info.LeaveTime.Hour + 24 : info.LeaveTime.Hour;
+            if(nowTime.Hour > startHour  && nowTime.Hour < leaveHour)
+            {
+                return true;
+            }
+
+            if (nowTime.Hour != info.LeaveTime.Hour) continue;
+            if (nowTime.Minute >= info.LeaveTime.Minutes) continue;
+            return true;
+        }
+
+        return false;
+    }
+
+
     private void GenerateChatBubble(int chatId)
     {
         var TBbubble = DataProviderModule.Instance.GetCharacterBubble(chatId);

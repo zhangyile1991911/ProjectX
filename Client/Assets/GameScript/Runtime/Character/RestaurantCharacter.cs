@@ -12,32 +12,32 @@ using YooAsset;
 using Random = UnityEngine.Random;
 
 
-public class RestaurantCharacter : MonoBehaviour
+public class RestaurantCharacter : RestaurantRoleBase
 {
-    public SpriteRenderer Sprite => _spriteRenderer;
-    private SpriteRenderer _spriteRenderer;
-    private Transform _emojiNode;
+    // public SpriteRenderer Sprite => _spriteRenderer;
+    // private SpriteRenderer _spriteRenderer;
+    // private Transform _emojiNode;
+    //
+    // public Transform EmojiNode => _emojiNode;
 
-    public Transform EmojiNode => _emojiNode;
+    // public CharacterBaseInfo TBBaseInfo => _baseInfo;
 
-    public CharacterBaseInfo TBBaseInfo => _baseInfo;
+    // public int SeatOccupy
+    // {
+    //     get => _seatOccupy;
+    //     set => _seatOccupy = _seatOccupy | (1 << value);
+    // }
+    //
+    // private int _seatOccupy;
 
-    public int SeatOccupy
-    {
-        get => _seatOccupy;
-        set => _seatOccupy = _seatOccupy | (1 << value);
-    }
-
-    private int _seatOccupy;
-
-    public string CharacterName => _baseInfo.Name;
+    // public string CharacterName => _baseInfo.Name;
 
     //好感度
-    public int Friendliness => _npcData.FriendlyValue;
-    private NPCTableData _npcData;
+    // public int Friendliness => _npcData.FriendlyValue;
+    // private NPCTableData _npcData;
 
-    public int CharacterId => _baseInfo.Id;
-    private CharacterBaseInfo _baseInfo;
+    // public int CharacterId => _baseInfo.Id;
+    // private CharacterBaseInfo _baseInfo;
     
     //表格配置数据
     private List<CharacterBubble> _mainLineBubbleTB;
@@ -60,51 +60,33 @@ public class RestaurantCharacter : MonoBehaviour
         set => curOrderMenuId = value;
     }
     
-    public CharacterBehaviour CurBehaviour
-    {
-        get => _behaviour;
-        set
-        {
-            if (_behaviour == null)
-            {
-                _behaviour = value;
-                _behaviour?.Enter(this);
-            }
-            else
-            {
-                _behaviour.Exit();
-                _behaviour = value;
-                _behaviour?.Enter(this);
-            }
-        }
-    }
-
-    private CharacterBehaviour _behaviour;
+    
     private Clocker _clocker;
     private int foodScore;
+    
 
-    public void InitCharacter(CharacterBaseInfo info)
+    public override void InitCharacter(CharacterBaseInfo info)
     {
-        _baseInfo = info;
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _emojiNode = transform.Find("EmojiNode");
-        curCommentChatId = 0;
+        // _baseInfo = info;
+        // _spriteRenderer = GetComponent<SpriteRenderer>();
+        // _emojiNode = transform.Find("EmojiNode");
         // LoadCharacterSprite();
+        base.InitCharacter(info);
+        curCommentChatId = 0;
         curTalkChatId = new List<int>(5);
         curOrderChatId = 0;
         curMainLineChatId = 0;
         curOrderMenuId = 0;
         foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
-        LoadTableData();
-        LoadDataBase();
+       
     }
 
     public void ReleaseCharacter()
     {
-        _baseInfo = null;
-        _spriteRenderer.sprite = null;
-        _spriteRenderer = null;
+        // _baseInfo = null;
+        // _spriteRenderer.sprite = null;
+        // _spriteRenderer = null;
         curCommentChatId = 0;
         curTalkChatId = null;
         curOrderChatId = 0;
@@ -123,18 +105,18 @@ public class RestaurantCharacter : MonoBehaviour
     //     var sp = handler.AssetObject as Sprite;
     //     _spriteRenderer.sprite = sp;
     // }
-    private void UnLoadTableData()
-    {
-        _mainLineBubbleTB?.Clear();
-        _mainLineBubbleTB = null;
-        
-        _talkBubbleTB?.Clear();
-        _talkBubbleTB = null;
-        
-        _orderBubbleTB?.Clear();
-        _orderBubbleTB = null;
-    }
-    private void LoadTableData()
+    // private void UnLoadTableData()
+    // {
+    //     _mainLineBubbleTB?.Clear();
+    //     _mainLineBubbleTB = null;
+    //     
+    //     _talkBubbleTB?.Clear();
+    //     _talkBubbleTB = null;
+    //     
+    //     _orderBubbleTB?.Clear();
+    //     _orderBubbleTB = null;
+    // }
+    protected override void LoadTableData()
     {
         _mainLineBubbleTB = new(10);
         _talkBubbleTB = new(10);
@@ -161,32 +143,32 @@ public class RestaurantCharacter : MonoBehaviour
         }
     }
 
-    private void UnLoadDataBase()
-    {
-        UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
-        _npcData = null;
-    }
+    // private void UnLoadDataBase()
+    // {
+    //     UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
+    //     _npcData = null;
+    // }
     
-    private void LoadDataBase()
-    {
-        var userInfoModule = UniModule.GetModule<UserInfoModule>();
-        _npcData = userInfoModule.NPCData(CharacterId);
-        var waitingInfo = userInfoModule.GetWaitingCharacter(CharacterId);
-        if(waitingInfo != null)_seatOccupy = waitingInfo.SeatOccupy;
-    }
+    // private void LoadDataBase()
+    // {
+    //     var userInfoModule = UniModule.GetModule<UserInfoModule>();
+    //     _npcData = userInfoModule.NPCData(CharacterId);
+    //     var waitingInfo = userInfoModule.GetWaitingCharacter(CharacterId);
+    //     if(waitingInfo != null)_seatOccupy = waitingInfo.SeatOccupy;
+    // }
 
     //增加好感度
-    public void AddFriendly(int num)
-    {
-        _npcData.FriendlyValue += num;
-        UserInfoModule.Instance.UpdateNPCData(CharacterId);
-    }
-
-    public void AddAppearCount()
-    {
-        _npcData.AppearCount += 1;
-        UserInfoModule.Instance.UpdateNPCData(CharacterId);
-    }
+    // public void AddFriendly(int num)
+    // {
+    //     _npcData.FriendlyValue += num;
+    //     UserInfoModule.Instance.UpdateNPCData(CharacterId);
+    // }
+    //
+    // public void AddAppearCount()
+    // {
+    //     _npcData.AppearCount += 1;
+    //     UserInfoModule.Instance.UpdateNPCData(CharacterId);
+    // }
 
     private int generateMainLine()
     {
@@ -324,15 +306,15 @@ public class RestaurantCharacter : MonoBehaviour
         return -1;
     }
 
-    public void ToDark()
-    {
-        _spriteRenderer.color = Color.gray;
-    }
-
-    public void ToLight()
-    {
-        _spriteRenderer.color = Color.white;
-    }
+    // public void ToDark()
+    // {
+    //     _spriteRenderer.color = Color.gray;
+    // }
+    //
+    // public void ToLight()
+    // {
+    //     _spriteRenderer.color = Color.white;
+    // }
 
     public override bool Equals(object other)
     {
@@ -340,11 +322,10 @@ public class RestaurantCharacter : MonoBehaviour
         return otherCharacter.CharacterId == this.CharacterId;
     }
 
-    public void InjectVariable(VariableStorageBehaviour storageBehaviour)
+    public override void InjectVariableToDialogue(VariableStorageBehaviour storageBehaviour)
     {
-        storageBehaviour.SetValue("$friendliness", _npcData.FriendlyValue);
-        // storageBehaviour.SetValue("$appear", _npcData.AppearCount);
-        
+       base.InjectVariableToDialogue(storageBehaviour);
+
         if (_receivedFood != null)
         {
             storageBehaviour.SetValue("$orderedId",curOrderMenuId);

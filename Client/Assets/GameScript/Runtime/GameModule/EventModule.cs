@@ -15,9 +15,9 @@ public class EventModule : SingletonModule<EventModule>
     // private Subject<RestaurantCharacter> _charDialogue;
     
     //当客人离开时候消息
-    public IObserver<RestaurantCharacter> CharacterLeaveTopic => _characterLeave;
-    public IObservable<RestaurantCharacter> CharacterLeaveSub => _characterLeave;
-    private Subject<RestaurantCharacter> _characterLeave;
+    public IObserver<RestaurantRoleBase> CharacterLeaveTopic => _characterLeave;
+    public IObservable<RestaurantRoleBase> CharacterLeaveSub => _characterLeave;
+    private Subject<RestaurantRoleBase> _characterLeave;
 
     //发送订单
     public IObserver<OrderMealInfo> OrderMealTopic => _orderMeal;
@@ -60,7 +60,7 @@ public class EventModule : SingletonModule<EventModule>
         // _exitKitchen = new Subject<Unit>();
         // _cookFinish = new Subject<CookResult>();
         // _charDialogue = new Subject<RestaurantCharacter>();
-        _characterLeave = new Subject<RestaurantCharacter>();
+        _characterLeave = new Subject<RestaurantRoleBase>();
         // _closeRestaurant = new();
         base.OnCreate(this);
     }

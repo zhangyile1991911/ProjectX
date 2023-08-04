@@ -2,6 +2,7 @@
   {
     "id": 10001,
     "name": "章鱼",
+    "partner_id": 0,
     "character_appear_infos": [
       {
         "weekday": 1,
@@ -72,8 +73,9 @@
     ]
   },
   {
-    "id": 10004,
-    "name": "小萝莉",
+    "id": 10002,
+    "name": "喵老师",
+    "partner_id": 10003,
     "character_appear_infos": [
       {
         "weekday": 3,

@@ -11,6 +11,7 @@ using UnityEngine.PlayerLoop;
 public class UserInfoModule : SingletonModule<UserInfoModule>
 {
     public List<ItemTableData> OwnFoodMaterials { get; private set; }
+    public List<OwnMenu> OwnMenus { get; private set; }
 
     public long Now => _userTableData.now;
 
@@ -25,9 +26,10 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     private Dictionary<int, DialogueTableData> _dialogueTableDatas;
 
+    private Dictionary<int, OwnMenu> _ownMenuTableDatas;
     private RestaurantTableData _restaurantTableData;
     private RestaurantRuntimeData _restaurantRuntimeData;
-    public List<WaitingCustomerInfo> RestaurantWaitingCharacter => _restaurantRuntimeData.WaitingCustomers;
+    public List<int> RestaurantWaitingCharacter => _restaurantRuntimeData.WaitingCustomers;
     //--------------------------------------------------------------------
     public override void OnCreate(object createParam)
     {
@@ -60,6 +62,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.CreateTable<ItemTableData>();
         _sqLite.CreateTable<DialogueTableData>();
         _sqLite.CreateTable<RestaurantTableData>();
+        _sqLite.CreateTable<OwnMenu>();
 
         var userQuery = $"SELECT * FROM UserTableData;";
         _userTableData = _sqLite.Query<UserTableData>(userQuery).FirstOrDefault();
@@ -87,7 +90,10 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var restaurant = $"select * from RestaurantTableData";
         _restaurantTableData =_sqLite.Query<RestaurantTableData>(restaurant).FirstOrDefault();
         initRestaurantData();
-        
+
+        var ownMenuQuery = $"select * from OwnMenu";
+        OwnMenus = _sqLite.Query<OwnMenu>(ownMenuQuery);
+        initOwnMenuData(OwnMenus);
     }
 
     private void initItem(List<ItemTableData> items)
@@ -115,7 +121,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         }
     }
 
-    public void initNPC(List<NPCTableData> npcList)
+    private void initNPC(List<NPCTableData> npcList)
     {
         _npcTableDatas ??= new();
         if (npcList.Count <= 0)
@@ -130,7 +136,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         
     }
 
-    public void initDialogue(List<DialogueTableData> dialogueList)
+    private void initDialogue(List<DialogueTableData> dialogueList)
     {
         _dialogueTableDatas ??= new Dictionary<int, DialogueTableData>();
         foreach (var one in dialogueList)
@@ -139,7 +145,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         }
     }
 
-    public void initRestaurantData()
+    private void initRestaurantData()
     {
         if (_restaurantTableData == null)
         {
@@ -151,7 +157,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             _restaurantRuntimeData = new RestaurantRuntimeData();
             _restaurantRuntimeData.HaveArrivedCustomer = new List<int>();
-            _restaurantRuntimeData.WaitingCustomers = new List<WaitingCustomerInfo>();
+            _restaurantRuntimeData.WaitingCustomers = new List<int>();
             _restaurantRuntimeData.cookedMeal = new List<CookResult>();
             _restaurantRuntimeData.SoldMenuId = new List<int>();
             _restaurantTableData.RestaurantRuntimeData = JsonUtility.ToJson(_restaurantRuntimeData);
@@ -161,6 +167,79 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             _restaurantRuntimeData = JsonUtility.FromJson<RestaurantRuntimeData>(_restaurantTableData.RestaurantRuntimeData);    
         }
+    }
+
+    private void initOwnMenuData(List<OwnMenu> ownMenus)
+    {
+        _ownMenuTableDatas ??= new Dictionary<int, OwnMenu>(20);
+        
+        if (ownMenus.Count > 0)
+        {
+            foreach (var menu in ownMenus)
+            {
+                _ownMenuTableDatas.Add(menu.MenuId,menu);
+            }
+
+            return;
+        }
+        /*10001 10002 10003 10004 10005*/
+        // var one = new OwnMenu()
+        // {
+        //     MenuId = 10001,
+        //     level = 1,
+        //     exp = 0
+        // };
+        // _ownMenuTableDatas.Add(one.MenuId,one);
+        // OwnMenus.Add(one);
+        var two = new OwnMenu()
+        {
+            MenuId = 10002,
+            level = 1,
+            exp = 0
+        };
+        _ownMenuTableDatas.Add(two.MenuId,two);
+        OwnMenus.Add(two);
+        // var three = new OwnMenu()
+        // {
+        //     MenuId = 10003,
+        //     level = 1,
+        //     exp = 0
+        // };
+        // _ownMenuTableDatas.Add(three.MenuId,three);
+        // OwnMenus.Add(one);
+        // var four = new OwnMenu()
+        // {
+        //     MenuId = 10004,
+        //     level = 1,
+        //     exp = 0
+        // };
+        // _ownMenuTableDatas.Add(four.MenuId,four);
+        // OwnMenus.Add(one);
+        var five = new OwnMenu()
+        {
+            MenuId = 10005,
+            level = 1,
+            exp = 0
+        };
+        _ownMenuTableDatas.Add(five.MenuId,five);
+        OwnMenus.Add(five);
+        _sqLite.InsertAll(_ownMenuTableDatas.Values);
+    }
+
+    public void AddNewMenu(int menuId)
+    {
+        var newMenu = new OwnMenu();
+        newMenu.MenuId = menuId;
+        newMenu.level = 1;
+        newMenu.exp = 0;
+        _ownMenuTableDatas.Add(menuId,newMenu);
+        OwnMenus.Add(newMenu);
+        _sqLite.Insert(newMenu);
+    }
+
+    public bool IsMenuExist(int menuId)
+    {
+        return _ownMenuTableDatas.ContainsKey(menuId);
     }
 
     public void ClearRestaurantData()
@@ -182,7 +261,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         return _restaurantRuntimeData.HaveArrivedCustomer.Count((one)=> one == characterId) > 0;
     }
 
-    public void AddCharacterArrived(int characterId)
+    public void AddCharacterArrivedAndWaiting(int characterId)
     {
         var count = _restaurantRuntimeData.HaveArrivedCustomer.Count(one=>one == characterId);
         if (count <= 0)
@@ -190,39 +269,32 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             _restaurantRuntimeData.HaveArrivedCustomer.Add(characterId);
             updateRestaurantRuntimeData();
         }
-    }
-
-    public void AddWaitingCharacter(int characterId,int seatOccupy)
-    {
-        var count = _restaurantRuntimeData.WaitingCustomers.Count(one=>one.CharacterId == characterId);
+        count = _restaurantRuntimeData.WaitingCustomers.Count(one=>one == characterId);
         if (count <= 0)
         {
-            _restaurantRuntimeData.WaitingCustomers.Add(new WaitingCustomerInfo()
-            {
-                CharacterId = characterId,
-                SeatOccupy = seatOccupy
-            });
+            _restaurantRuntimeData.WaitingCustomers.Add(characterId);
             updateRestaurantRuntimeData();
         }
     }
+    
 
-    public WaitingCustomerInfo GetWaitingCharacter(int characterId)
+    public bool GetWaitingCharacter(int characterId)
     {
-        var result = _restaurantRuntimeData.WaitingCustomers.Find(one => one.CharacterId == characterId);
-        return result;
+        return _restaurantRuntimeData.WaitingCustomers.Count(one => one == characterId) > 0;
     }
 
     public void RemoveWaitingCharacter(int characterId)
     {
-        foreach (var one in _restaurantRuntimeData.WaitingCustomers)
-        {
-            if (one.CharacterId == characterId)
-            {
-                _restaurantRuntimeData.WaitingCustomers.Remove(one);
-                updateRestaurantRuntimeData();
-                break;
-            }
-        }
+        _restaurantRuntimeData.WaitingCustomers.Remove(characterId);
+        // foreach (var one in _restaurantRuntimeData.WaitingCustomers)
+        // {
+        //     if (one.CharacterId == characterId)
+        //     {
+        //         _restaurantRuntimeData.WaitingCustomers.Remove(one);
+        //         updateRestaurantRuntimeData();
+        //         break;
+        //     }
+        // }
     }
 
     public List<CookResult> CookResults => _restaurantRuntimeData.cookedMeal;
@@ -378,7 +450,6 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         updateRestaurantRuntimeData();
     }
     
-
     public List<int> SoldMealIdList()
     {
         return _restaurantRuntimeData.SoldMenuId;

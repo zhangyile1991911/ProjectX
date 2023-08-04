@@ -7,9 +7,9 @@ using UniRx;
 
 public interface CharacterBehaviour
 {
-    public RestaurantCharacter Char { get; }
+    public RestaurantRoleBase Char { get; }
 
-    public void Enter(RestaurantCharacter restaurantCharacter);
+    public void Enter(RestaurantRoleBase restaurantCharacter);
 
     public void Update();
 
@@ -19,8 +19,8 @@ public interface CharacterBehaviour
 
 public class CharacterEnterScene : CharacterBehaviour
 {
-    public RestaurantCharacter Char => _restaurantCharacter;
-    private RestaurantCharacter _restaurantCharacter;
+    public RestaurantRoleBase Char => _restaurantCharacter;
+    private RestaurantRoleBase _restaurantCharacter;
     
     private Vector3 destPoint;
     private Vector3 spawnPoint;
@@ -30,7 +30,7 @@ public class CharacterEnterScene : CharacterBehaviour
         spawnPoint = spawn;
     }
     
-    public void Enter(RestaurantCharacter restaurantCharacter)
+    public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
         _restaurantCharacter.transform.position = spawnPoint;
@@ -63,7 +63,7 @@ public class CharacterEnterScene : CharacterBehaviour
 
 public class CharacterMakeBubble : CharacterBehaviour
 {
-    public RestaurantCharacter Char => _restaurantCharacter;
+    public RestaurantRoleBase Char => _restaurantCharacter;
     private RestaurantCharacter _restaurantCharacter;
 
     private DateTime preDateTime;
@@ -73,9 +73,9 @@ public class CharacterMakeBubble : CharacterBehaviour
         
     }
     
-    public void Enter(RestaurantCharacter restaurantCharacter)
+    public void Enter(RestaurantRoleBase restaurantCharacter)
     {
-        _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
         var clocker = UniModule.GetModule<Clocker>();
         _disposable = clocker.Topic.Subscribe(think);
         preDateTime = clocker.NowDateTime;
@@ -117,15 +117,15 @@ public class CharacterMakeBubble : CharacterBehaviour
 
 public class CharacterOnFocus : CharacterBehaviour
 {
-    public RestaurantCharacter Char => _restaurantCharacter;
-    private RestaurantCharacter _restaurantCharacter;
+    public RestaurantRoleBase Char => _restaurantCharacter;
+    private RestaurantRoleBase _restaurantCharacter;
 
     public CharacterOnFocus()
     {
         
     }
     
-    public void Enter(RestaurantCharacter restaurantCharacter)
+    public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
         _restaurantCharacter.ToLight();
@@ -143,15 +143,15 @@ public class CharacterOnFocus : CharacterBehaviour
 }
 public class CharacterMute : CharacterBehaviour
 {
-    public RestaurantCharacter Char => _restaurantCharacter;
-    private RestaurantCharacter _restaurantCharacter;
+    public RestaurantRoleBase Char => _restaurantCharacter;
+    private RestaurantRoleBase _restaurantCharacter;
 
     public CharacterMute()
     {
         
     }
     
-    public void Enter(RestaurantCharacter restaurantCharacter)
+    public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
         _restaurantCharacter.ToDark();
@@ -171,9 +171,9 @@ public class CharacterMute : CharacterBehaviour
 
 public class CharacterLeave : CharacterBehaviour
 {
-    public RestaurantCharacter Char => _restaurantCharacter;
-    private RestaurantCharacter _restaurantCharacter;
-    public void Enter(RestaurantCharacter restaurantCharacter)
+    public RestaurantRoleBase Char => _restaurantCharacter;
+    private RestaurantRoleBase _restaurantCharacter;
+    public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
         _restaurantCharacter.Sprite
@@ -189,6 +189,56 @@ public class CharacterLeave : CharacterBehaviour
     public void Update()
     {
         
+    }
+
+    public void Exit()
+    {
+        
+    }
+}
+
+public class FollowCharacter : CharacterBehaviour
+{
+    public RestaurantRoleBase Char => _restaurantCharacter;
+    private RestaurantRoleBase _restaurantCharacter;
+
+    private RestaurantRoleBase _destCharacter;
+    private Vector3 _seatPosition;
+    private Tweener moveTweener;
+    private Vector3 preDestionation;
+    public FollowCharacter(RestaurantRoleBase dest,Vector3 seatPosition)
+    {
+        _destCharacter = dest;
+        _seatPosition = seatPosition;
+    }
+    
+    public void Enter(RestaurantRoleBase restaurantCharacter)
+    {
+        _restaurantCharacter = restaurantCharacter;
+        preDestionation = _restaurantCharacter.transform.position = _destCharacter.transform.position;
+        
+        moveTweener = _restaurantCharacter.transform.DOMove(_destCharacter.transform.position, 0.5f).SetAutoKill(false);
+    }
+
+    public void Update()
+    {
+        // if ((Type)_destCharacter.CurBehaviour != typeof(CharacterEnterScene))
+        // {
+        //     _restaurantCharacter.CurBehaviour = null;
+        //     _restaurantCharacter.transform.position = _seatPosition;
+        // }
+        if (_destCharacter.CurBehaviour.GetType() == typeof(CharacterMakeBubble))
+        {
+            moveTweener.Kill();
+            moveTweener = null;
+            _restaurantCharacter.transform.position = _seatPosition;
+            _restaurantCharacter.CurBehaviour = null;
+        }
+        else
+        {
+            moveTweener.ChangeEndValue(_destCharacter.transform.position,true).Restart();
+            preDestionation = _destCharacter.transform.position;
+        }
     }
 
     public void Exit()

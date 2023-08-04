@@ -87,7 +87,7 @@ public partial class OrderQueueWindow : UIWindow
         RemoveCharacterOrder(mealInfo.CharacterId);
     }
 
-    private void RemoveCharacterOrder(RestaurantCharacter character)
+    private void RemoveCharacterOrder(RestaurantRoleBase character)
     {
         RemoveCharacterOrder(character.CharacterId);
     }

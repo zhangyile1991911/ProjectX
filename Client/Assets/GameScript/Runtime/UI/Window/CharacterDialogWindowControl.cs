@@ -12,7 +12,7 @@ public class CharacterDialogData : UIOpenParam
     public string StoryResPath;
     public string StoryStartNode;
     public Action StoryComplete;
-    public RestaurantCharacter StoryCharacter;
+    public RestaurantRoleBase StoryCharacter;
 }
 /// <summary>
 /// Auto Generate Class!!!
@@ -54,7 +54,7 @@ public partial class CharacterDialogWindow : UIWindow
         
         // var dm = UniModule.GetModule<DialogueModule>();
         // dm.CurentDialogueRestaurantCharacter.InjectVariable(_dialogueRunner.VariableStorage);
-        _openData.StoryCharacter.InjectVariable(_dialogueRunner.VariableStorage);
+        _openData.StoryCharacter.InjectVariableToDialogue(_dialogueRunner.VariableStorage);
 
         foreach (var oneView in _dialogueRunner.dialogueViews)
         {

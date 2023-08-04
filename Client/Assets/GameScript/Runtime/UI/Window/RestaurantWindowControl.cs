@@ -114,7 +114,7 @@ public partial class RestaurantWindow : UIWindow
         }
     }
 
-    public async void GenerateChatBubble(int chatId,RestaurantCharacter restaurantCharacter,Action<ChatBubble> ClickBubble)
+    public async void GenerateChatBubble(int chatId,RestaurantRoleBase restaurantCharacter,Action<ChatBubble> ClickBubble)
     {
         if (_floatingBubbleChatId.Contains(chatId)) return;
         var uiManager = UniModule.GetModule<UIManager>();
@@ -124,7 +124,7 @@ public partial class RestaurantWindow : UIWindow
         _floatingBubbleChatId.Add(chatId);
     }
 
-    public void RemoveChatBubble(RestaurantCharacter restaurantCharacter)
+    public void RemoveChatBubble(RestaurantRoleBase restaurantCharacter)
     {
         var uiManager = UniModule.GetModule<UIManager>();
         for (int i = _bubbleList.Count - 1; i >= 0; i--)

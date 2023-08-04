@@ -44,13 +44,9 @@ public class FryEnter : MonoBehaviour
         Salt.OnValueChangedAsObservable().Skip(1).Subscribe(b=>
         {
             if (b)
-            {
                 _selectedQte.Add(1);
-            }
             else
-            {
-                _selectedQte.Remove(1);    
-            }
+                _selectedQte.Remove(1);
         });
         
         Vinegar.OnValueChangedAsObservable().Skip(1).Subscribe(b =>

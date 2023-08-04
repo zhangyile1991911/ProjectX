@@ -8,11 +8,11 @@ using YooAsset;
 
 public class CharacterMgr : SingletonModule<CharacterMgr>
 {
-    private Dictionary<string,RestaurantCharacter> _characters;
-    public List<RestaurantCharacter> Characters => _characters.Values.ToList();
+    private Dictionary<string,RestaurantRoleBase> _characters;
+    public List<RestaurantRoleBase> Characters => _characters.Values.ToList();
     public override void OnCreate(object createParam)
     {
-        _characters = new Dictionary<string, RestaurantCharacter>();
+        _characters = new Dictionary<string, RestaurantRoleBase>();
         base.OnCreate(this);
     }
 
@@ -32,7 +32,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         ClearAllCharacter();
     }
 
-    public async UniTask<RestaurantCharacter> CreateCharacter(int cid)
+    public async UniTask<RestaurantRoleBase> CreateCharacter(int cid)
     {
         var dataProvider = UniModule.GetModule<DataProviderModule>();
         var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
@@ -49,7 +49,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         var go = handle.AssetObject as GameObject;
 
         var ins_character = GameObject.Instantiate(go);
-        character = ins_character.GetComponent<RestaurantCharacter>();
+        character = ins_character.GetComponent<RestaurantRoleBase>();
         
         character.InitCharacter(tbCharacter);
         
@@ -58,7 +58,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         return character;
     }
 
-    public RestaurantCharacter GetCharacterByName(string name)
+    public RestaurantRoleBase GetCharacterByName(string name)
     {
         if (_characters.TryGetValue(name, out var character))
         {
@@ -68,14 +68,14 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         return null;
     }
 
-    public RestaurantCharacter GetCharacterById(int cid)
+    public RestaurantRoleBase GetCharacterById(int cid)
     {
         var dataProvider = UniModule.GetModule<DataProviderModule>();
         var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
         return GetCharacterByName(tbCharacter.Name);
     }
 
-    public void RemoveCharacter(RestaurantCharacter character)
+    public void RemoveCharacter(RestaurantRoleBase character)
     {
         _characters.Remove(character.CharacterName);
         character.ReleaseCharacter();

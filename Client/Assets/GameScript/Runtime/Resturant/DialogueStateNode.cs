@@ -6,7 +6,7 @@ using Yarn.Unity;
 
 public class DialogueStateNodeData
 {
-    public RestaurantCharacter ChatRestaurantCharacter;
+    public RestaurantRoleBase ChatRestaurantCharacter;
     public int ChatId;
 }
 
@@ -28,7 +28,7 @@ public class DialogueStateNode : IStateNode
     {
         var stateNodeData = param as DialogueStateNodeData;
         
-        _restaurantCharacter = stateNodeData.ChatRestaurantCharacter;
+        _restaurantCharacter = stateNodeData.ChatRestaurantCharacter as RestaurantCharacter;
         _chatId = stateNodeData.ChatId;
         
         _restaurantEnter.FocusOnCharacter(_restaurantCharacter);
@@ -47,6 +47,7 @@ public class DialogueStateNode : IStateNode
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderDrink",OrderDrinkCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<string,int>("AddFriend",AddNPCFriendlyValue);
             _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddNewMenu",AddNewMenuData);
         },openData,UILayer.Center);
         
         _clocker = UniModule.GetModule<Clocker>();
@@ -63,7 +64,8 @@ public class DialogueStateNode : IStateNode
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderDrink");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterLeave");
-
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("AddNewMenu");
+        
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
         _clocker = null;
     }
@@ -115,11 +117,20 @@ public class DialogueStateNode : IStateNode
         _restaurantCharacter.SetLeave();
     }
 
-    private void PlayAddFriend(RestaurantCharacter character,int val)
+    private void PlayAddFriend(RestaurantRoleBase character,int val)
     {
         var openParam = new DialogueData();
         openParam.Character = character;
         openParam.FriendValue = val;
         UIManager.Instance.CreateTip<TipAddFriendValue>(openParam).Forget();
+    }
+
+    private void AddNewMenuData(int menuId)
+    {
+        var tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(menuId);
+        if (tbMenuInfo == null) return;
+        
+        UserInfoModule.Instance.AddNewMenu(menuId);
+        
     }
 }

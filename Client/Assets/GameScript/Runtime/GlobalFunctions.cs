@@ -19,7 +19,7 @@ public class FlowControlWindowData : UIOpenParam
 
 public class DialogueData:UIOpenParam
 {
-    public RestaurantCharacter Character;
+    public RestaurantRoleBase Character;
     public int FriendValue;
 }
 

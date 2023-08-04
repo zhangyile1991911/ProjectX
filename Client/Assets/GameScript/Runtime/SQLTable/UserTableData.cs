@@ -39,17 +39,17 @@ public class RestaurantTableData
 public class RestaurantRuntimeData
 {
     public List<int> HaveArrivedCustomer;
-    public List<WaitingCustomerInfo> WaitingCustomers;
+    public List<int> WaitingCustomers;
     public List<CookResult> cookedMeal;
     public List<int> SoldMenuId;
 
 }
-[System.Serializable]
-public class WaitingCustomerInfo
-{
-    public int CharacterId;
-    public int SeatOccupy;
-}
+// [System.Serializable]
+// public class WaitingCustomerInfo
+// {
+//     public int CharacterId;
+//     // public int SeatOccupy;
+// }
 [System.Serializable]
 public class CookResult
 {
@@ -57,5 +57,15 @@ public class CookResult
     public float CompletePercent;
     public HashSet<cfg.food.flavorTag> Tags;
     public Dictionary<int, bool> QTEResult;//int = QTEId
+}
+
+//已经学会的菜谱
+[Table("OwnMenu")]
+public class OwnMenu
+{
+    [PrimaryKey] [Column("Id")] 
+    public int MenuId { get; set; }
+    public int level { get; set; } //当前等级
+    public int exp { get; set; } //当前经验值
 }
 

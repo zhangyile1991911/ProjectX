@@ -154,22 +154,38 @@ public partial class KitchenWindow : UIWindow
         
         Toggle_A.OnValueChangedAsObservable().Skip(1).Subscribe(b=>
         {
-            AddQTE(1);
+            if (b)
+            {
+                _selectedQte.Add(1);
+            }
+            else
+            {
+                _selectedQte.Remove(1);    
+            }
         }).AddTo(handles);
         
         Toggle_B.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
         {
-            AddQTE(2);
+            if(b)
+                _selectedQte.Add(2);
+            else
+                _selectedQte.Remove(2);
         }).AddTo(handles);
         
         Toggle_C.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
         {
-            AddQTE(3);
+            if(b)
+                _selectedQte.Add(3);
+            else
+                _selectedQte.Remove(3);
         }).AddTo(handles);
         
         Toggle_D.OnValueChangedAsObservable().Skip(1).Subscribe(b =>
         {
-            AddQTE(4);
+            if (b)
+                _selectedQte.Add(4);
+            else
+                _selectedQte.Remove(4);
         }).AddTo(handles);
     }
 
@@ -297,14 +313,15 @@ public partial class KitchenWindow : UIWindow
 
         _curSelectMenuId = 0;
         
-        var menuList = _dataProvider.DataBase.TbMenuInfo.DataList;
-        //通过厨具删选出可以制作的料理
+        var menuList = UserInfoModule.Instance.OwnMenus;
+        //通过厨具删选出可以制作的料理 todo 这里可以避免gc
         var toolsCanMakeMenu = new List<MenuInfo>(10);
         foreach (var one in menuList)
         {
-            if (one.MakeMethod == _choicedTools)
+            var tbMenu = DataProviderModule.Instance.GetMenuInfo(one.MenuId);
+            if (tbMenu.MakeMethod == _choicedTools)
             {
-                toolsCanMakeMenu.Add(one);
+                toolsCanMakeMenu.Add(tbMenu);
             }
         }
 
@@ -409,18 +426,6 @@ public partial class KitchenWindow : UIWindow
         Toggle_B.isOn = false;
         Toggle_C.isOn = false;
         Toggle_D.isOn = false;
-    }
-
-    private void AddQTE(int qteId)
-    {
-        if (_selectedQte.Contains(qteId))
-        {
-            _selectedQte.Remove(qteId);
-        }
-        else
-        {
-            _selectedQte.Add(qteId);
-        }
     }
 
 }

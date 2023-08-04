@@ -27,10 +27,10 @@ public class SameChatBubble : EqualityComparer<ChatBubble>
 public partial class ChatBubble : UIComponent
 {
     private static long ChatBubbleInstanceId = 0; 
-    public RestaurantCharacter Owner => _owner;
+    public RestaurantRoleBase Owner => _owner;
     public int ChatId => _chatId;
     private DOTweenAnimation _doTweenAnimation;
-    private RestaurantCharacter _owner;
+    private RestaurantRoleBase _owner;
     private int _chatId;
     private Action<ChatBubble> _click;
     private Button _btn;
@@ -81,7 +81,7 @@ public partial class ChatBubble : UIComponent
         _click?.Invoke(this);
     }
     
-    public void SetBubbleInfo(int chatId,RestaurantCharacter origin,Action<ChatBubble> click)
+    public void SetBubbleInfo(int chatId,RestaurantRoleBase origin,Action<ChatBubble> click)
     {
         //随机生成一个目的地
         float x = Random.Range(-870, 870);

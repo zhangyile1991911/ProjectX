@@ -32,7 +32,7 @@ public class RestaurantEnter : MonoBehaviour
     private List<int> _seatStatus;
 
     // public IEnumerable<RestaurantCharacter> CharacterEnumerable => _characters.Values;
-    private Dictionary<int,RestaurantCharacter> _waitingCharacters;
+    private Dictionary<int,RestaurantRoleBase> _waitingCharacters;
 
     // private RestaurantWindow _restaurantWindow;
     // private IDisposable _fiveSecondTimer;
@@ -55,7 +55,7 @@ public class RestaurantEnter : MonoBehaviour
             _spawnPoints.Add(spawnGroup.GetChild(i));
         }
         
-        _waitingCharacters = new Dictionary<int, RestaurantCharacter>();
+        _waitingCharacters = new Dictionary<int, RestaurantRoleBase>();
 
         _cookPlayDict = new Dictionary<cookTools, GameObject>();
         
@@ -84,21 +84,21 @@ public class RestaurantEnter : MonoBehaviour
 
     private async void loadWaitingCharacter()
     {
-        foreach (var one in UserInfoModule.Instance.RestaurantWaitingCharacter)
+        foreach (var cid in UserInfoModule.Instance.RestaurantWaitingCharacter)
         {
-            var handler = await CharacterMgr.Instance.CreateCharacter(one.CharacterId);
-            var chara = handler as RestaurantCharacter;
+            var chara = await CharacterMgr.Instance.CreateCharacter(cid);
+            // var chara = handler as RestaurantRoleBase;
             
             for (int i = 0; i < _seatPoints.Count; i++)
             {
-                int tmp = 1 << i;
-                if ((chara.SeatOccupy | tmp) >> i == 1)
-                {
-                    var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, i);
+                // int tmp = 1 << i;
+                // if ((chara.SeatOccupy | tmp) >> i == 1)
+                // {
+                    var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, chara.SeatOccupy);
                     chara.transform.position = seatWorldPosition;
                     chara.CurBehaviour = new CharacterMakeBubble();
                     break;
-                }
+                // }
             }
         }
     }
@@ -108,11 +108,14 @@ public class RestaurantEnter : MonoBehaviour
         _stateMachine?.Update();
     }
 
-    // public void CharacterTakeRandomSeat(RestaurantCharacter restaurantCharacter)
-    // {
-    //     restaurantCharacter.SeatIndex = FindEmptySeatIndex();
-    //     _waitingCharacters.Add(restaurantCharacter.CharacterId,restaurantCharacter);
-    // }
+    public Vector3 CharacterTakeSeat(RestaurantRoleBase restaurantCharacter)
+    {
+        var seatIndex = FindEmptySeatIndex();
+        restaurantCharacter.SeatOccupy = seatIndex;
+        _waitingCharacters.Add(restaurantCharacter.CharacterId,restaurantCharacter);
+        _seatStatus[seatIndex] = restaurantCharacter.CharacterId;
+        return _seatPoints[seatIndex].position;
+    }
 
     public bool ExistWaitingCharacter(int characterId)
     {
@@ -151,18 +154,19 @@ public class RestaurantEnter : MonoBehaviour
 
     public void CharacterReturnSeat(int characterSeat)
     {
-        for (int i = 0; i < _seatStatus.Count; i++)
-        {
-            int tmp = 1 << i;
-            if ((characterSeat | tmp) == 1)
-            {
-                _seatStatus[i]= 0;        
-            }
-        }
-        // _seatStatus[seatIndex] = 0;
+        // for (int i = 0; i < _seatStatus.Count; i++)
+        // {
+        //     int tmp = 1 << i;
+        //     if ((characterSeat | tmp) == 1)
+        //     {
+        //         _seatStatus[i]= 0;        
+        //     }
+        // }
+        _seatStatus[characterSeat] = 0;
+        
     }
 
-    public void CharacterLeave(RestaurantCharacter character)
+    public void CharacterLeave(RestaurantRoleBase character)
     {
         CharacterReturnSeat(character.SeatOccupy);
         _waitingCharacters.Remove(character.CharacterId);
@@ -178,13 +182,45 @@ public class RestaurantEnter : MonoBehaviour
         return false;
     }
 
+    public int EmptySeatNum()
+    {
+        var counter = 0;
+        foreach (var one in _seatStatus)
+        {
+            if(one == 0)counter++;
+        }
+
+        return counter;
+    }
+
+    public bool HaveDoubleSeat()
+    {
+        int counter = 0;
+        foreach (var one in _seatStatus)
+        {
+            if (one == 0)
+            {
+                counter++;
+            }
+            else
+            {
+                counter = 0;
+            }
+
+            if (counter == 2)
+                return true;
+        }
+
+        return false;
+    }
+
     public Vector3 RandSpawnPoint()
     {
         int index = Random.Range(0, _spawnPoints.Count);
         return _spawnPoints[index].position;
     }
 
-    public void FocusOnCharacter(RestaurantCharacter c)
+    public void FocusOnCharacter(RestaurantRoleBase c)
     {
         foreach (var one in _waitingCharacters.Values)
         {
