@@ -45,9 +45,11 @@ public class DialogueStateNode : IStateNode
             _dialogWindow = ui as CharacterDialogWindow;
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderMeal",OrderMealCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderDrink",OrderDrinkCommand);
-            _dialogWindow.DialogueRunner.AddCommandHandler<string,int>("AddFriend",AddNPCFriendlyValue);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddFriend",AddNPCFriendlyValue);
             _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddNewMenu",AddNewMenuData);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int>("ChangePartner",ChangePartner);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int>("KickOut",KickOut);
         },openData,UILayer.Center);
         
         _clocker = UniModule.GetModule<Clocker>();
@@ -65,6 +67,8 @@ public class DialogueStateNode : IStateNode
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterLeave");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddNewMenu");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("ChangePartner");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("KickOut");
         
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
         _clocker = null;
@@ -98,13 +102,13 @@ public class DialogueStateNode : IStateNode
         
     }
 
-    private void AddNPCFriendlyValue(string name,int val)
+    private void AddNPCFriendlyValue(int val)
     {
         var mgr = UniModule.GetModule<CharacterMgr>();
-        var chr = mgr.GetCharacterByName(name);
-        if (chr == null) return;
-        chr.AddFriendly(val);
-        PlayAddFriend(chr,val);
+        // var chr = mgr.GetCharacterByName(name);
+        // if (chr == null) return;
+        _restaurantCharacter.AddFriendly(val);
+        PlayAddFriend(_restaurantCharacter,val);
         // DialogueNotification notification = new ();
         // notification.Character = chr;
         // notification.FriendValue = val;
@@ -131,6 +135,28 @@ public class DialogueStateNode : IStateNode
         if (tbMenuInfo == null) return;
         
         UserInfoModule.Instance.AddNewMenu(menuId);
-        
+    }
+
+    private void ChangePartner(int partnerId)
+    {
+        var tbCharaBase = DataProviderModule.Instance.GetCharacterBaseInfo(partnerId);
+        if (tbCharaBase == null)
+        {
+            Debug.LogError($"Change Partner error Id = {partnerId}");
+            return;
+        }
+        _restaurantCharacter.PartnerID = partnerId;
+    }
+
+    private void KickOut(int characterId)
+    {
+        var characterObj = CharacterMgr.Instance.GetCharacterById(characterId);
+        if (characterObj == null)
+        {
+            Debug.LogError($"KickOut characterId = {characterId} can't find character");
+            return;
+        }
+
+        characterObj.CurBehaviour = new CharacterLeave();
     }
 }

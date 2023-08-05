@@ -32,7 +32,17 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     //好感度
     public int Friendliness => _npcData.FriendlyValue;
     protected NPCTableData _npcData;
-    
+
+    public int PartnerID
+    {
+        get => _npcData.PartnerId;
+        set
+        {
+            _npcData.PartnerId = value;
+            UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
+        }
+    }
+
     public CharacterBehaviour CurBehaviour
     {
         get => _behaviour;

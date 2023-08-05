@@ -8,22 +8,21 @@ using YooAsset;
 
 public class CharacterMgr : SingletonModule<CharacterMgr>
 {
-    private Dictionary<string,RestaurantRoleBase> _characters;
-    public List<RestaurantRoleBase> Characters => _characters.Values.ToList();
+    private Dictionary<string,RestaurantRoleBase> _characterName;
+    private Dictionary<int, RestaurantRoleBase> _characterId;
+    private List<RestaurantRoleBase> _characterList;
+    public List<RestaurantRoleBase> Characters => _characterList;
     public override void OnCreate(object createParam)
     {
-        _characters = new Dictionary<string, RestaurantRoleBase>();
         base.OnCreate(this);
+        _characterName = new Dictionary<string, RestaurantRoleBase>(10);
+        _characterId = new Dictionary<int, RestaurantRoleBase>(10);
+        _characterList = new List<RestaurantRoleBase>(10);
     }
 
     public override void OnUpdate()
     {
         base.OnUpdate();
-        // Debug.Log("CharacterMgr");
-        // foreach (var one in _characters.Values)
-        // {
-        //     one.IsTimeToLeave();
-        // }
     }
 
     public override void OnDestroy()
@@ -38,7 +37,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
         if(tbCharacter == null)return null;
         
-        if (_characters.TryGetValue(tbCharacter.Name, out var character))
+        if (_characterName.TryGetValue(tbCharacter.Name, out var character))
         {
             return character;
         }
@@ -53,14 +52,25 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
         
         character.InitCharacter(tbCharacter);
         
-        _characters.Add(tbCharacter.Name,character);
+        addCharacter(character);
 
         return character;
     }
 
+    private void addCharacter(RestaurantRoleBase role)
+    {
+        if (role == null) return;
+        if (!_characterName.ContainsKey(role.CharacterName))
+        {
+            _characterName.Add(role.CharacterName,role);
+            _characterId.Add(role.CharacterId,role);
+            _characterList.Add(role);    
+        }
+    }
+
     public RestaurantRoleBase GetCharacterByName(string name)
     {
-        if (_characters.TryGetValue(name, out var character))
+        if (_characterName.TryGetValue(name, out var character))
         {
             return character;
         }
@@ -70,30 +80,50 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
 
     public RestaurantRoleBase GetCharacterById(int cid)
     {
-        var dataProvider = UniModule.GetModule<DataProviderModule>();
-        var tbCharacter = dataProvider.GetCharacterBaseInfo(cid);
-        return GetCharacterByName(tbCharacter.Name);
+        if (_characterId.TryGetValue(cid, out var character))
+        {
+            return character;
+        }
+
+        return null;
     }
 
     public void RemoveCharacter(RestaurantRoleBase character)
     {
-        _characters.Remove(character.CharacterName);
-        character.ReleaseCharacter();
+        removeCharacter(character);
     }
     
     public void RemoveCharacter(int cid)
     {
         var character = GetCharacterById(cid);
-        RemoveCharacter(character);
+        removeCharacter(character);
+    }
+
+    public void RemoveCharacter(string name)
+    {
+        var character = GetCharacterByName(name);
+        removeCharacter(character);
+    }
+
+    private void removeCharacter(RestaurantRoleBase character)
+    {
+        if (character == null) return;
+        
+        _characterName.Remove(character.CharacterName);
+        _characterId.Remove(character.CharacterId);
+        _characterList.Remove(character);
+        character.ReleaseCharacter();
     }
 
     public void ClearAllCharacter()
     {
-        foreach (var cha in _characters.Values)
+        foreach (var cha in _characterName.Values)
         {
             cha.ReleaseCharacter();
         }
-        _characters.Clear();
+        _characterName.Clear();
+        _characterId.Clear();
+        _characterList.Clear();
     }
     
 }

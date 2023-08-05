@@ -118,6 +118,7 @@ public class WaitStateNode : IStateNode
         //特别NPC
         if (tbScheduler.PartnerId <= 0) return;
 
+        
         var partner = await CharacterMgr.Instance.CreateCharacter(tbScheduler.PartnerId);
         var partnerSeatPoint = _restaurant.CharacterTakeSeat(partner);
         partner.CurBehaviour = new FollowCharacter(character,partnerSeatPoint);
