@@ -2,37 +2,25 @@
 title: MiaoMainFirst
 tags:
 ---
-<<declare $withPartner = false>>
 喵喵: 您好……嗯……现在是营业时间吗？喵喵肚子很饿。
 老板: （现在居然还有用名字自称的人吗……）
 老板: 请坐。
 喵喵: 伊万先生也可以坐吗？[show_picture=bingzhou][/show_picture]
     ->  当然可以，现在时间还早
-        <<jump MiaoMainFirstWithBear>>
+        喵喵: 伊万先生，快点谢谢老板！
+        熊熊: ……
+        老板: ……
         <<AddFriend 10>>
+        <<ChangePartner 10003>>
         <<set $withPartner = true>>
     -> 不太方便，等下客人来了会不方便坐的
-        <<jump MiaoMainFirstWithoutBear>>
+        喵喵: 啊……伊万先生，对不起。
+        <<ChangePartner -1>>
+        <<KickOut 10003>>
         <<AddFriend -10>>
         <<set $withPartner = false>>
+<<jump MiaoFirst>>
 ===
-
-title: MiaoMainFirstWithBear
----
-喵喵: 伊万先生，快点谢谢老板！
-熊熊: ……
-老板: ……
-<<ChangePartner 10003>>
-===
-
-
-title: MiaoMainFirstWithoutBear
----
-喵喵: 啊……伊万先生，对不起。
-<<ChangePartner 0>>
-<<KickOut 10003>>
-===
-
 
 title: MiaoFirst
 ---
@@ -102,6 +90,7 @@ title: MiaoThird
 喵喵:老板真懒呀，这个点才上班。
 老板:……
 喵喵:喵喵肚子饿了，请老板给喵喵上一些可以填饱肚子的食物吧！
+<<omakase "1024;1001;1006">>
 <<endif>>
 ===
 

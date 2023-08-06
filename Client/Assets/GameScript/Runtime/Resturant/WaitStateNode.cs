@@ -79,7 +79,7 @@ public class WaitStateNode : IStateNode
         while (seatNum > 0)
         {
             var CharacterId = filterNPCAppear(dateTime,ref seatNum);
-            Debug.Log($"filterNPCAppear = {CharacterId}");
+            // Debug.Log($"filterNPCAppear = {CharacterId}");
             if (CharacterId == 0) break;
             await loadCharacter(CharacterId);
         }
@@ -117,8 +117,7 @@ public class WaitStateNode : IStateNode
         UserInfoModule.Instance.AddCharacterArrivedAndWaiting(CharacterId);
         //特别NPC
         if (tbScheduler.PartnerId <= 0) return;
-
-        
+        if (character.PartnerID < 0) return;
         var partner = await CharacterMgr.Instance.CreateCharacter(tbScheduler.PartnerId);
         var partnerSeatPoint = _restaurant.CharacterTakeSeat(partner);
         partner.CurBehaviour = new FollowCharacter(character,partnerSeatPoint);

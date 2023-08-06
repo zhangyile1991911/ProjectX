@@ -70,7 +70,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _emojiNode = transform.Find("EmojiNode");
-        halfSecondTImer = Observable.Interval(TimeSpan.FromSeconds(0.5f)).Subscribe(_ =>
+        halfSecondTImer = Observable.Interval(TimeSpan.FromSeconds(0.25f)).Subscribe(_ =>
         {
             CurBehaviour?.Update();
         });

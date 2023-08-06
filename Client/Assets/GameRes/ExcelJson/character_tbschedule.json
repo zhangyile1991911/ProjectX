@@ -81,7 +81,7 @@
         "weekday": 3,
         "enter_time": {
           "hour": 21,
-          "minutes": 22
+          "minutes": 30
         },
         "leave_time": {
           "hour": 22,

@@ -1,4 +1,7 @@
 
+using System;
+using System.Collections.Generic;
+using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using PlasticGui.WorkspaceWindow.NotificationBar;
 using UnityEngine;
@@ -44,6 +47,7 @@ public class DialogueStateNode : IStateNode
         {
             _dialogWindow = ui as CharacterDialogWindow;
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderMeal",OrderMealCommand);
+            _dialogWindow.DialogueRunner.AddCommandHandler<string>("omakase",omakase);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderDrink",OrderDrinkCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddFriend",AddNPCFriendlyValue);
             _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
@@ -67,6 +71,7 @@ public class DialogueStateNode : IStateNode
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("CharacterLeave");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddNewMenu");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("omakase");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("ChangePartner");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("KickOut");
         
@@ -102,6 +107,24 @@ public class DialogueStateNode : IStateNode
         
     }
 
+    private void omakase(string desc)
+    {
+        Debug.Log($"お任せ {desc}");
+        OrderMealInfo info = new()
+        {
+            CharacterId = _restaurantCharacter.CharacterId,
+            flavor = new List<int>(10)
+        };
+        var flavors = desc.Split(";");
+        foreach (var str in flavors)
+        {
+            var flavorId = Int16.Parse(str);
+            info.flavor.Add(flavorId);
+        }
+        
+        EventModule.Instance.OrderMealTopic.OnNext(info);
+    }
+
     private void AddNPCFriendlyValue(int val)
     {
         var mgr = UniModule.GetModule<CharacterMgr>();
@@ -135,6 +158,10 @@ public class DialogueStateNode : IStateNode
         if (tbMenuInfo == null) return;
         
         UserInfoModule.Instance.AddNewMenu(menuId);
+        
+        var openParam = new DialogueData();
+        openParam.MenuId = menuId;
+        UIManager.Instance.CreateTip<TipNewMenu>(openParam).Forget();
     }
 
     private void ChangePartner(int partnerId)
@@ -142,8 +169,7 @@ public class DialogueStateNode : IStateNode
         var tbCharaBase = DataProviderModule.Instance.GetCharacterBaseInfo(partnerId);
         if (tbCharaBase == null)
         {
-            Debug.LogError($"Change Partner error Id = {partnerId}");
-            return;
+            Debug.LogWarning($"Change Partner Id = {partnerId}");
         }
         _restaurantCharacter.PartnerID = partnerId;
     }

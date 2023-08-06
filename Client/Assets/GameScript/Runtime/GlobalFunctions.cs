@@ -21,6 +21,7 @@ public class DialogueData:UIOpenParam
 {
     public RestaurantRoleBase Character;
     public int FriendValue;
+    public int MenuId;
 }
 
 public class OrderMealInfo
@@ -29,6 +30,7 @@ public class OrderMealInfo
     public int CharacterId;
     public int MenuId;
     public int operation;// 0 添加 1 删除
+    public List<int> flavor;
 
 
     public override bool Equals(object obj)

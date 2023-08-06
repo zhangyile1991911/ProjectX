@@ -333,6 +333,7 @@ public class RestaurantCharacter : RestaurantRoleBase
             storageBehaviour.SetValue("$cookFoodId",_receivedFood.menuId);
             _receivedFood = null;
         }
+        storageBehaviour.SetValue("$withPartner",(_npcData.PartnerId > 0));
     }
 
     // public void DialogueOrder(int menuId)
@@ -364,8 +365,6 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             foodScore += success ? 5 : -5;
         }
-        
-        
     }
 
     private bool willLeave = false;

@@ -138,7 +138,7 @@
   },
   {
     "id": 10002001,
-    "title": "你好....",
+    "title": "喵喵肚子很饿",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": 0,
@@ -152,12 +152,12 @@
     "bubble_type": 3,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
-    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "LittleGirl_First"
+    "dialogue_content_res": "Assets/GameRes/Story/Miao.yarnproject",
+    "dialogue_start_node": "MiaoMainFirst"
   },
   {
     "id": 10002002,
-    "title": "老板,你好",
+    "title": "等了好久呢",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": 10002001,
@@ -172,11 +172,11 @@
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "LittleGirl_Second"
+    "dialogue_start_node": "MiaoSecond"
   },
   {
     "id": 10002003,
-    "title": "来个蛋炒饭",
+    "title": "黄油拌饭",
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": 10002002,
