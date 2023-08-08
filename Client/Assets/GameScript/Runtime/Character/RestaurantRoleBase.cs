@@ -12,6 +12,8 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     protected SpriteRenderer _spriteRenderer;
     public Transform EmojiNode => _emojiNode;
     protected Transform _emojiNode;
+    public Transform ChatNode => _chatNode;
+    protected Transform _chatNode;
     
     public int CharacterId => _baseInfo.Id;
     public CharacterBaseInfo TBBaseInfo => _baseInfo;
@@ -27,6 +29,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         }
     }
 
+    public bool HaveSoul => _baseInfo.Soul > 0;
     protected int _seatOccupy;
     
     //好感度
@@ -70,6 +73,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _emojiNode = transform.Find("EmojiNode");
+        _chatNode = transform.Find("ChatNode");
         halfSecondTImer = Observable.Interval(TimeSpan.FromSeconds(0.25f)).Subscribe(_ =>
         {
             CurBehaviour?.Update();
@@ -129,12 +133,14 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     public virtual void ToDark()
     {
-        _spriteRenderer.color = Color.gray;
+        // _spriteRenderer.color = Color.gray;
+        _spriteRenderer.sortingLayerID = 2;
     }
 
     public virtual void ToLight()
     {
-        _spriteRenderer.color = Color.white;
+        // _spriteRenderer.color = Color.white;
+        _spriteRenderer.sortingLayerID = 4;
     }
 
     // private void Update()

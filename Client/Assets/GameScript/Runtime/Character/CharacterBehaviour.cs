@@ -100,19 +100,17 @@ public class CharacterMakeBubble : CharacterBehaviour
         else
         {
             var minutes = (dateTime - preDateTime).TotalMinutes;
-            if (minutes >= 3)
+            if (minutes < 3)
             {
+                return;
                 // var eventModule = UniModule.GetModule<EventModule>();
                 // eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
-                preDateTime = dateTime;
-                var chatId = _restaurantCharacter.GenerateChatId();
-                if (chatId > 0)
-                {
-                    EventModule.Instance.CharBubbleTopic.OnNext(chatId);    
-                }
             }
+            preDateTime = dateTime;
+            _restaurantCharacter.GenerateChatId();
         }
     }
+    
 }
 
 public class CharacterOnFocus : CharacterBehaviour

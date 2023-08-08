@@ -146,7 +146,7 @@
       7
     ],
     "friend_value": {
-      "start_value": 0,
+      "start_value": -9999,
       "end_value": 10
     },
     "bubble_type": 3,
@@ -184,8 +184,8 @@
       7
     ],
     "friend_value": {
-      "start_value": 5,
-      "end_value": 99999
+      "start_value": 30,
+      "end_value": 9999
     },
     "bubble_type": 2,
     "menu_id": 10002,
@@ -195,22 +195,22 @@
   },
   {
     "id": 10002004,
-    "title": "最近 又被客户...",
+    "title": "Ciao～",
     "npc_id": 10002,
     "repeated": false,
-    "pre_condition": 0,
+    "pre_condition": 10002003,
     "week_day": [
       7
     ],
     "friend_value": {
-      "start_value": 0,
-      "end_value": 30
+      "start_value": 35,
+      "end_value": 50
     },
-    "bubble_type": 1,
+    "bubble_type": 3,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "LittleGirl_talkA"
+    "dialogue_start_node": "MiaoThird"
   },
   {
     "id": 10002005,

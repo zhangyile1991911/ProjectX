@@ -11,10 +11,12 @@ using YooAsset;
 public class ComicView : DialogueViewBase
 {
     public Image Img_display;
+    public Transform AnimationNode;
     private AssetOperationHandle handle;
     public void Start()
     {
         Img_display.gameObject.SetActive(false);
+        AnimationNode.gameObject.SetActive(false);
     }
 
     public override void RunLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
@@ -26,6 +28,10 @@ public class ComicView : DialogueViewBase
         {
             // Debug.Log($"ComicView {attribute.Properties}");
             showPicture(attribute,onDialogueLineFinished);
+        }
+        else if (dialogueLine.Text.TryGetAttributeWithName("play_anim", out  attribute))
+        {
+            playAnimation(attribute,onDialogueLineFinished);
         }
     }
 
@@ -44,11 +50,31 @@ public class ComicView : DialogueViewBase
             onDialogueLineFinished();
         };
     }
+
+    private async void playAnimation(MarkupAttribute attribute,Action onDialogueLineFinished)
+    {
+        var resName = attribute.Properties["play_anim"].StringValue;
+        handle = YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Prefabs/Story/"+resName+".prefab");
+        await handle.ToUniTask(this);
+        
+        var go = handle.AssetObject as GameObject;
+        var instance = Instantiate(go, AnimationNode);
+        var animation = instance.GetComponent<Animation>();
+        animation.Play();
+        await UniTask.Delay(TimeSpan.FromSeconds(animation.clip.length));
+        onDialogueLineFinished();
+    }
     
     public override void DismissLine(Action onDismissalComplete)
     {
         Img_display.gameObject.SetActive(false);
         Img_display.sprite = null;
+        AnimationNode.gameObject.SetActive(false);
+        for (int i = 0; i < AnimationNode.childCount; i++)
+        {
+            Destroy(AnimationNode.GetChild(i).gameObject);
+        }
+        
         handle?.Release();
         handle = null;
         onDismissalComplete();

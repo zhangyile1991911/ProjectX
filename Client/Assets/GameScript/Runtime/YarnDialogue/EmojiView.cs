@@ -84,7 +84,7 @@ public class EmojiView : DialogueViewBase
     {
         var mgr = UniModule.GetModule<CharacterMgr>();
         var chr = mgr.GetCharacterByName(characterName);
-        Vector2 localPos = UIManager.Instance.WorldPositionToUI(chr.EmojiNode);
+        Vector2 localPos = UIManager.Instance.WorldPositionToUI(chr.EmojiNode.position);
         Debug.Log($"ShowEmoji pos = {localPos}");
         switch (emojiType)
         {

@@ -232,10 +232,10 @@ public class UIManager : SingletonModule<UIManager>
         base.OnDestroy();
     }
     
-    public Vector2 WorldPositionToUI(Transform transform)
+    public Vector2 WorldPositionToUI(Vector3 worldPosition)
     {
         //将世界坐标转换到UI坐标
-        var screenPosition = _uiCamera.WorldToScreenPoint(transform.position);
+        var screenPosition = _uiCamera.WorldToScreenPoint(worldPosition);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             _rootCanvas.GetComponent<RectTransform>(),screenPosition,_uiCamera,out var localPos);
         return localPos;

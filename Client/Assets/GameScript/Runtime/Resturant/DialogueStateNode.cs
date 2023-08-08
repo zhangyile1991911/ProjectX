@@ -57,6 +57,7 @@ public class DialogueStateNode : IStateNode
         },openData,UILayer.Center);
         
         _clocker = UniModule.GetModule<Clocker>();
+        _restaurantEnter.ShowCurtain();
     }
 
     public void OnUpdate()
@@ -66,6 +67,8 @@ public class DialogueStateNode : IStateNode
     public void OnExit()
     {
         _restaurantEnter.NoFocusOnCharacter();
+        _restaurantEnter.HideCurtain();
+        
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderDrink");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("AddFriend");
@@ -99,7 +102,8 @@ public class DialogueStateNode : IStateNode
             CharacterId = _restaurantCharacter.CharacterId
         };
         EventModule.Instance.OrderMealTopic.OnNext(info);
-        _restaurantCharacter.DialogueOrder = menuId;
+        _restaurantCharacter.CurOrderMealInfo = info;
+        // _restaurantCharacter.DialogueOrder = menuId;
     }
 
     private void OrderDrinkCommand(int drinkId)
@@ -121,7 +125,7 @@ public class DialogueStateNode : IStateNode
             var flavorId = Int16.Parse(str);
             info.flavor.Add(flavorId);
         }
-        
+        _restaurantCharacter.CurOrderMealInfo = info;
         EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 

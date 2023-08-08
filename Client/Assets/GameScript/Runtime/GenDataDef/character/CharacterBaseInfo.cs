@@ -21,6 +21,7 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["name"].IsString) { throw new SerializationException(); }  Name = _json["name"]; }
         { if(!_json["desc"].IsString) { throw new SerializationException(); }  Desc = _json["desc"]; }
+        { if(!_json["soul"].IsNumber) { throw new SerializationException(); }  Soul = _json["soul"]; }
         { if(!_json["res_path"].IsString) { throw new SerializationException(); }  ResPath = _json["res_path"]; }
         { if(!_json["portrait_path"].IsString) { throw new SerializationException(); }  PortraitPath = _json["portrait_path"]; }
         { var __json0 = _json["like_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } LikeFlavour = new System.Collections.Generic.HashSet<food.flavorTag>(/*__json0.Count*/); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  LikeFlavour.Add(__v0); }   }
@@ -30,11 +31,12 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         PostInit();
     }
 
-    public CharacterBaseInfo(int id, string name, string desc, string res_path, string portrait_path, System.Collections.Generic.HashSet<food.flavorTag> like_flavour, System.Collections.Generic.HashSet<food.flavorTag> unlike_flavour, string main_dialogue, string comment_dialogue ) 
+    public CharacterBaseInfo(int id, string name, string desc, int soul, string res_path, string portrait_path, System.Collections.Generic.HashSet<food.flavorTag> like_flavour, System.Collections.Generic.HashSet<food.flavorTag> unlike_flavour, string main_dialogue, string comment_dialogue ) 
     {
         this.Id = id;
         this.Name = name;
         this.Desc = desc;
+        this.Soul = soul;
         this.ResPath = res_path;
         this.PortraitPath = portrait_path;
         this.LikeFlavour = like_flavour;
@@ -61,6 +63,10 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
     /// 描述
     /// </summary>
     public string Desc { get; private set; }
+    /// <summary>
+    /// 灵魂
+    /// </summary>
+    public int Soul { get; private set; }
     /// <summary>
     /// 资源路径
     /// </summary>
@@ -104,6 +110,7 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         + "Id:" + Id + ","
         + "Name:" + Name + ","
         + "Desc:" + Desc + ","
+        + "Soul:" + Soul + ","
         + "ResPath:" + ResPath + ","
         + "PortraitPath:" + PortraitPath + ","
         + "LikeFlavour:" + Bright.Common.StringUtil.CollectionToString(LikeFlavour) + ","

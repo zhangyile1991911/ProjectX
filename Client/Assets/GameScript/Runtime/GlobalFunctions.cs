@@ -43,6 +43,12 @@ public class OrderMealInfo
     }
 }
 
+public class CharacterSaidInfo
+{
+    public int CharacterId;
+    public int ChatId;
+}
+
 public enum Difficulty
 {
     easy,

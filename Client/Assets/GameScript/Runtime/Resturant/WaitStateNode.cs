@@ -236,13 +236,13 @@ public class WaitStateNode : IStateNode
     }
 
 
-    private void GenerateChatBubble(int chatId)
+    private void GenerateChatBubble(CharacterSaidInfo info)
     {
-        var TBbubble = DataProviderModule.Instance.GetCharacterBubble(chatId);
-        var restaurantCharacter = CharacterMgr.Instance.GetCharacterById(TBbubble.NpcId);
-        if (chatId > 0)
+        var TBbubble = DataProviderModule.Instance.GetCharacterBubble(info.ChatId);
+        var characterObj = CharacterMgr.Instance.GetCharacterById(info.CharacterId);
+        if (TBbubble != null && characterObj != null)
         {
-            _restaurantWindow.GenerateChatBubble(chatId,restaurantCharacter,OnClickBubble);
+            _restaurantWindow.GenerateChatBubble(info.ChatId,characterObj,OnClickBubble);
         }
     }
 

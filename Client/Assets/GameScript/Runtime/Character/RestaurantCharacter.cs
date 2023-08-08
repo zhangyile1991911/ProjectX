@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using cfg.character;
 using cfg.common;
 using Cysharp.Text;
@@ -11,7 +12,11 @@ using Yarn.Unity;
 using YooAsset;
 using Random = UnityEngine.Random;
 
-
+public class DialogueTitleInfo
+{
+    public int ID;
+    public bubbleType Type;
+}
 public class RestaurantCharacter : RestaurantRoleBase
 {
     // public SpriteRenderer Sprite => _spriteRenderer;
@@ -43,22 +48,28 @@ public class RestaurantCharacter : RestaurantRoleBase
     private List<CharacterBubble> _mainLineBubbleTB;
     private List<CharacterBubble> _talkBubbleTB;
     private List<CharacterBubble> _orderBubbleTB;
-    private CharacterBubble _commentBubbleTB;
+    // private CharacterBubble _commentBubbleTB;
     
     //记录当前已经生成的chatid
-    private int curCommentChatId;
-    private int curMainLineChatId;
-    private List<int> curTalkChatId;
-    private int curOrderChatId;
+    private List<DialogueTitleInfo> _saidBubbles;
 
-    private int curOrderMenuId;
+    public int SaidBubbleNum => _saidBubbles.Count;
+    // private int curCommentChatId;
+    // private int curMainLineChatId;
+    // private List<int> curTalkChatId;
+    // private int curOrderChatId;
+    
+    // private int curOrderMenuId;
+    
     //收到的料理
     private CookResult _receivedFood = null;
     //记录在对话过程中产生的订单
-    public int DialogueOrder
-    {
-        set => curOrderMenuId = value;
-    }
+    // public int DialogueOrder
+    // {
+    //     set => curOrderMenuId = value;
+    // }
+
+    public OrderMealInfo CurOrderMealInfo;
     
     
     private Clocker _clocker;
@@ -72,11 +83,13 @@ public class RestaurantCharacter : RestaurantRoleBase
         // _emojiNode = transform.Find("EmojiNode");
         // LoadCharacterSprite();
         base.InitCharacter(info);
-        curCommentChatId = 0;
-        curTalkChatId = new List<int>(5);
-        curOrderChatId = 0;
-        curMainLineChatId = 0;
-        curOrderMenuId = 0;
+        
+        _saidBubbles = new(10);
+        // curCommentChatId = 0;
+        // curTalkChatId = new List<int>(5);
+        // curOrderChatId = 0;
+        // curMainLineChatId = 0;
+        // curOrderMenuId = 0;
         foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
        
@@ -87,12 +100,13 @@ public class RestaurantCharacter : RestaurantRoleBase
         // _baseInfo = null;
         // _spriteRenderer.sprite = null;
         // _spriteRenderer = null;
-        curCommentChatId = 0;
-        curTalkChatId = null;
-        curOrderChatId = 0;
-        curMainLineChatId = 0;
+        _saidBubbles.Clear();
+        // curCommentChatId = 0;
+        // curTalkChatId = null;
+        // curOrderChatId = 0;
+        // curMainLineChatId = 0;
         foodScore = 0;
-        curOrderMenuId = 0;
+        // curOrderMenuId = 0;
         UnLoadTableData();
         UnLoadDataBase();
         Destroy(gameObject);
@@ -136,9 +150,9 @@ public class RestaurantCharacter : RestaurantRoleBase
                 case bubbleType.MainLine:
                     _mainLineBubbleTB.Add(dataList[i]);
                     break;
-                case bubbleType.Comment:
-                    _commentBubbleTB = dataList[i];
-                    break;
+                // case bubbleType.Comment:
+                //     _commentBubbleTB = dataList[i];
+                //     break;
             }
         }
     }
@@ -246,7 +260,11 @@ public class RestaurantCharacter : RestaurantRoleBase
         if (result.Count <= 0) return -1;
 
         var index = Random.Range(0, result.Count);
-        curOrderMenuId = _orderBubbleTB[index].MenuId;
+        
+        CurOrderMealInfo ??= new OrderMealInfo();
+        CurOrderMealInfo.MenuId = _orderBubbleTB[index].MenuId;
+        CurOrderMealInfo.CharacterId = CharacterId;
+        
         return _orderBubbleTB[index].Id;
     }
 
@@ -265,45 +283,68 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         return false;
     }
-    
-    public int GenerateChatId()
+
+    // int haveCommentChatId()
+    // {
+    //     var result = _saidBubbles.FirstOrDefault(one=>one.Type==bubbleType.Comment);
+    //     return result?.ID ?? 0;
+    // }
+
+    int haveMainLineChatId()
     {
-        if (curCommentChatId > 0)
-        {
-            var tmp = curCommentChatId;
-            curCommentChatId = 0;
-            return tmp;
-        }
+        var result = _saidBubbles.FirstOrDefault(one=>one.Type==bubbleType.MainLine);
+        return result?.ID ?? 0;
+    }
+
+    int haveTalkChatId()
+    {
+        return _saidBubbles.Count(one=>one.Type==bubbleType.Talk);
+    }
+
+    int haveOrderChatId()
+    {
+        var result = _saidBubbles.FirstOrDefault(one=>one.Type==bubbleType.Order);
+        return result?.ID ?? 0;
+    }
+    
+    public void GenerateChatId()
+    {
         //气泡生成规则
-        //1 主线剧情
-        if (curMainLineChatId <= 0)
+        var info = new CharacterSaidInfo
         {
-            curMainLineChatId = generateMainLine();
-            if (curMainLineChatId > 0)
+            CharacterId = CharacterId
+        };
+        //1 主线剧情
+        if (haveMainLineChatId() <= 0)
+        {
+            
+            info.ChatId = generateMainLine();
+            if (info.ChatId > 0)
             {
-                return curMainLineChatId;
+                _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.MainLine});
+                EventModule.Instance.CharBubbleTopic.OnNext(info);
+                return;
             }
         }
 
         //普通重复的对话
-        if (curTalkChatId.Count < 5)
+        if (haveTalkChatId() < 5)
         {
-            int chatId = generateTalk();
-            if (chatId > 0)
+            info.ChatId = generateTalk();
+            if (info.ChatId > 0)
             {
-                curTalkChatId.Add(chatId);
-                return chatId;    
+                _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Talk});
+                EventModule.Instance.CharBubbleTopic.OnNext(info);
+                return;    
             }
         }
         
         //下单
-        if (curOrderChatId <= 0)
-        {
-            curOrderChatId = generateOrderChatId();
-            return curOrderChatId;
-        }
-
-        return -1;
+        if (haveOrderChatId() > 0) return;
+        info.ChatId = generateOrderChatId();
+        if (info.ChatId <= 0) return;
+        _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Order});
+        EventModule.Instance.CharBubbleTopic.OnNext(info);
     }
 
     // public void ToDark()
@@ -328,7 +369,7 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         if (_receivedFood != null)
         {
-            storageBehaviour.SetValue("$orderedId",curOrderMenuId);
+            storageBehaviour.SetValue("$orderedId",CurOrderMealInfo.MenuId);
             storageBehaviour.SetValue("$foodscore",foodScore);
             storageBehaviour.SetValue("$cookFoodId",_receivedFood.menuId);
             _receivedFood = null;
@@ -344,8 +385,11 @@ public class RestaurantCharacter : RestaurantRoleBase
     public void ReceiveFood(CookResult food)
     {
         _receivedFood = food;
-        curCommentChatId = _commentBubbleTB.Id;
-        EventModule.Instance.CharBubbleTopic.OnNext(curCommentChatId);
+        // curCommentChatId = _commentBubbleTB.Id;
+        CharacterSaidInfo info = new CharacterSaidInfo();
+        info.CharacterId = CharacterId;
+        info.ChatId = 0001;//todo 根据策划文档修改
+        EventModule.Instance.CharBubbleTopic.OnNext(info);
         commentFood(food);
     }
 

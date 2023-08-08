@@ -84,14 +84,30 @@ public partial class ChatBubble : UIComponent
     public void SetBubbleInfo(int chatId,RestaurantRoleBase origin,Action<ChatBubble> click)
     {
         //随机生成一个目的地
-        float x = Random.Range(-870, 870);
-        float y = Random.Range(0, 440);
-        _owner = origin;
-        _chatId = chatId;
-        _click = click;
+        // float x = Random.Range(-870, 870);
+        // float y = Random.Range(0, 440);
+        // _owner = origin;
+        // _chatId = chatId;
+        // _click = click;
+        //
+        // var dataProvider = UniModule.GetModule<DataProviderModule>();
+        
+        //
+        // _tweener = uiRectTran.DOAnchorPos(new Vector2(x, y), 5.0f).OnComplete(()=>
+        // {
+        //     _doTweenAnimation.DOPlay();
+        // });
+        var positionToUI = UIManager.Instance.WorldPositionToUI(origin.ChatNode.position);
+        var characterObj = origin as RestaurantCharacter;
+        var y_offset = (characterObj.SaidBubbleNum - 1) * uiRectTran.sizeDelta.y;
+        positionToUI.y += y_offset;
+        uiRectTran.anchoredPosition = positionToUI;
+        refreshContent(chatId);
+    }
 
-        var dataProvider = UniModule.GetModule<DataProviderModule>();
-        var bubble = dataProvider.GetCharacterBubble(chatId);
+    private void refreshContent(int chatId)
+    {
+        var bubble = DataProviderModule.Instance.GetCharacterBubble(chatId);
         if (bubble == null)
         {
             Txt_content.text = "error";
@@ -100,11 +116,6 @@ public partial class ChatBubble : UIComponent
         {
             Txt_content.text = bubble.Title;
         }
-
-        _tweener = uiRectTran.DOAnchorPos(new Vector2(x, y), 5.0f).OnComplete(()=>
-        {
-            _doTweenAnimation.DOPlay();
-        });
     }
 
     public override bool Equals(object obj)

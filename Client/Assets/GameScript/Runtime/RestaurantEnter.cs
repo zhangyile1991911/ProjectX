@@ -20,6 +20,7 @@ public class RestaurantEnter : MonoBehaviour
     public Transform standGroup;
     public Transform spawnGroup;
     public Transform CookNode;
+    public Transform Curtain;
 
     public CinemachineVirtualCamera RestaurantMainCamera;
     public CinemachineVirtualCamera KitchenCamera;
@@ -96,7 +97,10 @@ public class RestaurantEnter : MonoBehaviour
                 // {
                     var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, chara.SeatOccupy);
                     chara.transform.position = seatWorldPosition;
-                    chara.CurBehaviour = new CharacterMakeBubble();
+                    if (chara.HaveSoul)
+                    {
+                        chara.CurBehaviour = new CharacterMakeBubble();    
+                    }
                     break;
                 // }
             }
@@ -317,4 +321,13 @@ public class RestaurantEnter : MonoBehaviour
         UIManager.Instance.UICamera.transform.position = RestaurantMainCamera.transform.position;
     }
 
+    public void ShowCurtain()
+    {
+        Curtain.gameObject.SetActive(true);
+    }
+
+    public void HideCurtain()
+    {
+        Curtain.gameObject.SetActive(false);
+    }
 }
