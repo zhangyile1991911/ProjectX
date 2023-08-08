@@ -22,7 +22,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         { if(!_json["title"].IsString) { throw new SerializationException(); }  Title = _json["title"]; }
         { if(!_json["npc_id"].IsNumber) { throw new SerializationException(); }  NpcId = _json["npc_id"]; }
         { if(!_json["repeated"].IsBoolean) { throw new SerializationException(); }  Repeated = _json["repeated"]; }
-        { if(!_json["pre_condition"].IsNumber) { throw new SerializationException(); }  PreCondition = _json["pre_condition"]; }
+        { var __json0 = _json["pre_condition"]; if(!__json0.IsArray) { throw new SerializationException(); } PreCondition = new System.Collections.Generic.List<int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = __e0; }  PreCondition.Add(__v0); }   }
         { var __json0 = _json["week_day"]; if(!__json0.IsArray) { throw new SerializationException(); } WeekDay = new System.Collections.Generic.List<common.WeekDay>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { common.WeekDay __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (common.WeekDay)__e0.AsInt; }  WeekDay.Add(__v0); }   }
         { if(!_json["friend_value"].IsObject) { throw new SerializationException(); }  FriendValue = common.value_region.Deserializevalue_region(_json["friend_value"]);  }
         { if(!_json["bubble_type"].IsNumber) { throw new SerializationException(); }  BubbleType = (common.bubbleType)_json["bubble_type"].AsInt; }
@@ -33,7 +33,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         PostInit();
     }
 
-    public CharacterBubble(int id, string title, int npc_id, bool repeated, int pre_condition, System.Collections.Generic.List<common.WeekDay> week_day, common.value_region friend_value, common.bubbleType bubble_type, int menu_id, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
+    public CharacterBubble(int id, string title, int npc_id, bool repeated, System.Collections.Generic.List<int> pre_condition, System.Collections.Generic.List<common.WeekDay> week_day, common.value_region friend_value, common.bubbleType bubble_type, int menu_id, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
     {
         this.Id = id;
         this.Title = title;
@@ -75,7 +75,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     /// <summary>
     /// 前置条件
     /// </summary>
-    public int PreCondition { get; private set; }
+    public System.Collections.Generic.List<int> PreCondition { get; private set; }
     public System.Collections.Generic.List<common.WeekDay> WeekDay { get; private set; }
     public common.value_region FriendValue { get; private set; }
     /// <summary>
@@ -121,7 +121,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         + "Title:" + Title + ","
         + "NpcId:" + NpcId + ","
         + "Repeated:" + Repeated + ","
-        + "PreCondition:" + PreCondition + ","
+        + "PreCondition:" + Bright.Common.StringUtil.CollectionToString(PreCondition) + ","
         + "WeekDay:" + Bright.Common.StringUtil.CollectionToString(WeekDay) + ","
         + "FriendValue:" + FriendValue + ","
         + "BubbleType:" + BubbleType + ","

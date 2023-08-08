@@ -27,6 +27,14 @@ namespace cfg.common
         /// 评论
         /// </summary>
         Comment = 4,
+        /// <summary>
+        /// 模糊订单
+        /// </summary>
+        Omakase = 5,
+        /// <summary>
+        /// 模棱两可
+        /// </summary>
+        HybridOrder = 6,
     }
 
 } 

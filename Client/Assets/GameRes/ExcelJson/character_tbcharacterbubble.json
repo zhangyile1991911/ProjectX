@@ -4,7 +4,9 @@
     "title": "老板，没打烊吧？",
     "npc_id": 10001,
     "repeated": false,
-    "pre_condition": 0,
+    "pre_condition": [
+      0
+    ],
     "week_day": [
       7
     ],
@@ -23,7 +25,9 @@
     "title": "老板我又来了",
     "npc_id": 10001,
     "repeated": false,
-    "pre_condition": 10001001,
+    "pre_condition": [
+      10001001
+    ],
     "week_day": [
       7
     ],
@@ -42,7 +46,9 @@
     "title": "来个蛋炒饭",
     "npc_id": 10001,
     "repeated": true,
-    "pre_condition": 10001001,
+    "pre_condition": [
+      10001001
+    ],
     "week_day": [
       6
     ],
@@ -61,7 +67,9 @@
     "title": "来个炒虾",
     "npc_id": 10001,
     "repeated": true,
-    "pre_condition": 10001002,
+    "pre_condition": [
+      10001002
+    ],
     "week_day": [
       0,
       2
@@ -81,7 +89,9 @@
     "title": "魔王又半夜找我",
     "npc_id": 10001,
     "repeated": true,
-    "pre_condition": 10001002,
+    "pre_condition": [
+      10001002
+    ],
     "week_day": [
       6,
       0,
@@ -102,7 +112,9 @@
     "title": "山梨又发布了新的电脑了",
     "npc_id": 10001,
     "repeated": true,
-    "pre_condition": 10001002,
+    "pre_condition": [
+      10001002
+    ],
     "week_day": [
       1,
       2
@@ -122,7 +134,9 @@
     "title": "这个菜的味道.....",
     "npc_id": 10001,
     "repeated": true,
-    "pre_condition": 0,
+    "pre_condition": [
+      0
+    ],
     "week_day": [
       7
     ],
@@ -141,7 +155,9 @@
     "title": "喵喵肚子很饿",
     "npc_id": 10002,
     "repeated": false,
-    "pre_condition": 0,
+    "pre_condition": [
+      0
+    ],
     "week_day": [
       7
     ],
@@ -160,7 +176,9 @@
     "title": "等了好久呢",
     "npc_id": 10002,
     "repeated": false,
-    "pre_condition": 10002001,
+    "pre_condition": [
+      10002001
+    ],
     "week_day": [
       7
     ],
@@ -179,7 +197,9 @@
     "title": "黄油拌饭",
     "npc_id": 10002,
     "repeated": true,
-    "pre_condition": 10002002,
+    "pre_condition": [
+      10002002
+    ],
     "week_day": [
       7
     ],
@@ -190,15 +210,61 @@
     "bubble_type": 2,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
-    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
+    "dialogue_content_res": "",
     "dialogue_start_node": ""
   },
   {
     "id": 10002004,
+    "title": "想吃甜的",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      10002001
+    ],
+    "week_day": [
+      1,
+      2
+    ],
+    "friend_value": {
+      "start_value": 10,
+      "end_value": 99999
+    },
+    "bubble_type": 5,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 10002005,
+    "title": "今天来点带劲的",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      10002001,
+      10002002
+    ],
+    "week_day": [
+      7
+    ],
+    "friend_value": {
+      "start_value": 30,
+      "end_value": 99999
+    },
+    "bubble_type": 6,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 10002006,
     "title": "Ciao～",
     "npc_id": 10002,
     "repeated": false,
-    "pre_condition": 10002003,
+    "pre_condition": [
+      10002002
+    ],
     "week_day": [
       7
     ],
@@ -213,11 +279,13 @@
     "dialogue_start_node": "MiaoThird"
   },
   {
-    "id": 10002005,
+    "id": 10002007,
     "title": "今天又被喂了奇...",
     "npc_id": 10002,
     "repeated": true,
-    "pre_condition": 0,
+    "pre_condition": [
+      0
+    ],
     "week_day": [
       7
     ],
@@ -230,24 +298,5 @@
     "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
     "dialogue_start_node": "LittleGirl_talkB"
-  },
-  {
-    "id": 10002006,
-    "title": "这个菜的口味",
-    "npc_id": 10002,
-    "repeated": true,
-    "pre_condition": 0,
-    "week_day": [
-      7
-    ],
-    "friend_value": {
-      "start_value": 0,
-      "end_value": 0
-    },
-    "bubble_type": 4,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
-    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "LittleGirl_comment"
   }
 ]

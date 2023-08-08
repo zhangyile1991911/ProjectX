@@ -4,6 +4,7 @@
     "name": "蒸蛋",
     "make_method": 4,
     "related_material": [
+      1002,
       1003
     ],
     "tag": [
@@ -12,14 +13,7 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10,
-    "qte_appear_infos": [
-      {
-        "start_area": 0.2,
-        "end_area": 0.5,
-        "qte_id": 1
-      }
-    ]
+    "cost_time": 10
   },
   {
     "id": 10002,
@@ -34,14 +28,7 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10,
-    "qte_appear_infos": [
-      {
-        "start_area": 0.2,
-        "end_area": 0.8,
-        "qte_id": 1
-      }
-    ]
+    "cost_time": 10
   },
   {
     "id": 10003,
@@ -57,14 +44,7 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10,
-    "qte_appear_infos": [
-      {
-        "start_area": 0.2,
-        "end_area": 0.3,
-        "qte_id": 2
-      }
-    ]
+    "cost_time": 10
   },
   {
     "id": 10004,
@@ -79,14 +59,7 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10,
-    "qte_appear_infos": [
-      {
-        "start_area": 0.2,
-        "end_area": 0.3,
-        "qte_id": 1
-      }
-    ]
+    "cost_time": 10
   },
   {
     "id": 10005,
@@ -101,13 +74,6 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10,
-    "qte_appear_infos": [
-      {
-        "start_area": 0.2,
-        "end_area": 0.3,
-        "qte_id": 2
-      }
-    ]
+    "cost_time": 10
   }
 ]

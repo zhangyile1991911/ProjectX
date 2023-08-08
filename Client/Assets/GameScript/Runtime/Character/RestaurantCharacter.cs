@@ -7,6 +7,7 @@ using cfg.common;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using Yarn.Unity;
 using YooAsset;
@@ -183,7 +184,20 @@ public class RestaurantCharacter : RestaurantRoleBase
     //     _npcData.AppearCount += 1;
     //     UserInfoModule.Instance.UpdateNPCData(CharacterId);
     // }
+    private bool checkPreCondition(List<int> preConditions)
+    {
+        var result = true;
+        foreach (var one in preConditions)
+        {
+            if(one==0)continue;
 
+            if (UserInfoModule.Instance.HaveReadDialogueId(one)) continue;
+            result = false;
+            break;
+        }
+
+        return result;
+    }
     private int generateMainLine()
     {
         foreach (var one in _mainLineBubbleTB)
@@ -198,21 +212,28 @@ public class RestaurantCharacter : RestaurantRoleBase
             //如果没有前置条件
             //当前这条有没有读过
             //如果没有读过就这条
-            if (one.PreCondition == 0)
-            {
-                if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition))
-                {
-                    return one.Id;
-                }
+            var isCond = checkPreCondition(one.PreCondition);
+            if(!isCond)continue;
+            
+            var isDay = checkWeekday(one.WeekDay);
+            if (!isDay)continue;
+            
+            return one.Id;
+            // if (one.PreCondition == 0)
+            // {
+            //     if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition))
+            //     {
+            //         return one.Id;
+            //     }
+            //
+            //     continue;
+            // }
 
-                continue;
-            }
-
-            if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition)) continue;
-            if (!UserInfoModule.Instance.HaveReadDialogueId(one.Id))
-            {
-                return one.Id;
-            }
+            // if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition)) continue;
+            // if (!UserInfoModule.Instance.HaveReadDialogueId(one.Id))
+            // {
+            //     return one.Id;
+            // }
 
         }
 
@@ -229,37 +250,35 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         if (!isEnough) return -1;
         
-        var isCondition = choiced.PreCondition == 0 || 
-                          UserInfoModule.Instance.HaveReadDialogueId(choiced.PreCondition);
+        var isCondition = checkPreCondition(choiced.PreCondition);
+        if(!isCondition) return -1;
 
-        if (!isCondition) return -1;
+
+        if (!checkWeekday(choiced.WeekDay)) return -1;
         
-        if (checkWeekday(choiced.WeekDay))
-            return choiced.Id;
-
-        return -1;
+        return choiced.Id;
     }
 
+    List<int> _orderPool = new List<int>(10);
     private int generateOrderChatId()
     {
-        List<int> result = new List<int>(10);
+        _orderPool.Clear();
         foreach (var one in _orderBubbleTB)
         {
             var isEnough = Friendliness >= one.FriendValue.StartValue &&
                            Friendliness <= one.FriendValue.EndValue;
             if(!isEnough)continue;
             
-            var isCondition = one.PreCondition == 0 || 
-                              UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition);
+            var isCondition = checkPreCondition(one.PreCondition);
             if(!isCondition)continue;
             
             if (checkWeekday(one.WeekDay))
-                result.Add(one.Id);
+                _orderPool.Add(one.Id);
         }
 
-        if (result.Count <= 0) return -1;
+        if (_orderPool.Count <= 0) return -1;
 
-        var index = Random.Range(0, result.Count);
+        var index = Random.Range(0, _orderPool.Count);
         
         CurOrderMealInfo ??= new OrderMealInfo();
         CurOrderMealInfo.MenuId = _orderBubbleTB[index].MenuId;
@@ -317,7 +336,6 @@ public class RestaurantCharacter : RestaurantRoleBase
         //1 主线剧情
         if (haveMainLineChatId() <= 0)
         {
-            
             info.ChatId = generateMainLine();
             if (info.ChatId > 0)
             {

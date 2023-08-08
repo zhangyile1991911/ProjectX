@@ -26,11 +26,10 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         { var __json0 = _json["opposite_tag"]; if(!__json0.IsArray) { throw new SerializationException(); } OppositeTag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  OppositeTag.Add(__v0); }   }
         { if(!_json["difficulty"].IsNumber) { throw new SerializationException(); }  Difficulty = (food.cookDifficulty)_json["difficulty"].AsInt; }
         { if(!_json["cost_time"].IsNumber) { throw new SerializationException(); }  CostTime = _json["cost_time"]; }
-        { var __json0 = _json["qte_appear_infos"]; if(!__json0.IsArray) { throw new SerializationException(); } QteAppearInfos = new System.Collections.Generic.List<food.qte_info>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.qte_info __v0;  { if(!__e0.IsObject) { throw new SerializationException(); }  __v0 = food.qte_info.Deserializeqte_info(__e0);  }  QteAppearInfos.Add(__v0); }   }
         PostInit();
     }
 
-    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, food.cookDifficulty difficulty, int cost_time, System.Collections.Generic.List<food.qte_info> qte_appear_infos ) 
+    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, food.cookDifficulty difficulty, int cost_time ) 
     {
         this.Id = id;
         this.Name = name;
@@ -40,7 +39,6 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         this.OppositeTag = opposite_tag;
         this.Difficulty = difficulty;
         this.CostTime = cost_time;
-        this.QteAppearInfos = qte_appear_infos;
         PostInit();
     }
 
@@ -82,7 +80,6 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
     /// 消耗时间
     /// </summary>
     public int CostTime { get; private set; }
-    public System.Collections.Generic.List<food.qte_info> QteAppearInfos { get; private set; }
 
     public const int __ID__ = -566658467;
     public override int GetTypeId() => __ID__;
@@ -90,13 +87,11 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
     public  void Resolve(Dictionary<string, object> _tables)
     {
         { food.TbMaterial __table = (food.TbMaterial)_tables["food.TbMaterial"]; this.RelatedMaterial_Ref = new System.Collections.Generic.List<food.FoodMaterial>(); foreach(var __e in RelatedMaterial) { this.RelatedMaterial_Ref.Add(__table.GetOrDefault(__e)); } }
-        foreach(var _e in QteAppearInfos) { _e?.Resolve(_tables); }
         PostResolve();
     }
 
     public  void TranslateText(System.Func<string, string, string> translator)
     {
-        foreach(var _e in QteAppearInfos) { _e?.TranslateText(translator); }
     }
 
     public override string ToString()
@@ -110,7 +105,6 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         + "OppositeTag:" + Bright.Common.StringUtil.CollectionToString(OppositeTag) + ","
         + "Difficulty:" + Difficulty + ","
         + "CostTime:" + CostTime + ","
-        + "QteAppearInfos:" + Bright.Common.StringUtil.CollectionToString(QteAppearInfos) + ","
         + "}";
     }
     
