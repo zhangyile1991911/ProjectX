@@ -4,7 +4,7 @@ tags:
 <<declare $orderId = 0>>
 <<declare $orderType = 0>>
 <<delcare $mealId = 0>>
-<<declare $mealSocre = 0>>
+<<declare $mealScore = 0>>
 <<delcare $matchTag = false>>
 <<declare $friendliness = 0>>
 
@@ -42,10 +42,10 @@ tags:
 ---
 <<if $orderId == $mealId>>
     <<if $matchTag>>
-        <<if $mealSocre >= 900>>
+        <<if $mealScore >= 900>>
             //好吃
             <<AddFriend 10>>
-        <<elseif $mealSocre >= 600>>
+        <<elseif $mealScore >= 600>>
             //一般
         <<else>>
             //难吃

@@ -1,9 +1,11 @@
 
 using System;
 using System.Collections.Generic;
+using cfg.food;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using PlasticGui.WorkspaceWindow.NotificationBar;
+using SQLite;
 using UnityEngine;
 using Yarn.Unity;
 
@@ -101,10 +103,11 @@ public class DialogueStateNode : IStateNode
         OrderMealInfo info = new()
         {
             MenuId = menuId,
+            OrderType = OrderType.SpecificOrder,
             CharacterId = _restaurantCharacter.CharacterId
         };
         EventModule.Instance.OrderMealTopic.OnNext(info);
-        _restaurantCharacter.CurOrderMealInfo = info;
+        _restaurantCharacter.CurOrderInfo = info;
         // _restaurantCharacter.DialogueOrder = menuId;
     }
 
@@ -120,15 +123,16 @@ public class DialogueStateNode : IStateNode
         {
             CharacterId = _restaurantCharacter.CharacterId,
             MenuId = menuId,
-            flavor = new List<int>(10)
+            OrderType = OrderType.HybridOrder,
+            flavor = new HashSet<flavorTag>(10)
         };
         var flavors = tags.Split(";");
         foreach (var str in flavors)
         {
             var flavorId = Int32.Parse(str);
-            info.flavor.Add(flavorId);
+            info.flavor.Add((flavorTag)flavorId);
         }
-        _restaurantCharacter.CurOrderMealInfo = info;
+        _restaurantCharacter.CurOrderInfo = info;
         EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 
@@ -138,6 +142,7 @@ public class DialogueStateNode : IStateNode
         OrderMealInfo info = new()
         {
             CharacterId = _restaurantCharacter.CharacterId,
+            OrderType = OrderType.Omakase,
             flavor = new List<int>(10)
         };
         var flavors = desc.Split(";");
@@ -146,7 +151,7 @@ public class DialogueStateNode : IStateNode
             var flavorId = Int32.Parse(str);
             info.flavor.Add(flavorId);
         }
-        _restaurantCharacter.CurOrderMealInfo = info;
+        _restaurantCharacter.CurOrderInfo = info;
         EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 

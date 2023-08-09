@@ -204,7 +204,7 @@ public class FryModule : CookModule
         IsCooking = false;
 
         _result.menuId = _tbMenuInfo.Id;
-        _result.CompletePercent = _curProgress.Value;
+        _result.Score = _curProgress.Value;
         //计算标签
         for (int i = 0;i < _recipe.CookFoods.Count;i++)
         {

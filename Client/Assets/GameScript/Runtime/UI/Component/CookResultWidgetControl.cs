@@ -47,7 +47,7 @@ public partial class CookResultWidget : UIComponent
         Txt_Menu.text = tbMenu.Name; 
         //评分
         StringBuilder sb = new StringBuilder();
-        sb.Append(ZString.Format("完成度\t\t{0}\n", cookResult.CompletePercent));
+        sb.Append(ZString.Format("完成度\t\t{0}\n", cookResult.Score));
         foreach (var pair in cookResult.QTEResult)
         {
             var tb = DataProviderModule.Instance.GetQTEInfo(pair.Key);

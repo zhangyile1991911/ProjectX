@@ -70,7 +70,7 @@ public class RestaurantCharacter : RestaurantRoleBase
     //     set => curOrderMenuId = value;
     // }
 
-    public OrderMealInfo CurOrderMealInfo;
+    public OrderMealInfo CurOrderInfo;
     
     
     private Clocker _clocker;
@@ -280,9 +280,9 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         var index = Random.Range(0, _orderPool.Count);
         
-        CurOrderMealInfo ??= new OrderMealInfo();
-        CurOrderMealInfo.MenuId = _orderBubbleTB[index].MenuId;
-        CurOrderMealInfo.CharacterId = CharacterId;
+        CurOrderInfo ??= new OrderMealInfo();
+        CurOrderInfo.MenuId = _orderBubbleTB[index].MenuId;
+        CurOrderInfo.CharacterId = CharacterId;
         
         return _orderBubbleTB[index].Id;
     }
@@ -387,10 +387,10 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         if (_receivedFood != null)
         {
-            // storageBehaviour.SetValue("$orderId",);
-            // storageBehaviour.SetValue("$orderType",);
-            // storageBehaviour.SetValue("$mealSocre",);
-            // storageBehaviour.SetValue("$matchTag",);
+            storageBehaviour.SetValue("$orderId",CurOrderInfo.MenuId);
+            storageBehaviour.SetValue("$orderType",(int)CurOrderInfo.OrderType);
+            storageBehaviour.SetValue("$mealScore",_receivedFood.Score);
+            storageBehaviour.SetValue("$matchTag",isMatchTags());
             _receivedFood = null;
         }
         storageBehaviour.SetValue("$withPartner",(_npcData.PartnerId > 0));
@@ -416,7 +416,7 @@ public class RestaurantCharacter : RestaurantRoleBase
     {
         foodScore = 0;
         //时间内完成获得50分基础分
-        foodScore = food.CompletePercent >= 1.0 ? 50 : 0;
+        foodScore = food.Score >= 1.0 ? 50 : 0;
         //标签评分：每个正向标签+10分，每个负面标签-10分，无关联标签0分
         foreach (var tag in food.Tags)
         {
@@ -428,6 +428,20 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             foodScore += success ? 5 : -5;
         }
+    }
+
+    private bool isMatchTags()
+    {
+        if (CurOrderInfo.flavor.Count <= 0) return false;
+
+        int flavorNum = CurOrderInfo.flavor.Count;
+
+        foreach (var tag in _receivedFood.Tags)
+        {
+            if (CurOrderInfo.flavor.Contains(tag))
+                flavorNum--;
+        }
+        return flavorNum <= 0;
     }
 
     private bool willLeave = false;

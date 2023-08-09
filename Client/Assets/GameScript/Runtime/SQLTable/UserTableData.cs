@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using SQLite;
+using UnityEngine.Serialization;
 
 [Table("UserTableData")]
 public class UserTableData
@@ -54,7 +55,7 @@ public class RestaurantRuntimeData
 public class CookResult
 {
     public int menuId;
-    public float CompletePercent;
+    public float Score;
     public HashSet<cfg.food.flavorTag> Tags;
     public Dictionary<int, bool> QTEResult;//int = QTEId
 }
