@@ -143,13 +143,13 @@ public class DialogueStateNode : IStateNode
         {
             CharacterId = _restaurantCharacter.CharacterId,
             OrderType = OrderType.Omakase,
-            flavor = new List<int>(10)
+            flavor = new HashSet<flavorTag>(10)
         };
         var flavors = desc.Split(";");
         foreach (var str in flavors)
         {
             var flavorId = Int32.Parse(str);
-            info.flavor.Add(flavorId);
+            info.flavor.Add((flavorTag)flavorId);
         }
         _restaurantCharacter.CurOrderInfo = info;
         EventModule.Instance.OrderMealTopic.OnNext(info);
