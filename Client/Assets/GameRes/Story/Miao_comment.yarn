@@ -1,0 +1,60 @@
+title: MiaoComment
+tags:
+---
+<<declare $orderId = 0>>
+<<declare $orderType = 0>>
+<<delcare $mealId = 0>>
+<<declare $mealSocre = 0>>
+<<delcare $matchTag = false>>
+<<declare $friendliness = 0>>
+
+<<if $orderType == 1>>
+    <<jump SpecificOrder>>
+<<elseif $orderType == 2>>
+    <<jump Omakase>>
+<<elseif $orderType == 3>>
+    <<jump HybridOrder>>
+<<endif>>
+===
+
+title:SpecificOrder
+tags:
+---10001 10001
+<<if $orderId == $mealId>>
+    
+<<else>>
+    //说一句xxxx
+<<endif>>
+===
+
+title:Omakase
+tags:
+---
+<<if $matchTag>>
+//满足了标签 对话
+<<else>>
+//没有满足标签 对话
+<<endif>>
+===
+
+title:HybridOrder
+tags:
+---
+<<if $orderId == $mealId>>
+    <<if $matchTag>>
+        <<if $mealSocre >= 900>>
+            //好吃
+            <<AddFriend 10>>
+        <<elseif $mealSocre >= 600>>
+            //一般
+        <<else>>
+            //难吃
+            <<AddFriend -10>>
+        <<endif>>
+    <<else>>
+        //错误评价
+    <<endif>>
+<<else>>
+    //错误评价
+<<endif>>
+===

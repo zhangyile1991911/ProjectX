@@ -48,6 +48,7 @@ public class DialogueStateNode : IStateNode
             _dialogWindow = ui as CharacterDialogWindow;
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderMeal",OrderMealCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<string>("omakase",omakase);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int,string>("HybridOrder",HybridOrder);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("OrderDrink",OrderDrinkCommand);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddFriend",AddNPCFriendlyValue);
             _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
@@ -77,6 +78,7 @@ public class DialogueStateNode : IStateNode
         _dialogWindow.DialogueRunner.RemoveCommandHandler("omakase");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("ChangePartner");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("KickOut");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("HybridOrder");
         
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
         _clocker = null;
@@ -111,6 +113,25 @@ public class DialogueStateNode : IStateNode
         
     }
 
+    private void HybridOrder(int menuId,string tags)
+    {
+        Debug.Log($"混合订单请求");
+        OrderMealInfo info = new()
+        {
+            CharacterId = _restaurantCharacter.CharacterId,
+            MenuId = menuId,
+            flavor = new List<int>(10)
+        };
+        var flavors = tags.Split(";");
+        foreach (var str in flavors)
+        {
+            var flavorId = Int32.Parse(str);
+            info.flavor.Add(flavorId);
+        }
+        _restaurantCharacter.CurOrderMealInfo = info;
+        EventModule.Instance.OrderMealTopic.OnNext(info);
+    }
+
     private void omakase(string desc)
     {
         Debug.Log($"お任せ {desc}");
@@ -122,7 +143,7 @@ public class DialogueStateNode : IStateNode
         var flavors = desc.Split(";");
         foreach (var str in flavors)
         {
-            var flavorId = Int16.Parse(str);
+            var flavorId = Int32.Parse(str);
             info.flavor.Add(flavorId);
         }
         _restaurantCharacter.CurOrderMealInfo = info;

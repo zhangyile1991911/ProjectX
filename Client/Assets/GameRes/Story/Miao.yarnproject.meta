@@ -10,8 +10,17 @@ ScriptedImporter:
   script: {fileID: 11500000, guid: 053561912b1654d80a424bb0696a74ae, type: 3}
   sourceScripts:
   - {fileID: 6391573757903218779, guid: ef98e645c342d3845bbe0ab9d9decebd, type: 3}
+  - {fileID: 6391573757903218779, guid: ca1f4a1863311af4b8b9f221f05137b0, type: 3}
   compileErrors: []
-  serializedDeclarations: []
+  serializedDeclarations:
+  - name: $withPartner
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in Miao_main.yarn, node MiaoMainFirst
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: ef98e645c342d3845bbe0ab9d9decebd, type: 3}
   defaultLanguage: zh-CN
   languagesToSourceAssets: []
   useAddressableAssets: 0

@@ -387,9 +387,10 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         if (_receivedFood != null)
         {
-            storageBehaviour.SetValue("$orderedId",CurOrderMealInfo.MenuId);
-            storageBehaviour.SetValue("$foodscore",foodScore);
-            storageBehaviour.SetValue("$cookFoodId",_receivedFood.menuId);
+            // storageBehaviour.SetValue("$orderId",);
+            // storageBehaviour.SetValue("$orderType",);
+            // storageBehaviour.SetValue("$mealSocre",);
+            // storageBehaviour.SetValue("$matchTag",);
             _receivedFood = null;
         }
         storageBehaviour.SetValue("$withPartner",(_npcData.PartnerId > 0));
