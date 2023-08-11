@@ -20,7 +20,7 @@ public class PanSimulator : MonoBehaviour
     public float velocity => _velocity;
     public float friction = 1.0f;
     public float edgeBounce = 50.0f;
-    public float maxVelocity = 10f;
+    public float maxVelocity = 40f;
 
     private Camera _mainCamera;
     private Vector3 _panMoveDir;
@@ -109,7 +109,7 @@ public class PanSimulator : MonoBehaviour
 
     public void GameStart(CompositeDisposable handler)
     {
-        this.UpdateAsObservable().Subscribe(UpdatePan).AddTo(handler);
+        this.FixedUpdateAsObservable().Subscribe(UpdatePan).AddTo(handler);
         foreach (var one in _foodList)
         {
             one.Begin(handler);
@@ -171,8 +171,9 @@ public class PanSimulator : MonoBehaviour
         var position = transform.position;
         float distance = Vector2.Distance(position, _previousPosition);
 
-        // _velocity = distance / Time.fixedDeltaTime;
-        _velocity = distance;
+        _velocity = distance / Time.fixedDeltaTime;
+        Debug.Log($"distance = {distance} Time.fixedDeltaTime = {Time.fixedDeltaTime} _velocity = {_velocity}");
+        // _velocity = distance;
         _velocity = Mathf.Clamp(_velocity, 0f, maxVelocity);
 
         _panMoveDir = (position - _previousPosition).normalized;

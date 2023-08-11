@@ -130,7 +130,7 @@ public class FryModule : CookModule
             .Select(_ => false);
 
         _uiWindow.SetProgressListener(_curProgress);
-        _uiWindow.SetTemperatureListener(_curTemperature);
+        _uiWindow.SetTemperatureListener(_curTemperature,IsDebugMode);
         
         Observable.Amb(
             _finishTopic,
@@ -160,15 +160,17 @@ public class FryModule : CookModule
         // Debug.Log("=========Start CalculateHeat=========");
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
         var add = heatCurve.Evaluate(distance)*Time.deltaTime;
+        // Debug.Log($"Calculateheat deltaTime = {Time.deltaTime}");
         // Debug.Log($"distance = {distance} add = {add}");
         // var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         // Debug.Log($"velocity = {pan.velocity} sub = {sub}");
         var tmp = _curTemperature.Value;
         tmp += (add+sub) * _currentRecipeDifficulty.maxTemperature;
-        Debug.Log($"_curTemperature.Value = {_curTemperature.Value}");      
-        Debug.Log($"distance = {distance} result = {add+sub} ");
-        Debug.Log($"mul = {(add+sub)*_currentRecipeDifficulty.maxTemperature}");
+        // Debug.Log($"_curTemperature.Value = {_curTemperature.Value}");      
+        // Debug.Log($"distance = {distance} result = {add+sub} ");
+        // Debug.Log($"mul = {(add+sub)*_currentRecipeDifficulty.maxTemperature}");
+        
         // Debug.Log($"_curTemperature.Value = {_curTemperature.Value}");
         // tmp *= _currentRecipeDifficulty.maxTemperature;
         
@@ -178,7 +180,7 @@ public class FryModule : CookModule
         // tmp += result;
         // Debug.Log($"before temperature = {_curTemperature}");
         _curTemperature.Value = Mathf.Clamp(tmp, 0, _currentRecipeDifficulty.maxTemperature);
-        Debug.Log($"after temperature = {_curTemperature}");
+        // Debug.Log($"after temperature = {_curTemperature}");
         // Debug.Log("=========Finish CalculateHeat=========");
     }
     

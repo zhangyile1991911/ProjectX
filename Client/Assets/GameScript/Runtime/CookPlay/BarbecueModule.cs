@@ -96,7 +96,7 @@ namespace GameScript.CookPlay
                     }
                 
                     var tbItem = DataProviderModule.Instance.GetItemBaseInfo(foods[i].Id);
-                    roastFoodObj.Init(tbItem.UiResPath,mainCamera);
+                    roastFoodObj.Init(tbItem.UiResPath,_curRecipeDifficulty.Level,mainCamera);
                 
                     var x = Random.Range(8.9f, 12.74f);
                     roastFoodObj.transform.localPosition = new Vector3(x, 0, 0);
@@ -143,24 +143,28 @@ namespace GameScript.CookPlay
                 .Subscribe(RoastFood)
                 .AddTo(_handler);
             
-            this.UpdateAsObservable()
-                .Where(_ => IsCooking && Input.GetKeyDown(KeyCode.Space))
-                .Subscribe(_ =>
-                {//每按一次空格就加速一点
-                    _addition += _curRecipeDifficulty.FanAddValue;
-                    _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
-                    AccelerateFanAnimation(1.0f+_addition/_curRecipeDifficulty.AddValueLimit);
-                })
-                .AddTo(_handler);
+            // this.UpdateAsObservable()
+            //     .Where(_ => IsCooking && Input.GetKeyDown(KeyCode.Space))
+            //     .Subscribe(_ =>
+            //     {//每按一次空格就加速一点
+            //         _addition += _curRecipeDifficulty.FanAddValue*Time.deltaTime;
+            //         _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
+            //         AccelerateFanAnimation(1.0f+_addition/_curRecipeDifficulty.AddValueLimit);
+            //     })
+            //     .AddTo(_handler);
             
-            this.UpdateAsObservable()
-                .Where(_ => IsCooking && Input.anyKeyDown)
-                .Subscribe(ListenQteInput)
-                .AddTo(_handler);
+            // this.UpdateAsObservable()
+            //     .Where(_ => IsCooking && Input.anyKeyDown)
+            //     .Subscribe(ListenQteInput)
+            //     .AddTo(_handler);
 
-            Observable.Interval(TimeSpan.FromSeconds(1))
-                .Where(_=>IsCooking)
-                .Subscribe(TemperatureAttenuate).AddTo(_handler);
+            // Observable.Interval(TimeSpan.FromSeconds(1))
+            //     .Where(_=>IsCooking)
+            //     .Subscribe(TemperatureAttenuate).AddTo(_handler);
+            // this.UpdateAsObservable()
+            //     .Where(_=>IsCooking)
+            //     .Subscribe(TemperatureAttenuate).AddTo(_handler);
+
             
             Observable.Interval(TimeSpan.FromSeconds(1))
                 .Where(_=>IsCooking)
@@ -175,11 +179,21 @@ namespace GameScript.CookPlay
             _completeTopic = new Subject<bool>();
             Observable.Amb(timer, _completeTopic).Subscribe(GameOver).AddTo(_handler);
         }
-        
 
-        private void TemperatureAttenuate(long param)
+        private void PressAccelerate()
         {
-            _addition -= _curRecipeDifficulty.Attenuation;
+            if (Input.GetKey(KeyCode.Space))
+            {
+                _addition += _curRecipeDifficulty.FanAddValue*Time.deltaTime;
+                _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
+                AccelerateFanAnimation(1.0f+_addition/_curRecipeDifficulty.AddValueLimit);    
+            }
+        }
+
+        private void TemperatureAttenuate(Unit param)
+        {
+            if (!Input.GetKey(KeyCode.Space)) return;
+            _addition -= _curRecipeDifficulty.Attenuation*Time.deltaTime;
             _addition = Mathf.Clamp(_addition, 0, _curRecipeDifficulty.AddValueLimit);
             if (_addition > 0)
             {
@@ -240,6 +254,9 @@ namespace GameScript.CookPlay
         
         private void RoastFood(Unit param)
         {
+            PressAccelerate();
+            TemperatureAttenuate(param);
+            ListenQteInput(param);
             int count = 0;
             foreach (var oneFood in _roastFoods)
             {
@@ -247,8 +264,9 @@ namespace GameScript.CookPlay
                 var distance = Vector2.Distance(oneFood.transform.position, RoastArea.transform.position);
                 distance = Mathf.Clamp(distance, 0, (RoastArea.size.x + RoastArea.offset.x) / 2f);
                 var heat = heatCurve.Evaluate(distance);
-                heat += _addition;
-                oneFood.AddHeat(heat * Time.deltaTime);
+                heat *= Time.deltaTime;
+                heat += _addition*Time.deltaTime;
+                oneFood.AddHeat(heat);
                 if (oneFood.IsComplete())
                 {
                     count++;
@@ -338,6 +356,7 @@ namespace GameScript.CookPlay
         
         private void ListenQteInput(Unit param)
         {
+            if (!Input.anyKeyDown) return;
             for (int i = 0;i < _tbQteInfos.Count;i++)
             {
                 var one = _tbQteInfos[i];

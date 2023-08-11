@@ -18,6 +18,7 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
     private RectTransform rect_qteArea;
     // private StateMachine _stateMachine;
     private CookResultWidget _resultWidget;
+    private bool isDebugMode = false;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -116,8 +117,10 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         progressVal.Subscribe(UpdateProgressSlider).AddTo(handles);
     }
 
-    public void SetTemperatureListener(IReadOnlyReactiveProperty<float> temperatureVal)
+    public void SetTemperatureListener(IReadOnlyReactiveProperty<float> temperatureVal,bool isDebug)
     {
+        isDebugMode = isDebug;
+        Txt_curTemperature.gameObject.SetActive(isDebug);
         temperatureVal.Subscribe(UpdateTemperatureSlider).AddTo(handles);
     }
     
@@ -184,8 +187,13 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
 
     private void UpdateTemperatureSlider(float temperature)
     {
-        Debug.Log($"FryingFoodWindowControl UpdateTemperatureSlider = {temperature}");
+        // Debug.Log($"FryingFoodWindowControl UpdateTemperatureSlider = {temperature}");
         Slider_Temperature.value = temperature;
+        if (isDebugMode)
+        {
+            Txt_curTemperature.text = ZString.Format("{0:f2}",temperature);    
+        }
+        
     }
 
     public void ShowGameOver(CookResult cookResult)

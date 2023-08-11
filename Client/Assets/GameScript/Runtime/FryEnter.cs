@@ -38,6 +38,7 @@ public class FryEnter : MonoBehaviour
     {
         var go = GameObject.Find("FryModule");
         _fryModule = go.GetComponent<FryModule>();
+        _fryModule.IsDebugMode = true;
         _selectedQte = new(5);
         
         

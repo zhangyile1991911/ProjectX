@@ -12,6 +12,7 @@ using SuperScrollView;
 public partial class FryingFoodWindow : UIWindow
 {
 	public Button Btn_Start;
+	public TextMeshProUGUI Txt_curTemperature;
 	public Slider Slider_Progress;
 	public Slider Slider_Temperature;
 	public Image Img_Temperature;
@@ -24,6 +25,7 @@ public partial class FryingFoodWindow : UIWindow
 	    uiGo = go;
 	    
 		Btn_Start = go.transform.Find("Btn_Start").GetComponent<Button>();
+		Txt_curTemperature = go.transform.Find("Txt_curTemperature").GetComponent<TextMeshProUGUI>();
 		Slider_Progress = go.transform.Find("Slider_Progress").GetComponent<Slider>();
 		Slider_Temperature = go.transform.Find("Slider_Temperature").GetComponent<Slider>();
 		Img_Temperature = go.transform.Find("Slider_Temperature/Img_Temperature").GetComponent<Image>();

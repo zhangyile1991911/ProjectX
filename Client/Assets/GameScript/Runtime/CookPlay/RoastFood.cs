@@ -12,7 +12,6 @@ public class RoastFood : MonoBehaviour
 {
     [HideInInspector]
     public BarbecueModule Module;
-    public RoastFoodData FoodData;
     public Image frontProgressImage;
     public Image frontOverProgressImage;
     public Image backProgressImage;
@@ -34,13 +33,14 @@ public class RoastFood : MonoBehaviour
     private BoundsInt _oldBounds;
     private Vector2 _objectSize;
     
+    private RoastFoodData FoodData = null;
     // Start is called before the first frame update
     // void Start()
     // {
     //     Init();
     // }
 
-    public void Init(string resPath,Camera camera)
+    public void Init(string resPath,DifficultyLevel level ,Camera camera)
     {
         _collider2D = GetComponent<BoxCollider2D>();
         _curBounds = new BoundsInt();
@@ -60,6 +60,7 @@ public class RoastFood : MonoBehaviour
         _heatValue = new Vector2(0, 0);
         _currentFace = true;
         
+        LoadDifficulty(level);
         LoadFoodSprite(resPath);
     }
     
@@ -82,6 +83,27 @@ public class RoastFood : MonoBehaviour
             foodSp.sprite = sp;
             foodSp.gameObject.SetActive(true);
         }
+    }
+
+    private async void LoadDifficulty(DifficultyLevel level)
+    {
+        string path = "";
+        switch (level)
+        {
+            case DifficultyLevel.EASY:
+                path = "";
+                break;
+            case DifficultyLevel.NORMAL:
+                path = "";
+                break;
+            case DifficultyLevel.HARD:
+                path = "";
+                break;
+        }
+        var handle = YooAssets.LoadAssetAsync<RoastFoodData>(path);
+        await handle.ToUniTask(this);
+        FoodData = handle.AssetObject as RoastFoodData;
+        
     }
 
     public void StartRoast(CompositeDisposable handler)
