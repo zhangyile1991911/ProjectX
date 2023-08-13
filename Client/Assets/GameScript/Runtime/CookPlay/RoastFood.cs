@@ -87,17 +87,17 @@ public class RoastFood : MonoBehaviour
 
     private async void LoadDifficulty(DifficultyLevel level)
     {
-        string path = "";
+        string path = "Assets/GameRes/SOConfigs/Menu/BarbecueFood/";
         switch (level)
         {
             case DifficultyLevel.EASY:
-                path = "";
+                path += "EasyFood";
                 break;
             case DifficultyLevel.NORMAL:
-                path = "";
+                path += "NormalFood";
                 break;
             case DifficultyLevel.HARD:
-                path = "";
+                path += "HardFood";
                 break;
         }
         var handle = YooAssets.LoadAssetAsync<RoastFoodData>(path);
