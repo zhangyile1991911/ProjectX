@@ -88,6 +88,7 @@ public class FryModule : CookModule
                 pos.z = 0f;
                 go.transform.localPosition = pos;
                 var fs = go.GetComponent<FoodSimulator>();
+                fs.CollisionLayer = tb.CollisionLayer;
                 pan.AddFood(fs);
             }
         }

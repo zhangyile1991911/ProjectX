@@ -17,14 +17,14 @@ public class NewsAppOpenData : UIOpenParam
     public List<int> normalNewsIdList;
 }
 
-public partial class NewsAppWidget : UIComponent
+public partial class NewsAppWidget : BaseAppWidget
 {
     private Animation _animation;
     private List<NormalNewsData> _newsList;
     private Clocker _clocker;
     public NewsAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
-        
+        WidgetType = AppType.News;
     }
     
     public override void OnCreate()

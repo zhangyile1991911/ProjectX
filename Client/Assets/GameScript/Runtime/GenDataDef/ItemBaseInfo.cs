@@ -27,10 +27,11 @@ public sealed partial class ItemBaseInfo :  Bright.Config.BeanBase
         { if(!_json["ui_res_path"].IsString) { throw new SerializationException(); }  UiResPath = _json["ui_res_path"]; }
         { if(!_json["scene_res_path"].IsString) { throw new SerializationException(); }  SceneResPath = _json["scene_res_path"]; }
         { var _j = _json["get_method"]; if (_j.Tag != JSONNodeType.None && _j.Tag != JSONNodeType.NullValue) { { if(!_j.IsString) { throw new SerializationException(); }  GetMethod = _j; } } else { GetMethod = null; } }
+        { if(!_json["collision_layer"].IsNumber) { throw new SerializationException(); }  CollisionLayer = _json["collision_layer"]; }
         PostInit();
     }
 
-    public ItemBaseInfo(int id, string name, int buy, int sell, item.itemType type, string desc, string ui_res_path, string scene_res_path, string get_method ) 
+    public ItemBaseInfo(int id, string name, int buy, int sell, item.itemType type, string desc, string ui_res_path, string scene_res_path, string get_method, int collision_layer ) 
     {
         this.Id = id;
         this.Name = name;
@@ -41,6 +42,7 @@ public sealed partial class ItemBaseInfo :  Bright.Config.BeanBase
         this.UiResPath = ui_res_path;
         this.SceneResPath = scene_res_path;
         this.GetMethod = get_method;
+        this.CollisionLayer = collision_layer;
         PostInit();
     }
 
@@ -85,6 +87,10 @@ public sealed partial class ItemBaseInfo :  Bright.Config.BeanBase
     /// 获取方式
     /// </summary>
     public string GetMethod { get; private set; }
+    /// <summary>
+    /// 碰撞层级
+    /// </summary>
+    public int CollisionLayer { get; private set; }
 
     public const int __ID__ = -929071246;
     public override int GetTypeId() => __ID__;
@@ -110,6 +116,7 @@ public sealed partial class ItemBaseInfo :  Bright.Config.BeanBase
         + "UiResPath:" + UiResPath + ","
         + "SceneResPath:" + SceneResPath + ","
         + "GetMethod:" + GetMethod + ","
+        + "CollisionLayer:" + CollisionLayer + ","
         + "}";
     }
     

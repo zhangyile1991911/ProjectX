@@ -29,7 +29,8 @@ public class PanSimulator : MonoBehaviour
     private float _velocity;
     private float _curHeatSpeed;
     private bool _isDrag = false;
-    private List<List<FoodSimulator>> _quadtree;
+    private List<List<FoodSimulator>> _middleQuadTree;
+    private List<List<FoodSimulator>> _bottomQuadTree;
     private List<FoodSimulator> _foodList;
 
     // Start is called before the first frame update
@@ -44,19 +45,31 @@ public class PanSimulator : MonoBehaviour
 
         _previousPosition = transform.position;
 
-        _foodList ??= new List<FoodSimulator>();
-
-        _quadtree ??= new List<List<FoodSimulator>>
+        _foodList ??= new List<FoodSimulator>(20);
+        _middleQuadTree ??= new List<List<FoodSimulator>>
         {
             new List<FoodSimulator>(),
             new List<FoodSimulator>(),
             new List<FoodSimulator>(),
             new List<FoodSimulator>()
         };
-        foreach (var tree in _quadtree)
+        foreach (var tree in _middleQuadTree)
         {
             tree.Clear();
         }
+
+        _bottomQuadTree ??= new List<List<FoodSimulator>>()
+        {
+            new List<FoodSimulator>(),
+            new List<FoodSimulator>(),
+            new List<FoodSimulator>(),
+            new List<FoodSimulator>(),
+        };
+        foreach (var tree in _bottomQuadTree)
+        {
+            tree.Clear();
+        }
+        
     }
 
     private Vector2 leftTop = new Vector2();
@@ -192,7 +205,16 @@ public class PanSimulator : MonoBehaviour
                 one.AddVelocityAndDirection(_velocity, _panMoveDir);
             }
 
-            AddQuadtree(one);
+            switch (one.CollisionLayer)
+            {
+                case 1:
+                    AddBottomQuadTree(one);
+                    break;
+                case 2:
+                    AddMiddleQuadTree(one);
+                    break;
+            }
+            
         }
 
         QuadCollision();
@@ -200,13 +222,17 @@ public class PanSimulator : MonoBehaviour
 
     private void ClearQuadtree()
     {
-        foreach (var one in _quadtree)
+        foreach (var one in _middleQuadTree)
+        {
+            one.Clear();
+        }
+        foreach (var one in _bottomQuadTree)
         {
             one.Clear();
         }
     }
 
-    private void AddQuadtree(FoodSimulator one_food)
+    private void AddBottomQuadTree(FoodSimulator one_food)
     {
         var localPosition = one_food.transform.localPosition;
         var bounds = one_food.Bounds;
@@ -217,7 +243,7 @@ public class PanSimulator : MonoBehaviour
         if (index >= 0)
         {
             one_food.QuadTreeIndex.Add(index);
-            _quadtree[index].Add(one_food);
+            _bottomQuadTree[index].Add(one_food);
         }
 
         leftBottom.x = localPosition.x - bounds.size.x / 2f;
@@ -226,7 +252,7 @@ public class PanSimulator : MonoBehaviour
         if (index >= 0)
         {
             one_food.QuadTreeIndex.Add(index);
-            _quadtree[index].Add(one_food);
+            _bottomQuadTree[index].Add(one_food);
         }
 
         rightTop.x = localPosition.x + bounds.size.x / 2f;
@@ -235,7 +261,7 @@ public class PanSimulator : MonoBehaviour
         if (index >= 0)
         {
             one_food.QuadTreeIndex.Add(index);
-            _quadtree[index].Add(one_food);
+            _bottomQuadTree[index].Add(one_food);
         }
 
 
@@ -245,7 +271,50 @@ public class PanSimulator : MonoBehaviour
         if (index >= 0)
         {
             one_food.QuadTreeIndex.Add(index);
-            _quadtree[index].Add(one_food);
+            _bottomQuadTree[index].Add(one_food);
+        }
+    }
+    
+    private void AddMiddleQuadTree(FoodSimulator one_food)
+    {
+        var localPosition = one_food.transform.localPosition;
+        var bounds = one_food.Bounds;
+
+        leftTop.x = localPosition.x - bounds.size.x / 2f;
+        leftTop.y = localPosition.y + bounds.size.y / 2f;
+        var index = InWhichTreeIndex(leftTop);
+        if (index >= 0)
+        {
+            one_food.QuadTreeIndex.Add(index);
+            _middleQuadTree[index].Add(one_food);
+        }
+
+        leftBottom.x = localPosition.x - bounds.size.x / 2f;
+        leftBottom.y = localPosition.y - bounds.size.y / 2f;
+        index = InWhichTreeIndex(leftBottom);
+        if (index >= 0)
+        {
+            one_food.QuadTreeIndex.Add(index);
+            _middleQuadTree[index].Add(one_food);
+        }
+
+        rightTop.x = localPosition.x + bounds.size.x / 2f;
+        rightTop.y = localPosition.y + bounds.size.y / 2f;
+        index = InWhichTreeIndex(rightTop);
+        if (index >= 0)
+        {
+            one_food.QuadTreeIndex.Add(index);
+            _middleQuadTree[index].Add(one_food);
+        }
+
+
+        rightBottom.x = localPosition.x - bounds.size.x / 2f;
+        rightBottom.y = localPosition.y - bounds.size.y / 2f;
+        index = InWhichTreeIndex(rightBottom);
+        if (index >= 0)
+        {
+            one_food.QuadTreeIndex.Add(index);
+            _middleQuadTree[index].Add(one_food);
         }
     }
 
@@ -256,7 +325,7 @@ public class PanSimulator : MonoBehaviour
         {
             foreach (var treeIndex in food.QuadTreeIndex)
             {
-                var curTree = _quadtree[treeIndex];
+                var curTree = _middleQuadTree[treeIndex];
                 foreach (var treeFood in curTree)
                 {
                     if (treeFood.transform == food.transform) continue;
