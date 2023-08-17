@@ -11,6 +11,7 @@ using UnityEngine.UI;
 /// </summary>
 public partial class PhoneWindow : UIWindow
 {
+    public bool IsDebug = false;
     private List<PhoneAppWidget> _appIconList;
     private Clocker _clocker;
     private UIManager _uiManager;
@@ -29,7 +30,7 @@ public partial class PhoneWindow : UIWindow
         _appIconList.Add(newsAPP);    
         
         var airplane = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
-        airplane.SetAPPInfo("打飞机",OnClickAirPlane);
+        airplane.SetAPPInfo("小飞机",OnClickAirPlane);
         _appIconList.Add(airplane);    
         
     }
@@ -54,7 +55,7 @@ public partial class PhoneWindow : UIWindow
             {
                 curRunApp.OnHide();
                 curRunApp = null;
-                _clocker.AddMinute(1);
+                CostTimeOnOpenApp(60);
                 Tran_AppGroup.gameObject.SetActive(true);
             }
         }).AddTo(handles);
@@ -98,13 +99,13 @@ public partial class PhoneWindow : UIWindow
             costSecond = 10;
         }
         Tran_AppGroup.gameObject.SetActive(false);
-        _clocker.AddSecond(costSecond);
+        CostTimeOnOpenApp(costSecond);
         curRunApp = newsApp;
     }
 
     private async void OnClickAirPlane()
     {
-        Debug.Log("点击了打飞机");
+        Debug.Log("点击了小飞机");
         var airPlaneApp = _appList.Find(one=>one.WidgetType==BaseAppWidget.AppType.AirPlane);
         var costSecond = 0;
         if (airPlaneApp == null)
@@ -120,12 +121,19 @@ public partial class PhoneWindow : UIWindow
         }
         Tran_AppGroup.gameObject.SetActive(false);
         
-        _clocker.AddSecond(costSecond);
+        CostTimeOnOpenApp(costSecond);
         
         
         curRunApp = airPlaneApp;
     }
-    
+
+    private void CostTimeOnOpenApp(int costSecond)
+    {
+        if (!IsDebug)
+        {
+            _clocker.AddSecond(costSecond);
+        }
+    }
     
     
 }

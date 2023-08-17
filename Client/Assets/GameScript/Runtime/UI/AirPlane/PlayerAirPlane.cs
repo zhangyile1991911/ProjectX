@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,12 +16,15 @@ public class PlayerAirPlane : MonoBehaviour
     private Vector2 destPos;
     
     private float shot_invertal;
+
+    public Action GameOver;
     public void Reset()
     {
          newPos = Vector3.zero;
          destPos = Vector3.zero;
          speed = 0.5f;
          shot_invertal = 0.5f;
+         hp = 3;
     }
     public void Move()
     {
@@ -46,7 +50,7 @@ public class PlayerAirPlane : MonoBehaviour
     {
         if (shot_invertal <= 0)
         {
-            shot_invertal = 0.3f;
+            shot_invertal = 0.5f;
             return true;
         }
 
@@ -60,4 +64,19 @@ public class PlayerAirPlane : MonoBehaviour
         controller = GetComponent<RectTransform>();
         Reset();
     }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag(tag))
+        {
+            return;
+        }
+        // Debug.Log($"PlayerAirPlane::OnTriggerEnter2D other.name = {other.name}");
+        hp -= 1;
+        if (hp <= 0)
+        {
+            GameOver.Invoke();
+        }
+    }
+    
 }

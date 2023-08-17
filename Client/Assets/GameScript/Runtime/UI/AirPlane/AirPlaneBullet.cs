@@ -7,38 +7,53 @@ using UnityEngine.Pool;
 public class AirPlaneBullet : MonoBehaviour
 {
     public  RectTransform BRectTransform;
+    public Vector2 CurPos => BRectTransform.anchoredPosition;
     private Vector2 Direction;
-    private ObjectPool<AirPlaneBullet> BelongPool;
-    private Vector2 Bound;
+    // private ObjectPool<AirPlaneBullet> BelongPool;
+    
     private Vector2 newPos;
     
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.transform.CompareTag(tag))
-        {
-            return;
-        }
-        Debug.Log("OnCollisionEnter2D 回收");
-        BelongPool.Release(this);
-    }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     // Debug.Log("AirPlaneBullet::OnTriggerEnter2D");
+    //     if (other.CompareTag(tag))
+    //     {
+    //         return;
+    //     }
+    //
+    //     if (other.name.Equals(name))
+    //     {
+    //         return;
+    //     }
+    //     // Debug.Log($"Bullet other.name = {other.transform.name}");
+    //     // Debug.Log("OnTriggerEnter2D 回收");
+    //     BelongPool.Release(this);
+    // }
 
-    public void Init(RectTransform launcher,ObjectPool<AirPlaneBullet> pool,Vector2 bound,bool up)
+    public void Init(RectTransform launcher,float speed)
     {
-        BelongPool = pool;
-        Bound = bound;
+        // BelongPool = pool;
         newPos = launcher.anchoredPosition;
         BRectTransform.anchoredPosition = launcher.anchoredPosition;
         tag = launcher.tag;
 
         Direction.x = launcher.anchoredPosition.x;
-        Direction.y = up ? 3.0f : -3.0f;
+        Direction.y = speed;
+    }
+
+    public void Init(RectTransform launcher,Vector2 dir)
+    {
+        // BelongPool = pool;
+        newPos = launcher.anchoredPosition;
+        BRectTransform.anchoredPosition = launcher.anchoredPosition;
+        tag = launcher.tag;
+        Direction = dir;
     }
     
-    public bool OnUpdate()
+    public void Move()
     {
         newPos.y += Direction.y;
         BRectTransform.anchoredPosition = newPos;
-        return newPos.y < Bound.x && newPos.y > Bound.y;
     }
     
 }

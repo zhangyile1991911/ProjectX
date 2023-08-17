@@ -28,7 +28,9 @@ public partial class BootWindow : UIWindow
         Btn_FryFood.OnClickAsObservable()
             .Subscribe(ClickFry).AddTo(handles);
         Btn_Barbecue.OnClickAsObservable()
-            .Subscribe(ClickBarbecue).AddTo(handles);    
+            .Subscribe(ClickBarbecue).AddTo(handles);
+        Btn_Phone.OnClickAsObservable()
+            .Subscribe(ClickPhone).AddTo(handles);
     }
 
     public override void OnHide()
@@ -57,6 +59,12 @@ public partial class BootWindow : UIWindow
     void ClickBarbecue(Unit param)
     {
         YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Barbecue.unity");
+        UIManager.Instance.DestroyUI(UIEnum.BootWindow);
+    }
+
+    void ClickPhone(Unit param)
+    {
+        YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Phone.unity");
         UIManager.Instance.DestroyUI(UIEnum.BootWindow);
     }
 }

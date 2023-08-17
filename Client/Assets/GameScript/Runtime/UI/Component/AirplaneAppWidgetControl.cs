@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Cysharp.Text;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Pool;
 using YooAsset;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 
 /// <summary>
@@ -11,17 +15,34 @@ using YooAsset;
 /// </summary>
 public partial class AirplaneAppWidget : BaseAppWidget
 {
+    class AirPlaneConfig
+    {
+        public float create_enemy_interval = 2.0f;
+        public float enemy_speed = 0.7f;
+        public float enemy_shot_interval = 2.5f;
+        public int enemy_score = 1;
+        public int enemy_hp = 1;
+    }
+    
     private RectTransform bgA;
     private RectTransform bgB;
     private float maxY;
+    private float maxX;
     private PlayerAirPlane _airPlane;
 
     private ObjectPool<AirPlaneBullet> bulletPool;
     private ObjectPool<EnemyAirPlane> enemyPool;
     private List<AirPlaneBullet> activeBullects;
-
     private List<EnemyAirPlane> activeEnemies;
-    // private ObjectPool<> enemies;
+
+    private List<RectTransform> enemySpawnPoint;
+
+    private AirPlaneConfig config = new AirPlaneConfig();
+    private float cur_create_enemy_interval = 5.0f;
+
+    private bool isGameOver;
+    private CompositeDisposable handler;
+    private int score;
     public AirplaneAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
         WidgetType = AppType.AirPlane;
@@ -37,9 +58,11 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
         var go = uiTran.Find("PlayerAirPlane");
         _airPlane = go.GetComponent<PlayerAirPlane>();
-
+        _airPlane.GameOver = GameOver;
+        
         activeBullects = new List<AirPlaneBullet>(20);
         activeEnemies = new(20);
+        enemySpawnPoint = new List<RectTransform>(3);
         
         bulletPool = new ObjectPool<AirPlaneBullet>(onCreateBullect,
             onGetBullect,
@@ -56,6 +79,11 @@ public partial class AirplaneAppWidget : BaseAppWidget
             false,
             10,
             50);
+        
+        enemySpawnPoint.Add(Tran_A.GetComponent<RectTransform>());
+        enemySpawnPoint.Add(Tran_B.GetComponent<RectTransform>());
+        enemySpawnPoint.Add(Tran_C.GetComponent<RectTransform>());
+        isGameOver = false;
     }
 
     private AirPlaneBullet onCreateBullect()
@@ -69,13 +97,13 @@ public partial class AirplaneAppWidget : BaseAppWidget
     private void onGetBullect(AirPlaneBullet bullet)
     {
         bullet.gameObject.SetActive(true);
-        activeBullects.Add(bullet);
+        // activeBullects.Add(bullet);
     }
 
     private void onReleaseBullect(AirPlaneBullet bullet)
     {
         bullet.gameObject.SetActive(false);
-        activeBullects.Remove(bullet);
+        // activeBullects.Remove(bullet);
     }
 
     private void onDestroyBullect(AirPlaneBullet bullet)
@@ -88,22 +116,21 @@ public partial class AirplaneAppWidget : BaseAppWidget
     private EnemyAirPlane onCreateEnemyAirPlane()
     {
         var one = YooAssets.LoadAssetSync<EnemyAirPlane>("Assets/GameRes/Prefabs/AirPlane/EnemyAirPlane.prefab");
-        var go = one.AssetObject as AirPlaneBullet;
+        var go = one.AssetObject as EnemyAirPlane;
         var enemyAirplaneObj = Object.Instantiate(go,uiRectTran);
-        return enemyAirplaneObj.GetComponent<EnemyAirPlane>();
+        return enemyAirplaneObj;
     }
 
     private void onGetEnemyAirPlane(EnemyAirPlane airPlane)
     {
         airPlane.gameObject.SetActive(true);
-        activeEnemies.Add(airPlane);
+        // activeEnemies.Add(airPlane);
     }
 
     private void onReleaseEnemyAirPlane(EnemyAirPlane airPlane)
     {
         airPlane.gameObject.SetActive(false);
-        airPlane.Reset();
-        activeEnemies.Remove(airPlane);
+        // activeEnemies.Remove(airPlane);
     }
 
     private void onDestroyEnemyAirPlane(EnemyAirPlane airPlane)
@@ -116,9 +143,20 @@ public partial class AirplaneAppWidget : BaseAppWidget
     
     public override void OnDestroy()
     {
+        enemySpawnPoint.Clear();
+        
+        foreach (var one in activeBullects)
+        {
+            bulletPool.Release(one);
+        }
+        activeBullects.Clear();
+        foreach (var one in activeEnemies)
+        {
+            enemyPool.Release(one);
+        }
+        activeEnemies.Clear();
         
     }
-
     
     public override void OnShow(UIOpenParam openParam)
     {
@@ -127,37 +165,106 @@ public partial class AirplaneAppWidget : BaseAppWidget
         // Debug.Log($"sizeDelta = {btnRect.rect}");
         // Debug.Log($"sizeDelta = {btnRect.rect.height}");
         maxY = btnRect.rect.height;
-        Btn_touch.OnClick.Subscribe(handletouch);
+        maxX = btnRect.rect.width;
+        
+        handler = new CompositeDisposable(5);
+        Btn_touch.OnClick.Subscribe(handletouch).AddTo(handler);
+        Btn_Restart.OnClick.Subscribe(RestartGame).AddTo(handler);
+        
+        if (isGameOver)
+        {
+            ShowResult();
+        }
+        else
+        {
+            HideResult();
+        }
     }
 
     public override void OnHide()
     {
         base.OnHide();
-        
+        handler.Dispose();
+        handler.Clear();
     }
 
     private float scrollSpeed = 0.2f;
+
+    private bool isVisible(Vector2 pos)
+    {
+        return pos.y < maxY/1.5f && pos.y > -maxY/1.5f;
+    }
+    
     public override void OnUpdate()
     {
+        if (isGameOver) return;
         movebg();
         updateBullect();
         updateAirPlane();
-        Debug.Log($"bullets.CountAll = {bulletPool.CountAll}\nbullets.CountActive = {bulletPool.CountActive}\nbullets.CountInactive = {bulletPool.CountInactive}\n");
+        updateEnemy();
+        // Debug.Log($"bullets.CountAll = {bulletPool.CountAll} bullets.CountActive = {bulletPool.CountActive} bullets.CountInactive = {bulletPool.CountInactive}");
+        // Debug.Log($"enemyPool.CountAll = {enemyPool.CountAll} enemyPool.CountActive = {enemyPool.CountActive} enemyPool.CountInactive = {enemyPool.CountInactive}");
     }
 
     private void updateEnemy()
     {
-        createEnemy();
+        createEnemyAirplane();
+        updateEnemyAirplane();
+    }
+
+    private void createEnemyAirplane()
+    {
+        if (activeEnemies.Count > 2) return;
+        if (cur_create_enemy_interval <= 0)
+        {
+            var spawnPosition = new Vector2();
+            spawnPosition.y = maxY;
+            spawnPosition.x = Random.Range(maxX/2f,-maxX/2f) ;
+       
+            var enemyAirPlane = enemyPool.Get();
+            activeEnemies.Add(enemyAirPlane);
+            //目的地
+            var dest = new Vector2();
+            dest.y = -maxY*0.8f;
+            dest.x = Random.Range(maxX/2f,-maxX/2f);
+        
+            enemyAirPlane.ConfigProperty(recycleEnemyAirplane,spawnPosition,dest,config.enemy_hp,config.enemy_speed,config.enemy_shot_interval);
+            // Debug.Log($"createEnemyAirplane spawnPosition = {spawnPosition} dest = {dest}");
+            cur_create_enemy_interval = config.create_enemy_interval;
+            
+        }
+        // int spawnIndex = Random.Range(0, enemySpawnPoint.Count);
+        // var spawnPosition = enemySpawnPoint[spawnIndex].anchoredPosition;
+        
+        cur_create_enemy_interval -= Time.deltaTime;
+    }
+
+    private void updateEnemyAirplane()
+    {
         for (int i = activeEnemies.Count - 1;i >= 0;i--)
         {
-            var one = activeEnemies[i];
+            var enemyAirPlane = activeEnemies[i];
+            if (enemyAirPlane.Fire())
+            {
+                var one = bulletPool.Get();
+                one.Init(enemyAirPlane.Controller,
+                    enemyAirPlane.Direction);
+                one.tag = enemyAirPlane.tag;
+                activeBullects.Add(one);
+            }
             
+            if(enemyAirPlane.Move())continue;
+            // Debug.Log($"updateEnemyAirplane回收敌机 i = {i} activeEnemies.Count = {activeEnemies.Count}");
+            enemyPool.Release(enemyAirPlane);
+            activeEnemies.RemoveAt(i);
         }
     }
 
-    private void createEnemy()
+    private void recycleEnemyAirplane(EnemyAirPlane airPlane)
     {
-        
+        enemyPool.Release(airPlane);
+        activeEnemies.Remove(airPlane);
+        score += config.enemy_score;
     }
     
     private void updateAirPlane()
@@ -167,10 +274,9 @@ public partial class AirplaneAppWidget : BaseAppWidget
         {
             var one = bulletPool.Get();
             one.Init(_airPlane.AirPlaneRectTransform,
-                bulletPool,
-                new Vector2(maxY/2f,-maxY/2f),
-                true);
+                4.0f);
             one.tag = _airPlane.tag;
+            activeBullects.Add(one);
         }
     }
 
@@ -179,8 +285,10 @@ public partial class AirplaneAppWidget : BaseAppWidget
         for (int i = activeBullects.Count - 1; i >= 0; i--)
         {
             var one = activeBullects[i];
-            if (one.OnUpdate())
+            one.Move();
+            if (isVisible(one.CurPos))
             {
+                // Debug.Log($"one.CurPos = {one.CurPos}");
                 continue;
             }
             // Debug.Log("updateBullect 回收");
@@ -219,5 +327,48 @@ public partial class AirplaneAppWidget : BaseAppWidget
         _airPlane.SetDestination(lp);
 
         // _airPlane.dist = lp;
+    }
+
+    private void GameOver()
+    {
+        isGameOver = true;
+        
+        _airPlane.Reset();
+        foreach (var one in activeEnemies)
+        {
+            enemyPool.Release(one);
+        }
+        activeEnemies.Clear();
+
+        foreach (var one in activeBullects)
+        {
+            bulletPool.Release(one);
+        }
+        activeBullects.Clear();
+        
+        ShowResult();
+    }
+
+    private void RestartGame(PointerEventData param)
+    {
+        isGameOver = false;
+        
+       
+        cur_create_enemy_interval = config.create_enemy_interval;
+
+        score = 0;
+
+        HideResult();
+    }
+
+    private void ShowResult()
+    {
+        Tran_Result.gameObject.SetActive(true);
+        Txt_Score.text = ZString.Format("分数:{0}", score);
+    }
+
+    private void HideResult()
+    {
+        Tran_Result.gameObject.SetActive(false);
     }
 }
