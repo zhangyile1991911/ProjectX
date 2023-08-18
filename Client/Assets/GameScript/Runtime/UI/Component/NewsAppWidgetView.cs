@@ -9,7 +9,7 @@ using TMPro;
 /// Auto Generate Class!!!
 /// </summary>
 [UI(0,"Assets/GameRes/Prefabs/Components/NewsAppWidget.prefab")]
-public partial class NewsAppWidget : UIComponent
+public partial class NewsAppWidget : BaseAppWidget
 {
 	public Image Img_BigNews;
 	public LoopGridView Grid_News;

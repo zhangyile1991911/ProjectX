@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,30 +11,38 @@ using UnityEngine.UI;
 /// </summary>
 public partial class PhoneWindow : UIWindow
 {
-    private List<PhoneAppWidget> _appList;
+    public bool IsDebug = false;
+    private List<PhoneAppWidget> _appIconList;
     private Clocker _clocker;
     private UIManager _uiManager;
-    private NewsAppWidget NewsApp;
+    private List<BaseAppWidget> _appList;
+    // private NewsAppWidget NewsApp;
     private UIComponent curRunApp;
     public override async void OnCreate()
     {
-        _appList = new List<PhoneAppWidget>(4);
+        _appIconList = new List<PhoneAppWidget>(4);
         _uiManager = UniModule.GetModule<UIManager>();
         
+        _appList = new List<BaseAppWidget>(10);
+        //根据功能开放
         var newsAPP = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
         newsAPP.SetAPPInfo("新闻",OnClickNewsApp);
-        _appList.Add(newsAPP);    
+        _appIconList.Add(newsAPP);    
+        
+        var airplane = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
+        airplane.SetAPPInfo("小飞机",OnClickAirPlane);
+        _appIconList.Add(airplane);    
         
     }
     
     public override void OnDestroy()
     {
-        foreach (var one in _appList)
+        foreach (var one in _appIconList)
         {
             one.OnHide();
             one.OnDestroy();
         }
-        _appList.Clear();
+        _appIconList.Clear();
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -45,9 +54,12 @@ public partial class PhoneWindow : UIWindow
             if (curRunApp != null && curRunApp.IsActive)
             {
                 curRunApp.OnHide();
-                _clocker.AddMinute(1);
+                curRunApp = null;
+                CostTimeOnOpenApp(60);
+                Tran_AppGroup.gameObject.SetActive(true);
             }
         }).AddTo(handles);
+        uiGo.UpdateAsObservable().Subscribe(UpdateApp).AddTo(handles);
         // _clocker.Topic.Subscribe(nowms =>
         // {
         //     
@@ -63,21 +75,65 @@ public partial class PhoneWindow : UIWindow
     {
         
     }
+
+    private void UpdateApp(Unit param)
+    {
+        // Debug.Log("UpdateApp");
+        curRunApp?.OnUpdate();
+    }
     
     private async void OnClickNewsApp()
     {
         Debug.Log("点击了新闻应用");
-        if (NewsApp == null)
+        var newsApp = _appList.Find(one=>one.WidgetType==BaseAppWidget.AppType.News);
+        var costSecond = 0;
+        if (newsApp == null)
         {
-            _clocker.AddMinute(1);
-            NewsApp = await _uiManager.CreateUIComponent<NewsAppWidget>(null,Tran_AppRun,this);
-            curRunApp = NewsApp;
+            newsApp = await _uiManager.CreateUIComponent<NewsAppWidget>(null,Tran_AppRun,this);
+            _appList.Add(newsApp);
+            costSecond = 60;
         }
         else
         {
-            NewsApp.OnShow(null);
-            _clocker.AddSecond(10);
+            newsApp.OnShow(null);
+            costSecond = 10;
+        }
+        Tran_AppGroup.gameObject.SetActive(false);
+        CostTimeOnOpenApp(costSecond);
+        curRunApp = newsApp;
+    }
+
+    private async void OnClickAirPlane()
+    {
+        Debug.Log("点击了小飞机");
+        var airPlaneApp = _appList.Find(one=>one.WidgetType==BaseAppWidget.AppType.AirPlane);
+        var costSecond = 0;
+        if (airPlaneApp == null)
+        {
+            airPlaneApp = await _uiManager.CreateUIComponent<AirplaneAppWidget>(null,Tran_AppRun,this);
+            _appList.Add(airPlaneApp);
+            costSecond = 60;
+        }
+        else
+        {
+            costSecond = 10;
+            airPlaneApp.OnShow(null);
+        }
+        Tran_AppGroup.gameObject.SetActive(false);
+        
+        CostTimeOnOpenApp(costSecond);
+        
+        
+        curRunApp = airPlaneApp;
+    }
+
+    private void CostTimeOnOpenApp(int costSecond)
+    {
+        if (!IsDebug)
+        {
+            _clocker.AddSecond(costSecond);
         }
     }
+    
     
 }

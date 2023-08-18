@@ -23,6 +23,7 @@ public class FoodSimulator : MonoBehaviour
     private CircleCollider2D _circleCollider;
     public float Radius => transform.localScale.x * _circleCollider.radius;
     public Bounds Bounds => _bounds;
+    public int CollisionLayer = -1;
     // private float _curHeatVal;
     // Start is called before the first frame update
     void Start()

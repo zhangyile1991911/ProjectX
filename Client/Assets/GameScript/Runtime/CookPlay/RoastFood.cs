@@ -236,7 +236,7 @@ public class RoastFood : MonoBehaviour
         // Debug.Log($"CheckFlip = {name}");   
         FlipOver();
     }
-
+//36 09 73
     public void AddHeat(float heat)
     {
         int index = _currentFace ? 1: 0;
