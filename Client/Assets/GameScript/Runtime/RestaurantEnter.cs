@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using cfg.food;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using UniRx;
 using UnityEngine;
-using Yarn.Unity;
+using UnityEngine.Pool;
 using YooAsset;
 using Random = UnityEngine.Random;
 
@@ -21,6 +21,9 @@ public class RestaurantEnter : MonoBehaviour
     public Transform spawnGroup;
     public Transform CookNode;
     public Transform Curtain;
+
+    public Transform PeopleGroup;
+    public Transform[] PeopleSpawns;
 
     public CinemachineVirtualCamera RestaurantMainCamera;
     public CinemachineVirtualCamera KitchenCamera;
@@ -41,6 +44,11 @@ public class RestaurantEnter : MonoBehaviour
 
     private List<AssetOperationHandle> _cacheHandles;
     private Dictionary<cookTools, GameObject> _cookPlayDict;
+
+    private ObjectPool<WalkingPeople> _peoplePool;
+
+    private List<WalkingPeople> _activedPeople;
+    // private ObjectPool<>
     void Start()
     {
         _seatPoints = new List<Transform>(standGroup.childCount);
@@ -81,6 +89,8 @@ public class RestaurantEnter : MonoBehaviour
         
         //加载当前已经在店里的客人
         loadWaitingCharacter();
+
+        initPeople();
     }
 
     private async void loadWaitingCharacter()
@@ -329,5 +339,78 @@ public class RestaurantEnter : MonoBehaviour
     public void HideCurtain()
     {
         Curtain.gameObject.SetActive(false);
+    }
+
+    public void GeneratePeople()
+    {
+        var one = _peoplePool.Get();
+        int val = Random.Range(0, 2);
+        var peopleId = Random.Range(1,9);
+        if (val == 0)
+        {
+            one.Config(peopleId,PeopleSpawns[0].position,PeopleSpawns[1].position);
+        }
+        else
+        {
+            one.Config(peopleId,PeopleSpawns[1].position,PeopleSpawns[0].position);    
+        }
+        Debug.Log($"_peoplePool.CountAll = {_peoplePool.CountAll} _peoplePool.CountActive = {_peoplePool.CountActive} _peoplePool.CountInactive = {_peoplePool.CountInactive} ");
+    }
+
+    public void FrozenAllPeople()
+    {
+        foreach (var one in _activedPeople)
+        {
+            one.PauseWalk();
+        }
+    }
+
+    public void ResumeAllPeople()
+    {
+        foreach (var one in _activedPeople)
+        {
+            one.ResumeWalk();
+        }
+    }
+    
+    private void initPeople()
+    {
+        _peoplePool =
+            new ObjectPool<WalkingPeople>(onCreatePeople, 
+                onGetPeople,
+                onReleasePeople, 
+                onDestroyPeople, 
+                false,
+                10, 
+                30);
+        _activedPeople = new List<WalkingPeople>(10);
+    }
+
+    private WalkingPeople onCreatePeople()
+    {
+        var loadHandler = YooAssets.LoadAssetSync<GameObject>(
+            "Assets/GameRes/Prefabs/NPC/Crowd/WalkingPeople.prefab");
+        var peopleObj = Instantiate(loadHandler.AssetObject,PeopleGroup) as GameObject;
+        var result = peopleObj.GetComponent<WalkingPeople>();
+        result.BelongPool = _peoplePool;
+        return result;
+    }
+    
+    private void onGetPeople(WalkingPeople people)
+    {
+        people.gameObject.SetActive(true);
+        _activedPeople.Add(people);
+    }
+
+    private void onReleasePeople(WalkingPeople people)
+    {
+        people.gameObject.SetActive(false);
+        _activedPeople.Remove(people);
+    }
+
+    private void onDestroyPeople(WalkingPeople people)
+    {
+        people.Release();
+        Destroy(people.gameObject);          
     }
 }

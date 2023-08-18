@@ -6,6 +6,7 @@ using cfg.common;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
+using Time = cfg.common.Time;
 
 public class WaitStateNode : IStateNode
 {
@@ -18,6 +19,9 @@ public class WaitStateNode : IStateNode
     private RestaurantEnter _restaurant;
     private RestaurantWindow _restaurantWindow;
 
+    private float _create_people_interval = 5f;
+    private float _cur_create_interval = 0f;
+    private Clocker _clocker;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -27,7 +31,7 @@ public class WaitStateNode : IStateNode
     
     public void OnEnter(object param = null)
     {
-        var _clocker = UniModule.GetModule<Clocker>();
+        _clocker = UniModule.GetModule<Clocker>();
         _clocker.Topic.Subscribe(TimeGoesOn).AddTo(_handles);
         
         var openData = new FlowControlWindowData();
@@ -58,6 +62,7 @@ public class WaitStateNode : IStateNode
         {
             _machine.ChangeState<PrepareStateNode>();            
         }
+        handlePeople();
     }
     
     private void TimeGoesOn(DateTime dateTime)
@@ -66,7 +71,6 @@ public class WaitStateNode : IStateNode
         {
             return;
         }
-        
         handleCharacter(dateTime);
     }
 
@@ -282,6 +286,47 @@ public class WaitStateNode : IStateNode
                 EventModule.Instance.OrderMealTopic.OnNext(info);
                 break;
         }
+    }
+    
+    private void handlePeople()
+    {
+        if (_cur_create_interval <= 0)
+        {
+            var nowHour = _clocker.NowDateTime.Hour;
+            if (nowHour < 6)
+            {
+                nowHour += 24;
+            }
+
+            var count = 0;
+            switch (nowHour)
+            {
+                case 20:
+                    count = 5;
+                    break;
+                case 21:
+                    count = 4;
+                    break;
+                case 22:
+                    count = 3;
+                    break;
+                case 23:
+                    count = 2;
+                    break;
+                case 24:
+                    count = 1;
+                    break;
+                default:
+                    count = 1;
+                    break;
+            }
+            for (int i = 0; i < count; i++)
+            {
+                _restaurant.GeneratePeople();    
+            }
+            _cur_create_interval = (nowHour - 20)*_create_people_interval;
+        }
+        _cur_create_interval -= UnityEngine.Time.deltaTime;
     }
 
     // private void EnterDialogue(RestaurantCharacter character)

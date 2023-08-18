@@ -49,16 +49,16 @@ public partial class PhoneWindow : UIWindow
     {
         base.OnShow(openParam);
         _clocker = UniModule.GetModule<Clocker>();
-        Btn_Home.OnClickAsObservable().Subscribe(_ =>
-        {
-            if (curRunApp != null && curRunApp.IsActive)
-            {
-                curRunApp.OnHide();
-                curRunApp = null;
-                CostTimeOnOpenApp(60);
-                Tran_AppGroup.gameObject.SetActive(true);
-            }
-        }).AddTo(handles);
+        // Btn_Home.OnClickAsObservable().Subscribe(_ =>
+        // {
+        //     if (curRunApp != null && curRunApp.IsActive)
+        //     {
+        //         curRunApp.OnHide();
+        //         curRunApp = null;
+        //         CostTimeOnOpenApp(60);
+        //         Tran_AppGroup.gameObject.SetActive(true);
+        //     }
+        // }).AddTo(handles);
         uiGo.UpdateAsObservable().Subscribe(UpdateApp).AddTo(handles);
         // _clocker.Topic.Subscribe(nowms =>
         // {

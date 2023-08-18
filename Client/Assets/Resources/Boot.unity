@@ -224,6 +224,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8281251422968763579, guid: 3463467647a8ab246a8ff63cb65652a1, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 2560
+      objectReference: {fileID: 0}
+    - target: {fileID: 8281251422968763579, guid: 3463467647a8ab246a8ff63cb65652a1, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1440
+      objectReference: {fileID: 0}
     - target: {fileID: 8281251423442689988, guid: 3463467647a8ab246a8ff63cb65652a1, type: 3}
       propertyPath: m_RootOrder
       value: 2
