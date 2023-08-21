@@ -23,28 +23,35 @@ public class CharacterEnterScene : CharacterBehaviour
     private RestaurantRoleBase _restaurantCharacter;
     
     private Vector3 destPoint;
-    private Vector3 spawnPoint;
-    public CharacterEnterScene(Vector3 spawn,Vector3 dest)
+    // private Vector3 spawnPoint;
+    public CharacterEnterScene(Vector3 dest)
     {
         destPoint = dest;
-        spawnPoint = spawn;
+        // spawnPoint = spawn;
     }
     
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
-        _restaurantCharacter.transform.position = spawnPoint;
+        _restaurantCharacter.Sprite.color = Color.clear;
+        _restaurantCharacter.transform.position = destPoint;
 
-        var dest1 = new Vector3(destPoint.x, 0, _restaurantCharacter.transform.position.z);
-        var dest2 = new Vector3(destPoint.x, 0, destPoint.z);
-        var seq = DOTween.Sequence();
-        seq.Append(_restaurantCharacter.transform.DOMove(dest1, 7f));
-        seq.Append(_restaurantCharacter.transform.DOMove(dest2, 3f));
-        seq.OnComplete(() =>
+        _restaurantCharacter.Sprite.DOColor(Color.white, 3.5f).OnComplete(() =>
         {
             _restaurantCharacter.AddAppearCount();
             _restaurantCharacter.CurBehaviour = new CharacterMakeBubble();
         });
+        // var dest1 = new Vector3(destPoint.x, 0, _restaurantCharacter.transform.position.z);
+        // var dest2 = new Vector3(destPoint.x, 0, destPoint.z);
+        // var seq = DOTween.Sequence();
+        // seq.Append(_restaurantCharacter.transform.DOMove(dest1, 7f));
+        // seq.Append(_restaurantCharacter.transform.DOMove(dest2, 3f));
+        // seq.OnComplete(() =>
+        // {
+        //     _restaurantCharacter.AddAppearCount();
+        //     _restaurantCharacter.CurBehaviour = new CharacterMakeBubble();
+        // });
+
         // seq.Complete();
         // _character.transform.DOMove(dest1, 10f);
         // _character.MoveTo(dest1,10);

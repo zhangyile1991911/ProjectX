@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
 using cfg;
 using cfg.character;
+using cfg.common;
 using cfg.food;
 using cfg.item;
+using Codice.Client.BaseCommands;
 using Cysharp.Text;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SimpleJSON;
 using UnityEngine;
 using Random = System.Random;
@@ -23,6 +22,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 #endif
         initScheduleTable();
         initCharacterBubble();
+        initCrowdTable();
         base.OnCreate(this);
     }
 
@@ -191,6 +191,37 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 
         return null;
     }
-    
 
+    private Dictionary<WeekDay, List<Crowd>> weekDayToCrowd;
+    private void initCrowdTable()
+    {
+        weekDayToCrowd = new Dictionary<WeekDay, List<Crowd>>(7);
+        foreach (var one in _database.TbCword.DataList)
+        {
+            if (!weekDayToCrowd.ContainsKey(one.WeekDay))
+            {
+                weekDayToCrowd[one.WeekDay] = new List<Crowd>(10);
+            }
+            weekDayToCrowd[one.WeekDay].Add(one);
+        }
+    }
+
+    public List<Crowd> WeekdayCrowd(WeekDay day)
+    {
+        return weekDayToCrowd[day];
+    }
+
+    public Crowd WeekDayHourCrowd(WeekDay day,int hourIn24)
+    {
+        var tmp = weekDayToCrowd[day];
+        foreach (var one in tmp)
+        {
+            if (one.Hour == hourIn24)
+            {
+                return one;
+            }
+        }
+
+        return null;
+    }
 }

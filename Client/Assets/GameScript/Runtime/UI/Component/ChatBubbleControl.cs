@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Transactions;
 using UniRx;
-using Random = UnityEngine.Random;
 
 public class SameChatBubble : EqualityComparer<ChatBubble>
 {
@@ -29,7 +26,6 @@ public partial class ChatBubble : UIComponent
     private static long ChatBubbleInstanceId = 0; 
     public RestaurantRoleBase Owner => _owner;
     public int ChatId => _chatId;
-    private DOTweenAnimation _doTweenAnimation;
     private RestaurantRoleBase _owner;
     private int _chatId;
     private Action<ChatBubble> _click;
@@ -44,8 +40,6 @@ public partial class ChatBubble : UIComponent
     
     public override void OnCreate()
     {
-        // var uiManager = UniModule.GetModule<UIManager>();
-        _doTweenAnimation = uiTran.GetComponent<DOTweenAnimation>();
         _btn = uiTran.GetComponent<Button>();
         _btn.OnClickAsObservable().Subscribe(onBubbleClick).AddTo(uiTran);
     }
@@ -53,17 +47,27 @@ public partial class ChatBubble : UIComponent
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
+        if (_tweener != null)
+        {
+            _tweener.timeScale = 1f;    
+        }
     }
 
     public override void OnHide()
     {
         base.OnHide();
+        if (_tweener != null)
+        {
+            _tweener.timeScale = 0f;    
+        }
     }
     
     public override void OnDestroy()
     {
         base.OnDestroy();
-        _doTweenAnimation.DOKill();
+        stopFloating();
+        _owner = null;
+        _click = null;
         GameObject.Destroy(uiGo);
     }
 
@@ -74,35 +78,30 @@ public partial class ChatBubble : UIComponent
 
     private void onBubbleClick(Unit param)
     {
-        if (!_tweener.IsComplete())
-        {
-            _tweener.Pause();
-        }
+        stopFloating();
         _click?.Invoke(this);
+    }
+
+    private void stopFloating()
+    {
+        _tweener?.Pause();
+        _tweener?.Kill();
+        _tweener = null;
     }
     
     public void SetBubbleInfo(int chatId,RestaurantRoleBase origin,Action<ChatBubble> click)
     {
-        //随机生成一个目的地
-        // float x = Random.Range(-870, 870);
-        // float y = Random.Range(0, 440);
-        // _owner = origin;
-        // _chatId = chatId;
-        // _click = click;
-        //
-        // var dataProvider = UniModule.GetModule<DataProviderModule>();
-        
-        //
-        // _tweener = uiRectTran.DOAnchorPos(new Vector2(x, y), 5.0f).OnComplete(()=>
-        // {
-        //     _doTweenAnimation.DOPlay();
-        // });
+        _chatId = chatId;
         var positionToUI = UIManager.Instance.WorldPositionToUI(origin.ChatNode.position);
         var characterObj = origin as RestaurantCharacter;
         var y_offset = (characterObj.SaidBubbleNum - 1) * uiRectTran.sizeDelta.y;
         positionToUI.y += y_offset;
         uiRectTran.anchoredPosition = positionToUI;
         refreshContent(chatId);
+        
+        _tweener = uiRectTran.DOAnchorPosY(positionToUI.y+20f, 2f).SetLoops(-1,LoopType.Yoyo);
+        _owner = origin;
+        _click = click;
     }
 
     private void refreshContent(int chatId)

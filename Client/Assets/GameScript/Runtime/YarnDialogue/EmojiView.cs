@@ -89,7 +89,7 @@ public class EmojiView : DialogueViewBase
         switch (emojiType)
         {
             case "whistle":
-                handle= YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/music.png");
+                handle= YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/happy.png");
                 await handle.ToUniTask();
                 var emojiSp = handle.AssetObject as Sprite;
                 Img_Emoji.sprite = emojiSp;

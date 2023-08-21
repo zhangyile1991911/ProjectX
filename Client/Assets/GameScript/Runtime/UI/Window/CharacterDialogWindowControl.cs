@@ -23,6 +23,7 @@ public partial class CharacterDialogWindow : UIWindow
     public DialogueRunner DialogueRunner => _dialogueRunner;
     private DialogueRunner _dialogueRunner;
     private PortraitLineView _portraitLineView;
+    private ShopKeeperLineView _shopKeeperLineView;
     private CharacterDialogData _openData;
     private ComicView _comicView;
     public override void OnCreate()
@@ -61,13 +62,19 @@ public partial class CharacterDialogWindow : UIWindow
             if (oneView.GetType() == typeof(PortraitLineView))
             {
                 _portraitLineView = oneView as PortraitLineView;
-                break;
+            }
+
+            if (oneView.GetType() == typeof(ShopKeeperLineView))
+            {
+                _shopKeeperLineView = oneView as ShopKeeperLineView;
             }
         }
         
         _dialogueRunner.StartDialogue(_openData.StoryStartNode);
         
-        LBtn_Background.onClick.AddListener(NextLine);
+        // LBtn_Background.onClick.AddListener(NextLine);
+        _portraitLineView.backgroundBtn.onClick.AddListener(NextLine);
+        _shopKeeperLineView.backgroundBtn.onClick.AddListener(NextLine);
         
         // _portraitLineView.autoAdvance = true;
         // _portraitLineView.typewriterEffectSpeed = typewriterEffectSpeed;
@@ -96,8 +103,9 @@ public partial class CharacterDialogWindow : UIWindow
         Debug.Log($"nodeName = ${nodeName}");
     }
 
-    private void NextLine()
+    public void NextLine()
     {
         _portraitLineView.UserRequestedViewAdvancement();
+        _shopKeeperLineView.UserRequestedViewAdvancement();
     }
 }

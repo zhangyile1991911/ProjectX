@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using cfg.character;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using Yarn.Unity;
+using YooAsset;
 
 public abstract class RestaurantRoleBase : MonoBehaviour
 {
@@ -68,6 +70,10 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     protected CharacterBehaviour _behaviour;
     
     private IDisposable halfSecondTImer;
+
+    protected List<AssetOperationHandle> loadResHandlers;
+    
+    
     public virtual void InitCharacter(CharacterBaseInfo info)
     {
         _baseInfo = info;
@@ -78,7 +84,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         {
             CurBehaviour?.Update();
         });
-        
+        loadResHandlers = new List<AssetOperationHandle>(10);
         LoadTableData();
         LoadDataBase();
     }
@@ -89,6 +95,14 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _spriteRenderer.sprite = null;
         _spriteRenderer = null;
         halfSecondTImer?.Dispose();
+        UnLoadDataBase();
+        UnLoadTableData();
+        foreach (var handler in loadResHandlers)
+        {
+            handler.Release();
+            handler.Dispose();
+        }
+        loadResHandlers.Clear();
     }
     
     protected virtual void LoadTableData()
@@ -134,15 +148,30 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     public virtual void ToDark()
     {
         // _spriteRenderer.color = Color.gray;
-        _spriteRenderer.sortingLayerID = 2;
+        _spriteRenderer.sortingOrder -= 0 ;
     }
 
     public virtual void ToLight()
     {
         // _spriteRenderer.color = Color.white;
-        _spriteRenderer.sortingLayerID = 4;
+        _spriteRenderer.sortingOrder = Mathf.Abs(_spriteRenderer.sortingOrder);
     }
 
+    protected async UniTask<GameObject> LoadPrefab(string path)
+    {
+        var go = YooAssets.LoadAssetAsync<GameObject>(path);
+        loadResHandlers.Add(go);
+        await go.ToUniTask(this);
+        return go.AssetObject as GameObject;
+    }
+
+    protected async UniTask<Sprite> LoadSprite(string path)
+    {
+        var go = YooAssets.LoadAssetAsync<Sprite>(path);
+        loadResHandlers.Add(go);
+        await go.ToUniTask(this);
+        return go.AssetObject as Sprite;
+    }
     // private void Update()
     // {
     //     CurBehaviour?.Update();

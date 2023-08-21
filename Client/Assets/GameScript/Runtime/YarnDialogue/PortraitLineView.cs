@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Threading;
+using Cysharp.Text;
 using TMPro;
 using UnityEngine;
 using Yarn.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEngine.UI;
 using Yarn.Markup;
 
 public static class EffectsAsync
@@ -73,6 +75,22 @@ public static class EffectsAsync
 
         text.maxVisibleCharacters = characterCount;
     }
+
+    public static async UniTask ShowFrameBounce(RectTransform rectTransform,float to,float time)
+    {
+        rectTransform.DOScale(to, time).SetEase(Ease.OutBack);
+        await UniTask.Delay(TimeSpan.FromSeconds(time*0.4f));
+    }
+
+    public static async UniTask PrepareNextWord(RectTransform rectTransform,TextMeshProUGUI  lineText,float to,float time)
+    {
+        rectTransform.DOScale(to, time).SetEase(Ease.InBack);
+        var pre = time * 0.4f;
+        var remain = time - pre;
+        await UniTask.Delay(TimeSpan.FromSeconds(time * 0.4f));
+        lineText.text = null;
+        await UniTask.Delay(TimeSpan.FromSeconds(remain));
+    }
 }
 
 public class PortraitLineView : DialogueViewBase
@@ -83,8 +101,8 @@ public class PortraitLineView : DialogueViewBase
     [SerializeField]
     internal TextMeshProUGUI lineText = null;
 
-    // [SerializeField]
-    // internal ButtonLongPress backgroundBtn = null;
+    [SerializeField]
+    internal ButtonLongPress backgroundBtn = null;
 
     [SerializeField]
     internal bool useFadeEffect = true;
@@ -113,11 +131,14 @@ public class PortraitLineView : DialogueViewBase
     
     [SerializeField]
     internal bool autoAdvance = false;
-    
+
+    [SerializeField]
+    internal bool customer = true;
     //用来保存当前正在显示的对话内容
     LocalizedLine currentLine = null;
     private CancellationTokenSource fadeEffectCts;
     private CancellationTokenSource typewriteCts;
+    // private CancellationTokenSource frameEffectCts;
 
     public Action<string> DialogueLineComplete;
     public Action<string> DialogueLineStar;
@@ -126,12 +147,16 @@ public class PortraitLineView : DialogueViewBase
     //是否在演出打字机效果
     private bool isTyping = false;
     private RectTransform _rectTransform;
-    
+    private RectTransform _backgroundRectTransform;
+    private ContentSizeFitter _contentSizeFitter;
+    private LocalizedLine _previousLine;
     private void Awake()
     {
         canvasGroup.alpha = 0;
         canvasGroup.blocksRaycasts = false;
         _rectTransform = GetComponent<RectTransform>();
+        _backgroundRectTransform = backgroundBtn.GetComponent<RectTransform>();
+        _contentSizeFitter = lineText.GetComponent<ContentSizeFitter>();
     }
 
     private void HandleMarkup(MarkupParseResult attributes)
@@ -144,7 +169,6 @@ public class PortraitLineView : DialogueViewBase
         {
             DialogueAnimation(dialogue.Properties);    
         }
-        
     }
 
     private void MoodAnimation(IReadOnlyDictionary<string,MarkupValue> properties)
@@ -177,15 +201,41 @@ public class PortraitLineView : DialogueViewBase
             lineDoingTween.Restart();
         }
     }
-    
+
+    private bool isCustomer;
     public override async void RunLine(LocalizedLine dialogueLine,Action onDialogueLineFinished)
     {
         // cts?.Dispose();
         // cts = new CancellationTokenSource();
-        
-        HandleMarkup(dialogueLine.Text);
-        await RunLineInternal(dialogueLine,onDialogueLineFinished);
-        
+        isCustomer = !dialogueLine.CharacterName.Contains("老板");
+        canvasGroup.alpha = isCustomer ? 1 : 0;
+        if (isCustomer)
+        {
+            canvasGroup.alpha = 1;
+            HandleMarkup(dialogueLine.Text);
+            AdjustDialoguePosition(dialogueLine.CharacterName);
+            await RunLineInternal(dialogueLine,onDialogueLineFinished);        
+        }
+    }
+
+    private void AdjustDialoguePosition(string characterName)
+    {
+        var characterObj = CharacterMgr.Instance.GetCharacterByName(characterName);
+        var positionToUI= UIManager.Instance.WorldPositionToUI(characterObj.ChatNode.position);
+        switch (characterObj.SeatOccupy)
+        {
+            case 0:
+            case 1:
+                _backgroundRectTransform.pivot = new Vector2(0.25f, 0f);
+                _backgroundRectTransform.anchoredPosition = Vector2.zero;
+                break;
+            case 2:
+            case 3:
+                _backgroundRectTransform.pivot = new Vector2(0.75f, 0f);
+                _backgroundRectTransform.anchoredPosition = Vector2.zero;
+                break;
+        }
+        _rectTransform.anchoredPosition = positionToUI;
     }
     
     private async UniTask RunLineInternal(LocalizedLine dialogueLine, Action onDialogueLineFinished)
@@ -223,6 +273,7 @@ public class PortraitLineView : DialogueViewBase
         Debug.Log("------RunLineInternal------");
     }
 
+    private const int MaxCharacterInLine = 10;
     private async UniTask PresentLine(LocalizedLine dialogueLine)
     {
         lineText.gameObject.SetActive(true);
@@ -237,25 +288,59 @@ public class PortraitLineView : DialogueViewBase
             lineText.maxVisibleCharacters = int.MaxValue;
         }
 
-        lineText.text = dialogueLine.TextWithoutCharacterName.Text;
-
-        if (useFadeEffect)
-        {//演出渐入效果
-            Debug.Log($"开始演出渐入效果");
-            fadeEffectCts = new ();
-            await EffectsAsync.FadeAlpha(canvasGroup, 0, 1, fadeInTime,fadeEffectCts);
-            Debug.Log($"结束演出渐入效果");
+        if (dialogueLine.TextWithoutCharacterName.Text.Length >= MaxCharacterInLine)
+        {
+            _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+            Debug.Log($"lineText.rectTransform.sizeDelta = {lineText.rectTransform.sizeDelta}");
+            Debug.Log($"lineText.rectTransform.rect = {lineText.rectTransform.rect}");
+            var oldSizeDelta = lineText.rectTransform.sizeDelta;
+            oldSizeDelta.x = MaxCharacterInLine * lineText.fontSize;
+            lineText.rectTransform.sizeDelta = oldSizeDelta;
         }
+        else
+        {
+            _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        }
+        // Debug.Log($"Text.Length = {dialogueLine.TextWithoutCharacterName.Text.Length}");
         
-
+        lineText.text = dialogueLine.TextWithoutCharacterName.Text;
+        await UniTask.NextFrame();
+        
+        //调整背景图大小
+        var sizeDelta = lineText.rectTransform.sizeDelta;
+        // sizeDelta.x *= 1.3f;
+        // sizeDelta.y *= 1.5f;
+        sizeDelta.x += 30f;
+        sizeDelta.y += 30f;
+        _backgroundRectTransform.sizeDelta = sizeDelta;
+        
+        // if (useFadeEffect)
+        // {//演出渐入效果
+        //     Debug.Log($"开始演出渐入效果");
+        //     fadeEffectCts = new ();
+        //     await EffectsAsync.FadeAlpha(canvasGroup, 0, 0.5f, fadeInTime,fadeEffectCts);
+        //     Debug.Log($"结束演出渐入效果");
+        // }
+        
+        canvasGroup.alpha = 1f;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+        
+        
+        await EffectsAsync.ShowFrameBounce(_backgroundRectTransform,1f,0.8f);
+        
+        Debug.Log($"PortraitLineView::PresentLine lineText.sizeDelta = {lineText.rectTransform.sizeDelta} ");
+        Debug.Log($"_backgroundRectTransform.sizeDelta = {sizeDelta} ");
+        
+        
         if (useTypewriterEffect)
         {
             Debug.Log($"开始演出打字机效果");
             isTyping = true;
             // setting the canvas all back to its defaults because if we didn't also fade we don't have anything visible
-            canvasGroup.alpha = 1f;
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+            // canvasGroup.alpha = 1f;
+            // canvasGroup.interactable = true;
+            // canvasGroup.blocksRaycasts = true;
             
             typewriteCts = new();
             // Debug.Log($"演出打字机效果");
@@ -281,12 +366,15 @@ public class PortraitLineView : DialogueViewBase
         var interactable = canvasGroup.interactable;
         canvasGroup.interactable = false;
         
-        if (useFadeEffect)
-        {
-            Debug.Log($"开始DismissLineInternal当前文字展示渐出效果");
-            fadeEffectCts = new ();
-            await EffectsAsync.FadeAlpha(canvasGroup, 1, 0, fadeOutTime,fadeEffectCts);
-        }
+        // if (useFadeEffect)
+        // {
+        //     Debug.Log($"开始DismissLineInternal当前文字展示渐出效果");
+        //     fadeEffectCts = new ();
+        //     await EffectsAsync.FadeAlpha(canvasGroup, 1, 0, fadeOutTime,fadeEffectCts);
+        // }
+
+        await EffectsAsync.PrepareNextWord(_backgroundRectTransform, lineText,0.3f, 0.5f);
+        
         Debug.Log($"结束DismissLineInternal当前文字展示渐出效果");
 
         lineDoingTween?.Pause();
@@ -294,15 +382,23 @@ public class PortraitLineView : DialogueViewBase
         dialogueWave?.Pause();
         dialogueWave = null;
 
-        canvasGroup.alpha = 0;
-        canvasGroup.blocksRaycasts = false;
-        canvasGroup.interactable = interactable;
+        // canvasGroup.alpha = 0;
+        // canvasGroup.blocksRaycasts = false;
+        // canvasGroup.interactable = interactable;
+        
         onDismissComplete();
     }
 
     public override void InterruptLine(LocalizedLine dialogueLine, Action onDialogueLineFinished)
     {
-        Debug.Log($"######当前文字打断######");
+        if (!isCustomer)
+        {
+            onDialogueLineFinished();
+            return;
+        }
+            
+        Debug.Log($"######PortraitLineView当前文字打断######");
+        
         currentLine = dialogueLine;
 
         lineText.gameObject.SetActive(true);
@@ -321,17 +417,23 @@ public class PortraitLineView : DialogueViewBase
             return;
         }
 
-        if (fadeEffectCts.IsCancellationRequested)
+        if (fadeEffectCts is {IsCancellationRequested: true})
         {
             fadeEffectCts.Cancel();
             fadeEffectCts = null;    
         }
 
-        if (typewriteCts.IsCancellationRequested)
+        if (typewriteCts is {IsCancellationRequested: true})
         {
             typewriteCts.Cancel();
             typewriteCts = null;    
         }
+
+        // if (frameEffectCts.IsCancellationRequested)
+        // {
+        //     frameEffectCts.Cancel();
+        //     frameEffectCts = null;
+        // }
 
         onDialogueLineFinished();
         Debug.Log($"-----当前文字打断-----");
@@ -341,15 +443,15 @@ public class PortraitLineView : DialogueViewBase
     {
         if (currentLine == null)
             return;
-        Debug.Log("用户前进 UserRequestedViewAdvancement()");
+        Debug.Log("用户前进 PortraitLineView UserRequestedViewAdvancement()");
         
-        if (fadeEffectCts.IsCancellationRequested)
+        if (fadeEffectCts is { IsCancellationRequested: true })
         {
             fadeEffectCts.Cancel();
             fadeEffectCts = null;    
         }
 
-        if (typewriteCts.IsCancellationRequested)
+        if (typewriteCts is {IsCancellationRequested: true})
         {
             typewriteCts.Cancel();
             typewriteCts = null;    

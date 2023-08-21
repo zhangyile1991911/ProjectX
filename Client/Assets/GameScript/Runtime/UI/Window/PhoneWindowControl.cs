@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -17,7 +18,16 @@ public partial class PhoneWindow : UIWindow
     private UIManager _uiManager;
     private List<BaseAppWidget> _appList;
     // private NewsAppWidget NewsApp;
-    private UIComponent curRunApp;
+    private UIComponent CurRunApp
+    {
+        get => _curRunApp;
+        set
+        {
+            _curRunApp = value;
+            XBtn_home.gameObject.SetActive(_curRunApp != null);
+        }
+    }
+    private UIComponent _curRunApp;
     public override async void OnCreate()
     {
         _appIconList = new List<PhoneAppWidget>(4);
@@ -49,16 +59,7 @@ public partial class PhoneWindow : UIWindow
     {
         base.OnShow(openParam);
         _clocker = UniModule.GetModule<Clocker>();
-        // Btn_Home.OnClickAsObservable().Subscribe(_ =>
-        // {
-        //     if (curRunApp != null && curRunApp.IsActive)
-        //     {
-        //         curRunApp.OnHide();
-        //         curRunApp = null;
-        //         CostTimeOnOpenApp(60);
-        //         Tran_AppGroup.gameObject.SetActive(true);
-        //     }
-        // }).AddTo(handles);
+        XBtn_home.OnClick.Subscribe(clickHome).AddTo(handles);
         uiGo.UpdateAsObservable().Subscribe(UpdateApp).AddTo(handles);
         // _clocker.Topic.Subscribe(nowms =>
         // {
@@ -76,10 +77,22 @@ public partial class PhoneWindow : UIWindow
         
     }
 
+    private void clickHome(PointerEventData param)
+    {
+        if (CurRunApp != null && CurRunApp.IsActive)
+        {
+            CurRunApp.OnHide();
+            CurRunApp = null;
+            CostTimeOnOpenApp(60);
+            Tran_AppGroup.gameObject.SetActive(true);
+        }
+    }
+    
+
     private void UpdateApp(Unit param)
     {
         // Debug.Log("UpdateApp");
-        curRunApp?.OnUpdate();
+        CurRunApp?.OnUpdate();
     }
     
     private async void OnClickNewsApp()
@@ -100,7 +113,7 @@ public partial class PhoneWindow : UIWindow
         }
         Tran_AppGroup.gameObject.SetActive(false);
         CostTimeOnOpenApp(costSecond);
-        curRunApp = newsApp;
+        CurRunApp = newsApp;
     }
 
     private async void OnClickAirPlane()
@@ -124,7 +137,7 @@ public partial class PhoneWindow : UIWindow
         CostTimeOnOpenApp(costSecond);
         
         
-        curRunApp = airPlaneApp;
+        CurRunApp = airPlaneApp;
     }
 
     private void CostTimeOnOpenApp(int costSecond)

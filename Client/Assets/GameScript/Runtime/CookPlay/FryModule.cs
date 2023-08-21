@@ -84,7 +84,7 @@ public class FryModule : CookModule
             for (int i = 0; i < num; i++)
             {
                 var go = Instantiate(handle.AssetObject as GameObject,pan.transform);
-                Vector3 pos = Random.insideUnitCircle*0.4f;
+                Vector3 pos = Random.insideUnitCircle*3f;
                 pos.z = 0f;
                 go.transform.localPosition = pos;
                 var fs = go.GetComponent<FoodSimulator>();
@@ -165,7 +165,9 @@ public class FryModule : CookModule
         // Debug.Log($"distance = {distance} add = {add}");
         // var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
         var sub = lowerCurve.Evaluate(pan.velocity)*Time.deltaTime;
-        // Debug.Log($"velocity = {pan.velocity} sub = {sub}");
+        
+        // Debug.Log($"velocity = {pan.velocity} add = {add} sub = {sub}");
+        
         var tmp = _curTemperature.Value;
         tmp += (add+sub) * _currentRecipeDifficulty.maxTemperature;
         // Debug.Log($"_curTemperature.Value = {_curTemperature.Value}");      
@@ -191,7 +193,7 @@ public class FryModule : CookModule
         temp += _currentRecipeDifficulty.addValue * Time.deltaTime;
         temp = Mathf.Clamp(temp, 0, _currentRecipeDifficulty.finishValue);
         _curProgress.Value = temp;
-        Debug.Log($"HeatFood add value = {_currentRecipeDifficulty.addValue} progress {_curProgress.Value}");
+        // Debug.Log($"HeatFood add value = {_currentRecipeDifficulty.addValue} progress {_curProgress.Value}");
         //判断是否结束
         if (_curProgress.Value >= _currentRecipeDifficulty.finishValue)
         {

@@ -25,6 +25,8 @@ public class RestaurantEnter : MonoBehaviour
     public Transform PeopleGroup;
     public Transform[] PeopleSpawns;
 
+    public Transform[] ShopKeeperStand;
+    
     public CinemachineVirtualCamera RestaurantMainCamera;
     public CinemachineVirtualCamera KitchenCamera;
     
@@ -46,7 +48,6 @@ public class RestaurantEnter : MonoBehaviour
     private Dictionary<cookTools, GameObject> _cookPlayDict;
 
     private ObjectPool<WalkingPeople> _peoplePool;
-
     private List<WalkingPeople> _activedPeople;
     // private ObjectPool<>
     void Start()
@@ -115,6 +116,10 @@ public class RestaurantEnter : MonoBehaviour
                 // }
             }
         }
+        //创建老板
+        var characterObj = await CharacterMgr.Instance.CreateCharacter(10004);
+        characterObj.gameObject.SetActive(false);
+        
     }
     
     private void Update()
@@ -344,9 +349,9 @@ public class RestaurantEnter : MonoBehaviour
     public void GeneratePeople()
     {
         var one = _peoplePool.Get();
-        int val = Random.Range(0, 2);
+        int val = Random.Range(0, 10);
         var peopleId = Random.Range(1,9);
-        if (val == 0)
+        if (val < 5)
         {
             one.Config(peopleId,PeopleSpawns[0].position,PeopleSpawns[1].position);
         }
@@ -354,11 +359,12 @@ public class RestaurantEnter : MonoBehaviour
         {
             one.Config(peopleId,PeopleSpawns[1].position,PeopleSpawns[0].position);    
         }
-        Debug.Log($"_peoplePool.CountAll = {_peoplePool.CountAll} _peoplePool.CountActive = {_peoplePool.CountActive} _peoplePool.CountInactive = {_peoplePool.CountInactive} ");
+        // Debug.Log($"_peoplePool.CountAll = {_peoplePool.CountAll} _peoplePool.CountActive = {_peoplePool.CountActive} _peoplePool.CountInactive = {_peoplePool.CountInactive} ");
     }
 
     public void FrozenAllPeople()
     {
+        if (_activedPeople == null) return;
         foreach (var one in _activedPeople)
         {
             one.PauseWalk();
@@ -367,6 +373,7 @@ public class RestaurantEnter : MonoBehaviour
 
     public void ResumeAllPeople()
     {
+        if (_activedPeople == null) return;
         foreach (var one in _activedPeople)
         {
             one.ResumeWalk();
@@ -412,5 +419,32 @@ public class RestaurantEnter : MonoBehaviour
     {
         people.Release();
         Destroy(people.gameObject);          
+    }
+    
+    
+    public void ShowAndAdjustShopKeeperStand(RestaurantCharacter talker)
+    {
+        var shopKeeper = CharacterMgr.Instance.GetCharacterById(10004);
+        var skTrans = shopKeeper.transform;
+        switch (talker.SeatOccupy)
+        {
+            case 0:
+            case 1:
+                skTrans.position = ShopKeeperStand[0].position;
+                skTrans.localScale = Vector3.one;
+                break;
+            case 2:
+            case 3:
+                skTrans.position = ShopKeeperStand[1].position;
+                skTrans.localScale = new Vector3(-1,1,1);
+                break;
+        }
+        shopKeeper.gameObject.SetActive(true);
+    }
+
+    public void HideShopKeeper()
+    {
+        var shopKeeper = CharacterMgr.Instance.GetCharacterById(10004);
+        shopKeeper.gameObject.SetActive(false);
     }
 }

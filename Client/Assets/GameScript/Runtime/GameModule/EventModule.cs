@@ -20,10 +20,10 @@ public class EventModule : SingletonModule<EventModule>
     private Subject<RestaurantRoleBase> _characterLeave;
 
     //发送订单
-    public IObserver<OrderMealInfo> OrderMealTopic => _orderMeal;
-    public IObservable<OrderMealInfo> OrderMealSub => _orderMeal;
+    // public IObserver<OrderMealInfo> OrderMealTopic => _orderMeal;
+    // public IObservable<OrderMealInfo> OrderMealSub => _orderMeal;
     
-    private Subject<OrderMealInfo> _orderMeal;
+    // private Subject<OrderMealInfo> _orderMeal;
 
     public IObserver<PickFoodAndTools> StartCookTopic => _startCook;
     public IObservable<PickFoodAndTools> StartCookSub => _startCook;
@@ -54,7 +54,7 @@ public class EventModule : SingletonModule<EventModule>
     public override void OnCreate(object createParam)
     {
         _charBubble = new Subject<CharacterSaidInfo>();
-        _orderMeal = new Subject<OrderMealInfo>();
+        // _orderMeal = new Subject<OrderMealInfo>();
         _startCook = new Subject<PickFoodAndTools>();
         // _cookGameStart = new Subject<bool>();
         // _exitKitchen = new Subject<Unit>();
@@ -74,7 +74,7 @@ public class EventModule : SingletonModule<EventModule>
     {
         base.OnDestroy();
         _charBubble.OnCompleted();
-        _orderMeal.OnCompleted();
+        // _orderMeal.OnCompleted();
         _startCook.OnCompleted();
         // _cookGameStart.OnCompleted();
         // _exitKitchen.OnCompleted();

@@ -33,7 +33,7 @@ public class FoodSimulator : MonoBehaviour
 
     public void Begin(CompositeDisposable handler)
     {
-        this.FixedUpdateAsObservable().Subscribe(Simulator).AddTo(handler);
+        // this.FixedUpdateAsObservable().Subscribe(Simulator).AddTo(handler);
         this.UpdateAsObservable().Subscribe(Move).AddTo(handler);
     }
 
@@ -43,7 +43,7 @@ public class FoodSimulator : MonoBehaviour
         _bounds = _circleCollider.bounds;
     }
 
-    private void Simulator(Unit param)
+    public void Simulator(Unit param)
     {
         _velocity -= (panSimulator.friction+data.friction)*Time.fixedDeltaTime;
         // _previousCircleDirection = transform.localPosition.normalized;
@@ -53,7 +53,9 @@ public class FoodSimulator : MonoBehaviour
     {
         if (_velocity >= 0)
         {
+            // Debug.Log($"{name} before Move transform.localPosition = {transform.localPosition}");
             transform.localPosition += _direction * Time.deltaTime;
+            // Debug.Log($"{name} after Move transform.localPosition = {transform.localPosition}");
         }
     }
     
@@ -65,7 +67,7 @@ public class FoodSimulator : MonoBehaviour
         float dotval = Vector2.Dot(_direction, dir);
         _velocity += vel * dotval;
         _velocity = Mathf.Clamp(_velocity,0,panSimulator.maxVelocity);
-
+        // Debug.Log($"{name} _velocity = {_velocity}");
         _direction *= _velocity;
     }
 }

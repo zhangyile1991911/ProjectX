@@ -150,6 +150,7 @@ public class PanSimulator : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !_isDrag)
         {
+            // Debug.Log("点击了平底锅手柄");
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             // gizomsRay = ray;
             // RaycastHit hit;
@@ -165,6 +166,7 @@ public class PanSimulator : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            // Debug.Log("鼠标抬起");
             _isDrag = false;
         }
 
@@ -177,6 +179,11 @@ public class PanSimulator : MonoBehaviour
 
     private void UpdatePan(Unit param)
     {
+        foreach (var one in _foodList)
+        {
+            one.Simulator(Unit.Default);
+        }
+
         DragHandle();
 
         ClearQuadtree();
@@ -185,10 +192,11 @@ public class PanSimulator : MonoBehaviour
         float distance = Vector2.Distance(position, _previousPosition);
 
         _velocity = distance / Time.fixedDeltaTime;
-        Debug.Log($"distance = {distance} Time.fixedDeltaTime = {Time.fixedDeltaTime} _velocity = {_velocity}");
+        // Debug.Log($"distance = {distance} Time.fixedDeltaTime = {Time.fixedDeltaTime} _velocity = {_velocity}");
         // _velocity = distance;
         _velocity = Mathf.Clamp(_velocity, 0f, maxVelocity);
-
+        // Debug.Log($"pan _velocity = {_velocity}");
+        
         _panMoveDir = (position - _previousPosition).normalized;
 
         _previousPosition = position;
@@ -196,7 +204,7 @@ public class PanSimulator : MonoBehaviour
         foreach (var one in _foodList)
         {
             distance = Vector2.Distance(Vector2.zero, one.transform.localPosition);
-            if (distance >= 0.4f)
+            if (distance >= /*0.4f*/4f-one.Radius/2f)
             {
                 one.AddVelocityAndDirection(edgeBounce, one.transform.localPosition.normalized * -1f);
             }

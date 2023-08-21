@@ -48,5 +48,17 @@
     "unlike_flavour": [],
     "main_dialogue": "",
     "comment_dialogue": ""
+  },
+  {
+    "id": 10004,
+    "name": "老板",
+    "desc": "店主",
+    "soul": 0,
+    "res_path": "Assets/GameRes/Prefabs/NPC/ShopKeeper.prefab",
+    "portrait_path": "",
+    "like_flavour": [],
+    "unlike_flavour": [],
+    "main_dialogue": "",
+    "comment_dialogue": ""
   }
 ]

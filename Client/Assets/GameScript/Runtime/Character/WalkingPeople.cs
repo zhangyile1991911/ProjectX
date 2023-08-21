@@ -67,7 +67,7 @@ public class WalkingPeople : MonoBehaviour
     private float JumpHeight = 0.3f;
     void walk(Vector3 start,Vector3 destination)
     {
-        var delay = Random.Range(0, 10.0f);
+        var delay = 3f + Random.Range(0, 10.0f);
         curPos = start;
         transform.position = curPos;
         moveHanlder = DOTween.To(() => start.x,updateMove, destination.x, 35f).SetDelay(delay).OnComplete(moveComplete).SetAutoKill(true);

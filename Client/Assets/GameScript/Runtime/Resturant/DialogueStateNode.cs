@@ -61,16 +61,22 @@ public class DialogueStateNode : IStateNode
         
         _clocker = UniModule.GetModule<Clocker>();
         _restaurantEnter.ShowCurtain();
+        _restaurantEnter.ShowAndAdjustShopKeeperStand(_restaurantCharacter);
     }
 
     public void OnUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _dialogWindow.NextLine();    
+        }
     }
 
     public void OnExit()
     {
         _restaurantEnter.NoFocusOnCharacter();
         _restaurantEnter.HideCurtain();
+        _restaurantEnter.HideShopKeeper();
         
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderMeal");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("OrderDrink");
@@ -106,7 +112,7 @@ public class DialogueStateNode : IStateNode
             OrderType = OrderType.SpecificOrder,
             CharacterId = _restaurantCharacter.CharacterId
         };
-        EventModule.Instance.OrderMealTopic.OnNext(info);
+        // EventModule.Instance.OrderMealTopic.OnNext(info);
         _restaurantCharacter.CurOrderInfo = info;
         // _restaurantCharacter.DialogueOrder = menuId;
     }
@@ -133,7 +139,7 @@ public class DialogueStateNode : IStateNode
             info.flavor.Add((flavorTag)flavorId);
         }
         _restaurantCharacter.CurOrderInfo = info;
-        EventModule.Instance.OrderMealTopic.OnNext(info);
+        // EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 
     private void omakase(string desc)
@@ -152,7 +158,7 @@ public class DialogueStateNode : IStateNode
             info.flavor.Add((flavorTag)flavorId);
         }
         _restaurantCharacter.CurOrderInfo = info;
-        EventModule.Instance.OrderMealTopic.OnNext(info);
+        // EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 
     private void AddNPCFriendlyValue(int val)

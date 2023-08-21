@@ -12,12 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd56ed8f75e9b9e42bc75379aca1e50f, type: 3}
   m_Name: Middle
   m_EditorClassIdentifier: 
-  recipeId: 0
-  recipeName: "\u4E2D\u7EA7\u83DC\u54C1"
+  Level: 0
   duration: 15
   temperatureArea: {x: 0.4, y: 0.8}
-  maxTemperature: 5
+  maxTemperature: 70
   finishValue: 10
   addValue: 1.2
-  rawFoodDictionary: {fileID: 11400000, guid: e0b941a818a707c428a175fbe9c7632a, type: 2}
-  qteDict: {fileID: 11400000, guid: 0324495f72ab1dc41ad9f7405203cbde, type: 2}

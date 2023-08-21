@@ -17,6 +17,7 @@ public sealed partial class Tables
     public character.TbBaseInfo TbBaseInfo {get; }
     public character.TbSchedule TbSchedule {get; }
     public character.TbCharacterBubble TbCharacterBubble {get; }
+    public character.TbCword TbCword {get; }
     public food.TbMaterial TbMaterial {get; }
     public food.TbMenuInfo TbMenuInfo {get; }
     public TbItem TbItem {get; }
@@ -34,6 +35,8 @@ public sealed partial class Tables
         tables.Add("character.TbSchedule", TbSchedule);
         TbCharacterBubble = new character.TbCharacterBubble(loader("character_tbcharacterbubble")); 
         tables.Add("character.TbCharacterBubble", TbCharacterBubble);
+        TbCword = new character.TbCword(loader("character_tbcword")); 
+        tables.Add("character.TbCword", TbCword);
         TbMaterial = new food.TbMaterial(loader("food_tbmaterial")); 
         tables.Add("food.TbMaterial", TbMaterial);
         TbMenuInfo = new food.TbMenuInfo(loader("food_tbmenuinfo")); 
@@ -53,6 +56,7 @@ public sealed partial class Tables
         TbBaseInfo.Resolve(tables); 
         TbSchedule.Resolve(tables); 
         TbCharacterBubble.Resolve(tables); 
+        TbCword.Resolve(tables); 
         TbMaterial.Resolve(tables); 
         TbMenuInfo.Resolve(tables); 
         TbItem.Resolve(tables); 
@@ -68,6 +72,7 @@ public sealed partial class Tables
         TbBaseInfo.TranslateText(translator); 
         TbSchedule.TranslateText(translator); 
         TbCharacterBubble.TranslateText(translator); 
+        TbCword.TranslateText(translator); 
         TbMaterial.TranslateText(translator); 
         TbMenuInfo.TranslateText(translator); 
         TbItem.TranslateText(translator); 

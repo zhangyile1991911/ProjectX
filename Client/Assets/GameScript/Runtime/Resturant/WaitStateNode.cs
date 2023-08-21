@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using cfg.character;
 using cfg.common;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -13,15 +14,14 @@ public class WaitStateNode : IStateNode
     private StateMachine _machine;
     private CompositeDisposable _handles;
     
-    // private IDisposable _clockTopic;
-    // private IDisposable _fiveSecondTimer;
-    
     private RestaurantEnter _restaurant;
     private RestaurantWindow _restaurantWindow;
 
     private float _create_people_interval = 5f;
     private float _cur_create_interval = 0f;
     private Clocker _clocker;
+
+    private Crowd _crowdSchedule;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -37,7 +37,7 @@ public class WaitStateNode : IStateNode
         var openData = new FlowControlWindowData();
         openData.StateMachine = _machine;
         UIManager.Instance.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, openData);
-        UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
+        // UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
         // EventModule.Instance.CloseRestaurantSub.Subscribe(CloseRestaurant).AddTo(_handles);
@@ -47,6 +47,11 @@ public class WaitStateNode : IStateNode
         }).AddTo(_handles);
         
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
+        _crowdSchedule = DataProviderModule.Instance.WeekDayHourCrowd(
+            (WeekDay)_clocker.NowDateTime.DayOfWeek,
+            _clocker.NowDateTime.Hour);
+        
+        _restaurant.ResumeAllPeople();
     }
 
     public void OnExit()
@@ -54,6 +59,8 @@ public class WaitStateNode : IStateNode
         _handles?.Clear();
         UIManager.Instance.CloseUI(UIEnum.RestaurantWindow);
         UIManager.Instance.CloseUI(UIEnum.PhoneWindow);
+        
+        _restaurant.FrozenAllPeople();
     }
     
     public void OnUpdate()
@@ -71,6 +78,9 @@ public class WaitStateNode : IStateNode
         {
             return;
         }
+        _crowdSchedule = DataProviderModule.Instance.WeekDayHourCrowd(
+            (WeekDay)_clocker.NowDateTime.DayOfWeek,
+            _clocker.NowDateTime.Hour);
         handleCharacter(dateTime);
     }
 
@@ -115,8 +125,8 @@ public class WaitStateNode : IStateNode
         Debug.Log($"await CharacterMgr.Instance.CreateCharacter");
         var seatPoint = _restaurant.CharacterTakeSeat(character);
         
-        var spawnPoint = _restaurant.RandSpawnPoint();
-        character.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
+        // var spawnPoint = _restaurant.RandSpawnPoint();
+        character.CurBehaviour = new CharacterEnterScene(seatPoint);
       
         UserInfoModule.Instance.AddCharacterArrivedAndWaiting(CharacterId);
         //特别NPC
@@ -246,23 +256,13 @@ public class WaitStateNode : IStateNode
         var characterObj = CharacterMgr.Instance.GetCharacterById(info.CharacterId);
         if (TBbubble != null && characterObj != null)
         {
+            Debug.Log($"GenerateChatBubble chatId = {info.ChatId} characterId = {info.CharacterId}");
             _restaurantWindow.GenerateChatBubble(info.ChatId,characterObj,OnClickBubble);
         }
     }
 
-    // private void CloseRestaurant(Unit param)
-    // {
-    //     Debug.Log("WaitStateNode CloseRestaurant");
-    //     _machine.ChangeState<StatementStateNode>(null);
-    // }
-
     private void OnClickBubble(ChatBubble bubble)
     {
-        // var dm = UniModule.GetModule<DialogueModule>();
-        // dm.CurentDialogueRestaurantCharacter = bubble.Owner;
-
-        _restaurantWindow.RemoveChatBubble(bubble);
-        
         var tbbubble = DataProviderModule.Instance.GetCharacterBubble(bubble.ChatId);
         var read = UserInfoModule.Instance.HaveReadDialogueId(bubble.ChatId);
         if (read) return;
@@ -283,59 +283,25 @@ public class WaitStateNode : IStateNode
                     CharacterId = bubble.Owner.CharacterId,
                     
                 };
-                EventModule.Instance.OrderMealTopic.OnNext(info);
+                var rc = bubble.Owner as RestaurantCharacter;
+                rc.CurOrderInfo = info;
+                // EventModule.Instance.OrderMealTopic.OnNext(info);
                 break;
         }
+        _restaurantWindow.RemoveChatBubble(bubble);
     }
     
     private void handlePeople()
     {
         if (_cur_create_interval <= 0)
         {
-            var nowHour = _clocker.NowDateTime.Hour;
-            if (nowHour < 6)
-            {
-                nowHour += 24;
-            }
-
-            var count = 0;
-            switch (nowHour)
-            {
-                case 20:
-                    count = 5;
-                    break;
-                case 21:
-                    count = 4;
-                    break;
-                case 22:
-                    count = 3;
-                    break;
-                case 23:
-                    count = 2;
-                    break;
-                case 24:
-                    count = 1;
-                    break;
-                default:
-                    count = 1;
-                    break;
-            }
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < _crowdSchedule.PeopleNum; i++)
             {
                 _restaurant.GeneratePeople();    
             }
-            _cur_create_interval = (nowHour - 20)*_create_people_interval;
+            _cur_create_interval = _crowdSchedule.Interval;
         }
         _cur_create_interval -= UnityEngine.Time.deltaTime;
     }
-
-    // private void EnterDialogue(RestaurantCharacter character)
-    // {
-    //     var chatId = character.GenerateChatId();
-    //     
-    //     var stateData = new DialogueStateNodeData();
-    //     stateData.ChatId = chatId;
-    //     stateData.ChatRestaurantCharacter = character;
-    //     _machine.ChangeState<DialogueStateNode>(stateData);
-    // }
+    
 }

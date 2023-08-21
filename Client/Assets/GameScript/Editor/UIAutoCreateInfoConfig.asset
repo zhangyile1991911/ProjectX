@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: UIAutoCreateInfoConfig
   m_EditorClassIdentifier: 
   uiInfoList:
+  - prefixName: XBtn_
+    typeName: XButton
   - prefixName: Btn_
     typeName: Button
   - prefixName: Tran_

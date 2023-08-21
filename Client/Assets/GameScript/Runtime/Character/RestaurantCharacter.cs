@@ -70,13 +70,23 @@ public class RestaurantCharacter : RestaurantRoleBase
     //     set => curOrderMenuId = value;
     // }
 
-    public OrderMealInfo CurOrderInfo;
-    
+    public OrderMealInfo CurOrderInfo
+    {
+        get => _orderMealInfo;
+        set
+        {
+            _orderMealInfo = value;
+            createOrderBoard();
+        }
+    }
+    private OrderMealInfo _orderMealInfo;
     
     private Clocker _clocker;
     private int foodScore;
     
-
+    public Transform OrderNode => _orderNode;
+    protected Transform _orderNode;
+    
     public override void InitCharacter(CharacterBaseInfo info)
     {
         // _baseInfo = info;
@@ -84,7 +94,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // _emojiNode = transform.Find("EmojiNode");
         // LoadCharacterSprite();
         base.InitCharacter(info);
-        
+        _orderNode = transform.Find("OrderNode");
         _saidBubbles = new(10);
         // curCommentChatId = 0;
         // curTalkChatId = new List<int>(5);
@@ -96,8 +106,9 @@ public class RestaurantCharacter : RestaurantRoleBase
        
     }
 
-    public void ReleaseCharacter()
+    public override void ReleaseCharacter()
     {
+        base.ReleaseCharacter();
         // _baseInfo = null;
         // _spriteRenderer.sprite = null;
         // _spriteRenderer = null;
@@ -110,6 +121,11 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curOrderMenuId = 0;
         UnLoadTableData();
         UnLoadDataBase();
+        for (int i = 0; i < _orderNode.childCount;i++)
+        {
+            var one = _orderNode.GetChild(i);
+            Destroy(one.gameObject);
+        }
         Destroy(gameObject);
     }
 
@@ -136,8 +152,10 @@ public class RestaurantCharacter : RestaurantRoleBase
         _mainLineBubbleTB = new(10);
         _talkBubbleTB = new(10);
         _orderBubbleTB = new(10);
-        var dataProvider = UniModule.GetModule<DataProviderModule>();
-        var dataList = dataProvider.GetCharacterBubbleList(CharacterId);
+        
+        if (_baseInfo.Soul == 0) return;
+        
+        var dataList = DataProviderModule.Instance.GetCharacterBubbleList(CharacterId);
         for (int i = 0; i < dataList.Count; i++)
         {
             switch (dataList[i].BubbleType)
@@ -457,5 +475,33 @@ public class RestaurantCharacter : RestaurantRoleBase
             return true;
         }
         return false;
+    }
+    
+    private async void createOrderBoard()
+    {
+        var prefab = await LoadPrefab("Assets/GameRes/Prefabs/OrderBoard.prefab");
+        var go = GameObject.Instantiate<GameObject>(prefab, _orderNode);
+        var orderBoardBoard = go.GetComponent<OrderBoard>();
+        orderBoardBoard.Info = _orderMealInfo;
+    }
+
+    public override void ToDark()
+    {
+        base.ToDark();
+        for (int i = 0; i < _orderNode.childCount; i++)
+        {
+            var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
+            sr.sortingOrder -= 0;
+        }        
+    }
+
+    public override void ToLight()
+    {
+        base.ToLight();
+        for (int i = 0; i < _orderNode.childCount; i++)
+        {
+            var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
+            sr.sortingOrder = Mathf.Abs(sr.sortingOrder);
+        }
     }
 }

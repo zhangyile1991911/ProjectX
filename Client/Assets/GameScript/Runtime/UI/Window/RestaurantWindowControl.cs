@@ -173,6 +173,6 @@ public partial class RestaurantWindow : UIWindow
         info.MenuId = result.menuId;
         info.operation = 1;
         info.CharacterId = characterId;
-        EventModule.Instance.OrderMealTopic.OnNext(info);
+        // EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 }
