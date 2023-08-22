@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using cfg.food;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -27,6 +29,10 @@ public class FryModule : CookModule
     private ReactiveProperty<float> _curTemperature;
     
     private Subject<bool> _finishTopic;
+
+    private List<oil_steaming_effect> oil_steaming_pools;
+
+    private List<oil_jump_effect> oil_jump_pools;
     // private Subject<bool> timeUpTopic;
     // private List<bool> qteRecords;
     // private List<int> qteKeys;
@@ -111,6 +117,21 @@ public class FryModule : CookModule
         _uiWindow = UIManager.Instance.Get(UIEnum.FryingFoodWindow) as FryingFoodWindow;
     }
 
+    private async void load_oil_steaming_effect()
+    {
+        if (oil_steaming_pools.Count > 0) return;
+        for (int i = 0;i < 10;i++)
+        {
+            var handle = YooAssets.LoadAssetAsync<GameObject>("Assets/GameRes/Prefabs/AllFood/oil_steaming.prefab");
+            await handle.ToUniTask(this);
+            var go = Instantiate(handle.AssetObject as GameObject,transform);
+            go.SetActive(false);
+            var effect = go.GetComponent<oil_steaming_effect>();
+            oil_steaming_pools.Add(effect);
+        }
+        Debug.Log($"load_oil_steaming_effect oil_steaming_pools.Count = {oil_steaming_pools.Count}");
+    }
+
     public void StartFry()
     {
         _curTemperature.Value = 0;
@@ -155,9 +176,36 @@ public class FryModule : CookModule
     // {
     //     Debug.Log("Update++++++");
     // }
+    private float oil_steaming_interval;
+    private void show_oil_steaming()
+    {
+        if (_curTemperature.Value < _currentRecipeDifficulty.maxTemperature*0.5f)
+        {
+            return;
+        }
+        if (oil_steaming_pools.Count <= 0)
+        {
+            return;
+        }
 
+        oil_steaming_interval -= Time.deltaTime;
+        if (oil_steaming_interval > 0)
+        {
+            return;
+        }
+
+        oil_steaming_interval = 0.8f;
+        var obj = oil_steaming_pools.Last();
+        oil_steaming_pools.RemoveAt(oil_steaming_pools.Count - 1);
+        obj.Reset();
+        obj.transform.position = pan.transform.position;
+        obj.PlayEffect(oil_steaming_pools);
+        // Debug.Log($"show_oil_steaming remain = {oil_steaming_pools.Count}");
+    }
     private void CalculateHeat(Unit param)
     {
+        show_oil_steaming();
+        show_oil_jump();
         // Debug.Log("=========Start CalculateHeat=========");
         var distance = Vector2.Distance(pan.transform.position, firePointTransform.position);
         var add = heatCurve.Evaluate(distance)*Time.deltaTime;
@@ -246,6 +294,11 @@ public class FryModule : CookModule
     {
         base.UnloadRes();
         pan.RemoveAllFood();
+        // foreach (var oil in oil_steaming_pools)
+        // {
+        //     Destroy(oil.gameObject);
+        // }
+        // oil_steaming_pools.Clear();
     }
     
     private void ListenProgress(float param)
@@ -311,6 +364,13 @@ public class FryModule : CookModule
         
         _currentRecipeDifficulty = difficulty as FryingDifficulty;
         pan.transform.localPosition = Vector3.zero;
+        
+        oil_steaming_pools ??= new List<oil_steaming_effect>(10);
+        load_oil_steaming_effect();
+        
+        oil_jump_pools ??= new List<oil_jump_effect>(10);
+        load_oil_jump_effect();
+        
         SetFryRecipe(foodAndTools);
     }
     
@@ -318,5 +378,47 @@ public class FryModule : CookModule
     {
         StartFry();
     }
+
+    private async void load_oil_jump_effect()
+    {
+        if (oil_jump_pools.Count > 0) return;
+        for (int i = 0; i < 10; i++)
+        {
+            var prefab = YooAssets.LoadAssetAsync<GameObject>("Assets/GameRes/Prefabs/AllFood/oil_jump_effect.prefab");
+            await prefab.ToUniTask(this);
+            var go  = Instantiate(prefab.AssetObject as GameObject,transform);
+            var obj = go.GetComponent<oil_jump_effect>();
+            go.SetActive(false);
+            oil_jump_pools.Add(obj);
+        }
+    }
+    
+    private float oil_jump_interval;
+    private void show_oil_jump()
+    {
+        // if (_curTemperature.Value > _currentRecipeDifficulty.maxTemperature*0.7f)
+        // {
+        //     return;
+        // }
+        if (oil_jump_pools.Count <= 0)
+        {
+            return;
+        }
+
+        oil_jump_interval -= Time.deltaTime;
+        if (oil_jump_interval > 0)
+        {
+            return;
+        }
+
+        oil_jump_interval = 0.25f;
+        var obj = oil_jump_pools.Last();
+        oil_jump_pools.RemoveAt(oil_jump_pools.Count - 1);
+        obj.transform.position = pan.transform.position;
+        obj.PlayEffect(oil_jump_pools);
+        Debug.Log($"oil_jump_pools remain = {oil_jump_pools.Count}");
+    }
+    
+    
 
 }
