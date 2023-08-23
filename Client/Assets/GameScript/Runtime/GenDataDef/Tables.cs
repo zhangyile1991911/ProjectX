@@ -25,6 +25,8 @@ public sealed partial class Tables
     public food.TbCookPrefab TbCookPrefab {get; }
     public food.TbFlavour TbFlavour {get; }
     public food.TbQTEGroup TbQTEGroup {get; }
+    public system.TbWeatherGroup TbWeatherGroup {get; }
+    public system.TbDayScheduler TbDayScheduler {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -51,6 +53,10 @@ public sealed partial class Tables
         tables.Add("food.TbFlavour", TbFlavour);
         TbQTEGroup = new food.TbQTEGroup(loader("food_tbqtegroup")); 
         tables.Add("food.TbQTEGroup", TbQTEGroup);
+        TbWeatherGroup = new system.TbWeatherGroup(loader("system_tbweathergroup")); 
+        tables.Add("system.TbWeatherGroup", TbWeatherGroup);
+        TbDayScheduler = new system.TbDayScheduler(loader("system_tbdayscheduler")); 
+        tables.Add("system.TbDayScheduler", TbDayScheduler);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
@@ -64,6 +70,8 @@ public sealed partial class Tables
         TbCookPrefab.Resolve(tables); 
         TbFlavour.Resolve(tables); 
         TbQTEGroup.Resolve(tables); 
+        TbWeatherGroup.Resolve(tables); 
+        TbDayScheduler.Resolve(tables); 
         PostResolve();
     }
 
@@ -80,6 +88,8 @@ public sealed partial class Tables
         TbCookPrefab.TranslateText(translator); 
         TbFlavour.TranslateText(translator); 
         TbQTEGroup.TranslateText(translator); 
+        TbWeatherGroup.TranslateText(translator); 
+        TbDayScheduler.TranslateText(translator); 
     }
     
     partial void PostInit();

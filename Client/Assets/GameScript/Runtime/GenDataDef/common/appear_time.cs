@@ -19,15 +19,19 @@ public sealed partial class appear_time :  Bright.Config.BeanBase
     public appear_time(JSONNode _json) 
     {
         { if(!_json["weekday"].IsNumber) { throw new SerializationException(); }  Weekday = (common.WeekDay)_json["weekday"].AsInt; }
-        { if(!_json["enter_time"].IsObject) { throw new SerializationException(); }  EnterTime = common.Time.DeserializeTime(_json["enter_time"]);  }
+        { var __json0 = _json["weather_limit"]; if(!__json0.IsArray) { throw new SerializationException(); } WeatherLimit = new System.Collections.Generic.List<common.Weather>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { common.Weather __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (common.Weather)__e0.AsInt; }  WeatherLimit.Add(__v0); }   }
+        { if(!_json["enter_time_begin"].IsObject) { throw new SerializationException(); }  EnterTimeBegin = common.Time.DeserializeTime(_json["enter_time_begin"]);  }
+        { if(!_json["enter_time_end"].IsObject) { throw new SerializationException(); }  EnterTimeEnd = common.Time.DeserializeTime(_json["enter_time_end"]);  }
         { if(!_json["leave_time"].IsObject) { throw new SerializationException(); }  LeaveTime = common.Time.DeserializeTime(_json["leave_time"]);  }
         PostInit();
     }
 
-    public appear_time(common.WeekDay weekday, common.Time enter_time, common.Time leave_time ) 
+    public appear_time(common.WeekDay weekday, System.Collections.Generic.List<common.Weather> weather_limit, common.Time enter_time_begin, common.Time enter_time_end, common.Time leave_time ) 
     {
         this.Weekday = weekday;
-        this.EnterTime = enter_time;
+        this.WeatherLimit = weather_limit;
+        this.EnterTimeBegin = enter_time_begin;
+        this.EnterTimeEnd = enter_time_end;
         this.LeaveTime = leave_time;
         PostInit();
     }
@@ -42,9 +46,17 @@ public sealed partial class appear_time :  Bright.Config.BeanBase
     /// </summary>
     public common.WeekDay Weekday { get; private set; }
     /// <summary>
-    /// 进入时间
+    /// 天气
     /// </summary>
-    public common.Time EnterTime { get; private set; }
+    public System.Collections.Generic.List<common.Weather> WeatherLimit { get; private set; }
+    /// <summary>
+    /// 进入时间区间
+    /// </summary>
+    public common.Time EnterTimeBegin { get; private set; }
+    /// <summary>
+    /// 进入时间区间
+    /// </summary>
+    public common.Time EnterTimeEnd { get; private set; }
     /// <summary>
     /// 离开时间
     /// </summary>
@@ -55,14 +67,16 @@ public sealed partial class appear_time :  Bright.Config.BeanBase
 
     public  void Resolve(Dictionary<string, object> _tables)
     {
-        EnterTime?.Resolve(_tables);
+        EnterTimeBegin?.Resolve(_tables);
+        EnterTimeEnd?.Resolve(_tables);
         LeaveTime?.Resolve(_tables);
         PostResolve();
     }
 
     public  void TranslateText(System.Func<string, string, string> translator)
     {
-        EnterTime?.TranslateText(translator);
+        EnterTimeBegin?.TranslateText(translator);
+        EnterTimeEnd?.TranslateText(translator);
         LeaveTime?.TranslateText(translator);
     }
 
@@ -70,7 +84,9 @@ public sealed partial class appear_time :  Bright.Config.BeanBase
     {
         return "{ "
         + "Weekday:" + Weekday + ","
-        + "EnterTime:" + EnterTime + ","
+        + "WeatherLimit:" + Bright.Common.StringUtil.CollectionToString(WeatherLimit) + ","
+        + "EnterTimeBegin:" + EnterTimeBegin + ","
+        + "EnterTimeEnd:" + EnterTimeEnd + ","
         + "LeaveTime:" + LeaveTime + ","
         + "}";
     }

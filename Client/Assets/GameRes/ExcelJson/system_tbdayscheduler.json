@@ -1,0 +1,722 @@
+[
+  {
+    "id": 1,
+    "Seaon": 1,
+    "Day": 1,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 2,
+    "Seaon": 1,
+    "Day": 2,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 3,
+    "Seaon": 1,
+    "Day": 3,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 4,
+    "Seaon": 1,
+    "Day": 4,
+    "WeatherGroupId": 10003
+  },
+  {
+    "id": 5,
+    "Seaon": 1,
+    "Day": 5,
+    "WeatherGroupId": 10004
+  },
+  {
+    "id": 6,
+    "Seaon": 1,
+    "Day": 6,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 7,
+    "Seaon": 1,
+    "Day": 7,
+    "WeatherGroupId": 10003
+  },
+  {
+    "id": 8,
+    "Seaon": 1,
+    "Day": 8,
+    "WeatherGroupId": 10004
+  },
+  {
+    "id": 9,
+    "Seaon": 1,
+    "Day": 9,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 10,
+    "Seaon": 1,
+    "Day": 10,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 11,
+    "Seaon": 1,
+    "Day": 11,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 12,
+    "Seaon": 1,
+    "Day": 12,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 13,
+    "Seaon": 1,
+    "Day": 13,
+    "WeatherGroupId": 10003
+  },
+  {
+    "id": 14,
+    "Seaon": 1,
+    "Day": 14,
+    "WeatherGroupId": 10004
+  },
+  {
+    "id": 15,
+    "Seaon": 1,
+    "Day": 15,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 16,
+    "Seaon": 1,
+    "Day": 16,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 17,
+    "Seaon": 1,
+    "Day": 17,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 18,
+    "Seaon": 1,
+    "Day": 18,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 19,
+    "Seaon": 1,
+    "Day": 19,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 20,
+    "Seaon": 1,
+    "Day": 20,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 21,
+    "Seaon": 1,
+    "Day": 21,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 22,
+    "Seaon": 1,
+    "Day": 22,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 23,
+    "Seaon": 1,
+    "Day": 23,
+    "WeatherGroupId": 10003
+  },
+  {
+    "id": 24,
+    "Seaon": 1,
+    "Day": 24,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 25,
+    "Seaon": 1,
+    "Day": 25,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 26,
+    "Seaon": 1,
+    "Day": 26,
+    "WeatherGroupId": 10003
+  },
+  {
+    "id": 27,
+    "Seaon": 1,
+    "Day": 27,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 28,
+    "Seaon": 1,
+    "Day": 28,
+    "WeatherGroupId": 10002
+  },
+  {
+    "id": 29,
+    "Seaon": 1,
+    "Day": 29,
+    "WeatherGroupId": 10003
+  },
+  {
+    "id": 30,
+    "Seaon": 1,
+    "Day": 30,
+    "WeatherGroupId": 10001
+  },
+  {
+    "id": 31,
+    "Seaon": 2,
+    "Day": 1,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 32,
+    "Seaon": 2,
+    "Day": 2,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 33,
+    "Seaon": 2,
+    "Day": 3,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 34,
+    "Seaon": 2,
+    "Day": 4,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 35,
+    "Seaon": 2,
+    "Day": 5,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 36,
+    "Seaon": 2,
+    "Day": 6,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 37,
+    "Seaon": 2,
+    "Day": 7,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 38,
+    "Seaon": 2,
+    "Day": 8,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 39,
+    "Seaon": 2,
+    "Day": 9,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 40,
+    "Seaon": 2,
+    "Day": 10,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 41,
+    "Seaon": 2,
+    "Day": 11,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 42,
+    "Seaon": 2,
+    "Day": 12,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 43,
+    "Seaon": 2,
+    "Day": 13,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 44,
+    "Seaon": 2,
+    "Day": 14,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 45,
+    "Seaon": 2,
+    "Day": 15,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 46,
+    "Seaon": 2,
+    "Day": 16,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 47,
+    "Seaon": 2,
+    "Day": 17,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 48,
+    "Seaon": 2,
+    "Day": 18,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 49,
+    "Seaon": 2,
+    "Day": 19,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 50,
+    "Seaon": 2,
+    "Day": 20,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 51,
+    "Seaon": 2,
+    "Day": 21,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 52,
+    "Seaon": 2,
+    "Day": 22,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 53,
+    "Seaon": 2,
+    "Day": 23,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 54,
+    "Seaon": 2,
+    "Day": 24,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 55,
+    "Seaon": 2,
+    "Day": 25,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 56,
+    "Seaon": 2,
+    "Day": 26,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 57,
+    "Seaon": 2,
+    "Day": 27,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 58,
+    "Seaon": 2,
+    "Day": 28,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 59,
+    "Seaon": 2,
+    "Day": 29,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 60,
+    "Seaon": 2,
+    "Day": 30,
+    "WeatherGroupId": 20001
+  },
+  {
+    "id": 61,
+    "Seaon": 3,
+    "Day": 1,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 62,
+    "Seaon": 3,
+    "Day": 2,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 63,
+    "Seaon": 3,
+    "Day": 3,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 64,
+    "Seaon": 3,
+    "Day": 4,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 65,
+    "Seaon": 3,
+    "Day": 5,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 66,
+    "Seaon": 3,
+    "Day": 6,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 67,
+    "Seaon": 3,
+    "Day": 7,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 68,
+    "Seaon": 3,
+    "Day": 8,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 69,
+    "Seaon": 3,
+    "Day": 9,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 70,
+    "Seaon": 3,
+    "Day": 10,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 71,
+    "Seaon": 3,
+    "Day": 11,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 72,
+    "Seaon": 3,
+    "Day": 12,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 73,
+    "Seaon": 3,
+    "Day": 13,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 74,
+    "Seaon": 3,
+    "Day": 14,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 75,
+    "Seaon": 3,
+    "Day": 15,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 76,
+    "Seaon": 3,
+    "Day": 16,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 77,
+    "Seaon": 3,
+    "Day": 17,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 78,
+    "Seaon": 3,
+    "Day": 18,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 79,
+    "Seaon": 3,
+    "Day": 19,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 80,
+    "Seaon": 3,
+    "Day": 20,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 81,
+    "Seaon": 3,
+    "Day": 21,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 82,
+    "Seaon": 3,
+    "Day": 22,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 83,
+    "Seaon": 3,
+    "Day": 23,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 84,
+    "Seaon": 3,
+    "Day": 24,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 85,
+    "Seaon": 3,
+    "Day": 25,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 86,
+    "Seaon": 3,
+    "Day": 26,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 87,
+    "Seaon": 3,
+    "Day": 27,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 88,
+    "Seaon": 3,
+    "Day": 28,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 89,
+    "Seaon": 3,
+    "Day": 29,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 90,
+    "Seaon": 3,
+    "Day": 30,
+    "WeatherGroupId": 30001
+  },
+  {
+    "id": 91,
+    "Seaon": 4,
+    "Day": 1,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 92,
+    "Seaon": 4,
+    "Day": 2,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 93,
+    "Seaon": 4,
+    "Day": 3,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 94,
+    "Seaon": 4,
+    "Day": 4,
+    "WeatherGroupId": 40002
+  },
+  {
+    "id": 95,
+    "Seaon": 4,
+    "Day": 5,
+    "WeatherGroupId": 40002
+  },
+  {
+    "id": 96,
+    "Seaon": 4,
+    "Day": 6,
+    "WeatherGroupId": 40002
+  },
+  {
+    "id": 97,
+    "Seaon": 4,
+    "Day": 7,
+    "WeatherGroupId": 40002
+  },
+  {
+    "id": 98,
+    "Seaon": 4,
+    "Day": 8,
+    "WeatherGroupId": 40002
+  },
+  {
+    "id": 99,
+    "Seaon": 4,
+    "Day": 9,
+    "WeatherGroupId": 40003
+  },
+  {
+    "id": 100,
+    "Seaon": 4,
+    "Day": 10,
+    "WeatherGroupId": 40003
+  },
+  {
+    "id": 101,
+    "Seaon": 4,
+    "Day": 11,
+    "WeatherGroupId": 40003
+  },
+  {
+    "id": 102,
+    "Seaon": 4,
+    "Day": 12,
+    "WeatherGroupId": 40003
+  },
+  {
+    "id": 103,
+    "Seaon": 4,
+    "Day": 13,
+    "WeatherGroupId": 40004
+  },
+  {
+    "id": 104,
+    "Seaon": 4,
+    "Day": 14,
+    "WeatherGroupId": 40004
+  },
+  {
+    "id": 105,
+    "Seaon": 4,
+    "Day": 15,
+    "WeatherGroupId": 40004
+  },
+  {
+    "id": 106,
+    "Seaon": 4,
+    "Day": 16,
+    "WeatherGroupId": 40005
+  },
+  {
+    "id": 107,
+    "Seaon": 4,
+    "Day": 17,
+    "WeatherGroupId": 40005
+  },
+  {
+    "id": 108,
+    "Seaon": 4,
+    "Day": 18,
+    "WeatherGroupId": 40005
+  },
+  {
+    "id": 109,
+    "Seaon": 4,
+    "Day": 19,
+    "WeatherGroupId": 40005
+  },
+  {
+    "id": 110,
+    "Seaon": 4,
+    "Day": 20,
+    "WeatherGroupId": 40005
+  },
+  {
+    "id": 111,
+    "Seaon": 4,
+    "Day": 21,
+    "WeatherGroupId": 40006
+  },
+  {
+    "id": 112,
+    "Seaon": 4,
+    "Day": 22,
+    "WeatherGroupId": 40006
+  },
+  {
+    "id": 113,
+    "Seaon": 4,
+    "Day": 23,
+    "WeatherGroupId": 40006
+  },
+  {
+    "id": 114,
+    "Seaon": 4,
+    "Day": 24,
+    "WeatherGroupId": 40006
+  },
+  {
+    "id": 115,
+    "Seaon": 4,
+    "Day": 25,
+    "WeatherGroupId": 40006
+  },
+  {
+    "id": 116,
+    "Seaon": 4,
+    "Day": 26,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 117,
+    "Seaon": 4,
+    "Day": 27,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 118,
+    "Seaon": 4,
+    "Day": 28,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 119,
+    "Seaon": 4,
+    "Day": 29,
+    "WeatherGroupId": 40001
+  },
+  {
+    "id": 120,
+    "Seaon": 4,
+    "Day": 30,
+    "WeatherGroupId": 40001
+  }
+]
