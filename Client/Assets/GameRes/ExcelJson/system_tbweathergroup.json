@@ -2,379 +2,337 @@
   {
     "id": 10001,
     "季节": 1,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 8000,
-        "WeatherB": 2,
-        "WeatherWeightB": 2000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 8000,
+      "WeatherB": 2,
+      "WeatherWeightB": 2000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 10002,
     "季节": 1,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 7000,
-        "WeatherB": 2,
-        "WeatherWeightB": 3000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 7000,
+      "WeatherB": 2,
+      "WeatherWeightB": 3000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 10003,
     "季节": 1,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 6000,
-        "WeatherB": 2,
-        "WeatherWeightB": 4000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 6000,
+      "WeatherB": 2,
+      "WeatherWeightB": 4000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 10004,
     "季节": 1,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 5000,
-        "WeatherB": 2,
-        "WeatherWeightB": 5000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 5000,
+      "WeatherB": 2,
+      "WeatherWeightB": 5000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 20001,
     "季节": 2,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 8000,
-        "WeatherB": 2,
-        "WeatherWeightB": 2000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 1000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 8000,
+      "WeatherB": 2,
+      "WeatherWeightB": 2000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 1000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 20002,
     "季节": 2,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 7000,
-        "WeatherB": 2,
-        "WeatherWeightB": 3000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 2000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 7000,
+      "WeatherB": 2,
+      "WeatherWeightB": 3000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 2000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 20003,
     "季节": 2,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 6000,
-        "WeatherB": 2,
-        "WeatherWeightB": 4000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 3000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 6000,
+      "WeatherB": 2,
+      "WeatherWeightB": 4000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 3000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 20004,
     "季节": 2,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 4000,
-        "WeatherB": 2,
-        "WeatherWeightB": 5000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 4000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 4000,
+      "WeatherB": 2,
+      "WeatherWeightB": 5000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 4000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 20005,
     "季节": 2,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 1000,
-        "WeatherB": 2,
-        "WeatherWeightB": 5000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 7000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 1000,
+      "WeatherB": 2,
+      "WeatherWeightB": 5000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 7000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 30001,
     "季节": 3,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 8000,
-        "WeatherB": 2,
-        "WeatherWeightB": 0,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 8000,
+      "WeatherB": 2,
+      "WeatherWeightB": 0,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 30002,
     "季节": 3,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 8000,
-        "WeatherB": 2,
-        "WeatherWeightB": 2000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 1000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 8000,
+      "WeatherB": 2,
+      "WeatherWeightB": 2000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 1000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 30003,
     "季节": 3,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 7000,
-        "WeatherB": 2,
-        "WeatherWeightB": 3000,
-        "WeatherC": 3,
-        "WeatherWeightC": 0,
-        "WeatherD": 4,
-        "WeatherWeightD": 1000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 7000,
+      "WeatherB": 2,
+      "WeatherWeightB": 3000,
+      "WeatherC": 3,
+      "WeatherWeightC": 0,
+      "WeatherD": 4,
+      "WeatherWeightD": 1000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 30004,
     "季节": 3,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 6000,
-        "WeatherB": 2,
-        "WeatherWeightB": 4000,
-        "WeatherC": 3,
-        "WeatherWeightC": 1000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 6000,
+      "WeatherB": 2,
+      "WeatherWeightB": 4000,
+      "WeatherC": 3,
+      "WeatherWeightC": 1000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 30005,
     "季节": 3,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 5000,
-        "WeatherB": 2,
-        "WeatherWeightB": 3000,
-        "WeatherC": 3,
-        "WeatherWeightC": 2000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 5000,
+      "WeatherB": 2,
+      "WeatherWeightB": 3000,
+      "WeatherC": 3,
+      "WeatherWeightC": 2000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 30006,
     "季节": 3,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 2000,
-        "WeatherB": 2,
-        "WeatherWeightB": 7000,
-        "WeatherC": 3,
-        "WeatherWeightC": 2000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 2000,
+      "WeatherB": 2,
+      "WeatherWeightB": 7000,
+      "WeatherC": 3,
+      "WeatherWeightC": 2000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 40001,
     "季节": 4,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 3000,
-        "WeatherB": 2,
-        "WeatherWeightB": 2000,
-        "WeatherC": 3,
-        "WeatherWeightC": 3000,
-        "WeatherD": 4,
-        "WeatherWeightD": 1000,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 3000,
+      "WeatherB": 2,
+      "WeatherWeightB": 2000,
+      "WeatherC": 3,
+      "WeatherWeightC": 3000,
+      "WeatherD": 4,
+      "WeatherWeightD": 1000,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 40002,
     "季节": 4,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 3000,
-        "WeatherB": 2,
-        "WeatherWeightB": 2000,
-        "WeatherC": 3,
-        "WeatherWeightC": 4000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 0
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 3000,
+      "WeatherB": 2,
+      "WeatherWeightB": 2000,
+      "WeatherC": 3,
+      "WeatherWeightC": 4000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 0
+    }
   },
   {
     "id": 40003,
     "季节": 4,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 2000,
-        "WeatherB": 2,
-        "WeatherWeightB": 1000,
-        "WeatherC": 3,
-        "WeatherWeightC": 4000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 1000
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 2000,
+      "WeatherB": 2,
+      "WeatherWeightB": 1000,
+      "WeatherC": 3,
+      "WeatherWeightC": 4000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 1000
+    }
   },
   {
     "id": 40004,
     "季节": 4,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 0,
-        "WeatherB": 2,
-        "WeatherWeightB": 1000,
-        "WeatherC": 3,
-        "WeatherWeightC": 5000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 1000
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 0,
+      "WeatherB": 2,
+      "WeatherWeightB": 1000,
+      "WeatherC": 3,
+      "WeatherWeightC": 5000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 1000
+    }
   },
   {
     "id": 40005,
     "季节": 4,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 0,
-        "WeatherB": 2,
-        "WeatherWeightB": 0,
-        "WeatherC": 3,
-        "WeatherWeightC": 6000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 1000
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 0,
+      "WeatherB": 2,
+      "WeatherWeightB": 0,
+      "WeatherC": 3,
+      "WeatherWeightC": 6000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 1000
+    }
   },
   {
     "id": 40006,
     "季节": 4,
-    "weather": [
-      {
-        "WeatherA": 1,
-        "WeatherWeightA": 0,
-        "WeatherB": 2,
-        "WeatherWeightB": 0,
-        "WeatherC": 3,
-        "WeatherWeightC": 7000,
-        "WeatherD": 4,
-        "WeatherWeightD": 0,
-        "WeatherE": 5,
-        "WeatherWeightE": 2000
-      }
-    ]
+    "weather": {
+      "WeatherA": 1,
+      "WeatherWeightA": 0,
+      "WeatherB": 2,
+      "WeatherWeightB": 0,
+      "WeatherC": 3,
+      "WeatherWeightC": 7000,
+      "WeatherD": 4,
+      "WeatherWeightD": 0,
+      "WeatherE": 5,
+      "WeatherWeightE": 2000
+    }
   }
 ]

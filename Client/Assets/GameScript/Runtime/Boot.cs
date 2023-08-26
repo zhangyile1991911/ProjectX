@@ -21,9 +21,9 @@ public class Boot : MonoBehaviour
         
         UniModule.CreateModule<UIManager>();
         UniModule.CreateModule<DataProviderModule>();
+        UniModule.CreateModule<EventModule>();
         UniModule.CreateModule<UserInfoModule>();
         UniModule.CreateModule<CharacterMgr>();
-        UniModule.CreateModule<EventModule>();
         UniModule.CreateModule<Clocker>();
         // UniModule.CreateModule<DialogueModule>();
         

@@ -169,10 +169,10 @@ public partial class RestaurantWindow : UIWindow
     private void soldCustomerFood(CookResult result,int characterId)
     {
         UserInfoModule.Instance.SoldMealId(result.menuId);
-        OrderMealInfo info = new();
-        info.MenuId = result.menuId;
-        info.operation = 1;
-        info.CharacterId = characterId;
+        // OrderMealInfo info = new();
+        // info.MenuId = result.menuId;
+        // info.operation = 1;
+        // info.CharacterId = characterId;
         // EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 }

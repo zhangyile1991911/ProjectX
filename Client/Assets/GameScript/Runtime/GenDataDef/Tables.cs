@@ -18,6 +18,7 @@ public sealed partial class Tables
     public character.TbSchedule TbSchedule {get; }
     public character.TbCharacterBubble TbCharacterBubble {get; }
     public character.TbCword TbCword {get; }
+    public character.TbBehaviourGroup TbBehaviourGroup {get; }
     public food.TbMaterial TbMaterial {get; }
     public food.TbMenuInfo TbMenuInfo {get; }
     public TbItem TbItem {get; }
@@ -27,6 +28,7 @@ public sealed partial class Tables
     public food.TbQTEGroup TbQTEGroup {get; }
     public system.TbWeatherGroup TbWeatherGroup {get; }
     public system.TbDayScheduler TbDayScheduler {get; }
+    public common.TbGlobalConfig TbGlobalConfig {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -39,6 +41,8 @@ public sealed partial class Tables
         tables.Add("character.TbCharacterBubble", TbCharacterBubble);
         TbCword = new character.TbCword(loader("character_tbcword")); 
         tables.Add("character.TbCword", TbCword);
+        TbBehaviourGroup = new character.TbBehaviourGroup(loader("character_tbbehaviourgroup")); 
+        tables.Add("character.TbBehaviourGroup", TbBehaviourGroup);
         TbMaterial = new food.TbMaterial(loader("food_tbmaterial")); 
         tables.Add("food.TbMaterial", TbMaterial);
         TbMenuInfo = new food.TbMenuInfo(loader("food_tbmenuinfo")); 
@@ -57,12 +61,15 @@ public sealed partial class Tables
         tables.Add("system.TbWeatherGroup", TbWeatherGroup);
         TbDayScheduler = new system.TbDayScheduler(loader("system_tbdayscheduler")); 
         tables.Add("system.TbDayScheduler", TbDayScheduler);
+        TbGlobalConfig = new common.TbGlobalConfig(loader("common_tbglobalconfig")); 
+        tables.Add("common.TbGlobalConfig", TbGlobalConfig);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
         TbSchedule.Resolve(tables); 
         TbCharacterBubble.Resolve(tables); 
         TbCword.Resolve(tables); 
+        TbBehaviourGroup.Resolve(tables); 
         TbMaterial.Resolve(tables); 
         TbMenuInfo.Resolve(tables); 
         TbItem.Resolve(tables); 
@@ -72,6 +79,7 @@ public sealed partial class Tables
         TbQTEGroup.Resolve(tables); 
         TbWeatherGroup.Resolve(tables); 
         TbDayScheduler.Resolve(tables); 
+        TbGlobalConfig.Resolve(tables); 
         PostResolve();
     }
 
@@ -81,6 +89,7 @@ public sealed partial class Tables
         TbSchedule.TranslateText(translator); 
         TbCharacterBubble.TranslateText(translator); 
         TbCword.TranslateText(translator); 
+        TbBehaviourGroup.TranslateText(translator); 
         TbMaterial.TranslateText(translator); 
         TbMenuInfo.TranslateText(translator); 
         TbItem.TranslateText(translator); 
@@ -90,6 +99,7 @@ public sealed partial class Tables
         TbQTEGroup.TranslateText(translator); 
         TbWeatherGroup.TranslateText(translator); 
         TbDayScheduler.TranslateText(translator); 
+        TbGlobalConfig.TranslateText(translator); 
     }
     
     partial void PostInit();

@@ -1,13 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using cfg.character;
 using UnityEngine;
 using DG.Tweening;
 using UniRx;
+using Random = UnityEngine.Random;
 
 public interface CharacterBehaviour
 {
-    public RestaurantRoleBase Char { get; }
+    // public RestaurantRoleBase Char { get; }
+    public behaviour BehaviourID
+    {
+        get;
+    }
 
     public void Enter(RestaurantRoleBase restaurantCharacter);
 
@@ -17,9 +23,171 @@ public interface CharacterBehaviour
 }
 
 
+
+
+// public class CharacterMakeBubble : CharacterBehaviour
+// {
+//     public RestaurantRoleBase Char => _restaurantCharacter;
+//     private RestaurantCharacter _restaurantCharacter;
+//
+//     private GameDateTime preDateTime;
+//     private IDisposable _disposable;
+//     public CharacterMakeBubble()
+//     {
+//         
+//     }
+//     
+//     public void Enter(RestaurantRoleBase restaurantCharacter)
+//     {
+//         _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
+//         var clocker = UniModule.GetModule<Clocker>();
+//         _disposable = clocker.Topic.Subscribe(think);
+//         preDateTime = clocker.NowDateTime;
+//     }
+//
+//     public void Exit()
+//     {
+//         _disposable?.Dispose();
+//     }
+//
+//     public void Update()
+//     {
+//         
+//     }
+//
+//     private void think(GameDateTime dateTime)
+//     {
+//         if (_restaurantCharacter.IsTimeToLeave())
+//         {
+//             _restaurantCharacter.CurBehaviour = new CharacterLeave();
+//         }
+//         else
+//         {
+//             var minutes = (dateTime - preDateTime).TotalMinutes;
+//             if (minutes < 3)
+//             {
+//                 return;
+//                 // var eventModule = UniModule.GetModule<EventModule>();
+//                 // eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
+//             }
+//             preDateTime = dateTime;
+//             _restaurantCharacter.GenerateChatId();
+//         }
+//     }
+//     
+// }
+
+// public class CharacterOnFocus : CharacterBehaviour
+// {
+//     public RestaurantRoleBase Char => _restaurantCharacter;
+//     private RestaurantRoleBase _restaurantCharacter;
+//
+//     public CharacterOnFocus()
+//     {
+//         
+//     }
+//     
+//     public void Enter(RestaurantRoleBase restaurantCharacter)
+//     {
+//         _restaurantCharacter = restaurantCharacter;
+//         _restaurantCharacter.ToLight();
+//     }
+//
+//     public void Exit()
+//     {
+//         _restaurantCharacter = null;
+//     }
+//
+//     public void Update()
+//     {
+//         
+//     }
+// }
+// public class CharacterMute : CharacterBehaviour
+// {
+//     public RestaurantRoleBase Char => _restaurantCharacter;
+//     private RestaurantRoleBase _restaurantCharacter;
+//
+//     public CharacterMute()
+//     {
+//         
+//     }
+//     
+//     public void Enter(RestaurantRoleBase restaurantCharacter)
+//     {
+//         _restaurantCharacter = restaurantCharacter;
+//         _restaurantCharacter.ToDark();
+//     }
+//
+//     public void Exit()
+//     {
+//         _restaurantCharacter.ToLight();
+//         _restaurantCharacter = null;
+//     }
+//
+//     public void Update()
+//     {
+//         
+//     }
+// }
+
+// public class FollowCharacter : CharacterBehaviour
+// {
+//     public RestaurantRoleBase Char => _restaurantCharacter;
+//     private RestaurantRoleBase _restaurantCharacter;
+//
+//     private RestaurantRoleBase _destCharacter;
+//     private Vector3 _seatPosition;
+//     private Tweener moveTweener;
+//     private Vector3 preDestionation;
+//     public FollowCharacter(RestaurantRoleBase dest,Vector3 seatPosition)
+//     {
+//         _destCharacter = dest;
+//         _seatPosition = seatPosition;
+//     }
+//     
+//     public void Enter(RestaurantRoleBase restaurantCharacter)
+//     {
+//         _restaurantCharacter = restaurantCharacter;
+//         preDestionation = _restaurantCharacter.transform.position = _destCharacter.transform.position;
+//         
+//         moveTweener = _restaurantCharacter.transform.DOMove(_destCharacter.transform.position, 0.5f).SetAutoKill(false);
+//     }
+//
+//     public void Update()
+//     {
+//         // if ((Type)_destCharacter.CurBehaviour != typeof(CharacterEnterScene))
+//         // {
+//         //     _restaurantCharacter.CurBehaviour = null;
+//         //     _restaurantCharacter.transform.position = _seatPosition;
+//         // }
+//         if (_destCharacter.CurBehaviour.GetType() == typeof(CharacterMakeBubble))
+//         {
+//             moveTweener.Kill();
+//             moveTweener = null;
+//             _restaurantCharacter.transform.position = _seatPosition;
+//             _restaurantCharacter.CurBehaviour = null;
+//         }
+//         else
+//         {
+//             moveTweener.ChangeEndValue(_destCharacter.transform.position,true).Restart();
+//             preDestionation = _destCharacter.transform.position;
+//         }
+//     }
+//
+//     public void Exit()
+//     {
+//         
+//     }
+// }
+
+
+
+//enter ----> talk ----> order ----> waiting ----> eating/drinking ---->Thinking -----> leaving
 public class CharacterEnterScene : CharacterBehaviour
 {
-    public RestaurantRoleBase Char => _restaurantCharacter;
+    // public RestaurantRoleBase Char => _restaurantCharacter;
+    public behaviour BehaviourID => behaviour.Enter;
     private RestaurantRoleBase _restaurantCharacter;
     
     private Vector3 destPoint;
@@ -32,6 +200,7 @@ public class CharacterEnterScene : CharacterBehaviour
     
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
+        Debug.Log($"-----{restaurantCharacter.CharacterName} 进入饭店状态-----");
         _restaurantCharacter = restaurantCharacter;
         _restaurantCharacter.Sprite.color = Color.clear;
         _restaurantCharacter.transform.position = destPoint;
@@ -39,26 +208,13 @@ public class CharacterEnterScene : CharacterBehaviour
         _restaurantCharacter.Sprite.DOColor(Color.white, 3.5f).OnComplete(() =>
         {
             _restaurantCharacter.AddAppearCount();
-            _restaurantCharacter.CurBehaviour = new CharacterMakeBubble();
+            _restaurantCharacter.CurBehaviour = new CharacterTalk();
         });
-        // var dest1 = new Vector3(destPoint.x, 0, _restaurantCharacter.transform.position.z);
-        // var dest2 = new Vector3(destPoint.x, 0, destPoint.z);
-        // var seq = DOTween.Sequence();
-        // seq.Append(_restaurantCharacter.transform.DOMove(dest1, 7f));
-        // seq.Append(_restaurantCharacter.transform.DOMove(dest2, 3f));
-        // seq.OnComplete(() =>
-        // {
-        //     _restaurantCharacter.AddAppearCount();
-        //     _restaurantCharacter.CurBehaviour = new CharacterMakeBubble();
-        // });
-
-        // seq.Complete();
-        // _character.transform.DOMove(dest1, 10f);
-        // _character.MoveTo(dest1,10);
     }
 
     public void Exit()
     {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出饭店状态-----");
         _restaurantCharacter = null;
     }
 
@@ -68,14 +224,15 @@ public class CharacterEnterScene : CharacterBehaviour
     }
 }
 
-public class CharacterMakeBubble : CharacterBehaviour
+
+public class CharacterTalk : CharacterBehaviour
 {
-    public RestaurantRoleBase Char => _restaurantCharacter;
+    // public RestaurantRoleBase Char => _restaurantCharacter;
+    public behaviour BehaviourID => behaviour.Talk;
     private RestaurantCharacter _restaurantCharacter;
 
-    private DateTime preDateTime;
-    private IDisposable _disposable;
-    public CharacterMakeBubble()
+    private long _preDateTime;
+    public CharacterTalk()
     {
         
     }
@@ -83,89 +240,252 @@ public class CharacterMakeBubble : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
-        var clocker = UniModule.GetModule<Clocker>();
-        _disposable = clocker.Topic.Subscribe(think);
-        preDateTime = clocker.NowDateTime;
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入讲话状态-----");
     }
 
     public void Exit()
     {
-        _disposable?.Dispose();
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出讲话状态-----");
+    }
+
+    public void Update()
+    {
+        var minutes = (Clocker.Instance.NowDateTime.Timestamp - _preDateTime)/60L;
+        if (minutes < 2)
+        {
+            return;
+        }
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        var success = _restaurantCharacter.GenerateMain();
+        if (!success) success = _restaurantCharacter.GenerateTalkId();
+        if (success) _restaurantCharacter.CurBehaviour = new CharacterWaiting();
+    }
+}
+
+public class CharacterWaiting : CharacterBehaviour
+{
+    // public RestaurantRoleBase Char => _restaurantCharacter;
+    public behaviour BehaviourID => behaviour.Waiting;
+    private RestaurantCharacter _restaurantCharacter;
+    
+    public CharacterWaiting()
+    {
+        
+    }
+    
+    public void Enter(RestaurantRoleBase restaurantCharacter)
+    {
+        _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待状态-----");
+    }
+
+    public void Exit()
+    {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出等待状态-----");
     }
 
     public void Update()
     {
         
     }
+}
 
-    private void think(DateTime dateTime)
+public enum CharacterOrderType
+{
+    Meal,Drink,All
+}
+public class CharacterOrderMeal : CharacterBehaviour
+{
+    // public RestaurantRoleBase Char { get; }
+    public behaviour BehaviourID => behaviour.OrderMeal;
+    private long _preDateTime;
+    private RestaurantCharacter _restaurantCharacter;
+    // private CharacterOrderType _orderType;
+    public CharacterOrderMeal()
     {
-        if (_restaurantCharacter.IsTimeToLeave())
+        // _orderType = orderType;
+    }
+
+    public void Enter(RestaurantRoleBase restaurantRoleBase)
+    {
+        _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入下单料理状态-----");
+    }
+
+    public void Exit()
+    {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出下单料理状态-----");
+    }
+
+    public void Update()
+    {
+        think();
+    }
+    private void think()
+    {
+        var minutes = (Clocker.Instance.NowDateTime.Timestamp - _preDateTime)/60L;
+        if (minutes < 2)
         {
-            _restaurantCharacter.CurBehaviour = new CharacterLeave();
+            return;
         }
-        else
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        _restaurantCharacter.GenerateOrder();
+    }
+}
+
+public class CharacterOrderDrink : CharacterBehaviour
+{
+    // public RestaurantRoleBase Char { get; }
+    public behaviour BehaviourID => behaviour.OrderDrink;
+    private long _preDateTime;
+    private RestaurantCharacter _restaurantCharacter;
+    // private CharacterOrderType _orderType;
+    public CharacterOrderDrink()
+    {
+        // _orderType = orderType;
+    }
+
+    public void Enter(RestaurantRoleBase restaurantRoleBase)
+    {
+        _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入下单饮料状态-----");
+    }
+
+    public void Exit()
+    {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出下单饮料状态-----");
+    }
+
+    public void Update()
+    {
+        think();
+    }
+    private void think()
+    {
+        var minutes = (Clocker.Instance.NowDateTime.Timestamp - _preDateTime)/60L;
+        if (minutes < 2)
         {
-            var minutes = (dateTime - preDateTime).TotalMinutes;
-            if (minutes < 3)
+            return;
+        }
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        _restaurantCharacter.GenerateOrder();
+    }
+}
+
+
+
+public class CharacterEating : CharacterBehaviour
+{
+    // public RestaurantRoleBase Char { get; }
+    public behaviour BehaviourID => behaviour.Eating;
+    private RestaurantCharacter _restaurantCharacter;
+    private long start_eating_timestamp;
+    public CharacterEating()
+    {
+        
+    }
+
+    public void Enter(RestaurantRoleBase restaurantRoleBase)
+    {
+        _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _restaurantCharacter.PlayEating();
+        start_eating_timestamp = Clocker.Instance.NowDateTime.Timestamp;
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入吃饭状态-----");
+    }
+
+    public void Exit()
+    {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出吃饭状态-----");
+    }
+
+    public void Update()
+    {
+        Eating();
+    }
+
+    private void Eating()
+    {
+        var eating_duration = (Clocker.Instance.NowDateTime.Timestamp - start_eating_timestamp) / 60L;
+        if (eating_duration > 10)
+        {
+            _restaurantCharacter.CurBehaviour = new CharacterThinking();
+        }
+    }
+}
+
+public class CharacterThinking : CharacterBehaviour
+{
+    // public RestaurantRoleBase Char { get; }
+    public behaviour BehaviourID => behaviour.Eating;
+    private RestaurantCharacter _restaurantCharacter;
+    public CharacterThinking()
+    {
+        
+    }
+
+    public void Enter(RestaurantRoleBase restaurantRoleBase)
+    {
+        _restaurantCharacter = restaurantRoleBase  as RestaurantCharacter;
+        //随机组
+        int id = _restaurantCharacter.TBBaseInfo.BehaviourGroup;
+        var tb = DataProviderModule.Instance.GetBehaviourGroup(id);
+        int total_weight = 0;
+        foreach (var one in tb.Group)
+        {
+            total_weight += one.Weight;
+        }
+
+        int val = Random.Range(0, total_weight);
+        total_weight = 0;
+        behaviour next_behaviour = behaviour.Leave;
+        for (int i = 0; i < tb.Group.Count; i++)
+        {
+            if (val >= total_weight && val <= tb.Group[i].Weight)
             {
-                return;
-                // var eventModule = UniModule.GetModule<EventModule>();
-                // eventModule.CharBubbleTopic.OnNext(_restaurantCharacter);
+                next_behaviour = tb.Group[i].Behaviour;
+                break;
             }
-            preDateTime = dateTime;
-            _restaurantCharacter.GenerateChatId();
         }
-    }
-    
-}
 
-public class CharacterOnFocus : CharacterBehaviour
-{
-    public RestaurantRoleBase Char => _restaurantCharacter;
-    private RestaurantRoleBase _restaurantCharacter;
-
-    public CharacterOnFocus()
-    {
+        switch (next_behaviour)
+        {
+            case behaviour.Leave:
+                _restaurantCharacter.CurBehaviour = new CharacterLeave();
+                break;
+            case behaviour.Talk:
+                _restaurantCharacter.CurBehaviour = new CharacterTalk();
+                break;
+            case behaviour.OrderDrink:
+                if (_restaurantCharacter.CanOrder())
+                {
+                    _restaurantCharacter.CurBehaviour = new CharacterOrderDrink();    
+                }
+                else
+                {
+                    _restaurantCharacter.CurBehaviour = new CharacterLeave();
+                }
+                break;
+            case behaviour.OrderMeal:
+                if (_restaurantCharacter.CanOrder())
+                {
+                    _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();    
+                }
+                else
+                {
+                    _restaurantCharacter.CurBehaviour = new CharacterLeave();
+                }
+                break;
+        }
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入思考状态 下一个状态 {next_behaviour}-----");
         
-    }
-    
-    public void Enter(RestaurantRoleBase restaurantCharacter)
-    {
-        _restaurantCharacter = restaurantCharacter;
-        _restaurantCharacter.ToLight();
     }
 
     public void Exit()
     {
-        _restaurantCharacter = null;
-    }
-
-    public void Update()
-    {
-        
-    }
-}
-public class CharacterMute : CharacterBehaviour
-{
-    public RestaurantRoleBase Char => _restaurantCharacter;
-    private RestaurantRoleBase _restaurantCharacter;
-
-    public CharacterMute()
-    {
-        
-    }
-    
-    public void Enter(RestaurantRoleBase restaurantCharacter)
-    {
-        _restaurantCharacter = restaurantCharacter;
-        _restaurantCharacter.ToDark();
-    }
-
-    public void Exit()
-    {
-        _restaurantCharacter.ToLight();
-        _restaurantCharacter = null;
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出思考状态-----");
     }
 
     public void Update()
@@ -176,19 +496,20 @@ public class CharacterMute : CharacterBehaviour
 
 public class CharacterLeave : CharacterBehaviour
 {
-    public RestaurantRoleBase Char => _restaurantCharacter;
+    // public RestaurantRoleBase Char => _restaurantCharacter;
+    public behaviour BehaviourID => behaviour.Leave;
     private RestaurantRoleBase _restaurantCharacter;
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
         _restaurantCharacter.Sprite
-        .DOFade(0, 1.5f)
-        .OnComplete(() =>
-        {
-            _restaurantCharacter.CurBehaviour = null;
-            EventModule.Instance.CharacterLeaveTopic.OnNext(_restaurantCharacter);
-            CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
-        });
+            .DOFade(0, 1.5f)
+            .OnComplete(() =>
+            {
+                _restaurantCharacter.CurBehaviour = null;
+                EventModule.Instance.CharacterLeaveTopic.OnNext(_restaurantCharacter);
+                CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
+            });
     }
 
     public void Update()
@@ -202,52 +523,5 @@ public class CharacterLeave : CharacterBehaviour
     }
 }
 
-public class FollowCharacter : CharacterBehaviour
-{
-    public RestaurantRoleBase Char => _restaurantCharacter;
-    private RestaurantRoleBase _restaurantCharacter;
 
-    private RestaurantRoleBase _destCharacter;
-    private Vector3 _seatPosition;
-    private Tweener moveTweener;
-    private Vector3 preDestionation;
-    public FollowCharacter(RestaurantRoleBase dest,Vector3 seatPosition)
-    {
-        _destCharacter = dest;
-        _seatPosition = seatPosition;
-    }
-    
-    public void Enter(RestaurantRoleBase restaurantCharacter)
-    {
-        _restaurantCharacter = restaurantCharacter;
-        preDestionation = _restaurantCharacter.transform.position = _destCharacter.transform.position;
-        
-        moveTweener = _restaurantCharacter.transform.DOMove(_destCharacter.transform.position, 0.5f).SetAutoKill(false);
-    }
 
-    public void Update()
-    {
-        // if ((Type)_destCharacter.CurBehaviour != typeof(CharacterEnterScene))
-        // {
-        //     _restaurantCharacter.CurBehaviour = null;
-        //     _restaurantCharacter.transform.position = _seatPosition;
-        // }
-        if (_destCharacter.CurBehaviour.GetType() == typeof(CharacterMakeBubble))
-        {
-            moveTweener.Kill();
-            moveTweener = null;
-            _restaurantCharacter.transform.position = _seatPosition;
-            _restaurantCharacter.CurBehaviour = null;
-        }
-        else
-        {
-            moveTweener.ChangeEndValue(_destCharacter.transform.position,true).Restart();
-            preDestionation = _destCharacter.transform.position;
-        }
-    }
-
-    public void Exit()
-    {
-        
-    }
-}

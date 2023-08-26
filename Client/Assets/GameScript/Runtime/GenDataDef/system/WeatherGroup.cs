@@ -20,11 +20,11 @@ public sealed partial class WeatherGroup :  Bright.Config.BeanBase
     {
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["季节"].IsNumber) { throw new SerializationException(); }  季节 = (common.Season)_json["季节"].AsInt; }
-        { var __json0 = _json["weather"]; if(!__json0.IsArray) { throw new SerializationException(); } Weather = new System.Collections.Generic.List<common.weather_group>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { common.weather_group __v0;  { if(!__e0.IsObject) { throw new SerializationException(); }  __v0 = common.weather_group.Deserializeweather_group(__e0);  }  Weather.Add(__v0); }   }
+        { if(!_json["weather"].IsObject) { throw new SerializationException(); }  Weather = common.weather_group.Deserializeweather_group(_json["weather"]);  }
         PostInit();
     }
 
-    public WeatherGroup(int id, common.Season 季节, System.Collections.Generic.List<common.weather_group> weather ) 
+    public WeatherGroup(int id, common.Season 季节, common.weather_group weather ) 
     {
         this.Id = id;
         this.季节 = 季节;
@@ -39,20 +39,20 @@ public sealed partial class WeatherGroup :  Bright.Config.BeanBase
 
     public int Id { get; private set; }
     public common.Season 季节 { get; private set; }
-    public System.Collections.Generic.List<common.weather_group> Weather { get; private set; }
+    public common.weather_group Weather { get; private set; }
 
     public const int __ID__ = 752220266;
     public override int GetTypeId() => __ID__;
 
     public  void Resolve(Dictionary<string, object> _tables)
     {
-        foreach(var _e in Weather) { _e?.Resolve(_tables); }
+        Weather?.Resolve(_tables);
         PostResolve();
     }
 
     public  void TranslateText(System.Func<string, string, string> translator)
     {
-        foreach(var _e in Weather) { _e?.TranslateText(translator); }
+        Weather?.TranslateText(translator);
     }
 
     public override string ToString()
@@ -60,7 +60,7 @@ public sealed partial class WeatherGroup :  Bright.Config.BeanBase
         return "{ "
         + "Id:" + Id + ","
         + "季节:" + 季节 + ","
-        + "Weather:" + Bright.Common.StringUtil.CollectionToString(Weather) + ","
+        + "Weather:" + Weather + ","
         + "}";
     }
     

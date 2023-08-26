@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Codice.Client.Common.GameUI.Checkin;
 using UniRx;
 
 public class EventModule : SingletonModule<EventModule>
@@ -51,6 +52,18 @@ public class EventModule : SingletonModule<EventModule>
     // //玩家主动闭店
     // private Subject<Unit> _closeRestaurant;
 
+    public IObserver<GameDateTime> ToNextWeekTopic => _toNextWeek;
+    public IObservable<GameDateTime> ToNextWeekSub => _toNextWeek;
+    private Subject<GameDateTime> _toNextWeek;
+
+
+    public IObserver<GameDateTime> ToNextDayTopic => _toNextDay;
+    public IObservable<GameDateTime> ToNextDaySub => _toNextDay;
+    private Subject<GameDateTime> _toNextDay;
+
+
+    // private Subject<GameDateTime> _toNextMonth;
+
     public override void OnCreate(object createParam)
     {
         _charBubble = new Subject<CharacterSaidInfo>();
@@ -62,6 +75,8 @@ public class EventModule : SingletonModule<EventModule>
         // _charDialogue = new Subject<RestaurantCharacter>();
         _characterLeave = new Subject<RestaurantRoleBase>();
         // _closeRestaurant = new();
+        _toNextWeek = new Subject<GameDateTime>();
+        _toNextDay = new Subject<GameDateTime>();
         base.OnCreate(this);
     }
 
@@ -82,5 +97,6 @@ public class EventModule : SingletonModule<EventModule>
         // _charDialogue.OnCompleted();
         _characterLeave.OnCompleted();
         // _closeRestaurant.OnCompleted();
+        _toNextWeek.OnCompleted();
     }
 }

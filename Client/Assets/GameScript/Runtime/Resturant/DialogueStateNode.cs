@@ -61,7 +61,8 @@ public class DialogueStateNode : IStateNode
         
         _clocker = UniModule.GetModule<Clocker>();
         _restaurantEnter.ShowCurtain();
-        _restaurantEnter.ShowAndAdjustShopKeeperStand(_restaurantCharacter);
+        _restaurantEnter.ShowAndAdjustShopKeeperStand(_restaurantCharacter.SeatOccupy);
+        
     }
 
     public void OnUpdate()
@@ -74,7 +75,18 @@ public class DialogueStateNode : IStateNode
 
     public void OnExit()
     {
+        if (_restaurantCharacter.CurOrderInfo != null)
+        {//下单成功
+            _restaurantCharacter.CurBehaviour = new CharacterWaiting();
+        }
+        else
+        {
+            _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
+        }
+
         _restaurantEnter.NoFocusOnCharacter();
+        
+        
         _restaurantEnter.HideCurtain();
         _restaurantEnter.HideShopKeeper();
         
@@ -177,7 +189,7 @@ public class DialogueStateNode : IStateNode
 
     private void CharacterLeave()
     {
-        _restaurantCharacter.SetLeave();
+        _restaurantCharacter.CurBehaviour = new CharacterLeave();
     }
 
     private void PlayAddFriend(RestaurantRoleBase character,int val)

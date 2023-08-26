@@ -158,8 +158,8 @@ public class ShopKeeperLineView : DialogueViewBase
         
         //调整背景图大小
         var sizeDelta = lineText.rectTransform.sizeDelta;
-        sizeDelta.x += 30f;
-        sizeDelta.y += 30f;
+        sizeDelta.x += 60f;
+        sizeDelta.y += 60f;
         _backgroundRectTransform.sizeDelta = sizeDelta;
         
         canvasGroup.alpha = 1f;

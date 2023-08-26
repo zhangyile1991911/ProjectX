@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Timers;
 using cfg;
 using cfg.character;
 using cfg.common;
 using cfg.food;
 using cfg.item;
+using cfg.system;
 using Codice.Client.BaseCommands;
 using Cysharp.Text;
 using SimpleJSON;
@@ -23,6 +26,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         initScheduleTable();
         initCharacterBubble();
         initCrowdTable();
+        InitDayScheduler();
         base.OnCreate(this);
     }
 
@@ -93,7 +97,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         {
             foreach (var day in one.CharacterAppearInfos)
             {
-                weekdaySchedule[(int)day.Weekday].Add(one.Id);
+                weekdaySchedule[(int)day.Weekday-1].Add(one.Id);
             }
         }
     }
@@ -121,7 +125,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 
     public List<int> AtWeekDay(int weekDay)
     {
-        return weekdaySchedule[weekDay];
+        return weekdaySchedule[weekDay-1];
     }
 
     public FoodMaterial GetFoodBaseInfo(int foodId)
@@ -143,6 +147,17 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 
         return null;
     }
+
+    public BehaviourGroup GetBehaviourGroup(int groupId)
+    {
+        if (_database.TbBehaviourGroup.DataMap.TryGetValue(groupId, out var group))
+        {
+            return group;
+        }
+
+        return null;
+    }
+    
 
     public MenuInfo GetMenuInfo(int menuId)
     {
@@ -223,5 +238,79 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         }
 
         return null;
+    }
+
+    private Dictionary<Season, List<DayScheduler>> SeasonScheduler;
+
+    private void InitDayScheduler()
+    {
+        SeasonScheduler = new Dictionary<Season, List<DayScheduler>>();
+        foreach (var one in _database.TbDayScheduler.DataList)
+        {
+            if (SeasonScheduler.ContainsKey(one.Seaon) == false)
+            {
+                SeasonScheduler.Add(one.Seaon,new List<DayScheduler>(30));
+            }
+            SeasonScheduler[one.Seaon].Add(one);
+        }
+    }
+    public Weather DayWeather(Season season,int day)
+    {
+        var scheduler = SeasonScheduler[season][day];
+        var weatherGroup = _database.TbWeatherGroup.DataMap[scheduler.WeatherGroupId];
+        int totalWeight = 0;
+        totalWeight += weatherGroup.Weather.WeatherWeightA;
+        totalWeight += weatherGroup.Weather.WeatherWeightB;
+        totalWeight += weatherGroup.Weather.WeatherWeightC;
+        totalWeight += weatherGroup.Weather.WeatherWeightD;
+        totalWeight += weatherGroup.Weather.WeatherWeightE;
+
+        Random a = new Random(DateTime.UtcNow.Millisecond);
+        var result = a.Next(0, totalWeight);
+        totalWeight = weatherGroup.Weather.WeatherWeightA;
+        if (result <= totalWeight)
+        {
+            return weatherGroup.Weather.WeatherA;
+        }
+
+        if (result >= totalWeight && result <= (totalWeight + weatherGroup.Weather.WeatherWeightB))
+        {
+            return weatherGroup.Weather.WeatherB;
+        }
+        totalWeight += weatherGroup.Weather.WeatherWeightB;
+        
+        if (result >= totalWeight && result <= (totalWeight + weatherGroup.Weather.WeatherWeightC))
+        {
+            return weatherGroup.Weather.WeatherC;
+        }
+        totalWeight += weatherGroup.Weather.WeatherWeightC;
+        
+        if (result >= totalWeight && result <= (totalWeight + weatherGroup.Weather.WeatherWeightD))
+        {
+            return weatherGroup.Weather.WeatherD;
+        }
+        totalWeight += weatherGroup.Weather.WeatherWeightE;
+        
+        if (result >= totalWeight && result <= (totalWeight + weatherGroup.Weather.WeatherWeightE))
+        {
+            return weatherGroup.Weather.WeatherE;
+        }
+
+        return 0;
+    }
+
+    public int FriendValLimit()
+    {
+        return _database.TbGlobalConfig.DataMap["friend_val_limit"].IntVal;
+    }
+
+    public int OrderCountLimit()
+    {
+        return _database.TbGlobalConfig.DataMap["oneday_order_limit"].IntVal;
+    }
+
+    public int CustomerEnterInterval()
+    {
+        return _database.TbGlobalConfig.DataMap["customer_enter_interval"].IntVal;
     }
 }
