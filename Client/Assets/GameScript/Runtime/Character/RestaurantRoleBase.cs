@@ -36,8 +36,9 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     //好感度
     public int Friendliness => _npcData.FriendlyValue;
+    
     protected NPCTableData _npcData;
-
+    
     public int PartnerID
     {
         get => _npcData.PartnerId;
@@ -63,6 +64,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
                 _behaviour.Exit();
                 _behaviour = value;
                 _behaviour?.Enter(this);
+                _npcData.Behaviour = (int)value.BehaviourID;
             }
         }
     }
@@ -72,15 +74,18 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     private IDisposable halfSecondTImer;
 
     protected List<AssetOperationHandle> loadResHandlers;
-    
-    
+
+    protected bool isActive;
     public virtual void InitCharacter(CharacterBaseInfo info)
     {
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _emojiNode = transform.Find("EmojiNode");
         _chatNode = transform.Find("ChatNode");
-        halfSecondTImer = Observable.Interval(TimeSpan.FromSeconds(0.25f)).Subscribe(_ =>
+        isActive = true;
+        halfSecondTImer = Observable.Interval(TimeSpan.FromSeconds(0.25f))
+            .Where(_=>isActive)
+            .Subscribe(_ =>
         {
             CurBehaviour?.Update();
         });
@@ -95,6 +100,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _spriteRenderer.sprite = null;
         _spriteRenderer = null;
         halfSecondTImer?.Dispose();
+        halfSecondTImer = null;
         UnLoadDataBase();
         UnLoadTableData();
         foreach (var handler in loadResHandlers)
@@ -135,7 +141,16 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     public virtual void AddFriendly(int num)
     {
+        //todo 改成读表
+        var limit = DataProviderModule.Instance.FriendValLimit();
+        int remain = limit - _npcData.AccumulateFriendAtWeek;
+        if (num > remain)
+        {
+            num = remain;
+        }
+        
         _npcData.FriendlyValue += num;
+        _npcData.AccumulateFriendAtWeek += num;
         UserInfoModule.Instance.UpdateNPCData(CharacterId);
     }
 
@@ -149,12 +164,14 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     {
         // _spriteRenderer.color = Color.gray;
         _spriteRenderer.sortingOrder -= 0 ;
+        isActive = false;
     }
 
     public virtual void ToLight()
     {
         // _spriteRenderer.color = Color.white;
         _spriteRenderer.sortingOrder = Mathf.Abs(_spriteRenderer.sortingOrder);
+        isActive = true;
     }
 
     protected async UniTask<GameObject> LoadPrefab(string path)

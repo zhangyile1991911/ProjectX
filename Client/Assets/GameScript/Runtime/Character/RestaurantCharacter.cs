@@ -314,7 +314,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         
         foreach (var one in weekDays)
         {
-            if ((DayOfWeek)one == _clocker.NowDateTime.DayOfWeek)
+            if (one == _clocker.NowDateTime.DayOfWeek)
                 return true;
         }
 
@@ -347,40 +347,70 @@ public class RestaurantCharacter : RestaurantRoleBase
     public void GenerateChatId()
     {
         //气泡生成规则
-        var info = new CharacterSaidInfo
-        {
-            CharacterId = CharacterId
-        };
+       
         //1 主线剧情
+        GenerateMain();
+
+        GenerateTalkId();
+
+        GenerateOrder();
+    }
+
+    public bool GenerateMain()
+    {
         if (haveMainLineChatId() <= 0)
         {
+            var info = new CharacterSaidInfo
+            {
+                CharacterId = CharacterId
+            };
             info.ChatId = generateMainLine();
             if (info.ChatId > 0)
             {
                 _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.MainLine});
                 EventModule.Instance.CharBubbleTopic.OnNext(info);
-                return;
+                return true;
             }
         }
 
+        return false;
+    }
+    
+    public bool GenerateTalkId()
+    {
         //普通重复的对话
         if (haveTalkChatId() < 5)
         {
+            var info = new CharacterSaidInfo
+            {
+                CharacterId = CharacterId
+            };
             info.ChatId = generateTalk();
             if (info.ChatId > 0)
             {
                 _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Talk});
                 EventModule.Instance.CharBubbleTopic.OnNext(info);
-                return;    
+                return true;    
             }
         }
-        
+
+        return false;
+    }
+
+    public bool GenerateOrder()
+    {
         //下单
-        if (haveOrderChatId() > 0) return;
+        if (haveOrderChatId() > 0) return true;
+        var info = new CharacterSaidInfo
+        {
+            CharacterId = CharacterId
+        };
         info.ChatId = generateOrderChatId();
-        if (info.ChatId <= 0) return;
+        if (info.ChatId <= 0) return false;
         _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Order});
+        _npcData.TodayOrderCount += 1;
         EventModule.Instance.CharBubbleTopic.OnNext(info);
+        return true;
     }
 
     // public void ToDark()
@@ -423,11 +453,13 @@ public class RestaurantCharacter : RestaurantRoleBase
     {
         _receivedFood = food;
         // curCommentChatId = _commentBubbleTB.Id;
-        CharacterSaidInfo info = new CharacterSaidInfo();
-        info.CharacterId = CharacterId;
-        info.ChatId = 0001;//todo 根据策划文档修改
-        EventModule.Instance.CharBubbleTopic.OnNext(info);
-        commentFood(food);
+        
+        // CharacterSaidInfo info = new CharacterSaidInfo();
+        // info.CharacterId = CharacterId;
+        // info.ChatId = 0001;//todo 根据策划文档修改
+        // EventModule.Instance.CharBubbleTopic.OnNext(info);
+        // commentFood(food);
+        CurBehaviour = new CharacterEating();
     }
 
     private void commentFood(CookResult food)
@@ -504,4 +536,17 @@ public class RestaurantCharacter : RestaurantRoleBase
             sr.sortingOrder = Mathf.Abs(sr.sortingOrder);
         }
     }
+
+    public void PlayEating()
+    {
+        
+    }
+
+    public bool CanOrder()
+    {
+        var limit = DataProviderModule.Instance.OrderCountLimit();
+        return _npcData.TodayOrderCount <= limit;
+    }
+    
+    
 }

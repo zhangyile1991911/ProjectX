@@ -786,7 +786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3163274536011420308
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1028,6 +1028,10 @@ PrefabInstance:
     - target: {fileID: 7684743970913242975, guid: 256a5313295ac5e4491ea5730e884bbe, type: 3}
       propertyPath: m_Name
       value: Ins_ClockWidget
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684743970913242975, guid: 256a5313295ac5e4491ea5730e884bbe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 256a5313295ac5e4491ea5730e884bbe, type: 3}

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using cfg.common;
 using Cysharp.Threading.Tasks;
 using SimpleJSON;
 using UnityEngine;
 using SQLite;
+using UniRx;
 using Unity.Collections;
 using UnityEngine.PlayerLoop;
 
@@ -70,8 +73,13 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             _userTableData = new ();
             _userTableData.Id = 11111;
-            _userTableData.now = 1682155171369;
+            _userTableData.now = 0;
             _userTableData.money = 500;
+            // _userTableData.season = (int)Season.Spring;
+            // _userTableData.day_of_month = 0;
+            // _userTableData.second_of_day = 20*60*60;
+            _userTableData.today_weather = (int)Weather.Sunshine;
+            _userTableData.next_weather = (int)Weather.Sunshine;
             _sqLite.Insert(_userTableData);
         }
 
@@ -94,6 +102,9 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var ownMenuQuery = $"select * from OwnMenu";
         OwnMenus = _sqLite.Query<OwnMenu>(ownMenuQuery);
         initOwnMenuData(OwnMenus);
+
+        EventModule.Instance.ToNextWeekSub.Subscribe(ResetNPCWeekDay);
+        EventModule.Instance.ToNextDaySub.Subscribe(ResetNPCWeekDay);
     }
 
     private void initItem(List<ItemTableData> items)
@@ -389,6 +400,30 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.Insert(newNpc);
         return newNpc;
     }
+    
+    public void UpdateNPCData(int npcId)
+    {
+        var d = NPCData(npcId);
+        if (d == null) return;
+        _sqLite.Update(d);
+    }
+
+    private void ResetNPCWeekDay(GameDateTime gameDateTime)
+    {
+        foreach(var one in _npcTableDatas.Values)
+        {
+            one.AccumulateFriendAtWeek = 0;
+        }
+    }
+
+    private void ResetNPCDaily(GameDateTime time)
+    {
+        foreach(var one in _npcTableDatas.Values)
+        {
+            one.TodayOrderCount = 0;
+        }
+    }
+    
 
     public bool HaveReadDialogueId(int did)
     {
@@ -407,7 +442,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     public void AddSecond(int sec)
     {
-        _userTableData.now += sec*1000;
+        _userTableData.now += sec;
         _sqLite.Update(_userTableData);
     }
 
@@ -429,12 +464,6 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     }
     
 
-    public void UpdateNPCData(int npcId)
-    {
-        var d = NPCData(npcId);
-        if (d == null) return;
-        _sqLite.Update(d);
-    }
     
     void updateRestaurantRuntimeData()
     {//todo 这个地方可能是个性能点 考虑用异步完成
@@ -454,6 +483,23 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     {
         return _restaurantRuntimeData.SoldMenuId;
     }
+
+    public Weather TodayWeather()
+    {
+        return (Weather)_userTableData.today_weather;
+    }
+
+    public void RefreshWeather()
+    {
+        _userTableData.today_weather = _userTableData.next_weather;
+        
+        _userTableData.next_weather = (int)DataProviderModule._instance.DayWeather(
+            Clocker.Instance.NowDateTime.Season,
+            (int)Clocker.Instance.NowDateTime.Day);
+        _sqLite.Update(_userTableData);
+    }
+    
+
     
     // public void SaveAllData()
     // {

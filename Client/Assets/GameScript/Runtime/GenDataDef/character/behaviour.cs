@@ -7,42 +7,38 @@
 //------------------------------------------------------------------------------
 
 
-namespace cfg.common
+namespace cfg.character
 { 
-    public enum WeekDay
+    public enum behaviour
     {
         /// <summary>
-        /// 周一
+        /// 离开
         /// </summary>
-        Monday = 1,
+        Leave = 1,
         /// <summary>
-        /// 周二
+        /// 点餐
         /// </summary>
-        Tuesday = 2,
+        OrderMeal = 2,
         /// <summary>
-        /// 周三
+        /// 点饮料
         /// </summary>
-        Wednesday = 3,
+        OrderDrink = 3,
         /// <summary>
-        /// 周四
+        /// 闲聊
         /// </summary>
-        Thursday = 4,
+        Talk = 4,
         /// <summary>
-        /// 周五
+        /// 进入
         /// </summary>
-        Friday = 5,
+        Enter = 5,
         /// <summary>
-        /// 周六
+        /// 等待
         /// </summary>
-        Saturday = 6,
+        Waiting = 6,
         /// <summary>
-        /// 周日
+        /// 吃法
         /// </summary>
-        Sunday = 7,
-        /// <summary>
-        /// 全部
-        /// </summary>
-        AllWeekDay = 8,
+        Eating = 7,
     }
 
 } 

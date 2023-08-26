@@ -110,7 +110,11 @@ public class RestaurantEnter : MonoBehaviour
                     chara.transform.position = seatWorldPosition;
                     if (chara.HaveSoul)
                     {
-                        chara.CurBehaviour = new CharacterMakeBubble();    
+                        chara.CurBehaviour = new CharacterTalk();    
+                    }
+                    else
+                    {
+                        chara.CurBehaviour = new CharacterWaiting();
                     }
                     break;
                 // }
@@ -245,20 +249,21 @@ public class RestaurantEnter : MonoBehaviour
         {
             if (one == c)
             {
-                one.CurBehaviour = new CharacterOnFocus();
+                one.ToLight();
             }
             else
             {
-                one.CurBehaviour = new CharacterMute();
+                one.ToDark();
             }
         }
     }
-
+    
     public void NoFocusOnCharacter()
     {
         foreach (var one in _waitingCharacters.Values)
         {
-            one.CurBehaviour = new CharacterMakeBubble();
+            // one.CurBehaviour = new CharacterMute();
+            one.ToLight();
         }
     }
 
@@ -422,11 +427,11 @@ public class RestaurantEnter : MonoBehaviour
     }
     
     
-    public void ShowAndAdjustShopKeeperStand(RestaurantCharacter talker)
+    public void ShowAndAdjustShopKeeperStand(int seatIndex)
     {
         var shopKeeper = CharacterMgr.Instance.GetCharacterById(10004);
         var skTrans = shopKeeper.transform;
-        switch (talker.SeatOccupy)
+        switch (seatIndex)
         {
             case 0:
             case 1:

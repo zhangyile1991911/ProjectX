@@ -8,7 +8,7 @@
       0
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 0,
@@ -29,7 +29,7 @@
       10001001
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 20,
@@ -71,7 +71,7 @@
       10001002
     ],
     "week_day": [
-      0,
+      7,
       2
     ],
     "friend_value": {
@@ -94,7 +94,7 @@
     ],
     "week_day": [
       6,
-      0,
+      7,
       1
     ],
     "friend_value": {
@@ -138,7 +138,7 @@
       0
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 0,
@@ -159,7 +159,7 @@
       0
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": -9999,
@@ -180,7 +180,7 @@
       10002001
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 10,
@@ -201,7 +201,7 @@
       10002002
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 30,
@@ -245,7 +245,7 @@
       10002002
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 30,
@@ -266,7 +266,7 @@
       10002002
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 35,
@@ -287,7 +287,7 @@
       0
     ],
     "week_day": [
-      7
+      8
     ],
     "friend_value": {
       "start_value": 0,

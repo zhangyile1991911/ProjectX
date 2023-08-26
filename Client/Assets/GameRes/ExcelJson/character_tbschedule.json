@@ -1,7 +1,7 @@
 [
   {
     "id": 10001,
-    "name": "aa",
+    "name": "章鱼",
     "partner_id": 0,
     "character_appear_infos": [
       {
@@ -100,7 +100,7 @@
         }
       },
       {
-        "weekday": 0,
+        "weekday": 7,
         "weather_limit": [
           1,
           2
@@ -122,7 +122,7 @@
   },
   {
     "id": 10002,
-    "name": "bb",
+    "name": "喵老师",
     "partner_id": 10003,
     "character_appear_infos": [
       {
@@ -164,7 +164,7 @@
         }
       },
       {
-        "weekday": 0,
+        "weekday": 7,
         "weather_limit": [
           1,
           2
@@ -172,6 +172,88 @@
         "enter_time_begin": {
           "hour": 21,
           "minutes": 1
+        },
+        "enter_time_end": {
+          "hour": 22,
+          "minutes": 0
+        },
+        "leave_time": {
+          "hour": 23,
+          "minutes": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": 20001,
+    "name": "年轻人",
+    "partner_id": 0,
+    "character_appear_infos": [
+      {
+        "weekday": 1,
+        "weather_limit": [
+          1,
+          2
+        ],
+        "enter_time_begin": {
+          "hour": 22,
+          "minutes": 30
+        },
+        "enter_time_end": {
+          "hour": 23,
+          "minutes": 30
+        },
+        "leave_time": {
+          "hour": 25,
+          "minutes": 0
+        }
+      },
+      {
+        "weekday": 3,
+        "weather_limit": [
+          1,
+          2
+        ],
+        "enter_time_begin": {
+          "hour": 23,
+          "minutes": 30
+        },
+        "enter_time_end": {
+          "hour": 24,
+          "minutes": 30
+        },
+        "leave_time": {
+          "hour": 26,
+          "minutes": 0
+        }
+      },
+      {
+        "weekday": 5,
+        "weather_limit": [
+          2
+        ],
+        "enter_time_begin": {
+          "hour": 21,
+          "minutes": 0
+        },
+        "enter_time_end": {
+          "hour": 22,
+          "minutes": 30
+        },
+        "leave_time": {
+          "hour": 24,
+          "minutes": 0
+        }
+      },
+      {
+        "weekday": 6,
+        "weather_limit": [
+          1,
+          2
+        ],
+        "enter_time_begin": {
+          "hour": 20,
+          "minutes": 0
         },
         "enter_time_end": {
           "hour": 22,

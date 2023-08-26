@@ -10,12 +10,21 @@ public class UserTableData
     [Column("Id")]
     public long Id { get; set; }
     
-    [Column("now")]
-    public long now { get; set; }
+    // [Column("now")]
+    // public long now { get; set; }
     
     [Column("money")]
     public long money { get; set; }
+
+    [Column("today_weather")]
+    public int today_weather { get; set; }
     
+    [Column("next_weather")]
+    public int next_weather { get; set; }
+
+    [Column("now")]
+    public long now { get; set; }
+    //这个时间戳是从游戏开始时间2045-1-1开始的
 }
 
 

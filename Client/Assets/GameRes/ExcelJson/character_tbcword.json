@@ -295,49 +295,49 @@
   },
   {
     "id": 43,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 20,
     "peopleNum": 7,
     "interval": 10
   },
   {
     "id": 44,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 21,
     "peopleNum": 6,
     "interval": 12
   },
   {
     "id": 45,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 22,
     "peopleNum": 7,
     "interval": 17
   },
   {
     "id": 46,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 23,
     "peopleNum": 6,
     "interval": 20
   },
   {
     "id": 47,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 24,
     "peopleNum": 5,
     "interval": 25
   },
   {
     "id": 48,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 25,
     "peopleNum": 3,
     "interval": 30
   },
   {
     "id": 49,
-    "weekDay": 0,
+    "weekDay": 7,
     "hour": 26,
     "peopleNum": 2,
     "interval": 30

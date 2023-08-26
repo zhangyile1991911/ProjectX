@@ -416,7 +416,7 @@ public class FryModule : CookModule
         oil_jump_pools.RemoveAt(oil_jump_pools.Count - 1);
         obj.transform.position = pan.transform.position;
         obj.PlayEffect(oil_jump_pools);
-        Debug.Log($"oil_jump_pools remain = {oil_jump_pools.Count}");
+        // Debug.Log($"oil_jump_pools remain = {oil_jump_pools.Count}");
     }
     
     
