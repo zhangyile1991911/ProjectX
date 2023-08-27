@@ -50,9 +50,8 @@ public class  GameDateTime
             _minutes -= 60;
         }
 
-        while (_hour >= 30)
+        while (_hour >= HourOfEndDay)
         {
-            _hour = 20;
             _day += 1;
 
             var isNewWeek = false;
@@ -95,38 +94,46 @@ public class  GameDateTime
         }
     }
     
-    public void NextDay()
+    public long NextDay()
     {
-        _day += 1;
-        var wd = (int)_WeekDay + 1;
-        if (wd > (int)WeekDay.Sunday)
-        {
-            _WeekDay = WeekDay.Monday;
-        }
-        else
-        {
-            _WeekDay = (WeekDay)wd;
-        }
-        while (_day > 30)
-        {
-            var now_seaon = (int)_season;
-            now_seaon += 1;
-            if (now_seaon > (int)cfg.common.Season.Winnter)
-            {
-                _season = cfg.common.Season.Spring;
-            }
-            else
-            {
-                _season = (Season)now_seaon;
-            }
+        // _day += 1;
+        // var wd = (int)_WeekDay + 1;
+        // if (wd > (int)WeekDay.Sunday)
+        // {
+        //     _WeekDay = WeekDay.Monday;
+        // }
+        // else
+        // {
+        //     _WeekDay = (WeekDay)wd;
+        // }
+        //
+        // while (_day > 30)
+        // {
+        //     var now_seaon = (int)_season;
+        //     now_seaon += 1;
+        //     if (now_seaon > (int)cfg.common.Season.Winnter)
+        //     {
+        //         _season = cfg.common.Season.Spring;
+        //     }
+        //     else
+        //     {
+        //         _season = (Season)now_seaon;
+        //     }
+        //
+        //     
+        //     _day = 1;
+        // }
 
-            
-            _day = 1;
-            //重置回到下一天晚上八点
-            _hour = 20;
-            _minutes = 0;
-            _seconds = 0;
-        }
+        var remainHour = HourOfEndDay - _hour;
+        var remainMinutes = 60 - _minutes;
+        var addSecond = remainHour * 60 * 60 - remainMinutes * 60;
+        //重置到第二天晚上八点
+        addSecond += 20 * 60 * 60;
+        return addSecond;
+        //重置回到下一天晚上八点
+        // _hour = 20;
+        // _minutes = 0;
+        // _seconds = 0;
     }
 
     // public static int operator -(GameDateTime b, GameDateTime c)
@@ -146,6 +153,7 @@ public class  GameDateTime
     private const int InitialHour = 8;
     private const int InitialMinute = 0;
     private const int InitialSecond = 0;
+    public const long HourOfEndDay = 30;
     public static TimeSpan operator -(GameDateTime a,GameDateTime b)
     {
         var a_total_second = a.FromInitialDay();
@@ -290,7 +298,8 @@ public class Clocker : SingletonModule<Clocker>
         //
         // var distance = (nextDay - _nowDate).TotalSeconds;
         // AddSecond((int)distance);
-        _nowDate.NextDay();
+        
+        UserInfoModule.Instance.AddSecond((int)_nowDate.NextDay());
     }
 
     public override void OnUpdate()

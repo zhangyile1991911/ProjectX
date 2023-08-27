@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd56ed8f75e9b9e42bc75379aca1e50f, type: 3}
   m_Name: Middle
   m_EditorClassIdentifier: 
-  Level: 0
+  Level: 1
   duration: 15
   temperatureArea: {x: 0.4, y: 0.8}
   maxTemperature: 70

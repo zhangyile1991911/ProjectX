@@ -87,6 +87,8 @@ public class RestaurantCharacter : RestaurantRoleBase
     public Transform OrderNode => _orderNode;
     protected Transform _orderNode;
     
+    protected OrderBoard orderBoardBoard;
+    
     public override void InitCharacter(CharacterBaseInfo info)
     {
         // _baseInfo = info;
@@ -94,6 +96,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // _emojiNode = transform.Find("EmojiNode");
         // LoadCharacterSprite();
         base.InitCharacter(info);
+        LoadSprite(_baseInfo.PicturePath);
         _orderNode = transform.Find("OrderNode");
         _saidBubbles = new(10);
         // curCommentChatId = 0;
@@ -103,7 +106,6 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curOrderMenuId = 0;
         foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
-       
     }
 
     public override void ReleaseCharacter()
@@ -149,6 +151,7 @@ public class RestaurantCharacter : RestaurantRoleBase
     // }
     protected override void LoadTableData()
     {
+        base.LoadTableData();
         _mainLineBubbleTB = new(10);
         _talkBubbleTB = new(10);
         _orderBubbleTB = new(10);
@@ -307,13 +310,10 @@ public class RestaurantCharacter : RestaurantRoleBase
 
     private bool checkWeekday(List<WeekDay> weekDays)
     {
-        if (weekDays.Count == 1)
-        {
-            return weekDays[0] == WeekDay.AllWeekDay;
-        }
-        
         foreach (var one in weekDays)
         {
+            if (one == WeekDay.AllWeekDay)
+                return true;
             if (one == _clocker.NowDateTime.DayOfWeek)
                 return true;
         }
@@ -460,6 +460,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // EventModule.Instance.CharBubbleTopic.OnNext(info);
         // commentFood(food);
         CurBehaviour = new CharacterEating();
+        hideOrderBoard();
     }
 
     private void commentFood(CookResult food)
@@ -511,10 +512,19 @@ public class RestaurantCharacter : RestaurantRoleBase
     
     private async void createOrderBoard()
     {
-        var prefab = await LoadPrefab("Assets/GameRes/Prefabs/OrderBoard.prefab");
-        var go = GameObject.Instantiate<GameObject>(prefab, _orderNode);
-        var orderBoardBoard = go.GetComponent<OrderBoard>();
+        if (orderBoardBoard == null)
+        {
+            var prefab = await LoadPrefab("Assets/GameRes/Prefabs/OrderBoard.prefab");
+            var go = Instantiate<GameObject>(prefab, _orderNode);
+            orderBoardBoard = go.GetComponent<OrderBoard>();    
+        }
         orderBoardBoard.Info = _orderMealInfo;
+        orderBoardBoard.gameObject.SetActive(true);
+    }
+
+    private void hideOrderBoard()
+    {
+        orderBoardBoard.gameObject.SetActive(false);
     }
 
     public override void ToDark()
@@ -536,17 +546,11 @@ public class RestaurantCharacter : RestaurantRoleBase
             sr.sortingOrder = Mathf.Abs(sr.sortingOrder);
         }
     }
-
-    public void PlayEating()
-    {
-        
-    }
-
+    
     public bool CanOrder()
     {
         var limit = DataProviderModule.Instance.OrderCountLimit();
         return _npcData.TodayOrderCount <= limit;
     }
-    
     
 }

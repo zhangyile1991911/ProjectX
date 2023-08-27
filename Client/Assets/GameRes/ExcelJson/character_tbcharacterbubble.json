@@ -16,7 +16,7 @@
     },
     "bubble_type": 3,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "FirstTalk"
   },
@@ -37,7 +37,7 @@
     },
     "bubble_type": 3,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "SecondTalk"
   },
@@ -58,7 +58,7 @@
     },
     "bubble_type": 2,
     "menu_id": 10002,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
   },
@@ -80,7 +80,7 @@
     },
     "bubble_type": 2,
     "menu_id": 10002,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
   },
@@ -103,7 +103,7 @@
     },
     "bubble_type": 1,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "complaintA"
   },
@@ -125,7 +125,7 @@
     },
     "bubble_type": 1,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "complaintB"
   },
@@ -146,7 +146,7 @@
     },
     "bubble_type": 4,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
     "dialogue_start_node": "ZhangyuComment"
   },
@@ -162,12 +162,12 @@
       8
     ],
     "friend_value": {
-      "start_value": -9999,
+      "start_value": 0,
       "end_value": 10
     },
     "bubble_type": 3,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/Miao.yarnproject",
     "dialogue_start_node": "MiaoMainFirst"
   },
@@ -188,7 +188,7 @@
     },
     "bubble_type": 3,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble1.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
     "dialogue_start_node": "MiaoSecond"
   },
@@ -209,7 +209,7 @@
     },
     "bubble_type": 2,
     "menu_id": 10002,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble2.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
   },
@@ -231,7 +231,7 @@
     },
     "bubble_type": 5,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
   },
@@ -253,7 +253,7 @@
     },
     "bubble_type": 6,
     "menu_id": 10002,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
   },
@@ -274,7 +274,7 @@
     },
     "bubble_type": 3,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
     "dialogue_start_node": "MiaoThird"
   },
@@ -295,8 +295,447 @@
     },
     "bubble_type": 1,
     "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/wish_bubble3.png",
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
     "dialogue_start_node": "LittleGirl_talkB"
+  },
+  {
+    "id": 20001001,
+    "title": "还能点单吗",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      1
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_a"
+  },
+  {
+    "id": 20001002,
+    "title": "老板晚上好",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001001
+    ],
+    "week_day": [
+      3
+    ],
+    "friend_value": {
+      "start_value": 101,
+      "end_value": 200
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_b"
+  },
+  {
+    "id": 20001003,
+    "title": "肚子有点饿了",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001002
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 201,
+      "end_value": 300
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_c"
+  },
+  {
+    "id": 20001004,
+    "title": "又要重写了",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001003
+    ],
+    "week_day": [
+      6
+    ],
+    "friend_value": {
+      "start_value": 301,
+      "end_value": 400
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_d"
+  },
+  {
+    "id": 20001005,
+    "title": "每时每刻都好紧张",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001004
+    ],
+    "week_day": [
+      3
+    ],
+    "friend_value": {
+      "start_value": 401,
+      "end_value": 500
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_e"
+  },
+  {
+    "id": 20001006,
+    "title": "什么时候加班",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001005
+    ],
+    "week_day": [
+      1
+    ],
+    "friend_value": {
+      "start_value": 501,
+      "end_value": 600
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_f"
+  },
+  {
+    "id": 20001007,
+    "title": "累死了",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001006
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 601,
+      "end_value": 700
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_g"
+  },
+  {
+    "id": 20001008,
+    "title": "又要团建",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001007
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 701,
+      "end_value": 800
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_h"
+  },
+  {
+    "id": 20001009,
+    "title": "老板啊,好羡慕",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001008
+    ],
+    "week_day": [
+      3
+    ],
+    "friend_value": {
+      "start_value": 801,
+      "end_value": 900
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_l"
+  },
+  {
+    "id": 20001010,
+    "title": "你有什么梦想",
+    "npc_id": 20001,
+    "repeated": false,
+    "pre_condition": [
+      20001009
+    ],
+    "week_day": [
+      6
+    ],
+    "friend_value": {
+      "start_value": 901,
+      "end_value": 1000
+    },
+    "bubble_type": 3,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_m"
+  },
+  {
+    "id": 20002001,
+    "title": "大城市",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001001
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_a"
+  },
+  {
+    "id": 20002002,
+    "title": "剧还没来得及看",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001002
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 101,
+      "end_value": 200
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_b"
+  },
+  {
+    "id": 20002003,
+    "title": "一定能通过的",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001003
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 201,
+      "end_value": 300
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_c"
+  },
+  {
+    "id": 20002004,
+    "title": "睡个懒觉",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001004
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 301,
+      "end_value": 400
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_d_1"
+  },
+  {
+    "id": 20002005,
+    "title": "教教我",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001004
+    ],
+    "week_day": [
+      1
+    ],
+    "friend_value": {
+      "start_value": 301,
+      "end_value": 400
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_d_2"
+  },
+  {
+    "id": 20002006,
+    "title": "做卵做啊",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001005
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 401,
+      "end_value": 500
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_e_1"
+  },
+  {
+    "id": 20002007,
+    "title": "好羡慕",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001006
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 401,
+      "end_value": 500
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_e_2"
+  },
+  {
+    "id": 20002008,
+    "title": "放假啦",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001006
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 501,
+      "end_value": 600
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_f_1"
+  },
+  {
+    "id": 20002009,
+    "title": "去哪玩呢",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001007
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 601,
+      "end_value": 700
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_f_2"
+  },
+  {
+    "id": 20002010,
+    "title": "租的房子",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001008
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 701,
+      "end_value": 800
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_g_1"
+  },
+  {
+    "id": 20002011,
+    "title": "看到一个广告",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      20001008
+    ],
+    "week_day": [],
+    "friend_value": {
+      "start_value": 801,
+      "end_value": 900
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_g_2"
   }
 ]

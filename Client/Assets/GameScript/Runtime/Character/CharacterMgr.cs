@@ -42,7 +42,7 @@ public class CharacterMgr : SingletonModule<CharacterMgr>
             return character;
         }
         
-        var handle = YooAssets.LoadAssetAsync<GameObject>(tbCharacter.ResPath);
+        var handle = YooAssets.LoadAssetAsync<GameObject>(tbCharacter.PrefabPath);
         await handle.ToUniTask();
     
         var go = handle.AssetObject as GameObject;

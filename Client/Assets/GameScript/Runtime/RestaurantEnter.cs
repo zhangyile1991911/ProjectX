@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using cfg.character;
 using cfg.food;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
@@ -108,14 +109,38 @@ public class RestaurantEnter : MonoBehaviour
                 // {
                     var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, chara.SeatOccupy);
                     chara.transform.position = seatWorldPosition;
-                    if (chara.HaveSoul)
+                    switch (chara.BehaviourID)
                     {
-                        chara.CurBehaviour = new CharacterTalk();    
+                        case behaviour.Leave:
+                            chara.CurBehaviour = new CharacterLeave();
+                            break;
+                        case behaviour.Talk:
+                            chara.CurBehaviour = new CharacterTalk();
+                            break;
+                        case behaviour.Waiting:
+                            chara.CurBehaviour = new CharacterWaiting();
+                            break;
+                        case behaviour.Eating:
+                            chara.CurBehaviour = new CharacterEating();
+                            break;
+                        case behaviour.OrderDrink:
+                            chara.CurBehaviour = new CharacterOrderDrink();
+                            break;
+                        case behaviour.OrderMeal:
+                            chara.CurBehaviour = new CharacterOrderMeal();
+                            break;
+                        default:
+                            break;
                     }
-                    else
-                    {
-                        chara.CurBehaviour = new CharacterWaiting();
-                    }
+                    // if (chara.HaveSoul)
+                    // {
+                    //     chara.CurBehaviour = new CharacterTalk();    
+                    // }
+                    // else
+                    // {
+                    //     chara.CurBehaviour = new CharacterWaiting();
+                    // }
+                
                     break;
                 // }
             }
@@ -189,7 +214,7 @@ public class RestaurantEnter : MonoBehaviour
         
     }
 
-    public void CharacterLeave(RestaurantRoleBase character)
+    private void CharacterLeave(RestaurantRoleBase character)
     {
         CharacterReturnSeat(character.SeatOccupy);
         _waitingCharacters.Remove(character.CharacterId);

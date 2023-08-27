@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using cfg.character;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UniRx;
 using UnityEngine;
 using Yarn.Unity;
@@ -49,6 +50,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         }
     }
 
+    public behaviour BehaviourID => (behaviour)_npcData.Behaviour;
     public CharacterBehaviour CurBehaviour
     {
         get => _behaviour;
@@ -65,6 +67,8 @@ public abstract class RestaurantRoleBase : MonoBehaviour
                 _behaviour = value;
                 _behaviour?.Enter(this);
                 _npcData.Behaviour = (int)value.BehaviourID;
+                UserInfoModule.Instance.UpdateNPCData(CharacterId);
+                
             }
         }
     }
@@ -76,10 +80,14 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     protected List<AssetOperationHandle> loadResHandlers;
 
     protected bool isActive;
+
+    // protected Animation _animation;
     public virtual void InitCharacter(CharacterBaseInfo info)
     {
         _baseInfo = info;
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // _animation = GetComponent<Animation>();
         _emojiNode = transform.Find("EmojiNode");
         _chatNode = transform.Find("ChatNode");
         isActive = true;
@@ -101,6 +109,11 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _spriteRenderer = null;
         halfSecondTImer?.Dispose();
         halfSecondTImer = null;
+        
+        spriteAtlasHandle?.Dispose();
+        spriteAtlasHandle = null;
+        _spriteDict.Clear();
+        
         UnLoadDataBase();
         UnLoadTableData();
         foreach (var handler in loadResHandlers)
@@ -141,16 +154,23 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     public virtual void AddFriendly(int num)
     {
-        //todo 改成读表
-        var limit = DataProviderModule.Instance.FriendValLimit();
-        int remain = limit - _npcData.AccumulateFriendAtWeek;
-        if (num > remain)
+        if (num > 0)
         {
-            num = remain;
+            var limit = DataProviderModule.Instance.FriendValLimit();
+            int remain = limit - _npcData.AccumulateFriendAtWeek;
+            if (num > remain)
+            {
+                num = remain;
+            }
+        
+            _npcData.FriendlyValue += num;
+            _npcData.AccumulateFriendAtWeek += num;    
+        }
+        else
+        {
+            _npcData.FriendlyValue = _npcData.FriendlyValue + num < 0 ? 0 : _npcData.FriendlyValue + num;
         }
         
-        _npcData.FriendlyValue += num;
-        _npcData.AccumulateFriendAtWeek += num;
         UserInfoModule.Instance.UpdateNPCData(CharacterId);
     }
 
@@ -182,15 +202,56 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         return go.AssetObject as GameObject;
     }
 
-    protected async UniTask<Sprite> LoadSprite(string path)
+    protected SubAssetsOperationHandle spriteAtlasHandle;
+    protected Dictionary<string, Sprite> _spriteDict = new Dictionary<string, Sprite>();
+    protected void LoadSprite(string path)
     {
-        var go = YooAssets.LoadAssetAsync<Sprite>(path);
-        loadResHandlers.Add(go);
-        await go.ToUniTask(this);
-        return go.AssetObject as Sprite;
+        spriteAtlasHandle = YooAssets.LoadSubAssetsSync<Sprite>(path);
+        // loadResHandlers.Add(go);
+        // await spriteAtlasHandle.ToUniTask(this);
+
+        var arr = spriteAtlasHandle.GetSubAssetObjects<Sprite>();
+
+        foreach (var one in arr)
+        {
+            _spriteDict.Add(one.name,one);
+        }
+        
     }
+    
+    public virtual void PlayAnimation(behaviour behaviourId)
+    {
+        switch (behaviourId)
+        {
+            case behaviour.Eating:
+                if (_spriteRenderer.sprite == null)
+                {
+                    _spriteRenderer.sprite = _spriteDict["eat1"];
+                }
+                else if (_spriteRenderer.sprite.name == "eat1")
+                {
+                    _spriteRenderer.sprite = _spriteDict["eat2"];    
+                }
+                else
+                {
+                    _spriteRenderer.sprite = _spriteDict["eat1"];
+                }
+                break;
+            case behaviour.Talk:
+                _spriteRenderer.sprite = _spriteDict["angry"];
+                break;
+            case behaviour.Waiting:
+                _spriteRenderer.sprite = _spriteDict["happy"];
+                break;
+            default:
+                _spriteRenderer.sprite = _spriteDict["waiting"];       
+                break;
+        }
+    }
+    
     // private void Update()
     // {
     //     CurBehaviour?.Update();
     // }
+    
 }

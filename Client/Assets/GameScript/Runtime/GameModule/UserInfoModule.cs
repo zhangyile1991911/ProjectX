@@ -297,6 +297,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     public void RemoveWaitingCharacter(int characterId)
     {
         _restaurantRuntimeData.WaitingCustomers.Remove(characterId);
+        updateRestaurantRuntimeData();
         // foreach (var one in _restaurantRuntimeData.WaitingCustomers)
         // {
         //     if (one.CharacterId == characterId)

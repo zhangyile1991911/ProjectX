@@ -202,6 +202,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
         updateBullect();
         updateAirPlane();
         updateEnemy();
+        //增加时间
+        Clocker.Instance.AddSecond(1);
         // Debug.Log($"bullets.CountAll = {bulletPool.CountAll} bullets.CountActive = {bulletPool.CountActive} bullets.CountInactive = {bulletPool.CountInactive}");
         // Debug.Log($"enemyPool.CountAll = {enemyPool.CountAll} enemyPool.CountActive = {enemyPool.CountActive} enemyPool.CountInactive = {enemyPool.CountInactive}");
     }

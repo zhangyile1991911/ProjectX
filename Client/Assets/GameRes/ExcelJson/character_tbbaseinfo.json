@@ -4,8 +4,8 @@
     "name": "章鱼",
     "desc": "",
     "soul": 1,
-    "res_path": "Assets/GameRes/Prefabs/NPC/YoungFatMan.prefab",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/YoungFatManPortrait.png",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/YoungFatMan.prefab",
+    "picture_path": "Assets/GameRes/Picture/Character/extra01/A1.png",
     "like_flavour": [
       1006,
       1016
@@ -22,8 +22,8 @@
     "name": "喵喵",
     "desc": "",
     "soul": 1,
-    "res_path": "Assets/GameRes/Prefabs/NPC/LittleGirl.prefab",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/LittleGirlPortrait.png",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/LittleGirl.prefab",
+    "picture_path": "",
     "like_flavour": [
       1006,
       1016
@@ -40,8 +40,8 @@
     "name": "伊万",
     "desc": "喵老师的熊",
     "soul": 1,
-    "res_path": "Assets/GameRes/Prefabs/NPC/Bear.prefab",
-    "portrait_path": "Assets/GameRes/Picture/Character/Portrait/DeliveryManPortrait.png",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Bear.prefab",
+    "picture_path": "",
     "like_flavour": [],
     "unlike_flavour": [],
     "behaviour_group": 10001
@@ -51,8 +51,8 @@
     "name": "老板",
     "desc": "店主",
     "soul": 0,
-    "res_path": "Assets/GameRes/Prefabs/NPC/ShopKeeper.prefab",
-    "portrait_path": "",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/ShopKeeper.prefab",
+    "picture_path": "",
     "like_flavour": [],
     "unlike_flavour": [],
     "behaviour_group": 10001
@@ -62,8 +62,8 @@
     "name": "年轻人",
     "desc": "有点疲惫的年轻人",
     "soul": 1,
-    "res_path": "Assets/GameRes/Prefabs/NPC/Young.prefab",
-    "portrait_path": "",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Extra01.prefab",
+    "picture_path": "Assets/GameRes/Picture/Character/extra01/A1.png",
     "like_flavour": [
       1006,
       1004,

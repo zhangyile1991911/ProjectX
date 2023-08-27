@@ -202,6 +202,7 @@ public class CharacterEnterScene : CharacterBehaviour
     {
         Debug.Log($"-----{restaurantCharacter.CharacterName} 进入饭店状态-----");
         _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
         _restaurantCharacter.Sprite.color = Color.clear;
         _restaurantCharacter.transform.position = destPoint;
 
@@ -240,6 +241,7 @@ public class CharacterTalk : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入讲话状态-----");
     }
@@ -277,6 +279,7 @@ public class CharacterWaiting : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待状态-----");
     }
 
@@ -310,6 +313,7 @@ public class CharacterOrderMeal : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantRoleBase)
     {
         _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入下单料理状态-----");
     }
@@ -350,6 +354,7 @@ public class CharacterOrderDrink : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantRoleBase)
     {
         _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入下单饮料状态-----");
     }
@@ -383,6 +388,7 @@ public class CharacterEating : CharacterBehaviour
     public behaviour BehaviourID => behaviour.Eating;
     private RestaurantCharacter _restaurantCharacter;
     private long start_eating_timestamp;
+    private long start_chow_timestamp;
     public CharacterEating()
     {
         
@@ -391,8 +397,8 @@ public class CharacterEating : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantRoleBase)
     {
         _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
-        _restaurantCharacter.PlayEating();
-        start_eating_timestamp = Clocker.Instance.NowDateTime.Timestamp;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
+        start_chow_timestamp = start_eating_timestamp = Clocker.Instance.NowDateTime.Timestamp;
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入吃饭状态-----");
     }
 
@@ -408,10 +414,17 @@ public class CharacterEating : CharacterBehaviour
 
     private void Eating()
     {
-        var eating_duration = (Clocker.Instance.NowDateTime.Timestamp - start_eating_timestamp) / 60L;
+        var nowts = Clocker.Instance.NowDateTime.Timestamp;
+        var eating_duration = (nowts - start_eating_timestamp) / 60L;
         if (eating_duration > 10)
         {
             _restaurantCharacter.CurBehaviour = new CharacterThinking();
+        }
+        eating_duration = (nowts - start_chow_timestamp) / 60L;
+        if (eating_duration % 2 == 0)
+        {
+            _restaurantCharacter.PlayAnimation(BehaviourID);
+            start_chow_timestamp = nowts;
         }
     }
 }
@@ -429,6 +442,9 @@ public class CharacterThinking : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantRoleBase)
     {
         _restaurantCharacter = restaurantRoleBase  as RestaurantCharacter;
+        
+        _restaurantCharacter.PlayAnimation(BehaviourID);
+        
         //随机组
         int id = _restaurantCharacter.TBBaseInfo.BehaviourGroup;
         var tb = DataProviderModule.Instance.GetBehaviourGroup(id);
@@ -502,6 +518,7 @@ public class CharacterLeave : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
         _restaurantCharacter.Sprite
             .DOFade(0, 1.5f)
             .OnComplete(() =>
