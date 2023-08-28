@@ -31,10 +31,10 @@
         ],
         "enter_time_begin": {
           "hour": 21,
-          "minutes": 36
+          "minutes": 0
         },
         "enter_time_end": {
-          "hour": 21,
+          "hour": 22,
           "minutes": 35
         },
         "leave_time": {

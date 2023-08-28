@@ -40,5 +40,19 @@
     "int_val": 3,
     "float_val": 0,
     "string_val": ""
+  },
+  {
+    "id": "attenuate_patient",
+    "desc": "客人每分钟耐心值衰减",
+    "int_val": 5,
+    "float_val": 0,
+    "string_val": ""
+  },
+  {
+    "id": "patient_max_value",
+    "desc": "耐心值",
+    "int_val": 150,
+    "float_val": 0,
+    "string_val": ""
   }
 ]

@@ -12,33 +12,49 @@ namespace cfg.character
     public enum behaviour
     {
         /// <summary>
-        /// 离开
+        /// 进入
         /// </summary>
-        Leave = 1,
+        Enter = 1,
         /// <summary>
         /// 点餐
         /// </summary>
-        OrderMeal = 2,
+        Order = 2,
+        /// <summary>
+        /// 点菜
+        /// </summary>
+        OrderMeal = 3,
         /// <summary>
         /// 点饮料
         /// </summary>
-        OrderDrink = 3,
+        OrderDrink = 4,
         /// <summary>
         /// 闲聊
         /// </summary>
-        Talk = 4,
+        Talk = 5,
         /// <summary>
-        /// 进入
+        /// 离开
         /// </summary>
-        Enter = 5,
+        Leave = 6,
         /// <summary>
-        /// 等待
+        /// 等待回复
         /// </summary>
-        Waiting = 6,
+        WaitReply = 7,
+        /// <summary>
+        /// 等待上菜
+        /// </summary>
+        WaitOrder = 8,
         /// <summary>
         /// 吃法
         /// </summary>
-        Eating = 7,
+        Eating = 9,
+        /// <summary>
+        /// 思考
+        /// </summary>
+        Thinking = 10,
+        /// <summary>
+        /// 评论
+        /// </summary>
+        Comment = 11,
     }
 
 } 

@@ -23,7 +23,7 @@
     "desc": "",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/LittleGirl.prefab",
-    "picture_path": "Assets/GameRes/Picture/Character/extra01/A1.png",
+    "picture_path": "Assets/GameRes/Picture/Character/extra02/A2.png",
     "like_flavour": [
       1006,
       1016
@@ -41,7 +41,7 @@
     "desc": "喵老师的熊",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/Bear.prefab",
-    "picture_path": "",
+    "picture_path": "Assets/GameRes/Picture/Character/extra03/A3.png",
     "like_flavour": [],
     "unlike_flavour": [],
     "behaviour_group": 10001

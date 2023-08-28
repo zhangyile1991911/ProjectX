@@ -3,15 +3,15 @@
     "id": 10001,
     "group": [
       {
-        "behaviour": 1,
+        "behaviour": 6,
         "weight": 5000
       },
       {
-        "behaviour": 2,
+        "behaviour": 3,
         "weight": 5000
       },
       {
-        "behaviour": 4,
+        "behaviour": 5,
         "weight": 3000
       }
     ]
@@ -20,15 +20,15 @@
     "id": 10002,
     "group": [
       {
-        "behaviour": 1,
+        "behaviour": 6,
         "weight": 3000
       },
       {
-        "behaviour": 4,
+        "behaviour": 5,
         "weight": 5000
       },
       {
-        "behaviour": 3,
+        "behaviour": 4,
         "weight": 2000
       }
     ]
@@ -37,19 +37,19 @@
     "id": 10003,
     "group": [
       {
-        "behaviour": 1,
+        "behaviour": 6,
         "weight": 3000
       },
       {
-        "behaviour": 4,
+        "behaviour": 5,
         "weight": 5000
       },
       {
-        "behaviour": 3,
+        "behaviour": 4,
         "weight": 3000
       },
       {
-        "behaviour": 2,
+        "behaviour": 3,
         "weight": 3000
       }
     ]
@@ -58,15 +58,15 @@
     "id": 10004,
     "group": [
       {
-        "behaviour": 1,
+        "behaviour": 6,
         "weight": 2000
       },
       {
-        "behaviour": 3,
+        "behaviour": 4,
         "weight": 3000
       },
       {
-        "behaviour": 2,
+        "behaviour": 3,
         "weight": 3000
       }
     ]
@@ -75,11 +75,11 @@
     "id": 10005,
     "group": [
       {
-        "behaviour": 3,
+        "behaviour": 4,
         "weight": 3000
       },
       {
-        "behaviour": 2,
+        "behaviour": 3,
         "weight": 1000
       }
     ]
