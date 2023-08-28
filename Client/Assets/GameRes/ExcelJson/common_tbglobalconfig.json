@@ -1,0 +1,44 @@
+[
+  {
+    "id": "start_year",
+    "desc": "开始年",
+    "int_val": 0,
+    "float_val": 0,
+    "string_val": "2045/1/1 0:00:00"
+  },
+  {
+    "id": "start_time",
+    "desc": "开始时间",
+    "int_val": 0,
+    "float_val": 0,
+    "string_val": "1899/12/31 20:00:00"
+  },
+  {
+    "id": "init_money",
+    "desc": "初始资金",
+    "int_val": 500,
+    "float_val": 0,
+    "string_val": ""
+  },
+  {
+    "id": "customer_enter_interval",
+    "desc": "客人入座间隔",
+    "int_val": 15,
+    "float_val": 0,
+    "string_val": ""
+  },
+  {
+    "id": "friend_val_limit",
+    "desc": "一周获取好友度上限",
+    "int_val": 100,
+    "float_val": 0,
+    "string_val": ""
+  },
+  {
+    "id": "oneday_order_limit",
+    "desc": "一天点单上限",
+    "int_val": 3,
+    "float_val": 0,
+    "string_val": ""
+  }
+]

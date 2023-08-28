@@ -4,7 +4,7 @@ tags:
 <<declare $cookFoodId = 0>>
 <<declare $orderedId = 0>>
 <<declare $foodscore = 0>>
-<<if $foodscore < 60>>
+<<if $foodscore  60>>
     年轻人:老板,你这个菜做的
     年轻人:猪吃了,都得绝食三天抗议
 <<else>>

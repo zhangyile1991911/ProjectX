@@ -75,5 +75,21 @@
     "opposite_tag": [],
     "difficulty": 3,
     "cost_time": 10
+  },
+  {
+    "id": 10006,
+    "name": "蜂蜜松饼",
+    "make_method": 4,
+    "related_material": [
+      1008,
+      1009
+    ],
+    "tag": [
+      1018,
+      1005
+    ],
+    "opposite_tag": [],
+    "difficulty": 3,
+    "cost_time": 10
   }
 ]
