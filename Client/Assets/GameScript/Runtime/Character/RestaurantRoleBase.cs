@@ -50,6 +50,11 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         }
     }
 
+    public int PatientValue
+    {
+        get => _npcData.patient;
+    }
+    
     public behaviour BehaviourID => (behaviour)_npcData.Behaviour;
     public CharacterBehaviour CurBehaviour
     {
@@ -194,6 +199,25 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         isActive = true;
     }
 
+    public void ResetPatient()
+    {
+        _npcData.patient = DataProviderModule.Instance.MaxPatientValue();
+    }
+    public void AttenuatePatient(int val)
+    {
+        var result = _npcData.patient - val;
+        if (result < 0)
+        {
+            _npcData.patient = 0;
+        }
+        else
+        {
+            _npcData.patient = result;
+        }
+        UserInfoModule.Instance.UpdateNPCData(CharacterId);
+    }
+    
+    
     protected async UniTask<GameObject> LoadPrefab(string path)
     {
         var go = YooAssets.LoadAssetAsync<GameObject>(path);

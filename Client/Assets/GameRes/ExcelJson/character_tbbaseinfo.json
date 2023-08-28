@@ -23,7 +23,7 @@
     "desc": "",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/LittleGirl.prefab",
-    "picture_path": "",
+    "picture_path": "Assets/GameRes/Picture/Character/extra01/A1.png",
     "like_flavour": [
       1006,
       1016

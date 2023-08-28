@@ -397,6 +397,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         newNpc.Id = npcId;
         newNpc.FriendlyValue = 0;
         newNpc.AppearCount = 0;
+        newNpc.patient = 0;
+        newNpc.Behaviour = 0;
         _npcTableDatas.Add(npcId,newNpc);
         _sqLite.Insert(newNpc);
         return newNpc;

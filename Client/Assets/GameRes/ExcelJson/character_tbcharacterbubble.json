@@ -304,9 +304,7 @@
     "title": "还能点单吗",
     "npc_id": 20001,
     "repeated": false,
-    "pre_condition": [
-      0
-    ],
+    "pre_condition": [],
     "week_day": [
       1
     ],
@@ -514,9 +512,7 @@
     "title": "大城市",
     "npc_id": 20001,
     "repeated": true,
-    "pre_condition": [
-      20001001
-    ],
+    "pre_condition": [],
     "week_day": [
       8
     ],

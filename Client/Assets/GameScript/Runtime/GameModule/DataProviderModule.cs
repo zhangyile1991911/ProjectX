@@ -313,4 +313,14 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
     {
         return _database.TbGlobalConfig.DataMap["customer_enter_interval"].IntVal;
     }
+
+    public int AttenuatePatientValue()
+    {
+        return _database.TbGlobalConfig.DataMap["attenuate_patient"].IntVal;
+    }
+    
+    public int MaxPatientValue()
+    {
+        return _database.TbGlobalConfig.DataMap["patient_max_value"].IntVal;
+    }
 }

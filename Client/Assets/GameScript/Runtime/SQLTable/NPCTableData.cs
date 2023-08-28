@@ -21,4 +21,7 @@ public class NPCTableData
 
     [Column("Behaviour")]
     public int Behaviour { get; set; }
+
+    [Column("Patient")]
+    public int patient { get; set; }//耐心值
 }

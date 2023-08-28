@@ -205,7 +205,7 @@ public class CharacterEnterScene : CharacterBehaviour
         _restaurantCharacter.PlayAnimation(BehaviourID);
         _restaurantCharacter.Sprite.color = Color.clear;
         _restaurantCharacter.transform.position = destPoint;
-
+        
         _restaurantCharacter.Sprite.DOColor(Color.white, 3.5f).OnComplete(() =>
         {
             _restaurantCharacter.AddAppearCount();
@@ -270,7 +270,8 @@ public class CharacterWaiting : CharacterBehaviour
     // public RestaurantRoleBase Char => _restaurantCharacter;
     public behaviour BehaviourID => behaviour.Waiting;
     private RestaurantCharacter _restaurantCharacter;
-    
+    private long timestamp;
+    private int attenuation;
     public CharacterWaiting()
     {
         
@@ -280,6 +281,9 @@ public class CharacterWaiting : CharacterBehaviour
     {
         _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
         _restaurantCharacter.PlayAnimation(BehaviourID);
+        timestamp = Clocker.Instance.NowDateTime.Timestamp;
+        _restaurantCharacter.ResetPatient();
+        attenuation = DataProviderModule.Instance.AttenuatePatientValue();
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待状态-----");
     }
 
@@ -290,7 +294,18 @@ public class CharacterWaiting : CharacterBehaviour
 
     public void Update()
     {
-        
+        var nowts = Clocker.Instance.NowDateTime.Timestamp;
+        var diffMinute = (nowts - timestamp) / 60L;
+        if (diffMinute > 0)
+        {
+            _restaurantCharacter.AttenuatePatient(attenuation*(int)diffMinute);
+            timestamp = nowts;
+        }
+        //todo 在等待过程中可以产生一些吐槽
+        if (_restaurantCharacter.PatientValue <= 0)
+        {//如果耐心值耗完,就离开
+            _restaurantCharacter.CurBehaviour = new CharacterLeave();
+        }
     }
 }
 

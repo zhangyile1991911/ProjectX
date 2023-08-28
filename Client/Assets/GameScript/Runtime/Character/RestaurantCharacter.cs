@@ -261,22 +261,24 @@ public class RestaurantCharacter : RestaurantRoleBase
         return -1;
     }
 
+    private List<CharacterBubble> conditionTalk = new(20);
     private int generateTalk()
     {
-        int index = Random.Range(0, _talkBubbleTB.Count);
+        conditionTalk.Clear();
+        foreach (var one in _talkBubbleTB)
+        {
+            var isEnough = Friendliness >= one.FriendValue.StartValue &&
+                           Friendliness <= one.FriendValue.EndValue;
+            if(!isEnough)continue;
+            var isCondition = checkPreCondition(one.PreCondition);
+            if(!isCondition)continue;
+            if (!checkWeekday(one.WeekDay)) continue;
+            conditionTalk.Add(one);
+        }
 
-        var choiced = _talkBubbleTB[index];
-        var isEnough = Friendliness >= choiced.FriendValue.StartValue &&
-                       Friendliness <= choiced.FriendValue.EndValue;
-
-        if (!isEnough) return -1;
-        
-        var isCondition = checkPreCondition(choiced.PreCondition);
-        if(!isCondition) return -1;
-
-
-        if (!checkWeekday(choiced.WeekDay)) return -1;
-        
+        if (conditionTalk.Count <= 0) return -1;
+        int index = Random.Range(0, conditionTalk.Count);   
+        var choiced = conditionTalk[index];
         return choiced.Id;
     }
 
@@ -379,22 +381,27 @@ public class RestaurantCharacter : RestaurantRoleBase
     public bool GenerateTalkId()
     {
         //普通重复的对话
-        if (haveTalkChatId() < 5)
+        if (haveTalkChatId() > 5)
         {
-            var info = new CharacterSaidInfo
-            {
-                CharacterId = CharacterId
-            };
-            info.ChatId = generateTalk();
-            if (info.ChatId > 0)
-            {
-                _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Talk});
-                EventModule.Instance.CharBubbleTopic.OnNext(info);
-                return true;    
-            }
+            return false;
+        }
+        var talkId = generateTalk();
+        if (talkId < 0)
+        {
+            return false;
         }
 
-        return false;
+        var existed = _saidBubbles.Find(one => one.ID == talkId);
+        if (existed != null) return false;
+        
+        var info = new CharacterSaidInfo
+        {
+            CharacterId = CharacterId,
+            ChatId = talkId
+        };
+        _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Talk});
+        EventModule.Instance.CharBubbleTopic.OnNext(info);
+        return true; ;
     }
 
     public bool GenerateOrder()

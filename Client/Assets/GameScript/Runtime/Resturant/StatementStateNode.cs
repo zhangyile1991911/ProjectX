@@ -46,7 +46,7 @@ public class StatementStateNode : IStateNode
         calculate();
         UserInfoModule.Instance.ClearRestaurantData();
         //日期往前走
-        handleDate();
+        Clocker.Instance.MoveToNextDay();
         _restaurant.CloseRestaurant();
     }
 
@@ -62,11 +62,5 @@ public class StatementStateNode : IStateNode
 
         UserInfoModule.Instance.AddMoney(total);
         UserInfoModule.Instance.ClearRestaurantData();
-    }
-
-    private void handleDate()
-    {
-        var clocker = UniModule.GetModule<Clocker>();
-        clocker.MoveToNextDay();
     }
 }
