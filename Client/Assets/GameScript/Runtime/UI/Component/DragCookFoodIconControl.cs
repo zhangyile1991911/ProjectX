@@ -89,6 +89,11 @@ public partial class DragCookFoodIcon : UIComponent
         if (hit && hit.transform.CompareTag("RestaurantCharacter"))
         {
             var character = hit.transform.GetComponent<RestaurantCharacter>();
+            if (!character.IsWaitForOrder())
+            {
+                Debug.Log($"当前角色{character.CharacterName} 没有进入等餐状态");
+                return;
+            }
             character.ReceiveFood(_cookResult);
             GiveAction?.Invoke(_cookResult,character.CharacterId);
             ClearFoodIcon();

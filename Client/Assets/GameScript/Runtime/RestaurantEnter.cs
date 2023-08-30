@@ -88,13 +88,22 @@ public class RestaurantEnter : MonoBehaviour
         {
             _seatStatus.Add(0);
         }
+
+        // loadShopkeeper();
         
         //加载当前已经在店里的客人
         loadWaitingCharacter();
-
+        
         initPeople();
     }
 
+    // private async void loadShopkeeper()
+    // {
+    //     //创建老板
+    //     var characterObj = await CharacterMgr.Instance.CreateCharacter(10004);
+    //     characterObj.gameObject.SetActive(false);
+    // }
+    
     private async void loadWaitingCharacter()
     {
         foreach (var cid in UserInfoModule.Instance.RestaurantWaitingCharacter)
@@ -117,8 +126,11 @@ public class RestaurantEnter : MonoBehaviour
                         case behaviour.Talk:
                             chara.CurBehaviour = new CharacterTalk();
                             break;
-                        case behaviour.Waiting:
-                            chara.CurBehaviour = new CharacterWaiting();
+                        case behaviour.WaitReply:
+                            chara.CurBehaviour = new CharacterTalk();
+                            break;
+                        case behaviour.WaitOrder:
+                            chara.CurBehaviour = new CharacterOrderMeal();
                             break;
                         case behaviour.Eating:
                             chara.CurBehaviour = new CharacterEating();
@@ -129,7 +141,11 @@ public class RestaurantEnter : MonoBehaviour
                         case behaviour.OrderMeal:
                             chara.CurBehaviour = new CharacterOrderMeal();
                             break;
+                        case behaviour.Thinking:
+                            chara.CurBehaviour = new CharacterThinking();
+                            break;
                         default:
+                            Debug.Log($"waiting {chara.CharacterName} behaviour = {chara.BehaviourID}");
                             break;
                     }
                     // if (chara.HaveSoul)
@@ -145,10 +161,6 @@ public class RestaurantEnter : MonoBehaviour
                 // }
             }
         }
-        //创建老板
-        var characterObj = await CharacterMgr.Instance.CreateCharacter(10004);
-        characterObj.gameObject.SetActive(false);
-        
     }
     
     private void Update()
@@ -160,6 +172,12 @@ public class RestaurantEnter : MonoBehaviour
     {
         var seatIndex = FindEmptySeatIndex();
         restaurantCharacter.SeatOccupy = seatIndex;
+        
+        //todo 测试
+        if (_waitingCharacters.ContainsKey(restaurantCharacter.CharacterId))
+        {
+            Debug.LogError($"duplication Id {restaurantCharacter.CharacterId}");
+        }
         _waitingCharacters.Add(restaurantCharacter.CharacterId,restaurantCharacter);
         _seatStatus[seatIndex] = restaurantCharacter.CharacterId;
         return _seatPoints[seatIndex].position;
@@ -408,6 +426,18 @@ public class RestaurantEnter : MonoBehaviour
         {
             one.ResumeWalk();
         }
+    }
+
+    public void RecycleAllPeople()
+    {
+        if (_activedPeople == null) return;
+        for( int i = _activedPeople.Count - 1;i >=0;i-- )
+        {
+            var one = _activedPeople[i];
+            one.PauseWalk();
+            _peoplePool.Release(one);
+        }
+        
     }
     
     private void initPeople()

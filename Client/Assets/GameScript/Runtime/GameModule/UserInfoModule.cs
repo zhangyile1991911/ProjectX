@@ -103,8 +103,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         OwnMenus = _sqLite.Query<OwnMenu>(ownMenuQuery);
         initOwnMenuData(OwnMenus);
 
-        EventModule.Instance.ToNextWeekSub.Subscribe(ResetNPCWeekDay);
-        EventModule.Instance.ToNextDaySub.Subscribe(ResetNPCWeekDay);
+        // EventModule.Instance.ToNextWeekSub.Subscribe(ResetNPCWeekDay);
+        // EventModule.Instance.ToNextDaySub.Subscribe(ResetNPCDaily);
     }
 
     private void initItem(List<ItemTableData> items)
@@ -411,21 +411,21 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.Update(d);
     }
 
-    private void ResetNPCWeekDay(GameDateTime gameDateTime)
-    {
-        foreach(var one in _npcTableDatas.Values)
-        {
-            one.AccumulateFriendAtWeek = 0;
-        }
-    }
+    // private void ResetNPCWeekDay(GameDateTime gameDateTime)
+    // {
+    //     foreach(var one in _npcTableDatas.Values)
+    //     {
+    //         one.AccumulateFriendAtWeek = 0;
+    //     }
+    // }
 
-    private void ResetNPCDaily(GameDateTime time)
-    {
-        foreach(var one in _npcTableDatas.Values)
-        {
-            one.TodayOrderCount = 0;
-        }
-    }
+    // private void ResetNPCDaily(GameDateTime time)
+    // {
+    //     foreach(var one in _npcTableDatas.Values)
+    //     {
+    //         one.TodayOrderCount = 0;
+    //     }
+    // }
     
 
     public bool HaveReadDialogueId(int did)

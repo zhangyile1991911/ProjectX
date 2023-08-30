@@ -54,7 +54,7 @@ public class WaitStateNode : IStateNode
         _crowdSchedule = DataProviderModule.Instance.WeekDayHourCrowd(
             _clocker.NowDateTime.DayOfWeek,
             (int)_clocker.NowDateTime.Hour);
-        
+        loadShopkeeper();
         _restaurant.ResumeAllPeople();
         
     }
@@ -77,6 +77,13 @@ public class WaitStateNode : IStateNode
         handlePeople();
     }
     
+    private async void loadShopkeeper()
+    {
+        //创建老板
+        var characterObj = await CharacterMgr.Instance.CreateCharacter(10004);
+        characterObj.gameObject.SetActive(false);
+    }
+    
     private void TimeGoesOn(GameDateTime dateTime)
     { //时间流逝
         if (TimeToClose(dateTime))
@@ -96,8 +103,10 @@ public class WaitStateNode : IStateNode
             (int)_clocker.NowDateTime.Hour);
     }
 
+    private bool isLoading = false;
     private async void handleCharacter(GameDateTime dateTime)
     {
+        if (isLoading) return;
         //检查是否有空位--->检查出场条件--->创建角色
         var seatNum = _restaurant.EmptySeatNum();
         if (seatNum <= 0) return;
@@ -108,17 +117,29 @@ public class WaitStateNode : IStateNode
         if (_waitingCharacter.Count > 0 && distance >= interval)
         {
             var characterId = _waitingCharacter.First.Value;
-            await loadCharacter(characterId);
-            _previousTs = dateTime.Timestamp;
+            Debug.Log($"before create handleCharacter {characterId}");
             _waitingCharacter.RemoveFirst();
+            foreach (var id in _waitingCharacter)
+            {
+                Debug.Log($"before create handleCharacter {id} in waiting");
+            }
+            if (!_restaurant.ExistWaitingCharacter(characterId))
+            {
+                isLoading = true;
+                await loadCharacter(characterId);
+                isLoading = false;
+                _previousTs = dateTime.Timestamp;    
+                Debug.Log($"after create handleCharacter {characterId}");
+            }
         }
         
         var npcId = filterNPCAppear(dateTime);
         if (npcId > 0)
         {
             _waitingCharacter.AddFirst(npcId);    
-        }
-       
+        }    
+        
+        
         
         // if (ids is not { Count: > 0 }) return;
 
@@ -186,35 +207,6 @@ public class WaitStateNode : IStateNode
             if(!onTime)continue;
             
             return cid;
-            // result.Add(cid);
-            // var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
-            // foreach (var info in tbScheduler.CharacterAppearInfos)
-            // {
-            //     if((DayOfWeek)info.Weekday != nowTime.DayOfWeek)continue;
-            //
-            //     if (info.EnterTime.Hour == nowTime.Hour)
-            //     {
-            //         if (nowTime.Minute < info.EnterTime.Minutes) continue;
-            //         seatNum--;
-            //         result.Add(cid);
-            //         break;
-            //     }
-            //
-            //     var startHour = info.EnterTime.Hour < 6 ? info.EnterTime.Hour + 24 : info.EnterTime.Hour;
-            //     var leaveHour = info.LeaveTime.Hour < 6 ? info.LeaveTime.Hour + 24 : info.LeaveTime.Hour;
-            //     if(nowTime.Hour > startHour  && nowTime.Hour < leaveHour)
-            //     {
-            //         seatNum--;
-            //         result.Add(cid);
-            //         break;
-            //     }
-            //
-            //     if (nowTime.Hour != info.LeaveTime.Hour) continue;
-            //     if (nowTime.Minute >= info.LeaveTime.Minutes) continue;
-            //     seatNum--;
-            //     result.Add(cid);
-            //     break;
-            // }
         }
 
         return 0;
@@ -252,12 +244,19 @@ public class WaitStateNode : IStateNode
             attend = nowTime.Minute >= info.EnterTimeBegin.Minutes;
             if(!attend)continue;
 
-            // attend = nowTime.Hour <= info.EnterTimeEnd.Hour;
-            // if(!attend)continue;
-            //
-            // attend = nowTime.Minute <= info.EnterTimeEnd.Minutes;
-            // if(!attend)continue;
-
+            bool weather = false;
+            var weatherNow = WeatherMgr.Instance.NowWeather;
+            foreach (var one in info.WeatherLimit)
+            {
+                if (one == weatherNow)
+                {
+                    weather = true;
+                    break;
+                }
+            }
+            
+            if(!weather)continue;
+                
             if (nowTime.Hour < info.EnterTimeEnd.Hour)
                 return true;
             
@@ -290,21 +289,26 @@ public class WaitStateNode : IStateNode
         {
             case bubbleType.MainLine:
             case bubbleType.Talk:
-            case bubbleType.Comment:
+            case bubbleType.HybridComment:
+                case bubbleType.SpecifiedComment:
+                    case bubbleType.OmakaseComment:
                 var stateData = new DialogueStateNodeData();
                 stateData.ChatId = bubble.ChatId;
                 stateData.ChatRestaurantCharacter = bubble.Owner;
                 _machine.ChangeState<DialogueStateNode>(stateData);
                 break;
-            case bubbleType.Order:
+            case bubbleType.SpecifiedOrder:
+            case bubbleType.HybridOrder:
+            case bubbleType.Omakase:
                 OrderMealInfo info = new()
                 {
                     MenuId = tbbubble.MenuId,
                     CharacterId = bubble.Owner.CharacterId,
-                    
+                    OrderType = tbbubble.BubbleType,
                 };
                 var rc = bubble.Owner as RestaurantCharacter;
                 rc.CurOrderInfo = info;
+                rc.CurBehaviour = new CharacterWaitOrder();//点击气泡
                 // EventModule.Instance.OrderMealTopic.OnNext(info);
                 break;
         }

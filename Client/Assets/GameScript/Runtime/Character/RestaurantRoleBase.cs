@@ -264,15 +264,28 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             case behaviour.Talk:
                 _spriteRenderer.sprite = _spriteDict["angry"];
                 break;
-            case behaviour.Waiting:
+            case behaviour.WaitOrder:
+            case behaviour.WaitReply:
                 _spriteRenderer.sprite = _spriteDict["happy"];
+                break;
+            case behaviour.Comment:
+                _spriteRenderer.sprite = _spriteDict["waiting"];
                 break;
             default:
                 _spriteRenderer.sprite = _spriteDict["waiting"];       
                 break;
         }
     }
-    
+
+    public virtual void ClearDailyData()
+    {
+        
+    }
+
+    public virtual void ClearWeeklyData()
+    {
+        
+    }
     // private void Update()
     // {
     //     CurBehaviour?.Update();

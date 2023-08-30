@@ -14,7 +14,7 @@
       "start_value": 0,
       "end_value": 10
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
@@ -35,7 +35,7 @@
       "start_value": 20,
       "end_value": 30
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
@@ -56,7 +56,7 @@
       "start_value": 0,
       "end_value": 100
     },
-    "bubble_type": 2,
+    "bubble_type": 3,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -77,7 +77,7 @@
       "start_value": 0,
       "end_value": 200
     },
-    "bubble_type": 2,
+    "bubble_type": 3,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -98,7 +98,7 @@
       "start_value": 0,
       "end_value": 100
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
@@ -119,7 +119,7 @@
       "start_value": 0,
       "end_value": 100
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
@@ -140,7 +140,7 @@
       "start_value": 0,
       "end_value": 0
     },
-    "bubble_type": 4,
+    "bubble_type": 6,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
@@ -161,7 +161,7 @@
       "start_value": 0,
       "end_value": 10
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/Miao.yarnproject",
@@ -182,7 +182,7 @@
       "start_value": 10,
       "end_value": 30
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
@@ -203,7 +203,7 @@
       "start_value": 30,
       "end_value": 9999
     },
-    "bubble_type": 2,
+    "bubble_type": 3,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -225,7 +225,7 @@
       "start_value": 10,
       "end_value": 99999
     },
-    "bubble_type": 5,
+    "bubble_type": 4,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -247,7 +247,7 @@
       "start_value": 30,
       "end_value": 99999
     },
-    "bubble_type": 6,
+    "bubble_type": 5,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -268,7 +268,7 @@
       "start_value": 35,
       "end_value": 50
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
@@ -289,7 +289,7 @@
       "start_value": 0,
       "end_value": 45
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
@@ -308,7 +308,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -329,7 +329,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -348,7 +348,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -367,7 +367,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -386,7 +386,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -405,7 +405,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -424,7 +424,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -443,7 +443,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -464,7 +464,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -485,7 +485,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -506,7 +506,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -527,7 +527,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -548,7 +548,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -569,7 +569,7 @@
       "start_value": 0,
       "end_value": 99999
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
@@ -588,7 +588,7 @@
       "start_value": 0,
       "end_value": 100
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -609,7 +609,7 @@
       "start_value": 101,
       "end_value": 200
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -630,7 +630,7 @@
       "start_value": 201,
       "end_value": 300
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -651,7 +651,7 @@
       "start_value": 301,
       "end_value": 400
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -672,7 +672,7 @@
       "start_value": 401,
       "end_value": 500
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -693,7 +693,7 @@
       "start_value": 501,
       "end_value": 600
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -714,7 +714,7 @@
       "start_value": 601,
       "end_value": 700
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -735,7 +735,7 @@
       "start_value": 701,
       "end_value": 800
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -756,7 +756,7 @@
       "start_value": 801,
       "end_value": 900
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -777,7 +777,7 @@
       "start_value": 901,
       "end_value": 1000
     },
-    "bubble_type": 3,
+    "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -796,7 +796,7 @@
       "start_value": 0,
       "end_value": 100
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -817,7 +817,7 @@
       "start_value": 101,
       "end_value": 200
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -838,7 +838,7 @@
       "start_value": 201,
       "end_value": 300
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -859,7 +859,7 @@
       "start_value": 301,
       "end_value": 400
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -880,7 +880,7 @@
       "start_value": 301,
       "end_value": 400
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -901,7 +901,7 @@
       "start_value": 401,
       "end_value": 500
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -922,7 +922,7 @@
       "start_value": 401,
       "end_value": 500
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -943,7 +943,7 @@
       "start_value": 501,
       "end_value": 600
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -964,7 +964,7 @@
       "start_value": 601,
       "end_value": 700
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -985,7 +985,7 @@
       "start_value": 701,
       "end_value": 800
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -1004,7 +1004,7 @@
       "start_value": 801,
       "end_value": 900
     },
-    "bubble_type": 1,
+    "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
@@ -1025,7 +1025,7 @@
       "start_value": 0,
       "end_value": 500
     },
-    "bubble_type": 2,
+    "bubble_type": 3,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -1046,7 +1046,7 @@
       "start_value": 0,
       "end_value": 500
     },
-    "bubble_type": 2,
+    "bubble_type": 3,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -1067,7 +1067,7 @@
       "start_value": 0,
       "end_value": 500
     },
-    "bubble_type": 2,
+    "bubble_type": 3,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -1085,10 +1085,10 @@
       8
     ],
     "friend_value": {
-      "start_value": 100,
+      "start_value": 400,
       "end_value": 500
     },
-    "bubble_type": 6,
+    "bubble_type": 5,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -1106,10 +1106,10 @@
       8
     ],
     "friend_value": {
-      "start_value": 100,
+      "start_value": 400,
       "end_value": 500
     },
-    "bubble_type": 6,
+    "bubble_type": 5,
     "menu_id": 10005,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
@@ -1127,13 +1127,76 @@
       8
     ],
     "friend_value": {
-      "start_value": 100,
+      "start_value": 400,
       "end_value": 500
     },
-    "bubble_type": 6,
+    "bubble_type": 4,
     "menu_id": 10002,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "",
     "dialogue_start_node": ""
+  },
+  {
+    "id": 20004001,
+    "title": "确定的订单评论",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_comment_specify"
+  },
+  {
+    "id": 20004002,
+    "title": "模棱两可的订单评论",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 9998,
+      "end_value": 9999
+    },
+    "bubble_type": 8,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_comment_blur"
+  },
+  {
+    "id": 20004003,
+    "title": "omakase评论",
+    "npc_id": 20001,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 9998,
+      "end_value": 9999
+    },
+    "bubble_type": 7,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_comment_omakase"
   }
 ]

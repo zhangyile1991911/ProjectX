@@ -1,14 +1,61 @@
-﻿title: young_comment
+﻿title: young_comment_specify
 tags:
 ---
 <<declare $cookFoodId = 0>>
 <<declare $orderedId = 0>>
 <<declare $foodscore = 0>>
-<<if $foodscore  60>>
-    年轻人:老板,你这个菜做的
-    年轻人:猪吃了,都得绝食三天抗议
+<<if $cookFoodId == $orderedId>>
+    <<if $foodscore < 60>>
+        年轻人:老板,你这个菜做的
+        年轻人:猪吃了,都得绝食三天抗议
+        <<AddFriend -10>>
+    <<else>>
+        年轻人:老板,你这手艺真不错啊
+        年轻人:下次再来
+        <<AddFriend 20>>
+    <<endif>>
 <<else>>
-    年轻人:老板,你这手艺真不错啊
+    <<jump young_comment_err>>
 <<endif>>
 ===
 
+
+title: young_comment_blur
+tags:
+---
+<<if $cookFoodId == $orderedId>>
+    <<if $matchTag >>
+        年轻人:老板,你真了解我
+    <<endif>>
+<<else>>
+    <<jump young_comment_err>>
+<<endif>>
+===
+
+
+title: young_comment_omakase
+tags:
+---
+<<if $cookFoodId == $orderedId>>
+    <<if $matchTag >>
+        年轻人:老板,你真了解我
+    <<endif>>
+<<else>>
+    <<jump young_comment_err>>
+<<endif>>
+===
+
+
+title: young_comment_err
+tags:
+---
+<<if $friendliness <= 100>>
+    年轻人:老板,你是不是年纪大了记忆力衰退了?
+    年轻人:专家建议多补钙
+    <<AddFriend -10>>
+<<elseif $friendliness > 100 and $friendliness <= 200>>
+    年轻人:少抽点烟,把你脑子都抽没了
+    <<AddFriend -20>>
+<<elseif $friendliness > 100 and $friendliness <= 200>>
+<<endif>>
+===

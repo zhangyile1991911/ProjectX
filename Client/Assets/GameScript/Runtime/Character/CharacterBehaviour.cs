@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using cfg.character;
+using cfg.common;
 using UnityEngine;
 using DG.Tweening;
 using UniRx;
@@ -183,7 +184,6 @@ public interface CharacterBehaviour
 
 
 
-//enter ----> talk ----> order ----> waiting ----> eating/drinking ---->Thinking -----> leaving
 public class CharacterEnterScene : CharacterBehaviour
 {
     // public RestaurantRoleBase Char => _restaurantCharacter;
@@ -261,18 +261,18 @@ public class CharacterTalk : CharacterBehaviour
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
         var success = _restaurantCharacter.GenerateMain();
         if (!success) success = _restaurantCharacter.GenerateTalkId();
-        if (success) _restaurantCharacter.CurBehaviour = new CharacterWaiting();
+        if (success) _restaurantCharacter.CurBehaviour = new CharacterWaitReply();
     }
 }
 
-public class CharacterWaiting : CharacterBehaviour
+public class CharacterWaitReply : CharacterBehaviour
 {
     // public RestaurantRoleBase Char => _restaurantCharacter;
-    public behaviour BehaviourID => behaviour.Waiting;
+    public behaviour BehaviourID => behaviour.WaitReply;
     private RestaurantCharacter _restaurantCharacter;
     private long timestamp;
     private int attenuation;
-    public CharacterWaiting()
+    public CharacterWaitReply()
     {
         
     }
@@ -284,12 +284,55 @@ public class CharacterWaiting : CharacterBehaviour
         timestamp = Clocker.Instance.NowDateTime.Timestamp;
         _restaurantCharacter.ResetPatient();
         attenuation = DataProviderModule.Instance.AttenuatePatientValue();
-        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待状态-----");
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待回复状态-----");
     }
 
     public void Exit()
     {
-        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出等待状态-----");
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出等待回复状态-----");
+    }
+
+    public void Update()
+    {
+        var nowts = Clocker.Instance.NowDateTime.Timestamp;
+        var diffMinute = (nowts - timestamp) / 60L;
+        if (diffMinute > 0)
+        {
+            _restaurantCharacter.AttenuatePatient(attenuation*(int)diffMinute);
+            timestamp = nowts;
+        }
+        if (_restaurantCharacter.PatientValue <= 0)
+        {//如果耐心值耗完,就离开
+            _restaurantCharacter.CurBehaviour = new CharacterLeave();
+        }
+    }
+}
+
+public class CharacterWaitOrder : CharacterBehaviour
+{
+    // public RestaurantRoleBase Char => _restaurantCharacter;
+    public behaviour BehaviourID => behaviour.WaitOrder;
+    private RestaurantCharacter _restaurantCharacter;
+    private long timestamp;
+    private int attenuation;
+    public CharacterWaitOrder()
+    {
+        
+    }
+    
+    public void Enter(RestaurantRoleBase restaurantCharacter)
+    {
+        _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
+        timestamp = Clocker.Instance.NowDateTime.Timestamp;
+        _restaurantCharacter.ResetPatient();
+        attenuation = DataProviderModule.Instance.AttenuatePatientValue();
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待上菜状态-----");
+    }
+
+    public void Exit()
+    {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出等待上菜状态-----");
     }
 
     public void Update()
@@ -304,6 +347,7 @@ public class CharacterWaiting : CharacterBehaviour
         //todo 在等待过程中可以产生一些吐槽
         if (_restaurantCharacter.PatientValue <= 0)
         {//如果耐心值耗完,就离开
+            Debug.Log($"_restaurantCharacter {_restaurantCharacter.CharacterName} 耐心耗尽退出等待");
             _restaurantCharacter.CurBehaviour = new CharacterLeave();
         }
     }
@@ -313,6 +357,32 @@ public enum CharacterOrderType
 {
     Meal,Drink,All
 }
+
+public class CharacterOrder : CharacterBehaviour
+{
+    public behaviour BehaviourID => behaviour.Order;
+    public CharacterOrder()
+    {
+        
+    }
+
+    public void Enter(RestaurantRoleBase restaurantCharacter)
+    {
+        
+    }
+
+    public void Exit()
+    {
+        
+    }
+
+    public void Update()
+    {
+        
+    }
+}
+
+
 public class CharacterOrderMeal : CharacterBehaviour
 {
     // public RestaurantRoleBase Char { get; }
@@ -344,6 +414,12 @@ public class CharacterOrderMeal : CharacterBehaviour
     }
     private void think()
     {
+        if (!_restaurantCharacter.CanOrder())
+        {
+            Debug.Log("点单超过上限");
+            _restaurantCharacter.CurBehaviour = new CharacterLeave();
+            return;
+        }
         var minutes = (Clocker.Instance.NowDateTime.Timestamp - _preDateTime)/60L;
         if (minutes < 2)
         {
@@ -385,6 +461,12 @@ public class CharacterOrderDrink : CharacterBehaviour
     }
     private void think()
     {
+        if (!_restaurantCharacter.CanOrder())
+        {
+            Debug.Log("点单超过上限");
+            _restaurantCharacter.CurBehaviour = new CharacterLeave();
+            return;
+        }
         var minutes = (Clocker.Instance.NowDateTime.Timestamp - _preDateTime)/60L;
         if (minutes < 2)
         {
@@ -404,6 +486,7 @@ public class CharacterEating : CharacterBehaviour
     private RestaurantCharacter _restaurantCharacter;
     private long start_eating_timestamp;
     private long start_chow_timestamp;
+    private IDisposable eatingTimer;
     public CharacterEating()
     {
         
@@ -414,40 +497,87 @@ public class CharacterEating : CharacterBehaviour
         _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
         _restaurantCharacter.PlayAnimation(BehaviourID);
         start_chow_timestamp = start_eating_timestamp = Clocker.Instance.NowDateTime.Timestamp;
+        eatingTimer = Clocker.Instance.Topic.Subscribe(Eating);
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入吃饭状态-----");
     }
 
     public void Exit()
     {
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出吃饭状态-----");
+        eatingTimer.Dispose();
+        eatingTimer = null;
     }
 
     public void Update()
     {
-        Eating();
+        
     }
 
-    private void Eating()
+    private void Eating(GameDateTime nowts)
     {
-        var nowts = Clocker.Instance.NowDateTime.Timestamp;
-        var eating_duration = (nowts - start_eating_timestamp) / 60L;
+        var eating_duration = (nowts.Timestamp - start_eating_timestamp) / 60L;
         if (eating_duration > 10)
         {
-            _restaurantCharacter.CurBehaviour = new CharacterThinking();
+            _restaurantCharacter.CurBehaviour = new CharacterComment();
         }
-        eating_duration = (nowts - start_chow_timestamp) / 60L;
+        eating_duration = (nowts.Timestamp - start_chow_timestamp) / 60L;
         if (eating_duration % 2 == 0)
         {
             _restaurantCharacter.PlayAnimation(BehaviourID);
-            start_chow_timestamp = nowts;
+            start_chow_timestamp = nowts.Timestamp;
         }
+    }
+}
+
+
+public class CharacterComment : CharacterBehaviour
+{
+    public behaviour BehaviourID => behaviour.Comment;
+    private RestaurantCharacter _restaurantCharacter;
+    public CharacterComment()
+    {
+    }
+
+    public void Enter(RestaurantRoleBase restaurantRoleBase)
+    {
+        _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
+        var info = new CharacterSaidInfo
+        {
+            CharacterId = _restaurantCharacter.CharacterId,
+        };
+        switch (_restaurantCharacter.CurOrderInfo.OrderType)
+        {
+            case bubbleType.Omakase:
+                info.ChatId = _restaurantCharacter.OMAKASEComment.Id;
+                break;
+            case bubbleType.HybridOrder:
+                info.ChatId = _restaurantCharacter.HybridOrderComment.Id;
+                break;
+            case bubbleType.SpecifiedOrder:
+                info.ChatId = _restaurantCharacter.SpecifiedOrderComment.Id;
+                break;
+        }
+        EventModule.Instance.CharBubbleTopic.OnNext(info);
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} {info.ChatId} 进入评论状态-----");
+    }
+
+    public void Exit()
+    {
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出评论状态-----");
+    }
+
+    public void Update()
+    {
+        
+        
     }
 }
 
 public class CharacterThinking : CharacterBehaviour
 {
     // public RestaurantRoleBase Char { get; }
-    public behaviour BehaviourID => behaviour.Eating;
+    public behaviour BehaviourID => behaviour.Thinking;
     private RestaurantCharacter _restaurantCharacter;
     public CharacterThinking()
     {
@@ -474,13 +604,16 @@ public class CharacterThinking : CharacterBehaviour
         behaviour next_behaviour = behaviour.Leave;
         for (int i = 0; i < tb.Group.Count; i++)
         {
-            if (val >= total_weight && val <= tb.Group[i].Weight)
+            if (val >= total_weight && val <= total_weight + tb.Group[i].Weight)
             {
                 next_behaviour = tb.Group[i].Behaviour;
                 break;
             }
-        }
 
+            total_weight += tb.Group[i].Weight;
+        }
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入思考状态 下一个状态 {next_behaviour}-----");
+        
         switch (next_behaviour)
         {
             case behaviour.Leave:
@@ -490,27 +623,12 @@ public class CharacterThinking : CharacterBehaviour
                 _restaurantCharacter.CurBehaviour = new CharacterTalk();
                 break;
             case behaviour.OrderDrink:
-                if (_restaurantCharacter.CanOrder())
-                {
-                    _restaurantCharacter.CurBehaviour = new CharacterOrderDrink();    
-                }
-                else
-                {
-                    _restaurantCharacter.CurBehaviour = new CharacterLeave();
-                }
+                _restaurantCharacter.CurBehaviour = new CharacterOrderDrink(); 
                 break;
             case behaviour.OrderMeal:
-                if (_restaurantCharacter.CanOrder())
-                {
-                    _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();    
-                }
-                else
-                {
-                    _restaurantCharacter.CurBehaviour = new CharacterLeave();
-                }
+                _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
                 break;
         }
-        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入思考状态 下一个状态 {next_behaviour}-----");
         
     }
 
@@ -524,6 +642,7 @@ public class CharacterThinking : CharacterBehaviour
         
     }
 }
+
 
 public class CharacterLeave : CharacterBehaviour
 {
@@ -542,6 +661,7 @@ public class CharacterLeave : CharacterBehaviour
                 EventModule.Instance.CharacterLeaveTopic.OnNext(_restaurantCharacter);
                 CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
             });
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入 离开状态-----");
     }
 
     public void Update()
@@ -551,7 +671,7 @@ public class CharacterLeave : CharacterBehaviour
 
     public void Exit()
     {
-        
+        Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出 离开状态-----");
     }
 }
 

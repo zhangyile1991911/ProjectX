@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using cfg.character;
 using cfg.food;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
@@ -23,6 +24,7 @@ public class DialogueStateNode : IStateNode
     private StateMachine _machine;
     private CharacterDialogWindow _dialogWindow;
     private Clocker _clocker;
+    private CharacterBubble _curBubbleTB;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -39,9 +41,9 @@ public class DialogueStateNode : IStateNode
         _restaurantEnter.FocusOnCharacter(_restaurantCharacter);
         
         var openData = new CharacterDialogData();
-        var bubbleTB = DataProviderModule.Instance.GetCharacterBubble(_chatId);
-        openData.StoryResPath = bubbleTB.DialogueContentRes;
-        openData.StoryStartNode = bubbleTB.DialogueStartNode;
+        _curBubbleTB = DataProviderModule.Instance.GetCharacterBubble(_chatId);
+        openData.StoryResPath = _curBubbleTB.DialogueContentRes;
+        openData.StoryStartNode = _curBubbleTB.DialogueStartNode;
         openData.StoryComplete = DialogueComplete;
         openData.StoryCharacter = _restaurantCharacter;
         var uiManager = UniModule.GetModule<UIManager>();
@@ -75,14 +77,22 @@ public class DialogueStateNode : IStateNode
 
     public void OnExit()
     {
-        if (_restaurantCharacter.CurOrderInfo != null)
-        {//下单成功
-            _restaurantCharacter.CurBehaviour = new CharacterWaiting();
-        }
-        else
+        if (_restaurantCharacter.CurBehaviour.BehaviourID == behaviour.WaitReply)
         {
             _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
         }
+        else if (_restaurantCharacter.CurBehaviour.BehaviourID == behaviour.Comment)
+        {
+            _restaurantCharacter.CurBehaviour = new CharacterThinking();
+        }
+        // if (_restaurantCharacter.CurOrderInfo != null)
+        // {//下单成功
+        //     _restaurantCharacter.CurBehaviour = new CharacterWaitReply();
+        // }
+        // else
+        // {
+        //     _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
+        // }
 
         _restaurantEnter.NoFocusOnCharacter();
         
@@ -106,11 +116,11 @@ public class DialogueStateNode : IStateNode
 
     private void DialogueComplete()
     {
-        var tb = DataProviderModule.Instance.GetCharacterBubble(_chatId);
-        if (!tb.Repeated)
+        if (!_curBubbleTB.Repeated)
         {
             UserInfoModule.Instance.InsertReadDialogueId(_chatId);    
         }
+        _restaurantCharacter.RemoveSaidBubble(_chatId);
         _clocker.AddMinute(5);
         _machine.ChangeState<WaitStateNode>();
     }
@@ -118,14 +128,16 @@ public class DialogueStateNode : IStateNode
     private void OrderMealCommand(int menuId)
     {
         Debug.Log($"OrderMealCommand {menuId}");
+        
         OrderMealInfo info = new()
         {
             MenuId = menuId,
-            OrderType = OrderType.SpecificOrder,
-            CharacterId = _restaurantCharacter.CharacterId
+            CharacterId = _restaurantCharacter.CharacterId,
+            OrderType = _curBubbleTB.BubbleType
         };
         // EventModule.Instance.OrderMealTopic.OnNext(info);
         _restaurantCharacter.CurOrderInfo = info;
+        _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//具体点单
         // _restaurantCharacter.DialogueOrder = menuId;
     }
 
@@ -141,7 +153,7 @@ public class DialogueStateNode : IStateNode
         {
             CharacterId = _restaurantCharacter.CharacterId,
             MenuId = menuId,
-            OrderType = OrderType.HybridOrder,
+            OrderType = _curBubbleTB.BubbleType,
             flavor = new HashSet<flavorTag>(10)
         };
         var flavors = tags.Split(";");
@@ -151,6 +163,7 @@ public class DialogueStateNode : IStateNode
             info.flavor.Add((flavorTag)flavorId);
         }
         _restaurantCharacter.CurOrderInfo = info;
+        _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//混合点单
         // EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 
@@ -160,7 +173,7 @@ public class DialogueStateNode : IStateNode
         OrderMealInfo info = new()
         {
             CharacterId = _restaurantCharacter.CharacterId,
-            OrderType = OrderType.Omakase,
+            OrderType = _curBubbleTB.BubbleType,
             flavor = new HashSet<flavorTag>(10)
         };
         var flavors = desc.Split(";");
@@ -170,6 +183,7 @@ public class DialogueStateNode : IStateNode
             info.flavor.Add((flavorTag)flavorId);
         }
         _restaurantCharacter.CurOrderInfo = info;
+        _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//omakase
         // EventModule.Instance.OrderMealTopic.OnNext(info);
     }
 
