@@ -55,7 +55,7 @@ public partial class DragCookFoodIcon : UIComponent
     public void ShowFoodIcon(CookResult food,Action<CookResult,int> cb)
     {
         _cookResult = food;
-        var tbItem = DataProviderModule.Instance.GetItemBaseInfo(_cookResult.menuId);
+        var tbItem = DataProviderModule.Instance.GetItemBaseInfo(_cookResult.MenuId);
         ParentWindow.LoadSpriteAsync(tbItem.UiResPath,Img_Icon);
         _canDrag.Value = true;
         GiveAction = cb;

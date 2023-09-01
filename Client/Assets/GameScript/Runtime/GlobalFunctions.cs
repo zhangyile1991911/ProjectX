@@ -32,7 +32,7 @@ public class OrderMealInfo
     public int CharacterId;
     public int MenuId;
     public cfg.common.bubbleType OrderType;
-    public int operation;// 0 添加 1 删除
+    // public int operation;// 0 添加 1 删除
     public HashSet<flavorTag> flavor;
 
 

@@ -79,13 +79,17 @@ public class RestaurantCharacter : RestaurantRoleBase
         set
         {
             _orderMealInfo = value;
-            createOrderBoard();
+            if (_orderMealInfo != null)
+            {
+                createOrderBoard();
+                UserInfoModule.Instance.AddNPCOrder(_orderMealInfo);    
+            }
         }
     }
     private OrderMealInfo _orderMealInfo;
     
     private Clocker _clocker;
-    private int foodScore;
+    // private int foodScore;
     
     public Transform OrderNode => _orderNode;
     protected Transform _orderNode;
@@ -107,7 +111,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curOrderChatId = 0;
         // curMainLineChatId = 0;
         // curOrderMenuId = 0;
-        foodScore = 0;
+        // foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
     }
 
@@ -122,7 +126,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curTalkChatId = null;
         // curOrderChatId = 0;
         // curMainLineChatId = 0;
-        foodScore = 0;
+        // foodScore = 0;
         // curOrderMenuId = 0;
         // UnLoadTableData();
         // UnLoadDataBase();
@@ -313,10 +317,6 @@ public class RestaurantCharacter : RestaurantRoleBase
 
         var index = Random.Range(0, _orderPool.Count);
         
-        // CurOrderInfo ??= new OrderMealInfo();
-        // CurOrderInfo.MenuId = _orderBubbleTB[index].MenuId;
-        // CurOrderInfo.CharacterId = CharacterId;
-        
         return _orderPool[index];
     }
 
@@ -457,9 +457,8 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             storageBehaviour.SetValue("$orderId",CurOrderInfo.MenuId);
             storageBehaviour.SetValue("$orderType",(int)CurOrderInfo.OrderType);
-            storageBehaviour.SetValue("$mealScore",_receivedFood.Score);
+            storageBehaviour.SetValue("$foodscore",commentFood(_receivedFood));
             storageBehaviour.SetValue("$matchTag",isMatchTags());
-            _receivedFood = null;
         }
         storageBehaviour.SetValue("$withPartner",(_npcData.PartnerId > 0));
     }
@@ -469,16 +468,11 @@ public class RestaurantCharacter : RestaurantRoleBase
     //     _dialogueOrderId = menuId;
     // }
     
-    public void ReceiveFood(CookResult food)
+    public void ReceiveFood(CookResult food,bool switchStatus = true)
     {
         _receivedFood = food;
-        // curCommentChatId = _commentBubbleTB.Id;
-        
-        // CharacterSaidInfo info = new CharacterSaidInfo();
-        // info.CharacterId = CharacterId;
-        // info.ChatId = 0001;//todo 根据策划文档修改
-        // EventModule.Instance.CharBubbleTopic.OnNext(info);
-        // commentFood(food);
+        _receivedFood.characterId = CharacterId;
+        UserInfoModule.Instance.UpdateCookedMealOwner(food);
         for (int i = 0; i < _saidBubbles.Count; i++)
         {
             var one = _saidBubbles[i];
@@ -490,13 +484,25 @@ public class RestaurantCharacter : RestaurantRoleBase
             _saidBubbles.RemoveAt(i);
             break;
         }
-        CurBehaviour = new CharacterEating();
+
+        if (switchStatus)
+        {
+            CurBehaviour = new CharacterEating();    
+        }
         hideOrderBoard();
     }
 
-    private void commentFood(CookResult food)
+    public void ClearReceiveFood()
     {
-        foodScore = 0;
+        UserInfoModule.Instance.PayCookedMeal(_receivedFood);
+        _receivedFood = null;
+        UserInfoModule.Instance.RemoveNPCOrder(CharacterId);
+        CurOrderInfo = null;
+    }
+
+    private int commentFood(CookResult food)
+    {
+        var foodScore = 0;
         //时间内完成获得50分基础分
         foodScore = food.Score >= 1.0 ? 50 : 0;
         //标签评分：每个正向标签+10分，每个负面标签-10分，无关联标签0分
@@ -510,6 +516,8 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             foodScore += success ? 5 : -5;
         }
+
+        return foodScore;
     }
 
     private bool isMatchTags()
@@ -555,7 +563,7 @@ public class RestaurantCharacter : RestaurantRoleBase
 
     private void hideOrderBoard()
     {
-        orderBoardBoard.gameObject.SetActive(false);
+        orderBoardBoard?.gameObject.SetActive(false);
     }
 
     public override void ToDark()

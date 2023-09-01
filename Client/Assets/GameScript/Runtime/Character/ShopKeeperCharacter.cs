@@ -10,4 +10,10 @@ public class ShopKeeperCharacter : RestaurantRoleBase
     {
         
     }
+
+    public override void ReleaseCharacter()
+    {
+        base.ReleaseCharacter();
+        Destroy(gameObject);
+    }
 }

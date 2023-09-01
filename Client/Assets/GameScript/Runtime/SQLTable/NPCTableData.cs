@@ -24,4 +24,22 @@ public class NPCTableData
 
     [Column("Patient")]
     public int patient { get; set; }//耐心值
+    
+}
+
+[Table("NPCOrderTable")]
+public class NPCOrderTable
+{
+    [PrimaryKey]
+    [Column("CharacterId")]
+    public int CharacterId { get; set; }
+    
+    [Column("MenuId")]
+    public int MenuId { get; set; }
+
+    [Column("OrderType")]
+    public int OrderType { get; set; }
+
+    [Column("Flavor")]
+    public string Flavor { get; set; }
 }

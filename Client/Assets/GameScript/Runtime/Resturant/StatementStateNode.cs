@@ -43,6 +43,8 @@ public class StatementStateNode : IStateNode
             {
                 chara.ClearWeeklyData();
             }
+
+            chara.CurBehaviour = null;
         }
         //清理角色资源
         CharacterMgr.Instance.ClearAllCharacter();

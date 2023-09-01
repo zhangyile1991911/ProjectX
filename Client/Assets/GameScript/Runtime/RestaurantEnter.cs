@@ -108,14 +108,22 @@ public class RestaurantEnter : MonoBehaviour
     {
         foreach (var cid in UserInfoModule.Instance.RestaurantWaitingCharacter)
         {
-            var chara = await CharacterMgr.Instance.CreateCharacter(cid);
+            var characterBase = await CharacterMgr.Instance.CreateCharacter(cid);
+            var chara = characterBase as RestaurantCharacter;
             // var chara = handler as RestaurantRoleBase;
-            
+            var meal = UserInfoModule.Instance.GetCookedMealByCharacterId(chara.CharacterId);
+            if (meal != null)
+            {
+                chara.ReceiveFood(meal,false);
+            }
+
+            var order = UserInfoModule.Instance.GetNPCOrder(cid);
+            if (order != null)
+            {
+                chara.CurOrderInfo = order;
+            }
             for (int i = 0; i < _seatPoints.Count; i++)
             {
-                // int tmp = 1 << i;
-                // if ((chara.SeatOccupy | tmp) >> i == 1)
-                // {
                     var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, chara.SeatOccupy);
                     chara.transform.position = seatWorldPosition;
                     switch (chara.BehaviourID)
@@ -130,7 +138,7 @@ public class RestaurantEnter : MonoBehaviour
                             chara.CurBehaviour = new CharacterTalk();
                             break;
                         case behaviour.WaitOrder:
-                            chara.CurBehaviour = new CharacterOrderMeal();
+                            chara.CurBehaviour = new CharacterWaitOrder();
                             break;
                         case behaviour.Eating:
                             chara.CurBehaviour = new CharacterEating();
@@ -144,21 +152,14 @@ public class RestaurantEnter : MonoBehaviour
                         case behaviour.Thinking:
                             chara.CurBehaviour = new CharacterThinking();
                             break;
+                        case behaviour.Comment:
+                            chara.CurBehaviour = new CharacterComment();
+                            break;
                         default:
                             Debug.Log($"waiting {chara.CharacterName} behaviour = {chara.BehaviourID}");
                             break;
                     }
-                    // if (chara.HaveSoul)
-                    // {
-                    //     chara.CurBehaviour = new CharacterTalk();    
-                    // }
-                    // else
-                    // {
-                    //     chara.CurBehaviour = new CharacterWaiting();
-                    // }
-                
                     break;
-                // }
             }
         }
     }

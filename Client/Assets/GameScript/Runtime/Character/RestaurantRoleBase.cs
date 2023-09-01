@@ -70,8 +70,15 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             {
                 _behaviour.Exit();
                 _behaviour = value;
-                _behaviour?.Enter(this);
-                _npcData.Behaviour = (int)value.BehaviourID;
+                if (_behaviour != null)
+                {
+                    _behaviour.Enter(this);
+                    _npcData.Behaviour = (int)value.BehaviourID;    
+                }
+                else
+                {
+                    _npcData.Behaviour = 0;
+                }
                 UserInfoModule.Instance.UpdateNPCData(CharacterId);
                 
             }

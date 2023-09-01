@@ -303,6 +303,7 @@ public class CharacterWaitReply : CharacterBehaviour
         }
         if (_restaurantCharacter.PatientValue <= 0)
         {//如果耐心值耗完,就离开
+            Debug.Log("客人等待回复 耐心耗尽");
             _restaurantCharacter.CurBehaviour = new CharacterLeave();
         }
     }
@@ -565,6 +566,7 @@ public class CharacterComment : CharacterBehaviour
     public void Exit()
     {
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出评论状态-----");
+        _restaurantCharacter.ClearReceiveFood();
     }
 
     public void Update()

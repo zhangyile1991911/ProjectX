@@ -34,7 +34,7 @@ public class CookModule : MonoBehaviour
         _handler = new CompositeDisposable(20);
         
         _result = new CookResult();
-        _result.menuId = foodAndTools.MenuId;
+        _result.MenuId = foodAndTools.MenuId;
         _result.Tags = new HashSet<flavorTag>(5);
         _result.QTEResult = new Dictionary<int, bool>();
     }

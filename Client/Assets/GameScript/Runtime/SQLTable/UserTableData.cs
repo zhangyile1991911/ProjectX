@@ -50,9 +50,7 @@ public class RestaurantRuntimeData
 {
     public List<int> HaveArrivedCustomer;
     public List<int> WaitingCustomers;
-    public List<CookResult> cookedMeal;
     public List<int> SoldMenuId;
-
 }
 // [System.Serializable]
 // public class WaitingCustomerInfo
@@ -60,13 +58,37 @@ public class RestaurantRuntimeData
 //     public int CharacterId;
 //     // public int SeatOccupy;
 // }
-[System.Serializable]
+[Table("CookResultTable")]
+public class CookResultTable
+{
+    [Column("MenuId")] 
+    public int MenuId{ get; set; }
+
+    [Column("Score")] 
+    public float Score { get; set; }
+
+    [Column("Tags")] 
+    public string Tags { get; set; }
+    
+    [Column("QTEResult")]
+    public string QTEResult { get; set; }
+    
+    [Column("CharacterId")] 
+    public int characterId { get; set; } //记录卖给谁了
+
+    [PrimaryKey]
+    [Column("CreateTimestamp")]
+    public long createTimestamp { get; set; }
+}
+
 public class CookResult
 {
-    public int menuId;
+    public int MenuId;
     public float Score;
     public HashSet<cfg.food.flavorTag> Tags;
     public Dictionary<int, bool> QTEResult;//int = QTEId
+    public int characterId;
+    public long create_timestamp;
 }
 
 //已经学会的菜谱

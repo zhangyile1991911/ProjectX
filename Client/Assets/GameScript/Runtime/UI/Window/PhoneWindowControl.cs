@@ -57,19 +57,19 @@ public partial class PhoneWindow : UIWindow
     
     public override void OnShow(UIOpenParam openParam)
     {
-        base.OnShow(openParam);
+        handles = new CompositeDisposable(10);
+        uiGo.SetActive(true);
+        
         _clocker = UniModule.GetModule<Clocker>();
         XBtn_home.OnClick.Subscribe(clickHome).AddTo(handles);
         uiGo.UpdateAsObservable().Subscribe(UpdateApp).AddTo(handles);
-        // _clocker.Topic.Subscribe(nowms =>
-        // {
-        //     
-        // }).AddTo(handles);
     }
 
     public override void OnHide()
     {
-        base.OnHide();
+        uiGo.SetActive(false);
+        handles.Dispose();
+        handles.Clear();
     }
 
     public override void OnUpdate()
