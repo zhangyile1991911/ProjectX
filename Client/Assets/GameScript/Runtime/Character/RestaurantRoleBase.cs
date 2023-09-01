@@ -70,8 +70,15 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             {
                 _behaviour.Exit();
                 _behaviour = value;
-                _behaviour?.Enter(this);
-                _npcData.Behaviour = (int)value.BehaviourID;
+                if (_behaviour != null)
+                {
+                    _behaviour.Enter(this);
+                    _npcData.Behaviour = (int)value.BehaviourID;    
+                }
+                else
+                {
+                    _npcData.Behaviour = 0;
+                }
                 UserInfoModule.Instance.UpdateNPCData(CharacterId);
                 
             }
@@ -264,15 +271,28 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             case behaviour.Talk:
                 _spriteRenderer.sprite = _spriteDict["angry"];
                 break;
-            case behaviour.Waiting:
+            case behaviour.WaitOrder:
+            case behaviour.WaitReply:
                 _spriteRenderer.sprite = _spriteDict["happy"];
+                break;
+            case behaviour.Comment:
+                _spriteRenderer.sprite = _spriteDict["waiting"];
                 break;
             default:
                 _spriteRenderer.sprite = _spriteDict["waiting"];       
                 break;
         }
     }
-    
+
+    public virtual void ClearDailyData()
+    {
+        
+    }
+
+    public virtual void ClearWeeklyData()
+    {
+        
+    }
     // private void Update()
     // {
     //     CurBehaviour?.Update();

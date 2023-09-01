@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using cfg.common;
 using UnityEngine;
 
 public class StatementStateNode : IStateNode
@@ -17,6 +18,7 @@ public class StatementStateNode : IStateNode
         var openData = new FlowControlWindowData();
         openData.StateMachine = _machine;
         UIManager.Instance.OpenUI(UIEnum.RestaurantStatementWindow, null, openData);
+        _restaurant.RecycleAllPeople();
     }
 
     public void OnUpdate()
@@ -30,17 +32,24 @@ public class StatementStateNode : IStateNode
     public void OnExit()
     {
         UIManager.Instance.CloseUI(UIEnum.RestaurantStatementWindow);
-        
+        var isSunday = Clocker.Instance.NowDateTime.DayOfWeek == WeekDay.Sunday;
         //清理角色占座
         var characters = CharacterMgr.Instance.Characters;
         foreach (var chara in characters)
         {
             _restaurant.CharacterReturnSeat(chara.SeatOccupy);
+            chara.ClearDailyData();
+            if (isSunday)
+            {
+                chara.ClearWeeklyData();
+            }
+
+            chara.CurBehaviour = null;
         }
         //清理角色资源
         CharacterMgr.Instance.ClearAllCharacter();
         //清理下单条
-        UIManager.Instance.DestroyUI(UIEnum.OrderQueueWindow);
+        // UIManager.Instance.DestroyUI(UIEnum.OrderQueueWindow);
         
         //计算收入
         calculate();

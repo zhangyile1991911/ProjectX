@@ -49,8 +49,11 @@ public class RestaurantCharacter : RestaurantRoleBase
     private List<CharacterBubble> _mainLineBubbleTB;
     private List<CharacterBubble> _talkBubbleTB;
     private List<CharacterBubble> _orderBubbleTB;
-    // private CharacterBubble _commentBubbleTB;
-    
+    private List<CharacterBubble> _commentBubbleTB;
+
+    public CharacterBubble OMAKASEComment { get; private set; }
+    public CharacterBubble HybridOrderComment { get; private set; }
+    public CharacterBubble SpecifiedOrderComment { get; private set;}
     //记录当前已经生成的chatid
     private List<DialogueTitleInfo> _saidBubbles;
 
@@ -76,13 +79,17 @@ public class RestaurantCharacter : RestaurantRoleBase
         set
         {
             _orderMealInfo = value;
-            createOrderBoard();
+            if (_orderMealInfo != null)
+            {
+                createOrderBoard();
+                UserInfoModule.Instance.AddNPCOrder(_orderMealInfo);    
+            }
         }
     }
     private OrderMealInfo _orderMealInfo;
     
     private Clocker _clocker;
-    private int foodScore;
+    // private int foodScore;
     
     public Transform OrderNode => _orderNode;
     protected Transform _orderNode;
@@ -104,7 +111,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curOrderChatId = 0;
         // curMainLineChatId = 0;
         // curOrderMenuId = 0;
-        foodScore = 0;
+        // foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
     }
 
@@ -119,10 +126,10 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curTalkChatId = null;
         // curOrderChatId = 0;
         // curMainLineChatId = 0;
-        foodScore = 0;
+        // foodScore = 0;
         // curOrderMenuId = 0;
-        UnLoadTableData();
-        UnLoadDataBase();
+        // UnLoadTableData();
+        // UnLoadDataBase();
         for (int i = 0; i < _orderNode.childCount;i++)
         {
             var one = _orderNode.GetChild(i);
@@ -155,6 +162,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         _mainLineBubbleTB = new(10);
         _talkBubbleTB = new(10);
         _orderBubbleTB = new(10);
+        _commentBubbleTB = new(10);
         
         if (_baseInfo.Soul == 0) return;
         
@@ -166,15 +174,21 @@ public class RestaurantCharacter : RestaurantRoleBase
                 case bubbleType.Talk:
                     _talkBubbleTB.Add(dataList[i]);
                     break;
-                case bubbleType.Order:
+                case bubbleType.SpecifiedOrder:
                     _orderBubbleTB.Add(dataList[i]);
                     break;
                 case bubbleType.MainLine:
                     _mainLineBubbleTB.Add(dataList[i]);
                     break;
-                // case bubbleType.Comment:
-                //     _commentBubbleTB = dataList[i];
-                //     break;
+                case bubbleType.SpecifiedComment:
+                    SpecifiedOrderComment = dataList[i];
+                    break;
+                case bubbleType.HybridComment:
+                    HybridOrderComment = dataList[i];
+                    break;
+                case bubbleType.OmakaseComment:
+                    OMAKASEComment = dataList[i];
+                    break;
             }
         }
     }
@@ -282,8 +296,8 @@ public class RestaurantCharacter : RestaurantRoleBase
         return choiced.Id;
     }
 
-    List<int> _orderPool = new List<int>(10);
-    private int generateOrderChatId()
+    List<CharacterBubble> _orderPool = new List<CharacterBubble>(10);
+    private CharacterBubble generateOrderChatId()
     {
         _orderPool.Clear();
         foreach (var one in _orderBubbleTB)
@@ -296,18 +310,14 @@ public class RestaurantCharacter : RestaurantRoleBase
             if(!isCondition)continue;
             
             if (checkWeekday(one.WeekDay))
-                _orderPool.Add(one.Id);
+                _orderPool.Add(one);
         }
 
-        if (_orderPool.Count <= 0) return -1;
+        if (_orderPool.Count <= 0) return null;
 
         var index = Random.Range(0, _orderPool.Count);
         
-        CurOrderInfo ??= new OrderMealInfo();
-        CurOrderInfo.MenuId = _orderBubbleTB[index].MenuId;
-        CurOrderInfo.CharacterId = CharacterId;
-        
-        return _orderBubbleTB[index].Id;
+        return _orderPool[index];
     }
 
     private bool checkWeekday(List<WeekDay> weekDays)
@@ -342,7 +352,8 @@ public class RestaurantCharacter : RestaurantRoleBase
 
     int haveOrderChatId()
     {
-        var result = _saidBubbles.FirstOrDefault(one=>one.Type==bubbleType.Order);
+        var result = _saidBubbles.FirstOrDefault(one=>
+            one.Type==bubbleType.HybridOrder||one.Type==bubbleType.Omakase||one.Type==bubbleType.SpecifiedOrder);
         return result?.ID ?? 0;
     }
     
@@ -408,13 +419,15 @@ public class RestaurantCharacter : RestaurantRoleBase
     {
         //下单
         if (haveOrderChatId() > 0) return true;
+        
+        var chatBubble = generateOrderChatId();
+        if (chatBubble == null) return false;
         var info = new CharacterSaidInfo
         {
-            CharacterId = CharacterId
+            CharacterId = CharacterId,
+            ChatId =  chatBubble.Id,
         };
-        info.ChatId = generateOrderChatId();
-        if (info.ChatId <= 0) return false;
-        _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = bubbleType.Order});
+        _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = chatBubble.BubbleType});
         _npcData.TodayOrderCount += 1;
         EventModule.Instance.CharBubbleTopic.OnNext(info);
         return true;
@@ -444,9 +457,8 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             storageBehaviour.SetValue("$orderId",CurOrderInfo.MenuId);
             storageBehaviour.SetValue("$orderType",(int)CurOrderInfo.OrderType);
-            storageBehaviour.SetValue("$mealScore",_receivedFood.Score);
+            storageBehaviour.SetValue("$foodscore",commentFood(_receivedFood));
             storageBehaviour.SetValue("$matchTag",isMatchTags());
-            _receivedFood = null;
         }
         storageBehaviour.SetValue("$withPartner",(_npcData.PartnerId > 0));
     }
@@ -456,23 +468,41 @@ public class RestaurantCharacter : RestaurantRoleBase
     //     _dialogueOrderId = menuId;
     // }
     
-    public void ReceiveFood(CookResult food)
+    public void ReceiveFood(CookResult food,bool switchStatus = true)
     {
         _receivedFood = food;
-        // curCommentChatId = _commentBubbleTB.Id;
-        
-        // CharacterSaidInfo info = new CharacterSaidInfo();
-        // info.CharacterId = CharacterId;
-        // info.ChatId = 0001;//todo 根据策划文档修改
-        // EventModule.Instance.CharBubbleTopic.OnNext(info);
-        // commentFood(food);
-        CurBehaviour = new CharacterEating();
+        _receivedFood.characterId = CharacterId;
+        UserInfoModule.Instance.UpdateCookedMealOwner(food);
+        for (int i = 0; i < _saidBubbles.Count; i++)
+        {
+            var one = _saidBubbles[i];
+            var isOrder = one.Type == bubbleType.HybridOrder || one.Type == bubbleType.Omakase ||
+                one.Type == bubbleType.SpecifiedOrder;
+            
+            if(!isOrder)continue;
+            
+            _saidBubbles.RemoveAt(i);
+            break;
+        }
+
+        if (switchStatus)
+        {
+            CurBehaviour = new CharacterEating();    
+        }
         hideOrderBoard();
     }
 
-    private void commentFood(CookResult food)
+    public void ClearReceiveFood()
     {
-        foodScore = 0;
+        UserInfoModule.Instance.PayCookedMeal(_receivedFood);
+        _receivedFood = null;
+        UserInfoModule.Instance.RemoveNPCOrder(CharacterId);
+        CurOrderInfo = null;
+    }
+
+    private int commentFood(CookResult food)
+    {
+        var foodScore = 0;
         //时间内完成获得50分基础分
         foodScore = food.Score >= 1.0 ? 50 : 0;
         //标签评分：每个正向标签+10分，每个负面标签-10分，无关联标签0分
@@ -486,11 +516,13 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             foodScore += success ? 5 : -5;
         }
+
+        return foodScore;
     }
 
     private bool isMatchTags()
     {
-        if (CurOrderInfo.flavor.Count <= 0) return false;
+        if (CurOrderInfo.flavor is not { Count: > 0 }) return false;
 
         int flavorNum = CurOrderInfo.flavor.Count;
 
@@ -531,7 +563,7 @@ public class RestaurantCharacter : RestaurantRoleBase
 
     private void hideOrderBoard()
     {
-        orderBoardBoard.gameObject.SetActive(false);
+        orderBoardBoard?.gameObject.SetActive(false);
     }
 
     public override void ToDark()
@@ -559,5 +591,37 @@ public class RestaurantCharacter : RestaurantRoleBase
         var limit = DataProviderModule.Instance.OrderCountLimit();
         return _npcData.TodayOrderCount <= limit;
     }
-    
+
+    public bool IsWaitForOrder()
+    {
+        return CurBehaviour.BehaviourID == behaviour.WaitOrder;
+    }
+
+    public void RemoveSaidBubble(int chatId)
+    {
+        for (int i = 0; i < _saidBubbles.Count; i++)
+        {
+            var one = _saidBubbles[i];
+
+            if (one.ID == chatId)
+            {
+                _saidBubbles.RemoveAt(i);
+                break;    
+            }
+        }
+    }
+
+    public override void ClearDailyData()
+    {
+        base.ClearDailyData();
+        _npcData.TodayOrderCount = 0;
+        UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
+    }
+
+    public override void ClearWeeklyData()
+    {
+        base.ClearWeeklyData();
+        _npcData.AccumulateFriendAtWeek = 0;
+        UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
+    }
 }

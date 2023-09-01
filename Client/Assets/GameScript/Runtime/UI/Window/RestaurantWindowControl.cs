@@ -59,6 +59,7 @@ public partial class RestaurantWindow : UIWindow
         Btn_Close.OnClickAsObservable().Subscribe(ClickClose).AddTo(handles);
         
         EventModule.Instance.CharacterLeaveSub.Subscribe(RemoveChatBubble).AddTo(handles);
+        EventModule.Instance.ToNextDaySub.Subscribe(ClearChatBubble).AddTo(handles);
         showCookFood();
         // Btn_Bubble.OnClickAsObservable().Subscribe(ClickTest).AddTo(handles);
     }
@@ -124,15 +125,28 @@ public partial class RestaurantWindow : UIWindow
         _floatingBubbleChatId.Add(chatId);
     }
 
+    private void ClearChatBubble(GameDateTime time)
+    {
+        for (int i = _bubbleList.Count - 1; i >= 0; i--)
+        {
+            _bubbleList.RemoveAt(i);
+            UIManager.Instance.DestroyUIComponent(_bubbleList[i]);
+            _floatingBubbleChatId.Remove(_bubbleList[i].ChatId);
+        }    
+    }
+    
     public void RemoveChatBubble(RestaurantRoleBase restaurantCharacter)
     {
         var uiManager = UniModule.GetModule<UIManager>();
         for (int i = _bubbleList.Count - 1; i >= 0; i--)
         {
+            var one = _bubbleList[i];
+            var chatId = _bubbleList[i].ChatId;
             if (_bubbleList[i].Owner == restaurantCharacter)
             {
+                uiManager.DestroyUIComponent(one);
                 _bubbleList.RemoveAt(i);
-                uiManager.DestroyUIComponent(_bubbleList[i]);
+                _floatingBubbleChatId.Remove(chatId);
             }
         }
     }
@@ -142,7 +156,7 @@ public partial class RestaurantWindow : UIWindow
         _bubbleList.Remove(bubble);
         var uiManager = UniModule.GetModule<UIManager>();
         uiManager.DestroyUIComponent(bubble);
-        _floatingBubbleChatId.Add(bubble.ChatId);
+        _floatingBubbleChatId.Remove(bubble.ChatId);
     }
 
     private void showCookFood()
@@ -168,7 +182,7 @@ public partial class RestaurantWindow : UIWindow
 
     private void soldCustomerFood(CookResult result,int characterId)
     {
-        UserInfoModule.Instance.SoldMealId(result.menuId);
+        UserInfoModule.Instance.SoldMealId(result.MenuId);
         // OrderMealInfo info = new();
         // info.MenuId = result.menuId;
         // info.operation = 1;

@@ -55,7 +55,7 @@ public partial class DragCookFoodIcon : UIComponent
     public void ShowFoodIcon(CookResult food,Action<CookResult,int> cb)
     {
         _cookResult = food;
-        var tbItem = DataProviderModule.Instance.GetItemBaseInfo(_cookResult.menuId);
+        var tbItem = DataProviderModule.Instance.GetItemBaseInfo(_cookResult.MenuId);
         ParentWindow.LoadSpriteAsync(tbItem.UiResPath,Img_Icon);
         _canDrag.Value = true;
         GiveAction = cb;
@@ -89,6 +89,11 @@ public partial class DragCookFoodIcon : UIComponent
         if (hit && hit.transform.CompareTag("RestaurantCharacter"))
         {
             var character = hit.transform.GetComponent<RestaurantCharacter>();
+            if (!character.IsWaitForOrder())
+            {
+                Debug.Log($"当前角色{character.CharacterName} 没有进入等餐状态");
+                return;
+            }
             character.ReceiveFood(_cookResult);
             GiveAction?.Invoke(_cookResult,character.CharacterId);
             ClearFoodIcon();

@@ -441,6 +441,7 @@ namespace GameScript.CookPlay
                     _result.Tags.Add(one);    
                 }
             }
+            _result.create_timestamp = Clocker.Instance.NowDateTime.Timestamp;
 
             if (IsDebug)
             {

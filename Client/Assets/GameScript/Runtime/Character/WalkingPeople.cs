@@ -70,6 +70,11 @@ public class WalkingPeople : MonoBehaviour
         var delay = 3f + Random.Range(0, 10.0f);
         curPos = start;
         transform.position = curPos;
+        if (moveHanlder != null)
+        {
+            moveHanlder.Kill();
+            moveHanlder = null;
+        }
         moveHanlder = DOTween.To(() => start.x,updateMove, destination.x, 35f).SetDelay(delay).OnComplete(moveComplete).SetAutoKill(true);
     }
 

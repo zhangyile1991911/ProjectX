@@ -43,7 +43,7 @@ public partial class CookResultWidget : UIComponent
     public void ShowGameOver(CookResult cookResult)
     {
         //标题
-        var tbMenu = DataProviderModule.Instance.GetMenuInfo(cookResult.menuId);
+        var tbMenu = DataProviderModule.Instance.GetMenuInfo(cookResult.MenuId);
         Txt_Menu.text = tbMenu.Name; 
         //评分
         StringBuilder sb = new StringBuilder();

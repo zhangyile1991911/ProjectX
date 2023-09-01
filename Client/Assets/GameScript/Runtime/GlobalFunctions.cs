@@ -25,20 +25,14 @@ public class DialogueData:UIOpenParam
 }
 
 
-public enum OrderType
-{
-    SpecificOrder = 1,
-    Omakase = 2,
-    HybridOrder = 3,
-    
-}
+
 public class OrderMealInfo
 {
     // public RestaurantCharacter Customer;
     public int CharacterId;
     public int MenuId;
-    public OrderType OrderType;
-    public int operation;// 0 添加 1 删除
+    public cfg.common.bubbleType OrderType;
+    // public int operation;// 0 添加 1 删除
     public HashSet<flavorTag> flavor;
 
 

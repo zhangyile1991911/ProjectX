@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using cfg.common;
-using Cysharp.Threading.Tasks;
-using SimpleJSON;
+using cfg.food;
+using Cysharp.Text;
+using DG.DemiEditor;
 using UnityEngine;
 using SQLite;
-using UniRx;
-using Unity.Collections;
-using UnityEngine.PlayerLoop;
+using UnityEngine.Analytics;
 
 public class UserInfoModule : SingletonModule<UserInfoModule>
 {
@@ -29,7 +27,13 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     private Dictionary<int, DialogueTableData> _dialogueTableDatas;
 
+    private Dictionary<int, NPCOrderTable> _npcOrderDatas;
+
     private Dictionary<int, OwnMenu> _ownMenuTableDatas;
+    
+    public List<CookResult> CookResults { get; private set; }
+    // public List<CookResultTable> CookResultTables { get; private set; }
+
     private RestaurantTableData _restaurantTableData;
     private RestaurantRuntimeData _restaurantRuntimeData;
     public List<int> RestaurantWaitingCharacter => _restaurantRuntimeData.WaitingCustomers;
@@ -66,6 +70,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.CreateTable<DialogueTableData>();
         _sqLite.CreateTable<RestaurantTableData>();
         _sqLite.CreateTable<OwnMenu>();
+        _sqLite.CreateTable<NPCOrderTable>();
+        _sqLite.CreateTable<CookResultTable>();
 
         var userQuery = $"SELECT * FROM UserTableData;";
         _userTableData = _sqLite.Query<UserTableData>(userQuery).FirstOrDefault();
@@ -73,7 +79,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             _userTableData = new ();
             _userTableData.Id = 11111;
-            _userTableData.now = 0;
+            _userTableData.now = 20 * 60 * 60;
             _userTableData.money = 500;
             // _userTableData.season = (int)Season.Spring;
             // _userTableData.day_of_month = 0;
@@ -103,8 +109,11 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         OwnMenus = _sqLite.Query<OwnMenu>(ownMenuQuery);
         initOwnMenuData(OwnMenus);
 
-        EventModule.Instance.ToNextWeekSub.Subscribe(ResetNPCWeekDay);
-        EventModule.Instance.ToNextDaySub.Subscribe(ResetNPCWeekDay);
+        initNPCOrder();
+
+        initCookResult();
+        // EventModule.Instance.ToNextWeekSub.Subscribe(ResetNPCWeekDay);
+        // EventModule.Instance.ToNextDaySub.Subscribe(ResetNPCDaily);
     }
 
     private void initItem(List<ItemTableData> items)
@@ -147,6 +156,60 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         
     }
 
+    private void initNPCOrder()
+    {
+        //获得NPC点单信息
+        var npcOrderSQL = "select * from NPCOrderTable";
+        var npcOrderDatas = _sqLite.Query<NPCOrderTable>(npcOrderSQL);
+        _npcOrderDatas = new Dictionary<int, NPCOrderTable>(10);
+        if (npcOrderDatas != null)
+        {
+            foreach (var one in npcOrderDatas)
+            {
+                _npcOrderDatas.Add(one.CharacterId,one);
+            }    
+        }
+    }
+
+    private void initCookResult()
+    {
+        CookResults = new List<CookResult>(4);
+        var cookResultSQL = "select * from CookResultTable";
+        CookResultCached = _sqLite.Query<CookResultTable>(cookResultSQL);
+        if (CookResultCached == null)
+        {
+            CookResultCached = new List<CookResultTable>();
+        }
+            
+        foreach (var one in CookResultCached)
+        {
+            CookResult result = new CookResult();
+            result.characterId = one.characterId;
+            result.MenuId = one.MenuId;
+            result.Score = one.Score;
+            result.create_timestamp = one.createTimestamp;
+
+            result.QTEResult = new Dictionary<int, bool>();
+            var qteGroup = one.QTEResult.Split(";");
+            foreach (var group in qteGroup)
+            {
+                var keyVal = group.Split(",");
+                var qteId = Convert.ToInt32(keyVal[0]);
+                var success = Convert.ToBoolean(keyVal[1]);
+                result.QTEResult.Add(qteId,success);
+            }
+            
+            result.Tags = new HashSet<flavorTag>();
+            var tagStrs = one.Tags.Split(",");
+            foreach (var str in tagStrs)
+            {
+                var tagInt = Convert.ToInt32(str);
+                result.Tags.Add((flavorTag)tagInt);
+            }
+            CookResults.Add(result);
+        }
+    }
+    
     private void initDialogue(List<DialogueTableData> dialogueList)
     {
         _dialogueTableDatas ??= new Dictionary<int, DialogueTableData>();
@@ -169,7 +232,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             _restaurantRuntimeData = new RestaurantRuntimeData();
             _restaurantRuntimeData.HaveArrivedCustomer = new List<int>();
             _restaurantRuntimeData.WaitingCustomers = new List<int>();
-            _restaurantRuntimeData.cookedMeal = new List<CookResult>();
+            // _restaurantRuntimeData.cookedMeal = new List<CookResult>();
             _restaurantRuntimeData.SoldMenuId = new List<int>();
             _restaurantTableData.RestaurantRuntimeData = JsonUtility.ToJson(_restaurantRuntimeData);
             _sqLite.Insert(_restaurantTableData);
@@ -257,7 +320,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     {
         _restaurantRuntimeData.SoldMenuId.Clear();
         _restaurantRuntimeData.WaitingCustomers.Clear();
-        _restaurantRuntimeData.cookedMeal.Clear();
+        // _restaurantRuntimeData.cookedMeal.Clear();
         _restaurantRuntimeData.HaveArrivedCustomer.Clear();
         updateRestaurantRuntimeData();
     }
@@ -298,29 +361,80 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     {
         _restaurantRuntimeData.WaitingCustomers.Remove(characterId);
         updateRestaurantRuntimeData();
-        // foreach (var one in _restaurantRuntimeData.WaitingCustomers)
-        // {
-        //     if (one.CharacterId == characterId)
-        //     {
-        //         _restaurantRuntimeData.WaitingCustomers.Remove(one);
-        //         updateRestaurantRuntimeData();
-        //         break;
-        //     }
-        // }
     }
 
-    public List<CookResult> CookResults => _restaurantRuntimeData.cookedMeal;
+
+    private List<CookResultTable> CookResultCached = new List<CookResultTable>(4);
     public void AddCookedMeal(CookResult oneMeal)
     {
         if (oneMeal == null) return;
         
-        _restaurantRuntimeData.cookedMeal.Add(oneMeal);
+        CookResults.Add(oneMeal);
+        CookResultTable tableData = new CookResultTable();
+        tableData.characterId = oneMeal.characterId;
+        tableData.MenuId = oneMeal.MenuId;
+        tableData.Score = oneMeal.Score;
+        tableData.createTimestamp = oneMeal.create_timestamp;
+        tableData.Tags = "";
+        if (oneMeal.Tags != null && oneMeal.Tags.Count > 0)
+        {
+            tableData.Tags = ZString.Join(',', oneMeal.Tags);    
+        }
+        
+        tableData.QTEResult = "";
+        if (oneMeal.QTEResult != null && oneMeal.QTEResult.Count > 0)
+        {
+            using (var sb = ZString.CreateStringBuilder())
+            {
+                foreach (var keyVal in oneMeal.QTEResult)
+                {
+                    sb.Append(ZString.Join(',', keyVal));
+                    sb.Append(';');
+                }
+                sb.Remove(sb.Length-1,1);
+                tableData.QTEResult = sb.ToString();
+            }
+        }
+        CookResultCached.Add(tableData);
     }
 
-    public void RemoveCookedMeal(CookResult oneMeal)
+    public void UpdateCookedMealOwner(CookResult oneMeal)
+    {
+        var result = CookResultCached.Find(one => one.createTimestamp == oneMeal.create_timestamp);
+        result.characterId = oneMeal.characterId;
+        _sqLite.Update(result);
+    }
+
+    public void PayCookedMeal(CookResult oneMeal)
     {
         if (oneMeal == null) return;
-        _restaurantRuntimeData.cookedMeal.Remove(oneMeal);
+        
+        for (int i = 0; i < CookResultCached.Count; i++)
+        {
+            var one = CookResultCached[i];
+            if (one.characterId == oneMeal.characterId && one.createTimestamp == oneMeal.create_timestamp)
+            {
+                _sqLite.Delete<CookResultTable>(one.createTimestamp);
+                CookResults.Remove(oneMeal);
+                CookResultCached.RemoveAt(i);
+                break;
+            }
+        }
+        _restaurantRuntimeData.SoldMenuId.Add(oneMeal.MenuId);
+        updateRestaurantRuntimeData();
+    }
+
+    public CookResult GetCookedMealByCharacterId(int characterId)
+    {
+        foreach (var one in CookResults)
+        {
+            if (one.characterId == characterId)
+            {
+                return one;
+            }
+        }
+
+        return null;
     }
     
 
@@ -411,21 +525,21 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _sqLite.Update(d);
     }
 
-    private void ResetNPCWeekDay(GameDateTime gameDateTime)
-    {
-        foreach(var one in _npcTableDatas.Values)
-        {
-            one.AccumulateFriendAtWeek = 0;
-        }
-    }
+    // private void ResetNPCWeekDay(GameDateTime gameDateTime)
+    // {
+    //     foreach(var one in _npcTableDatas.Values)
+    //     {
+    //         one.AccumulateFriendAtWeek = 0;
+    //     }
+    // }
 
-    private void ResetNPCDaily(GameDateTime time)
-    {
-        foreach(var one in _npcTableDatas.Values)
-        {
-            one.TodayOrderCount = 0;
-        }
-    }
+    // private void ResetNPCDaily(GameDateTime time)
+    // {
+    //     foreach(var one in _npcTableDatas.Values)
+    //     {
+    //         one.TodayOrderCount = 0;
+    //     }
+    // }
     
 
     public bool HaveReadDialogueId(int did)
@@ -501,8 +615,62 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             (int)Clocker.Instance.NowDateTime.Day);
         _sqLite.Update(_userTableData);
     }
-    
 
+    public void AddNPCOrder(OrderMealInfo orderMealInfo)
+    {
+        var exist = _npcOrderDatas.ContainsKey(orderMealInfo.CharacterId);
+        if (exist)
+        {
+            return;
+        }
+        
+        var newData = new NPCOrderTable();
+        newData.CharacterId = orderMealInfo.CharacterId;
+        _npcOrderDatas.Add(newData.CharacterId,newData);
+        
+        var data = _npcOrderDatas[orderMealInfo.CharacterId];
+        data.OrderType = (int)orderMealInfo.OrderType;
+        data.MenuId = orderMealInfo.MenuId;
+        data.Flavor = ZString.Join(";",orderMealInfo.flavor);
+        _sqLite.Insert(data);
+    }
+
+    public void RemoveNPCOrder(int characterId)
+    {
+        if (!_npcOrderDatas.ContainsKey(characterId))
+        {
+            return;
+        }
+
+        var data = _npcOrderDatas[characterId];
+        _npcOrderDatas.Remove(characterId);
+        _sqLite.Delete(data);
+    }
+
+    public OrderMealInfo GetNPCOrder(int characterId)
+    {
+        var exist = _npcOrderDatas.ContainsKey(characterId);
+        if (!exist)
+        {
+            return null;
+        }
+
+        var data = _npcOrderDatas[characterId];
+        OrderMealInfo result = new OrderMealInfo();
+        result.CharacterId = data.CharacterId;
+        result.MenuId = data.MenuId;
+        result.OrderType = (cfg.common.bubbleType)data.OrderType;
+        if (!data.Flavor.IsNullOrEmpty())
+        {
+            var flavorStr = data.Flavor.Split(";");
+            foreach (var str in flavorStr)
+            {
+                var flavorInt = Convert.ToInt32(str);
+                result.flavor.Add((flavorTag)flavorInt);
+            }    
+        }
+        return result;
+    }
     
     // public void SaveAllData()
     // {

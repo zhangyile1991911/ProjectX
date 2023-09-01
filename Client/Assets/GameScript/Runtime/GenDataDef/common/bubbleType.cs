@@ -12,29 +12,37 @@ namespace cfg.common
     public enum bubbleType
     {
         /// <summary>
-        /// 对话
-        /// </summary>
-        Talk = 1,
-        /// <summary>
-        /// 下单
-        /// </summary>
-        Order = 2,
-        /// <summary>
         /// 主线
         /// </summary>
-        MainLine = 3,
+        MainLine = 1,
         /// <summary>
-        /// 评论
+        /// 对话
         /// </summary>
-        Comment = 4,
+        Talk = 2,
+        /// <summary>
+        /// 精准下单
+        /// </summary>
+        SpecifiedOrder = 3,
         /// <summary>
         /// 模糊订单
         /// </summary>
-        Omakase = 5,
+        Omakase = 4,
         /// <summary>
         /// 模棱两可
         /// </summary>
-        HybridOrder = 6,
+        HybridOrder = 5,
+        /// <summary>
+        /// 精准评论
+        /// </summary>
+        SpecifiedComment = 6,
+        /// <summary>
+        /// 模糊评论
+        /// </summary>
+        OmakaseComment = 7,
+        /// <summary>
+        /// 模棱两可评论
+        /// </summary>
+        HybridComment = 8,
     }
 
 } 

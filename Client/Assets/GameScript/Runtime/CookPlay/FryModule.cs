@@ -256,7 +256,7 @@ public class FryModule : CookModule
         Debug.Log($"GameOver IsSuccess = {param}");
         IsCooking = false;
 
-        _result.menuId = _tbMenuInfo.Id;
+        _result.MenuId = _tbMenuInfo.Id;
         _result.Score = _curProgress.Value;
         //计算标签
         for (int i = 0;i < _recipe.CookFoods.Count;i++)
@@ -272,7 +272,8 @@ public class FryModule : CookModule
                 _result.Tags.Add(one);    
             }
         }
-
+        _result.create_timestamp = Clocker.Instance.NowDateTime.Timestamp;
+        
         _curTemperature.Value = 0;
         _curProgress.Value = 0;
         _currentRecipeDifficulty = null;
@@ -358,9 +359,9 @@ public class FryModule : CookModule
         _curTemperature ??= new ReactiveProperty<float>();
         
 
-        _result = new CookResult();
-        _result.Tags = new HashSet<flavorTag>(5);
-        _result.QTEResult = new Dictionary<int, bool>();
+        // _result = new CookResult();
+        // _result.Tags = new HashSet<flavorTag>(5);
+        // _result.QTEResult = new Dictionary<int, bool>();
         
         _currentRecipeDifficulty = difficulty as FryingDifficulty;
         pan.transform.localPosition = Vector3.zero;

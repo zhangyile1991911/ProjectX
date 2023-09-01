@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1581330759322677748}
   - component: {fileID: 7731145823407207417}
-  - component: {fileID: 2118167495521037404}
+  - component: {fileID: 366820579537518576}
   m_Layer: 0
   m_Name: ShopKeeper
   m_TagString: RestaurantCharacter
@@ -149,7 +149,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2118167495521037404
+--- !u!114 &366820579537518576
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
