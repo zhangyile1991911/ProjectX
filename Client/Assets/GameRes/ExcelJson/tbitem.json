@@ -117,7 +117,43 @@
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
     "get_method": "",
-    "collision_layer": 0
+    "collision_layer": 1
+  },
+  {
+    "id": 1010,
+    "name": "芝麻",
+    "buy": 20,
+    "sell": 15,
+    "type": 1,
+    "desc": "芝麻",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "get_method": "",
+    "collision_layer": 1
+  },
+  {
+    "id": 1011,
+    "name": "桂花糖",
+    "buy": 25,
+    "sell": 16,
+    "type": 1,
+    "desc": "桂花糖",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "get_method": "",
+    "collision_layer": 1
+  },
+  {
+    "id": 1012,
+    "name": "甜酒",
+    "buy": 15,
+    "sell": 10,
+    "type": 1,
+    "desc": "甜酒",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "get_method": "",
+    "collision_layer": 1
   },
   {
     "id": 10001,
@@ -189,6 +225,18 @@
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
     "get_method": "",
-    "collision_layer": 0
+    "collision_layer": -1
+  },
+  {
+    "id": 10007,
+    "name": "桂花酒酿元宵",
+    "buy": -1,
+    "sell": 800,
+    "type": 2,
+    "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
+    "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
+    "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
+    "get_method": "",
+    "collision_layer": -1
   }
 ]

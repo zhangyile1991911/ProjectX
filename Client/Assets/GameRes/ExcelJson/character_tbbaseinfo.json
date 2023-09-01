@@ -29,7 +29,6 @@
       1016
     ],
     "unlike_flavour": [
-      1001,
       1013,
       1024
     ],
@@ -37,13 +36,20 @@
   },
   {
     "id": 10003,
-    "name": "伊万",
+    "name": "伊万先生",
     "desc": "喵老师的熊",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/Bear.prefab",
     "picture_path": "Assets/GameRes/Picture/Character/extra03/A3.png",
-    "like_flavour": [],
-    "unlike_flavour": [],
+    "like_flavour": [
+      1001,
+      1004,
+      1012
+    ],
+    "unlike_flavour": [
+      1005,
+      1016
+    ],
     "behaviour_group": 10001
   },
   {

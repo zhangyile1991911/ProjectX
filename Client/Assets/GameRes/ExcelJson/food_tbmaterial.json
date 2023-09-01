@@ -78,7 +78,34 @@
     "id": 1009,
     "name": "蜂蜜",
     "type": 4,
+    "tag": [
+      1018
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1010,
+    "name": "芝麻",
+    "type": 4,
     "tag": [],
+    "opposite_tag": []
+  },
+  {
+    "id": 1011,
+    "name": "桂花糖",
+    "type": 4,
+    "tag": [
+      1018
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1012,
+    "name": "甜酒",
+    "type": 4,
+    "tag": [
+      1018
+    ],
     "opposite_tag": []
   }
 ]
