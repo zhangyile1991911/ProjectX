@@ -71,14 +71,205 @@
     "id": 1008,
     "name": "面粉",
     "type": 4,
-    "tag": [],
+    "tag": [
+      1024
+    ],
     "opposite_tag": []
   },
   {
     "id": 1009,
     "name": "蜂蜜",
     "type": 4,
-    "tag": [],
+    "tag": [
+      1018
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1010,
+    "name": "洋葱",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1011,
+    "name": "南瓜",
+    "type": 3,
+    "tag": [
+      1003,
+      1018
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1012,
+    "name": "白萝卜",
+    "type": 3,
+    "tag": [
+      1003,
+      1020
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1013,
+    "name": "蘑菇",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1014,
+    "name": "胡萝卜",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1015,
+    "name": "草鱼",
+    "type": 2,
+    "tag": [
+      1002,
+      1022
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1016,
+    "name": "章鱼",
+    "type": 2,
+    "tag": [
+      1002,
+      1022
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1017,
+    "name": "西红柿",
+    "type": 3,
+    "tag": [
+      1003,
+      1017
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1018,
+    "name": "黄瓜",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1019,
+    "name": "小青菜",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1020,
+    "name": "白菜",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1021,
+    "name": "酸菜",
+    "type": 3,
+    "tag": [
+      1003,
+      1017
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1022,
+    "name": "米饭",
+    "type": 4,
+    "tag": [
+      1024
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1023,
+    "name": "面条",
+    "type": 4,
+    "tag": [
+      1024
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1024,
+    "name": "茄子",
+    "type": 3,
+    "tag": [
+      1003
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1025,
+    "name": "牛奶",
+    "type": 4,
+    "tag": [
+      1025
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1026,
+    "name": "猪肉",
+    "type": 1,
+    "tag": [
+      1001
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1027,
+    "name": "粉丝",
+    "type": 4,
+    "tag": [
+      1024
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1028,
+    "name": "扇贝",
+    "type": 2,
+    "tag": [
+      1002,
+      1022
+    ],
+    "opposite_tag": []
+  },
+  {
+    "id": 1029,
+    "name": "玉米",
+    "type": 3,
+    "tag": [
+      1003
+    ],
     "opposite_tag": []
   }
 ]
