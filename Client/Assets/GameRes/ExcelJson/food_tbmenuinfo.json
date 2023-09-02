@@ -392,5 +392,23 @@
     "opposite_tag": [],
     "difficulty": 3,
     "cost_time": 10
+  },
+  {
+    "id": 10025,
+    "name": "桂花酒酿元宵",
+    "make_method": 4,
+    "related_material": [
+      1030,
+      1031,
+      1032
+    ],
+    "tag": [
+      1018,
+      1005,
+      1025
+    ],
+    "opposite_tag": [],
+    "difficulty": 3,
+    "cost_time": 10
   }
 ]

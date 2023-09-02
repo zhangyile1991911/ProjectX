@@ -121,42 +121,6 @@
   },
   {
     "id": 1010,
-    "name": "芝麻",
-    "buy": 20,
-    "sell": 15,
-    "type": 1,
-    "desc": "芝麻",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
-  },
-  {
-    "id": 1011,
-    "name": "桂花糖",
-    "buy": 25,
-    "sell": 16,
-    "type": 1,
-    "desc": "桂花糖",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
-  },
-  {
-    "id": 1012,
-    "name": "甜酒",
-    "buy": 15,
-    "sell": 10,
-    "type": 1,
-    "desc": "甜酒",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
-  },
-  {
-    "id": 1010,
     "name": "洋葱",
     "buy": 10,
     "sell": 5,
@@ -394,6 +358,42 @@
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
     "get_method": "",
     "collision_layer": 0
+  },
+  {
+    "id": 1030,
+    "name": "芝麻",
+    "buy": 20,
+    "sell": 15,
+    "type": 1,
+    "desc": "芝麻",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "get_method": "",
+    "collision_layer": 1
+  },
+  {
+    "id": 1031,
+    "name": "桂花糖",
+    "buy": 25,
+    "sell": 16,
+    "type": 1,
+    "desc": "桂花糖",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "get_method": "",
+    "collision_layer": 1
+  },
+  {
+    "id": 1032,
+    "name": "甜酒",
+    "buy": 15,
+    "sell": 10,
+    "type": 1,
+    "desc": "甜酒",
+    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "get_method": "",
+    "collision_layer": 1
   },
   {
     "id": 10001,
@@ -681,10 +681,10 @@
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
     "get_method": "",
-    "collision_layer": -1
+    "collision_layer": 0
   },
   {
-    "id": 10007,
+    "id": 10025,
     "name": "桂花酒酿元宵",
     "buy": -1,
     "sell": 800,
