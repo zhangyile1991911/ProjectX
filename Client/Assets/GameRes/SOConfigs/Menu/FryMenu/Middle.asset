@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Middle
   m_EditorClassIdentifier: 
   Level: 1
-  duration: 15
-  temperatureArea: {x: 0.4, y: 0.8}
-  maxTemperature: 70
-  finishValue: 10
-  addValue: 1.2
+  duration: 20
+  temperatureArea: {x: 0.4, y: 0.7}
+  maxTemperature: 5
+  finishValue: 15
+  addValue: 1.5
