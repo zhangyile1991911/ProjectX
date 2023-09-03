@@ -23,16 +23,18 @@ public sealed partial class FoodMaterial :  Bright.Config.BeanBase
         { if(!_json["type"].IsNumber) { throw new SerializationException(); }  Type = (food.materialType)_json["type"].AsInt; }
         { var __json0 = _json["tag"]; if(!__json0.IsArray) { throw new SerializationException(); } Tag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  Tag.Add(__v0); }   }
         { var __json0 = _json["opposite_tag"]; if(!__json0.IsArray) { throw new SerializationException(); } OppositeTag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  OppositeTag.Add(__v0); }   }
+        { if(!_json["collision_layer"].IsNumber) { throw new SerializationException(); }  CollisionLayer = _json["collision_layer"]; }
         PostInit();
     }
 
-    public FoodMaterial(int id, string name, food.materialType type, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag ) 
+    public FoodMaterial(int id, string name, food.materialType type, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, int collision_layer ) 
     {
         this.Id = id;
         this.Name = name;
         this.Type = type;
         this.Tag = tag;
         this.OppositeTag = opposite_tag;
+        this.CollisionLayer = collision_layer;
         PostInit();
     }
 
@@ -61,6 +63,10 @@ public sealed partial class FoodMaterial :  Bright.Config.BeanBase
     /// 反标签
     /// </summary>
     public System.Collections.Generic.List<food.flavorTag> OppositeTag { get; private set; }
+    /// <summary>
+    /// 碰撞层级
+    /// </summary>
+    public int CollisionLayer { get; private set; }
 
     public const int __ID__ = -1807969451;
     public override int GetTypeId() => __ID__;
@@ -82,6 +88,7 @@ public sealed partial class FoodMaterial :  Bright.Config.BeanBase
         + "Type:" + Type + ","
         + "Tag:" + Bright.Common.StringUtil.CollectionToString(Tag) + ","
         + "OppositeTag:" + Bright.Common.StringUtil.CollectionToString(OppositeTag) + ","
+        + "CollisionLayer:" + CollisionLayer + ","
         + "}";
     }
     

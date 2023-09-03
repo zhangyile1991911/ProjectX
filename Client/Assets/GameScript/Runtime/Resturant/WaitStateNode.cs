@@ -22,14 +22,20 @@ public class WaitStateNode : IStateNode
     private Clocker _clocker;
 
     private Crowd _crowdSchedule;
-    private LinkedList<int> _waitingCharacter;
+
+    class LineupInfo
+    {
+        public int[] characterIds;
+    }
+    private LinkedList<LineupInfo> _waitingCharacter;
+    
     private long _previousTs;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
         _restaurant = machine.Owner as RestaurantEnter;
         _handles = new CompositeDisposable();
-        _waitingCharacter = new LinkedList<int>();
+        _waitingCharacter = new LinkedList<LineupInfo>();
     }
     
     public void OnEnter(object param = null)
@@ -103,6 +109,53 @@ public class WaitStateNode : IStateNode
             (int)_clocker.NowDateTime.Hour);
     }
 
+    private LineupInfo fetchWaitingCharacterId()
+    {
+        /*现在是链表
+         如果当前链表头的角色不满足条件,无法出场,就放到链表尾部
+        */
+        int emptySeatNum = _restaurant.EmptySeatNum();
+        int count = _waitingCharacter.Count;
+        for (int i = count; i > 0; i--)
+        {
+            //debug 之后删除------------------------
+            foreach (var id in _waitingCharacter)
+            {
+                Debug.Log($"before create handleCharacter {id} in waiting");
+            }
+            //-------------------------------------
+            
+            var info = _waitingCharacter.First.Value;
+            _waitingCharacter.RemoveFirst();
+            
+            Debug.Log($"take head character {info.characterIds}");
+
+            var enoughSpace = checkSeatNum(info,emptySeatNum);
+            if (!enoughSpace)
+            {//当前位置不足,放到队列末尾
+                _waitingCharacter.AddLast(info);
+                continue;
+            }
+
+            var existed = false;
+            for (int x = 0;x < info.characterIds.Length; x++)
+            {
+                existed = _restaurant.ExistWaitingCharacter(info.characterIds[x]);
+                if (existed) break;
+            }
+             
+            if (existed)
+            {//已经存在就直接删除
+                _waitingCharacter.RemoveFirst();
+                continue;
+            }
+            
+            return info; 
+        }
+
+        return null;
+    }
+    
     private bool isLoading = false;
     private async void handleCharacter(GameDateTime dateTime)
     {
@@ -116,47 +169,23 @@ public class WaitStateNode : IStateNode
         var interval = DataProviderModule.Instance.CustomerEnterInterval();
         if (_waitingCharacter.Count > 0 && distance >= interval)
         {
-            var characterId = _waitingCharacter.First.Value;
-            Debug.Log($"before create handleCharacter {characterId}");
-            _waitingCharacter.RemoveFirst();
-            foreach (var id in _waitingCharacter)
+            _previousTs = dateTime.Timestamp;
+            
+            var lineup = fetchWaitingCharacterId();
+            isLoading = true;
+            for (int i = 0; i < lineup.characterIds.Length; i++)
             {
-                Debug.Log($"before create handleCharacter {id} in waiting");
+                await loadCharacter(lineup.characterIds[i]);    
             }
-            if (!_restaurant.ExistWaitingCharacter(characterId))
-            {
-                isLoading = true;
-                await loadCharacter(characterId);
-                isLoading = false;
-                _previousTs = dateTime.Timestamp;    
-                Debug.Log($"after create handleCharacter {characterId}");
-            }
+            isLoading = false;
+            Debug.Log($"after create handleCharacter {lineup.characterIds}");
         }
         
         var npcId = filterNPCAppear(dateTime);
-        if (npcId > 0)
+        if (npcId != null)
         {
             _waitingCharacter.AddFirst(npcId);    
-        }    
-        
-        
-        
-        // if (ids is not { Count: > 0 }) return;
-
-        // foreach (var CharacterId in ids)
-        // {
-        // var man = await CharacterMgr.Instance.CreateCharacter(CharacterId);
-        // // _restaurant.CharacterTakeRandomSeat(man);
-        // var emptySeatIndex = _restaurant.FindEmptySeatIndex();
-        // man.SeatOccupy = emptySeatIndex;
-        // var seatPoint = _restaurant.CharacterTakeSeatPoint(man.SeatOccupy,emptySeatIndex);
-        // var spawnPoint = _restaurant.RandSpawnPoint();
-        //
-        // man.CurBehaviour = new CharacterEnterScene(spawnPoint,seatPoint);
-        //
-        // UserInfoModule.Instance.AddCharacterArrived(CharacterId);
-        // UserInfoModule.Instance.AddWaitingCharacter(CharacterId,man.SeatOccupy);
-        // }
+        }
     }
 
     private async UniTask loadCharacter(int CharacterId)
@@ -169,16 +198,16 @@ public class WaitStateNode : IStateNode
         var seatPoint = _restaurant.CharacterTakeSeat(character);
         
         character.CurBehaviour = new CharacterEnterScene(seatPoint);
-      
         UserInfoModule.Instance.AddCharacterArrivedAndWaiting(CharacterId);
-        //特别NPC
-        if (tbScheduler.PartnerId <= 0) return;
-        if (character.PartnerID < 0) return;
-        var partner = await CharacterMgr.Instance.CreateCharacter(tbScheduler.PartnerId);
-        var partnerSeatPoint = _restaurant.CharacterTakeSeat(partner);
-        partner.CurBehaviour = new CharacterEnterScene(partnerSeatPoint);
         
-        UserInfoModule.Instance.AddCharacterArrivedAndWaiting(tbScheduler.PartnerId);
+        // //特别NPC
+        // if (tbScheduler.PartnerId <= 0) return;
+        // if (character.PartnerID < 0) return;
+        // var partner = await CharacterMgr.Instance.CreateCharacter(tbScheduler.PartnerId);
+        // var partnerSeatPoint = _restaurant.CharacterTakeSeat(partner);
+        // partner.CurBehaviour = new CharacterEnterScene(partnerSeatPoint);
+        //
+        // UserInfoModule.Instance.AddCharacterArrivedAndWaiting(tbScheduler.PartnerId);
     }
 
     private bool TimeToClose(GameDateTime dateTime)
@@ -191,45 +220,50 @@ public class WaitStateNode : IStateNode
         }
         return false;
     }
-    
-    private int filterNPCAppear(GameDateTime nowTime)
+
+    private bool IsInLineup(int characterId)
+    {
+        foreach (var group in _waitingCharacter)
+        {
+            foreach (var one in group.characterIds)
+            {
+                if (characterId == one) return true;
+            }
+        }
+        return false;
+    }
+    private LineupInfo filterNPCAppear(GameDateTime nowTime)
     {
         var characterIds = DataProviderModule.Instance.AtWeekDay((int)nowTime.DayOfWeek);
         // var result = new List<int>(4);
         foreach (var cid in characterIds)
         {
             if (_restaurant.ExistWaitingCharacter(cid)) continue;
-            if(_waitingCharacter.Find(cid) != null)continue;
+            if(IsInLineup(cid))continue;
             var arrived = UserInfoModule.Instance.RestaurantCharacterArrived(cid);
             if(arrived)continue;
 
             var onTime = checkCharacterAppearTime(cid, nowTime);
             if(!onTime)continue;
-            
-            return cid;
+
+            LineupInfo info = new LineupInfo();
+            info.characterIds = new[] { cid };
+            return info;
         }
 
-        return 0;
+        return null;
     }
 
-    private bool checkSeatNum(int cid,ref int curSeatNum)
+    private bool checkSeatNum(LineupInfo info,int curSeatNum)
     {
-        if (cid == 10002)
-        {//假设这是喵老师
-            if (curSeatNum >= 2)
-            {
-                curSeatNum -= 2;
-                return true;
-            }
-        }
-
-        if (curSeatNum >= 1)
+        // var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
+        var seatNeed = info.characterIds.Length;
+        if (seatNeed <= 1)
         {
-            curSeatNum -= 1;
-            return true;
+            return curSeatNum > seatNeed;
         }
 
-        return false;
+        return _restaurant.HaveDoubleSeat();
     }
     private bool checkCharacterAppearTime(int cid,GameDateTime nowTime)
     {

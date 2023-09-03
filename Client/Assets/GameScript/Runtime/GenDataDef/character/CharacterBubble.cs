@@ -20,6 +20,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     {
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["title"].IsString) { throw new SerializationException(); }  Title = _json["title"]; }
+        { if(!_json["comment"].IsString) { throw new SerializationException(); }  Comment = _json["comment"]; }
         { if(!_json["npc_id"].IsNumber) { throw new SerializationException(); }  NpcId = _json["npc_id"]; }
         { if(!_json["repeated"].IsBoolean) { throw new SerializationException(); }  Repeated = _json["repeated"]; }
         { var __json0 = _json["pre_condition"]; if(!__json0.IsArray) { throw new SerializationException(); } PreCondition = new System.Collections.Generic.List<int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = __e0; }  PreCondition.Add(__v0); }   }
@@ -33,10 +34,11 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         PostInit();
     }
 
-    public CharacterBubble(int id, string title, int npc_id, bool repeated, System.Collections.Generic.List<int> pre_condition, System.Collections.Generic.List<common.WeekDay> week_day, common.value_region friend_value, common.bubbleType bubble_type, int menu_id, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
+    public CharacterBubble(int id, string title, string comment, int npc_id, bool repeated, System.Collections.Generic.List<int> pre_condition, System.Collections.Generic.List<common.WeekDay> week_day, common.value_region friend_value, common.bubbleType bubble_type, int menu_id, string bubble_bg, string dialogue_content_res, string dialogue_start_node ) 
     {
         this.Id = id;
         this.Title = title;
+        this.Comment = comment;
         this.NpcId = npc_id;
         this.Repeated = repeated;
         this.PreCondition = pre_condition;
@@ -63,6 +65,10 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
     /// 标题
     /// </summary>
     public string Title { get; private set; }
+    /// <summary>
+    /// 注释(方便规划)
+    /// </summary>
+    public string Comment { get; private set; }
     /// <summary>
     /// 关联id
     /// </summary>
@@ -119,6 +125,7 @@ public sealed partial class CharacterBubble :  Bright.Config.BeanBase
         return "{ "
         + "Id:" + Id + ","
         + "Title:" + Title + ","
+        + "Comment:" + Comment + ","
         + "NpcId:" + NpcId + ","
         + "Repeated:" + Repeated + ","
         + "PreCondition:" + Bright.Common.StringUtil.CollectionToString(PreCondition) + ","

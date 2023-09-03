@@ -9,6 +9,7 @@ public class EnemyAirPlane : MonoBehaviour
     public Vector2 Direction => direction;
     private int healthPoint;
     private Vector2 direction;
+    public float FlySpeed => flySpeed;
     private float flySpeed;
 
     private Vector2 newPos;

@@ -12,6 +12,7 @@ public class AirPlaneBullet : MonoBehaviour
     // private ObjectPool<AirPlaneBullet> BelongPool;
     
     private Vector2 newPos;
+    private float speed;
     
     // private void OnTriggerEnter2D(Collider2D other)
     // {
@@ -41,18 +42,19 @@ public class AirPlaneBullet : MonoBehaviour
         Direction.y = speed;
     }
 
-    public void Init(RectTransform launcher,Vector2 dir)
+    public void Init(RectTransform launcher,Vector2 dir,float sped)
     {
         // BelongPool = pool;
         newPos = launcher.anchoredPosition;
         BRectTransform.anchoredPosition = launcher.anchoredPosition;
         tag = launcher.tag;
         Direction = dir;
+        speed = sped;
     }
     
     public void Move()
     {
-        newPos.y += Direction.y;
+        newPos.y += Direction.y+speed*Time.deltaTime;
         BRectTransform.anchoredPosition = newPos;
     }
     
