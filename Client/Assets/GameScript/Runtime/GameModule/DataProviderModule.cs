@@ -76,6 +76,16 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         return null;
     }
 
+    public FoodMaterial GetFoodMaterial(int foodId)
+    {
+        if (_database.TbMaterial.DataMap.ContainsKey(foodId))
+        {
+            return _database.TbMaterial.DataMap[foodId];
+        }
+
+        return null;
+    }
+
     public bool IsFood(int itemId)
     {
         var tmp = GetItemBaseInfo(itemId);

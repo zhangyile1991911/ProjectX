@@ -2,6 +2,7 @@
   {
     "id": 10001001,
     "title": "老板，没打烊吧？",
+    "comment": "",
     "npc_id": 10001,
     "repeated": false,
     "pre_condition": [
@@ -23,6 +24,7 @@
   {
     "id": 10001002,
     "title": "老板我又来了",
+    "comment": "",
     "npc_id": 10001,
     "repeated": false,
     "pre_condition": [
@@ -44,6 +46,7 @@
   {
     "id": 10001003,
     "title": "来个蛋炒饭",
+    "comment": "",
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": [
@@ -65,6 +68,7 @@
   {
     "id": 10001004,
     "title": "来个炒虾",
+    "comment": "",
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": [
@@ -86,6 +90,7 @@
   {
     "id": 10001005,
     "title": "魔王又半夜找我",
+    "comment": "",
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": [
@@ -107,6 +112,7 @@
   {
     "id": 10001006,
     "title": "山梨又发布了新的电脑了",
+    "comment": "",
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": [
@@ -128,6 +134,7 @@
   {
     "id": 10001007,
     "title": "这个菜的味道.....",
+    "comment": "",
     "npc_id": 10001,
     "repeated": true,
     "pre_condition": [
@@ -149,6 +156,7 @@
   {
     "id": 10002001,
     "title": "喵喵肚子很饿",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -170,6 +178,7 @@
   {
     "id": 10002002,
     "title": "等了好久呢",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -191,6 +200,7 @@
   {
     "id": 10002003,
     "title": "黄油拌饭",
+    "comment": "",
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
@@ -212,6 +222,7 @@
   {
     "id": 10002004,
     "title": "想吃甜的",
+    "comment": "",
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
@@ -234,6 +245,7 @@
   {
     "id": 10002005,
     "title": "今天来点带劲的",
+    "comment": "",
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
@@ -256,6 +268,7 @@
   {
     "id": 10002006,
     "title": "Ciao～",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -277,6 +290,7 @@
   {
     "id": 10002007,
     "title": "今天又被喂了奇...",
+    "comment": "",
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
@@ -298,6 +312,7 @@
   {
     "id": 10002008,
     "title": "现在是营业时间吗",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -317,6 +332,7 @@
   {
     "id": 10002009,
     "title": "您有什么推荐吗",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -338,6 +354,7 @@
   {
     "id": 10002010,
     "title": "等了好久呢",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -357,6 +374,7 @@
   {
     "id": 10002011,
     "title": "老板晚上好呀",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -376,6 +394,7 @@
   {
     "id": 10002012,
     "title": "喵喵第一次加班呢",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -395,6 +414,7 @@
   {
     "id": 10002013,
     "title": "一只胖胖的三花猫",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -414,6 +434,7 @@
   {
     "id": 10002014,
     "title": "",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -433,6 +454,7 @@
   {
     "id": 10002015,
     "title": "生命体征维持餐",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [],
@@ -452,6 +474,7 @@
   {
     "id": 10002016,
     "title": "妈咪又开发黑暗料理了",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -473,6 +496,7 @@
   {
     "id": 10002017,
     "title": "妈咪说喵喵做的菜难吃",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -494,6 +518,7 @@
   {
     "id": 10002018,
     "title": "妈咪又对喵喵生气了",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -515,6 +540,7 @@
   {
     "id": 10002019,
     "title": "妈咪不让喵喵再做菜了",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -536,6 +562,7 @@
   {
     "id": 10002020,
     "title": "很可怕的猫饭",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -557,6 +584,7 @@
   {
     "id": 10002021,
     "title": "东西都被妈咪动过了",
+    "comment": "",
     "npc_id": 10002,
     "repeated": false,
     "pre_condition": [
@@ -578,6 +606,7 @@
   {
     "id": 20001001,
     "title": "还能点单吗",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [],
@@ -597,6 +626,7 @@
   {
     "id": 20001002,
     "title": "老板晚上好",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -618,6 +648,7 @@
   {
     "id": 20001003,
     "title": "肚子有点饿了",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -639,6 +670,7 @@
   {
     "id": 20001004,
     "title": "又要重写了",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -660,6 +692,7 @@
   {
     "id": 20001005,
     "title": "每时每刻都好紧张",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -681,6 +714,7 @@
   {
     "id": 20001006,
     "title": "什么时候加班",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -702,6 +736,7 @@
   {
     "id": 20001007,
     "title": "累死了",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -723,6 +758,7 @@
   {
     "id": 20001008,
     "title": "又要团建",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -744,6 +780,7 @@
   {
     "id": 20001009,
     "title": "老板啊,好羡慕",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -765,6 +802,7 @@
   {
     "id": 20001010,
     "title": "你有什么梦想",
+    "comment": "",
     "npc_id": 20001,
     "repeated": false,
     "pre_condition": [
@@ -786,6 +824,7 @@
   {
     "id": 20002001,
     "title": "大城市",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [],
@@ -805,6 +844,7 @@
   {
     "id": 20002002,
     "title": "剧还没来得及看",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -826,6 +866,7 @@
   {
     "id": 20002003,
     "title": "一定能通过的",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -847,6 +888,7 @@
   {
     "id": 20002004,
     "title": "睡个懒觉",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -868,6 +910,7 @@
   {
     "id": 20002005,
     "title": "教教我",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -889,6 +932,7 @@
   {
     "id": 20002006,
     "title": "做卵做啊",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -910,6 +954,7 @@
   {
     "id": 20002007,
     "title": "好羡慕",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -931,6 +976,7 @@
   {
     "id": 20002008,
     "title": "放假啦",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -952,6 +998,7 @@
   {
     "id": 20002009,
     "title": "去哪玩呢",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -973,6 +1020,7 @@
   {
     "id": 20002010,
     "title": "租的房子",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -994,6 +1042,7 @@
   {
     "id": 20002011,
     "title": "看到一个广告",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1013,6 +1062,7 @@
   {
     "id": 20003001,
     "title": "来份蛋炒饭",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1034,6 +1084,7 @@
   {
     "id": 20003002,
     "title": "来份羊肉串",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1055,6 +1106,7 @@
   {
     "id": 20003003,
     "title": "炒花蛤",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1076,6 +1128,7 @@
   {
     "id": 20003004,
     "title": "蛋炒饭加点刺激的",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1097,6 +1150,7 @@
   {
     "id": 20003005,
     "title": "羊肉串来点反差",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1118,6 +1172,7 @@
   {
     "id": 20003006,
     "title": "中和下炒花蛤",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1139,6 +1194,7 @@
   {
     "id": 20004001,
     "title": "确定的订单评论",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1160,6 +1216,7 @@
   {
     "id": 20004002,
     "title": "模棱两可的订单评论",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [
@@ -1181,6 +1238,7 @@
   {
     "id": 20004003,
     "title": "omakase评论",
+    "comment": "",
     "npc_id": 20001,
     "repeated": true,
     "pre_condition": [

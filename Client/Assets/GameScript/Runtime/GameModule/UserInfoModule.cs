@@ -81,9 +81,6 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             _userTableData.Id = 11111;
             _userTableData.now = 20 * 60 * 60;
             _userTableData.money = 500;
-            // _userTableData.season = (int)Season.Spring;
-            // _userTableData.day_of_month = 0;
-            // _userTableData.second_of_day = 20*60*60;
             _userTableData.today_weather = (int)Weather.Sunshine;
             _userTableData.next_weather = (int)Weather.Sunshine;
             _sqLite.Insert(_userTableData);

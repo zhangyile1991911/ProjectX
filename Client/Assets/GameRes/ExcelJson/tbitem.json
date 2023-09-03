@@ -8,8 +8,7 @@
     "desc": "通用货币",
     "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": -1
+    "get_method": ""
   },
   {
     "id": 1001,
@@ -20,8 +19,7 @@
     "desc": "牛肉",
     "ui_res_path": "Assets/GameRes/Picture/Food/blue.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/cauliflower.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1002,
@@ -32,8 +30,7 @@
     "desc": "虾",
     "ui_res_path": "Assets/GameRes/Picture/Food/grey.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1003,
@@ -44,8 +41,7 @@
     "desc": "鸡蛋",
     "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1004,
@@ -56,8 +52,7 @@
     "desc": "辣椒",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/cauliflower.prefab",
-    "get_method": "",
-    "collision_layer": 2
+    "get_method": ""
   },
   {
     "id": 1005,
@@ -68,8 +63,7 @@
     "desc": "土豆",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1006,
@@ -80,8 +74,7 @@
     "desc": "鸡胸肉",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1007,
@@ -92,8 +85,7 @@
     "desc": "羊肉",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/Barbecue/RoastFood.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1008,
@@ -104,8 +96,7 @@
     "desc": "面粉",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1009,
@@ -116,8 +107,7 @@
     "desc": "蜂蜜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1010,
@@ -128,8 +118,7 @@
     "desc": "洋葱",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1011,
@@ -140,8 +129,7 @@
     "desc": "南瓜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1012,
@@ -152,8 +140,7 @@
     "desc": "白萝卜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1013,
@@ -164,8 +151,7 @@
     "desc": "蘑菇",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1014,
@@ -176,8 +162,7 @@
     "desc": "胡萝卜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1015,
@@ -188,8 +173,7 @@
     "desc": "三文鱼",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1016,
@@ -200,8 +184,7 @@
     "desc": "章鱼",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1017,
@@ -212,8 +195,7 @@
     "desc": "西红柿",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1018,
@@ -224,8 +206,7 @@
     "desc": "黄瓜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1019,
@@ -236,8 +217,7 @@
     "desc": "小青菜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1020,
@@ -248,8 +228,7 @@
     "desc": "白菜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1021,
@@ -260,8 +239,7 @@
     "desc": "酸菜",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1022,
@@ -272,8 +250,7 @@
     "desc": "米饭",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1023,
@@ -284,8 +261,7 @@
     "desc": "面条",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1024,
@@ -296,8 +272,7 @@
     "desc": "茄子",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1025,
@@ -308,8 +283,7 @@
     "desc": "牛奶",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1026,
@@ -320,8 +294,7 @@
     "desc": "人们圈养的家猪肉，较为常见",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1027,
@@ -332,8 +305,7 @@
     "desc": "粉丝",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1028,
@@ -344,8 +316,7 @@
     "desc": "扇贝",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1029,
@@ -356,8 +327,7 @@
     "desc": "玉米",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 1030,
@@ -368,8 +338,7 @@
     "desc": "芝麻",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1031,
@@ -380,8 +349,7 @@
     "desc": "桂花糖",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 1032,
@@ -392,8 +360,7 @@
     "desc": "甜酒",
     "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
-    "get_method": "",
-    "collision_layer": 1
+    "get_method": ""
   },
   {
     "id": 10001,
@@ -404,8 +371,7 @@
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
     "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10002,
@@ -416,8 +382,7 @@
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
     "ui_res_path": "Assets/GameRes/Picture/Food/blue.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10003,
@@ -428,8 +393,7 @@
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
     "ui_res_path": "Assets/GameRes/Picture/Food/green.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10004,
@@ -440,8 +404,7 @@
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
     "ui_res_path": "Assets/GameRes/Picture/Food/grey.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10005,
@@ -452,8 +415,7 @@
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10006,
@@ -464,8 +426,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10007,
@@ -476,8 +437,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10008,
@@ -488,8 +448,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10009,
@@ -500,8 +459,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10010,
@@ -512,8 +470,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10011,
@@ -524,8 +481,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10012,
@@ -536,8 +492,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10013,
@@ -548,8 +503,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10014,
@@ -560,8 +514,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10015,
@@ -572,8 +525,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10016,
@@ -584,8 +536,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10017,
@@ -596,8 +547,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10018,
@@ -608,8 +558,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10019,
@@ -620,8 +569,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10020,
@@ -632,8 +580,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10021,
@@ -644,8 +591,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10022,
@@ -656,8 +602,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10023,
@@ -668,8 +613,7 @@
     "desc": "一道传统的菜品，普通却也美味",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10024,
@@ -680,8 +624,7 @@
     "desc": "蜂蜜松饼",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": 0
+    "get_method": ""
   },
   {
     "id": 10025,
@@ -692,7 +635,6 @@
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
     "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
-    "get_method": "",
-    "collision_layer": -1
+    "get_method": ""
   }
 ]

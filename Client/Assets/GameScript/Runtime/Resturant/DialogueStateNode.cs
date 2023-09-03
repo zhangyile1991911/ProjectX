@@ -85,17 +85,8 @@ public class DialogueStateNode : IStateNode
         {
             _restaurantCharacter.CurBehaviour = new CharacterThinking();
         }
-        // if (_restaurantCharacter.CurOrderInfo != null)
-        // {//下单成功
-        //     _restaurantCharacter.CurBehaviour = new CharacterWaitReply();
-        // }
-        // else
-        // {
-        //     _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
-        // }
-
-        _restaurantEnter.NoFocusOnCharacter();
         
+        _restaurantEnter.NoFocusOnCharacter();
         
         _restaurantEnter.HideCurtain();
         _restaurantEnter.HideShopKeeper();

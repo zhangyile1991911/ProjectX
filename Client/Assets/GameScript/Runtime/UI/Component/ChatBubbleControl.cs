@@ -96,6 +96,7 @@ public partial class ChatBubble : UIComponent
         var characterObj = origin as RestaurantCharacter;
         var y_offset = (characterObj.SaidBubbleNum - 1) * uiRectTran.sizeDelta.y;
         positionToUI.y += y_offset;
+        Debug.Log($"SetBubbleInfo {chatId} {y_offset}");
         uiRectTran.anchoredPosition = positionToUI;
         refreshContent(chatId);
         

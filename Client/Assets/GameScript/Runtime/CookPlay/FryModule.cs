@@ -83,8 +83,8 @@ public class FryModule : CookModule
         //炒菜原材料
         foreach (var food in foods)
         {
-            var tb = DataProviderModule.Instance.GetItemBaseInfo(food.Id);
-            var handle = YooAssets.LoadAssetSync<GameObject>(tb.SceneResPath);
+            var itemTB = DataProviderModule.Instance.GetItemBaseInfo(food.Id);
+            var handle = YooAssets.LoadAssetSync<GameObject>(itemTB.SceneResPath);
             _cacheHandles.Add(handle);
             var num = 5;
             for (int i = 0; i < num; i++)
@@ -94,7 +94,8 @@ public class FryModule : CookModule
                 pos.z = 0f;
                 go.transform.localPosition = pos;
                 var fs = go.GetComponent<FoodSimulator>();
-                fs.CollisionLayer = tb.CollisionLayer;
+                var materialTb = DataProviderModule.Instance.GetFoodMaterial(food.Id);
+                fs.CollisionLayer = materialTb.CollisionLayer;
                 pan.AddFood(fs);
             }
         }

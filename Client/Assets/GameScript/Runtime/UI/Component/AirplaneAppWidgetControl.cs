@@ -15,14 +15,14 @@ using Random = UnityEngine.Random;
 /// </summary>
 public partial class AirplaneAppWidget : BaseAppWidget
 {
-    class AirPlaneConfig
-    {
-        public float create_enemy_interval = 2.0f;
-        public float enemy_speed = 0.7f;
-        public float enemy_shot_interval = 2.5f;
-        public int enemy_score = 1;
-        public int enemy_hp = 1;
-    }
+    // class AirPlaneConfig
+    // {
+    //     public float create_enemy_interval = 2.0f;
+    //     public float enemy_speed = 0.7f;
+    //     public float enemy_shot_interval = 2.5f;
+    //     public int enemy_score = 1;
+    //     public int enemy_hp = 1;
+    // }
     
     private RectTransform bgA;
     private RectTransform bgB;
@@ -37,12 +37,15 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
     private List<RectTransform> enemySpawnPoint;
 
-    private AirPlaneConfig config = new AirPlaneConfig();
+    private List<AirplaneDifficulty> _difficulty;
+
+    private int _curDifficultyIndex;
     private float cur_create_enemy_interval = 5.0f;
 
     private bool isGameOver;
     private CompositeDisposable handler;
     private int score;
+    
     public AirplaneAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
         WidgetType = AppType.AirPlane;
@@ -84,6 +87,17 @@ public partial class AirplaneAppWidget : BaseAppWidget
         enemySpawnPoint.Add(Tran_B.GetComponent<RectTransform>());
         enemySpawnPoint.Add(Tran_C.GetComponent<RectTransform>());
         isGameOver = false;
+
+        _curDifficultyIndex = 0;
+        _difficulty = new List<AirplaneDifficulty>(3);
+        var easy = YooAssets.LoadAssetSync<AirplaneDifficulty>("Assets/GameRes/SOConfigs/Airplane/easy.asset");
+        _difficulty.Add(easy.AssetObject as AirplaneDifficulty);
+        
+        var medium = YooAssets.LoadAssetSync<AirplaneDifficulty>("Assets/GameRes/SOConfigs/Airplane/medium.asset");
+        _difficulty.Add(medium.AssetObject as AirplaneDifficulty);
+        
+        var high = YooAssets.LoadAssetSync<AirplaneDifficulty>("Assets/GameRes/SOConfigs/Airplane/high.asset");
+        _difficulty.Add(high.AssetObject as AirplaneDifficulty);
     }
 
     private AirPlaneBullet onCreateBullect()
@@ -156,6 +170,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
         }
         activeEnemies.Clear();
         
+        _difficulty.Clear();
+        _difficulty = null;
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -204,6 +220,18 @@ public partial class AirplaneAppWidget : BaseAppWidget
         updateEnemy();
         //增加时间
         Clocker.Instance.AddSecond(1);
+        if (score < 15)
+        {
+            _curDifficultyIndex = 0;
+        }
+        else if(score < 10+2*10)
+        {
+            _curDifficultyIndex = 1;
+        }
+        else
+        {
+            _curDifficultyIndex = 2;
+        }
         // Debug.Log($"bullets.CountAll = {bulletPool.CountAll} bullets.CountActive = {bulletPool.CountActive} bullets.CountInactive = {bulletPool.CountInactive}");
         // Debug.Log($"enemyPool.CountAll = {enemyPool.CountAll} enemyPool.CountActive = {enemyPool.CountActive} enemyPool.CountInactive = {enemyPool.CountInactive}");
     }
@@ -229,10 +257,14 @@ public partial class AirplaneAppWidget : BaseAppWidget
             var dest = new Vector2();
             dest.y = -maxY*0.8f;
             dest.x = Random.Range(maxX/2f,-maxX/2f);
-        
-            enemyAirPlane.ConfigProperty(recycleEnemyAirplane,spawnPosition,dest,config.enemy_hp,config.enemy_speed,config.enemy_shot_interval);
+
+            var curDifficulty = _difficulty[_curDifficultyIndex];
+            enemyAirPlane.ConfigProperty(recycleEnemyAirplane,spawnPosition,dest,
+                curDifficulty.enemy_hp,
+                curDifficulty.enemy_speed,
+                curDifficulty.enemy_shot_interval);
             // Debug.Log($"createEnemyAirplane spawnPosition = {spawnPosition} dest = {dest}");
-            cur_create_enemy_interval = config.create_enemy_interval;
+            cur_create_enemy_interval = curDifficulty.create_enemy_interval;
             
         }
         // int spawnIndex = Random.Range(0, enemySpawnPoint.Count);
@@ -250,7 +282,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
             {
                 var one = bulletPool.Get();
                 one.Init(enemyAirPlane.Controller,
-                    enemyAirPlane.Direction);
+                    enemyAirPlane.Direction,
+                    enemyAirPlane.FlySpeed*1.5f);
                 one.tag = enemyAirPlane.tag;
                 activeBullects.Add(one);
             }
@@ -266,7 +299,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
     {
         enemyPool.Release(airPlane);
         activeEnemies.Remove(airPlane);
-        score += config.enemy_score;
+        score += _difficulty[_curDifficultyIndex].enemy_score;
     }
     
     private void updateAirPlane()
@@ -355,9 +388,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
     {
         isGameOver = false;
         
-       
-        cur_create_enemy_interval = config.create_enemy_interval;
-
+        _curDifficultyIndex = 0;
+        
         score = 0;
 
         HideResult();
