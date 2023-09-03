@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: NormalFood
   m_EditorClassIdentifier: 
   CookedHeatCapacity: 30
-  MaxHeatCapacity: 50
+  MaxHeatCapacity: 45
   CookingProgressColor: {r: 0.3254902, g: 1, b: 0, a: 1}
   OverCookedProgressColor: {r: 1, g: 0, b: 0, a: 1}

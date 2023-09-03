@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 209abdeb8b9b649488583a4555b599c4, type: 3}
   m_Name: Low
   m_EditorClassIdentifier: 
-  duration: 20000
-  FanAddValue: 2
-  Attenuation: 1
-  AddValueLimit: 6
+  Level: 0
+  duration: 20
+  FanAddValue: 4
+  Attenuation: 2
+  AddValueLimit: 8
