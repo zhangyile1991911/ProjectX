@@ -15,7 +15,8 @@
       1013,
       1024
     ],
-    "behaviour_group": 10001
+    "behaviour_group": 10001,
+    "schedule_group": 30001
   },
   {
     "id": 10002,
@@ -32,7 +33,8 @@
       1013,
       1024
     ],
-    "behaviour_group": 10001
+    "behaviour_group": 10001,
+    "schedule_group": 10001
   },
   {
     "id": 10003,
@@ -50,7 +52,8 @@
       1005,
       1016
     ],
-    "behaviour_group": 10001
+    "behaviour_group": 10001,
+    "schedule_group": 0
   },
   {
     "id": 10004,
@@ -61,7 +64,8 @@
     "picture_path": "",
     "like_flavour": [],
     "unlike_flavour": [],
-    "behaviour_group": 10001
+    "behaviour_group": 10001,
+    "schedule_group": 0
   },
   {
     "id": 20001,
@@ -79,6 +83,7 @@
     "unlike_flavour": [
       1005
     ],
-    "behaviour_group": 10001
+    "behaviour_group": 10001,
+    "schedule_group": 20001
   }
 ]

@@ -15,10 +15,11 @@ namespace cfg
 public sealed partial class Tables
 {
     public character.TbBaseInfo TbBaseInfo {get; }
-    public character.TbSchedule TbSchedule {get; }
     public character.TbCharacterBubble TbCharacterBubble {get; }
     public character.TbCword TbCword {get; }
     public character.TbBehaviourGroup TbBehaviourGroup {get; }
+    public character.TbScheduleGroup TbScheduleGroup {get; }
+    public character.TbCharacterPhase TbCharacterPhase {get; }
     public food.TbMaterial TbMaterial {get; }
     public food.TbMenuInfo TbMenuInfo {get; }
     public TbItem TbItem {get; }
@@ -35,14 +36,16 @@ public sealed partial class Tables
         var tables = new System.Collections.Generic.Dictionary<string, object>();
         TbBaseInfo = new character.TbBaseInfo(loader("character_tbbaseinfo")); 
         tables.Add("character.TbBaseInfo", TbBaseInfo);
-        TbSchedule = new character.TbSchedule(loader("character_tbschedule")); 
-        tables.Add("character.TbSchedule", TbSchedule);
         TbCharacterBubble = new character.TbCharacterBubble(loader("character_tbcharacterbubble")); 
         tables.Add("character.TbCharacterBubble", TbCharacterBubble);
         TbCword = new character.TbCword(loader("character_tbcword")); 
         tables.Add("character.TbCword", TbCword);
         TbBehaviourGroup = new character.TbBehaviourGroup(loader("character_tbbehaviourgroup")); 
         tables.Add("character.TbBehaviourGroup", TbBehaviourGroup);
+        TbScheduleGroup = new character.TbScheduleGroup(loader("character_tbschedulegroup")); 
+        tables.Add("character.TbScheduleGroup", TbScheduleGroup);
+        TbCharacterPhase = new character.TbCharacterPhase(loader("character_tbcharacterphase")); 
+        tables.Add("character.TbCharacterPhase", TbCharacterPhase);
         TbMaterial = new food.TbMaterial(loader("food_tbmaterial")); 
         tables.Add("food.TbMaterial", TbMaterial);
         TbMenuInfo = new food.TbMenuInfo(loader("food_tbmenuinfo")); 
@@ -66,10 +69,11 @@ public sealed partial class Tables
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
-        TbSchedule.Resolve(tables); 
         TbCharacterBubble.Resolve(tables); 
         TbCword.Resolve(tables); 
         TbBehaviourGroup.Resolve(tables); 
+        TbScheduleGroup.Resolve(tables); 
+        TbCharacterPhase.Resolve(tables); 
         TbMaterial.Resolve(tables); 
         TbMenuInfo.Resolve(tables); 
         TbItem.Resolve(tables); 
@@ -86,10 +90,11 @@ public sealed partial class Tables
     public void TranslateText(System.Func<string, string, string> translator)
     {
         TbBaseInfo.TranslateText(translator); 
-        TbSchedule.TranslateText(translator); 
         TbCharacterBubble.TranslateText(translator); 
         TbCword.TranslateText(translator); 
         TbBehaviourGroup.TranslateText(translator); 
+        TbScheduleGroup.TranslateText(translator); 
+        TbCharacterPhase.TranslateText(translator); 
         TbMaterial.TranslateText(translator); 
         TbMenuInfo.TranslateText(translator); 
         TbItem.TranslateText(translator); 

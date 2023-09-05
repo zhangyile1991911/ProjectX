@@ -23,7 +23,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 #if UNITY_EDITOR
         _database = new cfg.Tables(LoadJsonBuf);
 #endif
-        initScheduleTable();
+        // initScheduleTable();
         initCharacterBubble();
         initCrowdTable();
         InitDayScheduler();
@@ -56,15 +56,17 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         return null;
     }
 
-    public CharacterSchedule GetCharacterScheduler(int characterId)
-    {
-        if (_database.TbSchedule.DataMap.ContainsKey(characterId))
-        {
-            return _database.TbSchedule.DataMap[characterId];
-        }
-
-        return null;
-    }
+    // public CharacterSchedule GetCharacterScheduler(int characterId)
+    // {
+    //     if (_database.TbSchedule.DataMap.ContainsKey(characterId))
+    //     {
+    //         return _database.TbSchedule.DataMap[characterId];
+    //     }
+    //     
+    //     return null;
+    // }
+    
+    
 
     public ItemBaseInfo GetItemBaseInfo(int itemId)
     {
@@ -92,25 +94,32 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         return tmp.Type == itemType.FoodMaterial;
     }
     
-    private List<List<int>> weekdaySchedule;
-    private void initScheduleTable()
-    {
-        weekdaySchedule = new List<List<int>>(7);
-        weekdaySchedule.Add(new List<int>(10));
-        weekdaySchedule.Add(new List<int>(10));
-        weekdaySchedule.Add(new List<int>(10));
-        weekdaySchedule.Add(new List<int>(10));
-        weekdaySchedule.Add(new List<int>(10));
-        weekdaySchedule.Add(new List<int>(10));
-        weekdaySchedule.Add(new List<int>(10));
-        foreach(var one in _database.TbSchedule.DataList)
-        {
-            foreach (var day in one.CharacterAppearInfos)
-            {
-                weekdaySchedule[(int)day.Weekday-1].Add(one.Id);
-            }
-        }
-    }
+    // private List<List<int>> weekdaySchedule;
+    // private void initScheduleTable()
+    // {
+    //     weekdaySchedule = new List<List<int>>(7);
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     weekdaySchedule.Add(new List<int>(10));
+    //     foreach(var one in _database.TbSchedule.DataList)
+    //     {
+    //         foreach (var day in one.CharacterAppearInfos)
+    //         {
+    //             weekdaySchedule[(int)day.Weekday-1].Add(one.Id);
+    //         }
+    //     }
+    // }
+    
+    // public List<int> AtWeekDay(int weekDay)
+    // {
+    //     return weekdaySchedule[weekDay-1];
+    // }
+    
+    
 
     private Dictionary<int, List<CharacterBubble>> characterBubbleDict;
     private void initCharacterBubble()
@@ -133,10 +142,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         return value;
     }
 
-    public List<int> AtWeekDay(int weekDay)
-    {
-        return weekdaySchedule[weekDay-1];
-    }
+    
 
     public FoodMaterial GetFoodBaseInfo(int foodId)
     {
@@ -307,6 +313,44 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         }
 
         return 0;
+    }
+
+    public ScheduleGroup GetScheduleGroup(int groupId)
+    {
+        var exist = _database.TbScheduleGroup.DataMap.ContainsKey(groupId);
+        if (exist)
+        {
+            return _database.TbScheduleGroup.DataMap[groupId];
+        }
+
+        return null;
+    }
+
+    //通过好感度 找到NPC当前行动组
+    public ScheduleGroup GetCharacterPhaseSchedule(int characterId,int friendVal)
+    {
+        var exist = _database.TbCharacterPhase.DataMap.ContainsKey(characterId);
+        if (!exist) return null;
+        
+        var tb = _database.TbCharacterPhase.DataMap[characterId];
+        for (int i = 0;i < tb.Regions.Count;i++)
+        {
+            if (tb.Regions[i].StartValue >= friendVal && friendVal <= tb.Regions[i].EndValue)
+            {
+                var groupId = tb.Regions[i].Param;
+                return _database.TbScheduleGroup[groupId];
+            }
+        }
+
+        return null;
+    }
+
+    public ScheduleGroup GetCharacterPhaseSchedule(int groupId)
+    {
+        var exist = _database.TbScheduleGroup.DataMap.ContainsKey(groupId);
+        if (exist) return null;
+        
+        return _database.TbScheduleGroup[groupId];
     }
 
     public int FriendValLimit()

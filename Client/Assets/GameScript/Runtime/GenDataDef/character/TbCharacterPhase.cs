@@ -14,31 +14,31 @@ using SimpleJSON;
 namespace cfg.character
 { 
 
-public sealed partial class TbSchedule
+public sealed partial class TbCharacterPhase
 {
-    private readonly Dictionary<int, character.CharacterSchedule> _dataMap;
-    private readonly List<character.CharacterSchedule> _dataList;
+    private readonly Dictionary<int, character.CharacterPhase> _dataMap;
+    private readonly List<character.CharacterPhase> _dataList;
     
-    public TbSchedule(JSONNode _json)
+    public TbCharacterPhase(JSONNode _json)
     {
-        _dataMap = new Dictionary<int, character.CharacterSchedule>();
-        _dataList = new List<character.CharacterSchedule>();
+        _dataMap = new Dictionary<int, character.CharacterPhase>();
+        _dataList = new List<character.CharacterPhase>();
         
         foreach(JSONNode _row in _json.Children)
         {
-            var _v = character.CharacterSchedule.DeserializeCharacterSchedule(_row);
+            var _v = character.CharacterPhase.DeserializeCharacterPhase(_row);
             _dataList.Add(_v);
             _dataMap.Add(_v.Id, _v);
         }
         PostInit();
     }
 
-    public Dictionary<int, character.CharacterSchedule> DataMap => _dataMap;
-    public List<character.CharacterSchedule> DataList => _dataList;
+    public Dictionary<int, character.CharacterPhase> DataMap => _dataMap;
+    public List<character.CharacterPhase> DataList => _dataList;
 
-    public character.CharacterSchedule GetOrDefault(int key) => _dataMap.TryGetValue(key, out var v) ? v : null;
-    public character.CharacterSchedule Get(int key) => _dataMap[key];
-    public character.CharacterSchedule this[int key] => _dataMap[key];
+    public character.CharacterPhase GetOrDefault(int key) => _dataMap.TryGetValue(key, out var v) ? v : null;
+    public character.CharacterPhase Get(int key) => _dataMap[key];
+    public character.CharacterPhase this[int key] => _dataMap[key];
 
     public void Resolve(Dictionary<string, object> _tables)
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using cfg.character;
+using Codice.Client.BaseCommands.Merge.Restorer;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
@@ -174,9 +175,12 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             {
                 num = remain;
             }
-        
             _npcData.FriendlyValue += num;
-            _npcData.AccumulateFriendAtWeek += num;    
+            _npcData.AccumulateFriendAtWeek += num;
+            //每次更新好感度 都可能会改变NPC行为
+            _npcData.ScheduleId = CharacterScheduler.Instance.UpdateCharacterSchedule(_npcData.Id,
+                _npcData.ScheduleId,
+                _npcData.FriendlyValue);
         }
         else
         {

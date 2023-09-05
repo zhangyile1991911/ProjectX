@@ -49,7 +49,7 @@ public class RestaurantCharacter : RestaurantRoleBase
     private List<CharacterBubble> _mainLineBubbleTB;
     private List<CharacterBubble> _talkBubbleTB;
     private List<CharacterBubble> _orderBubbleTB;
-    private List<CharacterBubble> _commentBubbleTB;
+    // private List<CharacterBubble> _commentBubbleTB;
 
     public CharacterBubble OMAKASEComment { get; private set; }
     public CharacterBubble HybridOrderComment { get; private set; }
@@ -162,7 +162,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         _mainLineBubbleTB = new(10);
         _talkBubbleTB = new(10);
         _orderBubbleTB = new(10);
-        _commentBubbleTB = new(10);
+        // _commentBubbleTB = new(10);
         
         if (_baseInfo.Soul == 0) return;
         

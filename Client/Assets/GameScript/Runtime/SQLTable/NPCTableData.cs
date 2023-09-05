@@ -24,7 +24,9 @@ public class NPCTableData
 
     [Column("Patient")]
     public int patient { get; set; }//耐心值
-    
+
+    [Column("ScheduleId")]
+    public int ScheduleId { get; set; }//行程组
 }
 
 [Table("NPCOrderTable")]

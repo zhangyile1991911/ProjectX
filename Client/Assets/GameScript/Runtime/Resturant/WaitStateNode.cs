@@ -191,7 +191,7 @@ public class WaitStateNode : IStateNode
     private async UniTask loadCharacter(int CharacterId)
     {
         Debug.Log($"loadCharacter = {CharacterId}");
-        var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(CharacterId);
+        // var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(CharacterId);
         //一般NPC  
         var character = await CharacterMgr.Instance.CreateCharacter(CharacterId);
         Debug.Log($"await CharacterMgr.Instance.CreateCharacter");
@@ -234,7 +234,8 @@ public class WaitStateNode : IStateNode
     }
     private LineupInfo filterNPCAppear(GameDateTime nowTime)
     {
-        var characterIds = DataProviderModule.Instance.AtWeekDay((int)nowTime.DayOfWeek);
+        // var characterIds = DataProviderModule.Instance.AtWeekDay((int)nowTime.DayOfWeek);
+        var characterIds = CharacterScheduler.Instance.AppearCharacterIdAtWeekDay(nowTime.DayOfWeek);
         // var result = new List<int>(4);
         foreach (var cid in characterIds)
         {
@@ -267,7 +268,9 @@ public class WaitStateNode : IStateNode
     }
     private bool checkCharacterAppearTime(int cid,GameDateTime nowTime)
     {
-        var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
+        // var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(cid);
+        
+        var tbScheduler =  CharacterScheduler.Instance.CharacterScheduleId(cid);
         foreach (var info in tbScheduler.CharacterAppearInfos)
         {
             if(info.Weekday != nowTime.DayOfWeek)continue;

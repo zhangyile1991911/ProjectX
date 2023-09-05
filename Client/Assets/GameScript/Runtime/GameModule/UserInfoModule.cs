@@ -504,12 +504,14 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             return data;
         }
 
+        var tbBase = DataProviderModule.Instance.GetCharacterBaseInfo(npcId);
         var newNpc = new NPCTableData();
         newNpc.Id = npcId;
         newNpc.FriendlyValue = 0;
         newNpc.AppearCount = 0;
         newNpc.patient = 0;
         newNpc.Behaviour = 0;
+        newNpc.ScheduleId = tbBase.ScheduleGroup;
         _npcTableDatas.Add(npcId,newNpc);
         _sqLite.Insert(newNpc);
         return newNpc;
