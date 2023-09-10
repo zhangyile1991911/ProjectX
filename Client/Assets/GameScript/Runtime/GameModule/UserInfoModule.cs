@@ -299,6 +299,11 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     public void AddNewMenu(int menuId)
     {
+        if (_ownMenuTableDatas.ContainsKey(menuId))
+        {
+            Debug.LogError($"AddNewMenu {menuId} is duplicated");
+            return;
+        }
         var newMenu = new OwnMenu();
         newMenu.MenuId = menuId;
         newMenu.level = 1;
@@ -630,7 +635,20 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var data = _npcOrderDatas[orderMealInfo.CharacterId];
         data.OrderType = (int)orderMealInfo.OrderType;
         data.MenuId = orderMealInfo.MenuId;
-        data.Flavor = ZString.Join(";",orderMealInfo.flavor);
+        if (orderMealInfo.flavor != null)
+        {
+            using (var sb = ZString.CreateStringBuilder())
+            {
+                // sb.AppendJoin(';',orderMealInfo.flavor.GetEnumerator());
+                foreach (var tag in orderMealInfo.flavor)
+                {
+                    sb.Append((int)tag);
+                    sb.Append(';');
+                }
+                sb.Remove(sb.Length-1,1);
+                data.Flavor = sb.ToString();
+            }    
+        }
         _sqLite.Insert(data);
     }
 
@@ -659,6 +677,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         result.CharacterId = data.CharacterId;
         result.MenuId = data.MenuId;
         result.OrderType = (cfg.common.bubbleType)data.OrderType;
+        result.flavor = new();
         if (!data.Flavor.IsNullOrEmpty())
         {
             var flavorStr = data.Flavor.Split(";");

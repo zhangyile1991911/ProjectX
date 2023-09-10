@@ -209,6 +209,7 @@ public class CharacterEnterScene : CharacterBehaviour
         _restaurantCharacter.Sprite.DOColor(Color.white, 3.5f).OnComplete(() =>
         {
             _restaurantCharacter.AddAppearCount();
+            
             _restaurantCharacter.CurBehaviour = new CharacterTalk();
         });
     }
@@ -327,6 +328,7 @@ public class CharacterWaitOrder : CharacterBehaviour
         _restaurantCharacter.PlayAnimation(BehaviourID);
         timestamp = Clocker.Instance.NowDateTime.Timestamp;
         _restaurantCharacter.ResetPatient();
+        _restaurantCharacter.ShowOrderBoard();
         attenuation = DataProviderModule.Instance.AttenuatePatientValue();
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入等待上菜状态-----");
     }
@@ -334,6 +336,7 @@ public class CharacterWaitOrder : CharacterBehaviour
     public void Exit()
     {
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 退出等待上菜状态-----");
+        _restaurantCharacter.HideOrderBoard();
     }
 
     public void Update()
@@ -551,14 +554,18 @@ public class CharacterComment : CharacterBehaviour
         {
             case bubbleType.Omakase:
                 info.ChatId = _restaurantCharacter.OMAKASEComment.Id;
+                _restaurantCharacter.AddCommentChat(info.ChatId,bubbleType.OmakaseComment);
                 break;
             case bubbleType.HybridOrder:
                 info.ChatId = _restaurantCharacter.HybridOrderComment.Id;
+                _restaurantCharacter.AddCommentChat(info.ChatId,bubbleType.HybridComment);
                 break;
             case bubbleType.SpecifiedOrder:
                 info.ChatId = _restaurantCharacter.SpecifiedOrderComment.Id;
+                _restaurantCharacter.AddCommentChat(info.ChatId,bubbleType.SpecifiedComment);
                 break;
         }
+        
         EventModule.Instance.CharBubbleTopic.OnNext(info);
         Debug.Log($"-----{_restaurantCharacter.CharacterName} {info.ChatId} 进入评论状态-----");
     }
@@ -663,6 +670,14 @@ public class CharacterLeave : CharacterBehaviour
                 EventModule.Instance.CharacterLeaveTopic.OnNext(_restaurantCharacter);
                 CharacterMgr.Instance.RemoveCharacter(_restaurantCharacter);
             });
+        //把伙伴一起带走
+        foreach (var cid in restaurantCharacter.Partners)
+        {
+            var partnerObj = CharacterMgr.Instance.GetCharacterById(cid);
+            if(partnerObj == null)continue;
+            partnerObj.CurBehaviour = new CharacterLeave();
+        }
+        UserInfoModule.Instance.RemoveWaitingCharacter(restaurantCharacter.CharacterId);
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入 离开状态-----");
     }
 

@@ -51,10 +51,10 @@ public class WaitStateNode : IStateNode
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
         // EventModule.Instance.CloseRestaurantSub.Subscribe(CloseRestaurant).AddTo(_handles);
-        EventModule.Instance.CharacterLeaveSub.Subscribe(character =>
-        {
-            UserInfoModule.Instance.RemoveWaitingCharacter(character.CharacterId);
-        }).AddTo(_handles);
+        // EventModule.Instance.CharacterLeaveSub.Subscribe(character =>
+        // {
+        //     UserInfoModule.Instance.RemoveWaitingCharacter(character.CharacterId);
+        // }).AddTo(_handles);
         
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
         _crowdSchedule = DataProviderModule.Instance.WeekDayHourCrowd(
@@ -143,14 +143,8 @@ public class WaitStateNode : IStateNode
                 existed = _restaurant.ExistWaitingCharacter(info.characterIds[x]);
                 if (existed) break;
             }
-             
-            if (existed)
-            {//已经存在就直接删除
-                _waitingCharacter.RemoveFirst();
-                continue;
-            }
             
-            return info; 
+            return info;
         }
 
         return null;
@@ -175,8 +169,22 @@ public class WaitStateNode : IStateNode
             isLoading = true;
             for (int i = 0; i < lineup.characterIds.Length; i++)
             {
-                await loadCharacter(lineup.characterIds[i]);    
+                var characterId = lineup.characterIds[i];
+                var roleBase = await loadCharacter(lineup.characterIds[i]);
+                var seatPoint = _restaurant.CharacterTakeSeat(roleBase);
+                UserInfoModule.Instance.AddCharacterArrivedAndWaiting(characterId);
+                roleBase.CurBehaviour = new CharacterEnterScene(seatPoint);
+
+                foreach (var pid in roleBase.Partners)
+                {
+                    var partnerRoleBase = await loadCharacter(pid);
+                    var partnerSeatPoint = _restaurant.CharacterTakeSeat(partnerRoleBase);
+                    UserInfoModule.Instance.AddCharacterArrivedAndWaiting(pid);
+                    partnerRoleBase.CurBehaviour = new CharacterEnterScene(partnerSeatPoint);
+                }
             }
+
+            
             isLoading = false;
             Debug.Log($"after create handleCharacter {lineup.characterIds}");
         }
@@ -188,18 +196,17 @@ public class WaitStateNode : IStateNode
         }
     }
 
-    private async UniTask loadCharacter(int CharacterId)
+    private async UniTask<RestaurantRoleBase> loadCharacter(int CharacterId)
     {
         Debug.Log($"loadCharacter = {CharacterId}");
         // var tbScheduler = DataProviderModule.Instance.GetCharacterScheduler(CharacterId);
         //一般NPC  
         var character = await CharacterMgr.Instance.CreateCharacter(CharacterId);
         Debug.Log($"await CharacterMgr.Instance.CreateCharacter");
-        var seatPoint = _restaurant.CharacterTakeSeat(character);
         
-        character.CurBehaviour = new CharacterEnterScene(seatPoint);
-        UserInfoModule.Instance.AddCharacterArrivedAndWaiting(CharacterId);
         
+        
+        return character;
         // //特别NPC
         // if (tbScheduler.PartnerId <= 0) return;
         // if (character.PartnerID < 0) return;
@@ -247,8 +254,16 @@ public class WaitStateNode : IStateNode
             var onTime = checkCharacterAppearTime(cid, nowTime);
             if(!onTime)continue;
 
+            // var tbCharacterScheduler = CharacterScheduler.Instance.CharacterScheduleId(cid);
+            
             LineupInfo info = new LineupInfo();
-            info.characterIds = new[] { cid };
+            info.characterIds = new int[1];
+            info.characterIds[0] = cid;
+            // for (int i = 0; i < tbCharacterScheduler.PartnerId.Count; i++)
+            // {
+            //     info.characterIds[1 + i] = tbCharacterScheduler.PartnerId[i];
+            // }
+            
             return info;
         }
 

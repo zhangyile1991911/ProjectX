@@ -41,15 +41,18 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     protected NPCTableData _npcData;
     
-    public int PartnerID
-    {
-        get => _npcData.PartnerId;
-        set
-        {
-            _npcData.PartnerId = value;
-            UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
-        }
-    }
+    // public int PartnerID
+    // {
+    //     get => _npcData.PartnerId;
+    //     set
+    //     {
+    //         _npcData.PartnerId = value;
+    //         UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
+    //     }
+    // }
+    
+    public HashSet<int> Partners => _partnerIds;
+    private HashSet<int> _partnerIds;
 
     public int PatientValue
     {
@@ -111,6 +114,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             CurBehaviour?.Update();
         });
         loadResHandlers = new List<AssetOperationHandle>(10);
+        _partnerIds = new(5);
         LoadTableData();
         LoadDataBase();
     }
@@ -135,11 +139,22 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             handler.Dispose();
         }
         loadResHandlers.Clear();
+        _partnerIds.Clear();
     }
     
     protected virtual void LoadTableData()
     {
-        
+        //当前行动组partnerid
+        var tbCharacterScheduler = CharacterScheduler.Instance.CharacterScheduleId(CharacterId);
+        if (tbCharacterScheduler == null)
+        {
+            Debug.Log($"RestaurantRoleBase LoadTableData CharacterId = {CharacterId} CharacterScheduler == null");
+            return;
+        }
+        foreach (var id in tbCharacterScheduler.PartnerId)
+        {
+            AddPartner(id);
+        }
     }
 
     protected virtual void UnLoadTableData()
@@ -296,6 +311,13 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     public virtual void ClearWeeklyData()
     {
         
+    }
+    
+    public void AddPartner(int partnerId)
+    {
+        if (partnerId <= 0) return;
+        if (_partnerIds.Contains(partnerId)) return;
+        _partnerIds.Add(partnerId);
     }
     // private void Update()
     // {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using cfg.character;
+using cfg.common;
 using cfg.food;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
@@ -57,7 +58,7 @@ public class DialogueStateNode : IStateNode
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddFriend",AddNPCFriendlyValue);
             _dialogWindow.DialogueRunner.AddCommandHandler("CharacterLeave",CharacterLeave);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddNewMenu",AddNewMenuData);
-            _dialogWindow.DialogueRunner.AddCommandHandler<int>("ChangePartner",ChangePartner);
+            // _dialogWindow.DialogueRunner.AddCommandHandler<int>("ChangePartner",ChangePartner);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("KickOut",KickOut);
         },openData,UILayer.Center);
         
@@ -127,6 +128,7 @@ public class DialogueStateNode : IStateNode
             OrderType = _curBubbleTB.BubbleType
         };
         // EventModule.Instance.OrderMealTopic.OnNext(info);
+        info.OrderType = bubbleType.SpecifiedOrder;
         _restaurantCharacter.CurOrderInfo = info;
         _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//具体点单
         // _restaurantCharacter.DialogueOrder = menuId;
@@ -153,6 +155,8 @@ public class DialogueStateNode : IStateNode
             var flavorId = Int32.Parse(str);
             info.flavor.Add((flavorTag)flavorId);
         }
+
+        info.OrderType = bubbleType.HybridOrder;
         _restaurantCharacter.CurOrderInfo = info;
         _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//混合点单
         // EventModule.Instance.OrderMealTopic.OnNext(info);
@@ -173,6 +177,7 @@ public class DialogueStateNode : IStateNode
             var flavorId = Int32.Parse(str);
             info.flavor.Add((flavorTag)flavorId);
         }
+        info.OrderType = bubbleType.Omakase;
         _restaurantCharacter.CurOrderInfo = info;
         _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//omakase
         // EventModule.Instance.OrderMealTopic.OnNext(info);
@@ -217,15 +222,15 @@ public class DialogueStateNode : IStateNode
         UIManager.Instance.CreateTip<TipNewMenu>(openParam).Forget();
     }
 
-    private void ChangePartner(int partnerId)
-    {
-        var tbCharaBase = DataProviderModule.Instance.GetCharacterBaseInfo(partnerId);
-        if (tbCharaBase == null)
-        {
-            Debug.LogWarning($"Change Partner Id = {partnerId}");
-        }
-        _restaurantCharacter.PartnerID = partnerId;
-    }
+    // private void ChangePartner(int partnerId)
+    // {
+    //     var tbCharaBase = DataProviderModule.Instance.GetCharacterBaseInfo(partnerId);
+    //     if (tbCharaBase == null)
+    //     {
+    //         Debug.LogWarning($"Change Partner Id = {partnerId}");
+    //     }
+    //     _restaurantCharacter.PartnerID = partnerId;
+    // }
 
     private void KickOut(int characterId)
     {
@@ -235,7 +240,6 @@ public class DialogueStateNode : IStateNode
             Debug.LogError($"KickOut characterId = {characterId} can't find character");
             return;
         }
-
         characterObj.CurBehaviour = new CharacterLeave();
     }
 }

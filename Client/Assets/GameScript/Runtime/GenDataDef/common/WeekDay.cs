@@ -43,6 +43,10 @@ namespace cfg.common
         /// 全部
         /// </summary>
         AllWeekDay = 8,
+        /// <summary>
+        /// 周八
+        /// </summary>
+        IllegelDay = 9,
     }
 
 } 

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1511202474562355699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.19, z: 0}
+  m_LocalPosition: {x: 0, y: 4.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,7 +86,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6242870139679641264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1581330759322677748}
   - component: {fileID: 7731145823407207417}
   - component: {fileID: 4253098190158577856}
-  - component: {fileID: -2501002271504300477}
+  - component: {fileID: 7567975377351387599}
   m_Layer: 0
   m_Name: LittleGirl
   m_TagString: RestaurantCharacter
@@ -194,29 +194,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2cd6dfd2d426e43958e74db403d41f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &-2501002271504300477
-BoxCollider2D:
+--- !u!65 &7567975377351387599
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6568124290698103737}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.051492214, y: -0.04767394}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 7.3733335, y: 11.013333}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.1923113, y: 11.052383}
-  m_EdgeRadius: 0
+  m_Size: {x: 7.3733335, y: 11.013333, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

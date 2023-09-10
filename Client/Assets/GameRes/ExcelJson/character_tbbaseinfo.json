@@ -38,7 +38,7 @@
   },
   {
     "id": 10003,
-    "name": "伊万先生",
+    "name": "伊万",
     "desc": "喵老师的熊",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/Bear.prefab",

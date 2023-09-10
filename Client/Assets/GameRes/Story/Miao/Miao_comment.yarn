@@ -1,0 +1,61 @@
+title: miao_comment_specify
+tags:
+---
+<<declare $cookFoodId = 0>>
+<<declare $orderedId = 0>>
+<<declare $foodscore = 0>>
+<<if $cookFoodId == $orderedId>>
+    <<if $foodscore < 60>>
+        喵喵:老板,你这个菜做的
+        喵喵:猪吃了,都得绝食三天抗议
+        <<AddFriend -10>>
+    <<else>>
+        喵喵:老板,你这手艺真不错啊
+        喵喵:下次再来
+        <<AddFriend 20>>
+    <<endif>>
+<<else>>
+    <<jump miao_comment_err>>
+<<endif>>
+===
+
+
+title: miao_comment_blur
+tags:
+---
+<<if $cookFoodId == $orderedId>>
+    <<if $matchTag >>
+        喵喵:老板,你真了解我
+    <<endif>>
+<<else>>
+    <<jump miao_comment_err>>
+<<endif>>
+===
+
+
+title: miao_comment_omakase
+tags:
+---
+<<if $cookFoodId == $orderedId>>
+    <<if $matchTag >>
+        喵喵:老板,你真了解我
+    <<endif>>
+<<else>>
+    <<jump miao_comment_err>>
+<<endif>>
+===
+
+
+title: miao_comment_err
+tags:
+---
+<<if $friendliness <= 100>>
+    喵喵:老板,你是不是年纪大了记忆力衰退了?
+    喵喵:专家建议多补钙
+    <<AddFriend -10>>
+<<elseif $friendliness > 100 and $friendliness <= 200>>
+    喵喵:少抽点烟,把你脑子都抽没了
+    <<AddFriend -20>>
+<<elseif $friendliness > 100 and $friendliness <= 200>>
+<<endif>>
+===

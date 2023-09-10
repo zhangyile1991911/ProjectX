@@ -46,7 +46,7 @@ public class UIDragHandler : MonoBehaviour,IBeginDragHandler ,IDragHandler, IEnd
         if (_canDrag.Value)
         {
             // 处理拖拽释放事件，例如更新位置或触发相应的操作
-            Debug.Log("Drag released!");
+            // Debug.Log("Drag released!");
             rectTransform.anchoredPosition = origin_pos;
             OnEndDragCB?.Invoke();
         }

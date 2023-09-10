@@ -335,7 +335,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         var tb = _database.TbCharacterPhase.DataMap[characterId];
         for (int i = 0;i < tb.Regions.Count;i++)
         {
-            if (tb.Regions[i].StartValue >= friendVal && friendVal <= tb.Regions[i].EndValue)
+            if (friendVal >= tb.Regions[i].StartValue && friendVal <= tb.Regions[i].EndValue)
             {
                 var groupId = tb.Regions[i].Param;
                 return _database.TbScheduleGroup[groupId];
@@ -348,7 +348,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
     public ScheduleGroup GetCharacterPhaseSchedule(int groupId)
     {
         var exist = _database.TbScheduleGroup.DataMap.ContainsKey(groupId);
-        if (exist) return null;
+        if (!exist) return null;
         
         return _database.TbScheduleGroup[groupId];
     }

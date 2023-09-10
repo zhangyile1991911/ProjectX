@@ -154,163 +154,7 @@
     "dialogue_start_node": "ZhangyuComment"
   },
   {
-    "id": 10002001,
-    "title": "喵喵肚子很饿",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": false,
-    "pre_condition": [
-      0
-    ],
-    "week_day": [
-      8
-    ],
-    "friend_value": {
-      "start_value": 0,
-      "end_value": 10
-    },
-    "bubble_type": 1,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/Miao.yarnproject",
-    "dialogue_start_node": "MiaoMainFirst"
-  },
-  {
-    "id": 10002002,
-    "title": "等了好久呢",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": false,
-    "pre_condition": [
-      10002001
-    ],
-    "week_day": [
-      8
-    ],
-    "friend_value": {
-      "start_value": 10,
-      "end_value": 30
-    },
-    "bubble_type": 1,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "MiaoSecond"
-  },
-  {
-    "id": 10002003,
-    "title": "黄油拌饭",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": true,
-    "pre_condition": [
-      10002002
-    ],
-    "week_day": [
-      8
-    ],
-    "friend_value": {
-      "start_value": 30,
-      "end_value": 9999
-    },
-    "bubble_type": 3,
-    "menu_id": 10002,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "",
-    "dialogue_start_node": ""
-  },
-  {
-    "id": 10002004,
-    "title": "想吃甜的",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": true,
-    "pre_condition": [
-      10002001
-    ],
-    "week_day": [
-      1,
-      2
-    ],
-    "friend_value": {
-      "start_value": 10,
-      "end_value": 99999
-    },
-    "bubble_type": 4,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "",
-    "dialogue_start_node": ""
-  },
-  {
-    "id": 10002005,
-    "title": "今天来点带劲的",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": true,
-    "pre_condition": [
-      10002001,
-      10002002
-    ],
-    "week_day": [
-      8
-    ],
-    "friend_value": {
-      "start_value": 30,
-      "end_value": 99999
-    },
-    "bubble_type": 5,
-    "menu_id": 10002,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "",
-    "dialogue_start_node": ""
-  },
-  {
-    "id": 10002006,
-    "title": "Ciao～",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": false,
-    "pre_condition": [
-      10002002
-    ],
-    "week_day": [
-      8
-    ],
-    "friend_value": {
-      "start_value": 35,
-      "end_value": 50
-    },
-    "bubble_type": 1,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "MiaoThird"
-  },
-  {
-    "id": 10002007,
-    "title": "今天又被喂了奇...",
-    "comment": "",
-    "npc_id": 10002,
-    "repeated": true,
-    "pre_condition": [
-      0
-    ],
-    "week_day": [
-      8
-    ],
-    "friend_value": {
-      "start_value": 0,
-      "end_value": 45
-    },
-    "bubble_type": 2,
-    "menu_id": 0,
-    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/LittleGirlProject.yarnproject",
-    "dialogue_start_node": "LittleGirl_talkB"
-  },
-  {
-    "id": 10002008,
+    "id": 100021005,
     "title": "现在是营业时间吗",
     "comment": "",
     "npc_id": 10002,
@@ -326,11 +170,11 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "MiaoMainFirst"
   },
   {
-    "id": 10002009,
+    "id": 100021006,
     "title": "您有什么推荐吗",
     "comment": "",
     "npc_id": 10002,
@@ -348,11 +192,11 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "MiaoFirst"
   },
   {
-    "id": 10002010,
+    "id": 100021007,
     "title": "等了好久呢",
     "comment": "",
     "npc_id": 10002,
@@ -368,11 +212,11 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "MiaoSecond"
   },
   {
-    "id": 10002011,
+    "id": 100021008,
     "title": "老板晚上好呀",
     "comment": "",
     "npc_id": 10002,
@@ -388,11 +232,11 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "MiaoThird"
   },
   {
-    "id": 10002012,
+    "id": 100021009,
     "title": "喵喵第一次加班呢",
     "comment": "",
     "npc_id": 10002,
@@ -408,11 +252,11 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "MiaoFourth"
   },
   {
-    "id": 10002013,
+    "id": 100021010,
     "title": "一只胖胖的三花猫",
     "comment": "",
     "npc_id": 10002,
@@ -428,11 +272,11 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "MiaoFifth"
   },
   {
-    "id": 10002014,
+    "id": 100021011,
     "title": "",
     "comment": "",
     "npc_id": 10002,
@@ -448,15 +292,15 @@
     "bubble_type": 1,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miaosixth"
   },
   {
-    "id": 10002015,
+    "id": 100021012,
     "title": "生命体征维持餐",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [],
     "week_day": [
       8
@@ -468,15 +312,15 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi1"
   },
   {
-    "id": 10002016,
+    "id": 100021013,
     "title": "妈咪又开发黑暗料理了",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [
       10002015
     ],
@@ -490,15 +334,15 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi2"
   },
   {
-    "id": 10002017,
+    "id": 100021014,
     "title": "妈咪说喵喵做的菜难吃",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [
       10002016
     ],
@@ -512,15 +356,15 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi3"
   },
   {
-    "id": 10002018,
+    "id": 100021015,
     "title": "妈咪又对喵喵生气了",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [
       10002017
     ],
@@ -534,15 +378,15 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi4"
   },
   {
-    "id": 10002019,
+    "id": 100021016,
     "title": "妈咪不让喵喵再做菜了",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [
       10002018
     ],
@@ -556,15 +400,15 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi5"
   },
   {
-    "id": 10002020,
+    "id": 100021017,
     "title": "很可怕的猫饭",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [
       10002019
     ],
@@ -578,15 +422,15 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi6"
   },
   {
-    "id": 10002021,
+    "id": 100021018,
     "title": "东西都被妈咪动过了",
     "comment": "",
     "npc_id": 10002,
-    "repeated": false,
+    "repeated": true,
     "pre_condition": [
       10002020
     ],
@@ -600,8 +444,142 @@
     "bubble_type": 2,
     "menu_id": 0,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameResStory/Miao.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": "Miao_tsugumi7"
+  },
+  {
+    "id": 100022001,
+    "title": "黄油拌饭",
+    "comment": "",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      10002002
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 9999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 100022002,
+    "title": "想吃甜的",
+    "comment": "",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      10002001
+    ],
+    "week_day": [
+      1,
+      2
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 99999
+    },
+    "bubble_type": 4,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 100022003,
+    "title": "今天来点带劲的",
+    "comment": "",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      10002001,
+      10002002
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 99999
+    },
+    "bubble_type": 5,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 100023001,
+    "title": "确定的订单评论",
+    "comment": "",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
+    "dialogue_start_node": "miao_comment_specify"
+  },
+  {
+    "id": 100023002,
+    "title": "模棱两可的订单评论",
+    "comment": "",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 9999
+    },
+    "bubble_type": 8,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
+    "dialogue_start_node": "miao_comment_blur"
+  },
+  {
+    "id": 100023003,
+    "title": "omakase评论",
+    "comment": "",
+    "npc_id": 10002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 9999
+    },
+    "bubble_type": 7,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
+    "dialogue_start_node": "miao_comment_omakase"
   },
   {
     "id": 20001001,
@@ -1256,5 +1234,89 @@
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
     "dialogue_start_node": "young_comment_omakase"
+  },
+  {
+    "id": 30001001,
+    "title": "还能点单吗",
+    "comment": "",
+    "npc_id": 10003,
+    "repeated": false,
+    "pre_condition": [],
+    "week_day": [
+      1
+    ],
+    "friend_value": {
+      "start_value": 999,
+      "end_value": 9999
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_main_a"
+  },
+  {
+    "id": 30002001,
+    "title": "大城市",
+    "comment": "",
+    "npc_id": 10003,
+    "repeated": true,
+    "pre_condition": [],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 999,
+      "end_value": 9999
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_talk_a"
+  },
+  {
+    "id": 30003001,
+    "title": "来份蛋炒饭",
+    "comment": "",
+    "npc_id": 10003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 999,
+      "end_value": 9999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 40004001,
+    "title": "确定的订单评论",
+    "comment": "",
+    "npc_id": 10003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 999,
+      "end_value": 9999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
+    "dialogue_start_node": "young_comment_specify"
   }
 ]

@@ -81,7 +81,7 @@ public class RestaurantCharacter : RestaurantRoleBase
             _orderMealInfo = value;
             if (_orderMealInfo != null)
             {
-                createOrderBoard();
+                // createOrderBoard();
                 UserInfoModule.Instance.AddNPCOrder(_orderMealInfo);    
             }
         }
@@ -95,6 +95,7 @@ public class RestaurantCharacter : RestaurantRoleBase
     protected Transform _orderNode;
     
     protected OrderBoard orderBoardBoard;
+    
     
     public override void InitCharacter(CharacterBaseInfo info)
     {
@@ -113,6 +114,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // curOrderMenuId = 0;
         // foodScore = 0;
         _clocker = UniModule.GetModule<Clocker>();
+        
     }
 
     public override void ReleaseCharacter()
@@ -122,6 +124,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         // _spriteRenderer.sprite = null;
         // _spriteRenderer = null;
         _saidBubbles.Clear();
+        
         // curCommentChatId = 0;
         // curTalkChatId = null;
         // curOrderChatId = 0;
@@ -433,6 +436,11 @@ public class RestaurantCharacter : RestaurantRoleBase
         return true;
     }
 
+    public void AddCommentChat(int chatId,bubbleType commentType)
+    {
+        _saidBubbles.Add(new DialogueTitleInfo(){ID = chatId,Type = commentType});
+    }
+
     // public void ToDark()
     // {
     //     _spriteRenderer.color = Color.gray;
@@ -489,7 +497,6 @@ public class RestaurantCharacter : RestaurantRoleBase
         {
             CurBehaviour = new CharacterEating();    
         }
-        hideOrderBoard();
     }
 
     public void ClearReceiveFood()
@@ -549,7 +556,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         return false;
     }
     
-    private async void createOrderBoard()
+    public async void ShowOrderBoard()
     {
         if (orderBoardBoard == null)
         {
@@ -561,7 +568,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         orderBoardBoard.gameObject.SetActive(true);
     }
 
-    private void hideOrderBoard()
+    public void HideOrderBoard()
     {
         orderBoardBoard?.gameObject.SetActive(false);
     }
@@ -624,4 +631,6 @@ public class RestaurantCharacter : RestaurantRoleBase
         _npcData.AccumulateFriendAtWeek = 0;
         UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
     }
+
+   
 }

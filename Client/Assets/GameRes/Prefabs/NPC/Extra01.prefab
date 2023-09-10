@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1581330759322677748}
   - component: {fileID: 7731145823407207417}
   - component: {fileID: 4253098190158577856}
-  - component: {fileID: -2501002271504300477}
+  - component: {fileID: 8716168521497086215}
   m_Layer: 0
   m_Name: Extra01
   m_TagString: RestaurantCharacter
@@ -194,29 +194,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2cd6dfd2d426e43958e74db403d41f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &-2501002271504300477
-BoxCollider2D:
+--- !u!65 &8716168521497086215
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6568124290698103737}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.013257027, y: -0.4387331}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.53, y: 8.38}
-    newSize: {x: 5.53, y: 8.38}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.4006596, y: 11.178604}
-  m_EdgeRadius: 0
+  m_Size: {x: 7.3733335, y: 11.173333, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

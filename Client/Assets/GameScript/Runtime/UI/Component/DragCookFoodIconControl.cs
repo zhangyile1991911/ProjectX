@@ -26,7 +26,7 @@ public partial class DragCookFoodIcon : UIComponent
         _dragableComp = Img_Icon.GetComponent<UIDragHandler>();
         _canDrag = new ReactiveProperty<bool>(false);
         _dragableComp.Init(UIManager.Instance.RootCanvas,_canDrag);
-        _mainCamera = Camera.main;
+        _mainCamera = UIManager.Instance.UICamera;
     }
     
     public override void OnDestroy()
@@ -45,6 +45,9 @@ public partial class DragCookFoodIcon : UIComponent
     public override void OnHide()
     {
         base.OnHide();
+        _dragableComp.OnBeginDragCB -= ListenBeginDrag;
+        _dragableComp.OnDragCB -= ListenDrag;
+        _dragableComp.OnEndDragCB -= ListenEndDrag;
     }
 
     public override void OnUpdate()
@@ -75,7 +78,8 @@ public partial class DragCookFoodIcon : UIComponent
     
     private void ListenDrag()
     {
-        
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin,ray.direction*100f);
     }
     
     private void ListenEndDrag()
@@ -85,8 +89,12 @@ public partial class DragCookFoodIcon : UIComponent
             return;
         }
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-        if (hit && hit.transform.CompareTag("RestaurantCharacter"))
+        // Debug.DrawRay(ray.origin,ray.direction*100f);
+        // RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction,20f);
+        //todo 优化成noalloc版本
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);
+        if (hit.transform != null && hit.transform.CompareTag("RestaurantCharacter"))
         {
             var character = hit.transform.GetComponent<RestaurantCharacter>();
             if (!character.IsWaitForOrder())

@@ -45,6 +45,8 @@ public class CharacterScheduler : SingletonModule<CharacterScheduler>
             foreach (var appearInfo in scheduleGroup.CharacterAppearInfos)
             {
                 int weekDayIndex = (int)appearInfo.Weekday - 1;
+                //为了解决星期八 这个特殊日期
+                if(weekDayIndex >= weekdaySchedule.Count)continue;
                 weekdaySchedule[weekDayIndex].Add(cid);
             }
         }

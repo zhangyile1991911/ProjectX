@@ -10,6 +10,10 @@ public class ShopKeeperCharacter : RestaurantRoleBase
     {
         
     }
+    
+    protected override void LoadTableData()
+    {
+    }
 
     public override void ReleaseCharacter()
     {

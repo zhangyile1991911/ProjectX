@@ -75,7 +75,8 @@ public class WalkingPeople : MonoBehaviour
             moveHanlder.Kill();
             moveHanlder = null;
         }
-        moveHanlder = DOTween.To(() => start.x,updateMove, destination.x, 35f).SetDelay(delay).OnComplete(moveComplete).SetAutoKill(true);
+        moveHanlder = DOTween.To(
+            () => start.x,updateMove, destination.x, 35f).SetDelay(delay).OnComplete(moveComplete).SetAutoKill(true);
     }
 
     public void PauseWalk()

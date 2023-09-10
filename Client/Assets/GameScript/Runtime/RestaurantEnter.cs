@@ -156,7 +156,7 @@ public class RestaurantEnter : MonoBehaviour
                             chara.CurBehaviour = new CharacterComment();
                             break;
                         default:
-                            Debug.Log($"waiting {chara.CharacterName} behaviour = {chara.BehaviourID}");
+                            Debug.Log($"waiting {chara.CharacterName} behaviour = {chara.BehaviourID} id = {(int)chara.BehaviourID}");
                             break;
                     }
                     break;
