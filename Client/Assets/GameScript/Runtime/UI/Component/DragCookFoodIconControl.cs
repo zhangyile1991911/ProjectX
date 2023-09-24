@@ -78,8 +78,8 @@ public partial class DragCookFoodIcon : UIComponent
     
     private void ListenDrag()
     {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin,ray.direction*100f);
+        // Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        // Debug.DrawRay(ray.origin,ray.direction*100f);
     }
     
     private void ListenEndDrag()

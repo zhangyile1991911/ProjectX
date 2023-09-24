@@ -105,10 +105,35 @@ public class CharacterScheduler : SingletonModule<CharacterScheduler>
 
         return nextSchedule.Id;
     }
+
+    public void SetCharacterSchedule(int characterId,int newScheduleGroupId)
+    {
+        var newScheduleTb = DataProviderModule.Instance.GetCharacterPhaseSchedule(newScheduleGroupId);
+        if (newScheduleTb == null)return;
+        
+        var npcData = UserInfoModule.Instance.NPCData(characterId);
+        var oldScheduleId = npcData.ScheduleId;
+
+        if (newScheduleGroupId == oldScheduleId) return;
+
+        var oldScheduleTb = DataProviderModule.Instance.GetCharacterPhaseSchedule(oldScheduleId);
+        //先清理之前的
+        foreach (var appearInfo in oldScheduleTb.CharacterAppearInfos)
+        {
+            int weekDayIndex = (int)appearInfo.Weekday - 1;
+            weekdaySchedule[weekDayIndex].Remove(characterId);
+        }
+        characterMapSchedule[characterId] = newScheduleTb;
+        //添加新的
+        foreach (var appearInfo in newScheduleTb.CharacterAppearInfos)
+        {
+            int weekDayIndex = (int)appearInfo.Weekday - 1;
+            weekdaySchedule[weekDayIndex].Add(characterId);
+        }
+    }
     
     public List<int> AppearCharacterIdAtWeekDay(WeekDay weekDay)
     {
-
         int weekDayIndex = (int)weekDay - 1;
         return weekdaySchedule[weekDayIndex];
     }

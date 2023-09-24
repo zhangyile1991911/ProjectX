@@ -154,7 +154,7 @@
     "dialogue_start_node": "ZhangyuComment"
   },
   {
-    "id": 100021005,
+    "id": 100021001,
     "title": "现在是营业时间吗",
     "comment": "",
     "npc_id": 10002,
@@ -174,7 +174,7 @@
     "dialogue_start_node": "MiaoMainFirst"
   },
   {
-    "id": 100021006,
+    "id": 100021002,
     "title": "您有什么推荐吗",
     "comment": "",
     "npc_id": 10002,
@@ -196,7 +196,7 @@
     "dialogue_start_node": "MiaoFirst"
   },
   {
-    "id": 100021007,
+    "id": 100021003,
     "title": "等了好久呢",
     "comment": "",
     "npc_id": 10002,
@@ -216,7 +216,7 @@
     "dialogue_start_node": "MiaoSecond"
   },
   {
-    "id": 100021008,
+    "id": 100021004,
     "title": "老板晚上好呀",
     "comment": "",
     "npc_id": 10002,
@@ -236,7 +236,7 @@
     "dialogue_start_node": "MiaoThird"
   },
   {
-    "id": 100021009,
+    "id": 100021005,
     "title": "喵喵第一次加班呢",
     "comment": "",
     "npc_id": 10002,
@@ -256,7 +256,7 @@
     "dialogue_start_node": "MiaoFourth"
   },
   {
-    "id": 100021010,
+    "id": 100021006,
     "title": "一只胖胖的三花猫",
     "comment": "",
     "npc_id": 10002,
@@ -276,7 +276,7 @@
     "dialogue_start_node": "MiaoFifth"
   },
   {
-    "id": 100021011,
+    "id": 100021007,
     "title": "",
     "comment": "",
     "npc_id": 10002,
@@ -296,7 +296,7 @@
     "dialogue_start_node": "Miaosixth"
   },
   {
-    "id": 100021012,
+    "id": 100021008,
     "title": "生命体征维持餐",
     "comment": "",
     "npc_id": 10002,
@@ -316,7 +316,7 @@
     "dialogue_start_node": "Miao_tsugumi1"
   },
   {
-    "id": 100021013,
+    "id": 100021009,
     "title": "妈咪又开发黑暗料理了",
     "comment": "",
     "npc_id": 10002,
@@ -338,7 +338,7 @@
     "dialogue_start_node": "Miao_tsugumi2"
   },
   {
-    "id": 100021014,
+    "id": 100021010,
     "title": "妈咪说喵喵做的菜难吃",
     "comment": "",
     "npc_id": 10002,
@@ -360,7 +360,7 @@
     "dialogue_start_node": "Miao_tsugumi3"
   },
   {
-    "id": 100021015,
+    "id": 100021011,
     "title": "妈咪又对喵喵生气了",
     "comment": "",
     "npc_id": 10002,
@@ -382,7 +382,7 @@
     "dialogue_start_node": "Miao_tsugumi4"
   },
   {
-    "id": 100021016,
+    "id": 100021012,
     "title": "妈咪不让喵喵再做菜了",
     "comment": "",
     "npc_id": 10002,
@@ -404,7 +404,7 @@
     "dialogue_start_node": "Miao_tsugumi5"
   },
   {
-    "id": 100021017,
+    "id": 100021013,
     "title": "很可怕的猫饭",
     "comment": "",
     "npc_id": 10002,
@@ -426,7 +426,7 @@
     "dialogue_start_node": "Miao_tsugumi6"
   },
   {
-    "id": 100021018,
+    "id": 100021014,
     "title": "东西都被妈咪动过了",
     "comment": "",
     "npc_id": 10002,
@@ -454,7 +454,7 @@
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
-      10002002
+      100021001
     ],
     "week_day": [
       8
@@ -476,7 +476,7 @@
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
-      10002001
+      100021002
     ],
     "week_day": [
       1,
@@ -499,8 +499,8 @@
     "npc_id": 10002,
     "repeated": true,
     "pre_condition": [
-      10002001,
-      10002002
+      100021001,
+      100021002
     ],
     "week_day": [
       8

@@ -98,8 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 384671842bbd047fdb6f337fea5de8cd,
-    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 384671842bbd047fdb6f337fea5de8cd, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -150,6 +149,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -189,10 +189,10 @@ MonoBehaviour:
 
     <wiggle>wiggle1</>        <wiggle a=2 f=2>wiggle2</>
 
-    
 
-    In
-    the previous example, the first tag is "<color=red><noparse><wiggle></noparse></color>".
+
+    In the
+    previous example, the first tag is "<color=red><noparse><wiggle></noparse></color>".
 
     The
     second tag is "<color=red><noparse><wiggle</noparse><color=blue> a=2 </color><color=#005500>f=2</color><noparse>></noparse></color>",
@@ -208,6 +208,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.50578886, y: -0.5419356, z: -3.6875}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -291,6 +292,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.62, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -343,6 +345,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1911804838}
   m_Father: {fileID: 0}
@@ -379,6 +382,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -413,6 +417,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 903061074}
   m_RootOrder: 0
@@ -445,8 +450,7 @@ MonoBehaviour:
   m_text: Press play to watch similar effects with different values
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ffb8c3515fb6dc4688eff5a7e48200f, type: 2}
-  m_sharedMaterial: {fileID: 7453642021753212536, guid: 1ffb8c3515fb6dc4688eff5a7e48200f,
-    type: 2}
+  m_sharedMaterial: {fileID: 7453642021753212536, guid: 1ffb8c3515fb6dc4688eff5a7e48200f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -582,12 +586,11 @@ MonoBehaviour:
   referenceFontSize: -1
   isResettingTimeOnNewText: 1
   useDefaultDatabases: 1
-  databaseBehaviors: {fileID: 11400000, guid: 143063c9d42da4bb3bdef3e969df1633, type: 2}
-  databaseAppearances: {fileID: 11400000, guid: efcefe34ffbda4c5eb7e39d858738fbc,
-    type: 2}
-  databaseActions: {fileID: 11400000, guid: 59963a936d6fb4257a79cffca6bafcbb, type: 2}
+  databaseBehaviors: {fileID: 11400000, guid: af8b6b441e2cfc649abfdeae9d681ab0, type: 2}
+  databaseAppearances: {fileID: 11400000, guid: cd14329aa93660c42a831ad769e6b75f, type: 2}
+  databaseActions: {fileID: 11400000, guid: deac2d732829efe4fbbf8a5d724ce072, type: 2}
   defaultAppearancesTags:
   - vertexp
   defaultDisappearancesTags: []
   defaultBehaviorsTags: []
-  defaultTagsMode: 0
+  defaultTagsMode: 1

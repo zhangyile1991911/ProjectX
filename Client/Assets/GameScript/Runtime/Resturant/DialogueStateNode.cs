@@ -60,6 +60,7 @@ public class DialogueStateNode : IStateNode
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("AddNewMenu",AddNewMenuData);
             // _dialogWindow.DialogueRunner.AddCommandHandler<int>("ChangePartner",ChangePartner);
             _dialogWindow.DialogueRunner.AddCommandHandler<int>("KickOut",KickOut);
+            _dialogWindow.DialogueRunner.AddCommandHandler<int,int>("AdvanceChapter",AdvanceChapter);
         },openData,UILayer.Center);
         
         _clocker = UniModule.GetModule<Clocker>();
@@ -101,6 +102,7 @@ public class DialogueStateNode : IStateNode
         _dialogWindow.DialogueRunner.RemoveCommandHandler("ChangePartner");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("KickOut");
         _dialogWindow.DialogueRunner.RemoveCommandHandler("HybridOrder");
+        _dialogWindow.DialogueRunner.RemoveCommandHandler("AdvanceChapter");
         
         UIManager.Instance.CloseUI(UIEnum.CharacterDialogWindow);
         _clocker = null;
@@ -242,4 +244,10 @@ public class DialogueStateNode : IStateNode
         }
         characterObj.CurBehaviour = new CharacterLeave();
     }
+
+    private void AdvanceChapter(int characterId,int groupId)
+    {
+        CharacterScheduler.Instance.SetCharacterSchedule(characterId,groupId);
+    }
+    
 }

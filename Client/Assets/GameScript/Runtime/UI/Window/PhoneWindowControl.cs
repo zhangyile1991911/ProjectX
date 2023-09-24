@@ -77,6 +77,18 @@ public partial class PhoneWindow : UIWindow
         
     }
 
+
+    public void ReleaseAllApp()
+    {
+        _curRunApp = null;
+        for (int i = 0; i < _appList.Count; i++)
+        {
+            GameObject.Destroy(_appList[i].uiGo);
+        }
+        _appList.Clear();
+        Tran_AppGroup.gameObject.SetActive(true);
+    }
+    
     private void clickHome(PointerEventData param)
     {
         if (CurRunApp != null && CurRunApp.IsActive)

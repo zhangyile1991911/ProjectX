@@ -31,6 +31,8 @@ public partial class BootWindow : UIWindow
             .Subscribe(ClickBarbecue).AddTo(handles);
         Btn_Phone.OnClickAsObservable()
             .Subscribe(ClickPhone).AddTo(handles);
+        Btn_Dialgue.OnClickAsObservable()
+            .Subscribe(ClickDialogue).AddTo(handles);
     }
 
     public override void OnHide()
@@ -65,6 +67,12 @@ public partial class BootWindow : UIWindow
     void ClickPhone(Unit param)
     {
         YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Phone.unity");
+        UIManager.Instance.DestroyUI(UIEnum.BootWindow);
+    }
+
+    void ClickDialogue(Unit param)
+    {
+        YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Story.unity");
         UIManager.Instance.DestroyUI(UIEnum.BootWindow);
     }
 }

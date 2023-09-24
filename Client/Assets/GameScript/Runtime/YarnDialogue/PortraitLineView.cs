@@ -8,6 +8,7 @@ using UnityEngine;
 using Yarn.Unity;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Febucci.UI;
 using UnityEngine.UI;
 using Yarn.Markup;
 
@@ -40,22 +41,61 @@ public static class EffectsAsync
             canvasGroup.blocksRaycasts = true;
         }
     }
-    public static async UniTask Typewriter(TextMeshProUGUI text, Func<float> lettersPerSecond, Action onCharacterType,CancellationTokenSource cts)
+    // public static async UniTask Typewriter(TextMeshProUGUI text, Func<float> lettersPerSecond, Action onCharacterType,CancellationTokenSource cts)
+    // {
+    //     // Debug.Log($"开始运行 打字机效果");
+    //     text.maxVisibleCharacters = 0;
+    //     await UniTask.NextFrame(cancellationToken:cts.Token);
+    //
+    //     var characterCount = text.textInfo.characterCount;
+    //     if (lettersPerSecond() <= 0 || characterCount == 0)
+    //     {
+    //         text.maxVisibleCharacters = characterCount;
+    //         return;
+    //     }
+    //     
+    //     // Debug.Log($"每一个字需要 {secondsPerLetter}秒显示");
+    //     var accumulator = Time.deltaTime;
+    //     while (text.maxVisibleCharacters < characterCount)
+    //     {
+    //         if (cts.IsCancellationRequested)
+    //         {
+    //             return;
+    //         }
+    //         float secondsPerLetter = 1.0f / lettersPerSecond();
+    //         while (accumulator >= secondsPerLetter)
+    //         {
+    //             text.maxVisibleCharacters += 1;
+    //             onCharacterType?.Invoke();
+    //             accumulator -= secondsPerLetter;
+    //             // Debug.Log($"当前显示了 {text.maxVisibleCharacters}个字");
+    //         }
+    //         accumulator += Time.deltaTime;
+    //         await UniTask.NextFrame(cancellationToken:cts.Token);
+    //     }
+    //
+    //     text.maxVisibleCharacters = characterCount;
+    // }
+    
+    
+    public static async UniTask Typewriter(TextAnimator_TMP text, Func<float> lettersPerSecond, Action onCharacterType,CancellationTokenSource cts)
     {
         // Debug.Log($"开始运行 打字机效果");
-        text.maxVisibleCharacters = 0;
+        text.TMProComponent.maxVisibleCharacters = 0;
+        
         await UniTask.NextFrame(cancellationToken:cts.Token);
 
-        var characterCount = text.textInfo.characterCount;
+        var characterCount = text.TMProComponent.textInfo.characterCount;//text.textInfo.characterCount;
         if (lettersPerSecond() <= 0 || characterCount == 0)
         {
-            text.maxVisibleCharacters = characterCount;
+            // text.maxVisibleCharacters = characterCount;
+            text.TMProComponent.maxVisibleCharacters = characterCount;
             return;
         }
         
         // Debug.Log($"每一个字需要 {secondsPerLetter}秒显示");
         var accumulator = Time.deltaTime;
-        while (text.maxVisibleCharacters < characterCount)
+        while (text.TMProComponent.maxVisibleCharacters < characterCount)
         {
             if (cts.IsCancellationRequested)
             {
@@ -64,7 +104,7 @@ public static class EffectsAsync
             float secondsPerLetter = 1.0f / lettersPerSecond();
             while (accumulator >= secondsPerLetter)
             {
-                text.maxVisibleCharacters += 1;
+                text.TMProComponent.maxVisibleCharacters += 1;
                 onCharacterType?.Invoke();
                 accumulator -= secondsPerLetter;
                 // Debug.Log($"当前显示了 {text.maxVisibleCharacters}个字");
@@ -73,9 +113,9 @@ public static class EffectsAsync
             await UniTask.NextFrame(cancellationToken:cts.Token);
         }
 
-        text.maxVisibleCharacters = characterCount;
+        text.TMProComponent.maxVisibleCharacters = characterCount;
     }
-
+    
     public static async UniTask ShowFrameBounce(RectTransform rectTransform,float to,float time)
     {
         rectTransform.DOScale(to, time).SetEase(Ease.OutBack);
@@ -89,6 +129,7 @@ public static class EffectsAsync
         var remain = time - pre;
         await UniTask.Delay(TimeSpan.FromSeconds(time * 0.4f));
         lineText.text = null;
+        lineText.gameObject.SetActive(false);
         await UniTask.Delay(TimeSpan.FromSeconds(remain));
     }
 }
@@ -100,6 +141,9 @@ public class PortraitLineView : DialogueViewBase
     
     [SerializeField]
     internal TextMeshProUGUI lineText = null;
+
+    [SerializeField]
+    internal TextAnimator_TMP TextAnimator = null;
 
     [SerializeField]
     internal ButtonLongPress backgroundBtn = null;
@@ -209,6 +253,7 @@ public class PortraitLineView : DialogueViewBase
         // cts = new CancellationTokenSource();
         isCustomer = !dialogueLine.CharacterName.Contains("老板");
         canvasGroup.alpha = isCustomer ? 1 : 0;
+        lineText.gameObject.SetActive(isCustomer);
         if (isCustomer)
         {
             canvasGroup.alpha = 1;
@@ -303,7 +348,8 @@ public class PortraitLineView : DialogueViewBase
         }
         // Debug.Log($"Text.Length = {dialogueLine.TextWithoutCharacterName.Text.Length}");
         
-        lineText.text = dialogueLine.TextWithoutCharacterName.Text;
+        // lineText.text = dialogueLine.TextWithoutCharacterName.Text;
+        TextAnimator.TMProComponent.text = dialogueLine.TextWithoutCharacterName.Text;
         await UniTask.NextFrame();
         
         //调整背景图大小
@@ -345,7 +391,7 @@ public class PortraitLineView : DialogueViewBase
             typewriteCts = new();
             // Debug.Log($"演出打字机效果");
             await EffectsAsync.Typewriter(
-                lineText,
+                TextAnimator,//lineText,
                 ()=>typewriterEffectSpeed,
                 () => onCharacterTyped.Invoke(),
                 typewriteCts);

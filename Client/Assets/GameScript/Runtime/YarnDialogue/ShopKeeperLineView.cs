@@ -9,6 +9,7 @@ using Yarn.Unity;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
+using Febucci.UI;
 using UnityEngine.UI;
 using Yarn.Markup;
 
@@ -21,6 +22,9 @@ public class ShopKeeperLineView : DialogueViewBase
     [SerializeField]
     internal TextMeshProUGUI lineText = null;
 
+    [SerializeField]
+    internal TextAnimator_TMP TextAnimator = null;
+    
     [SerializeField]
     internal ButtonLongPress backgroundBtn = null;
     
@@ -74,6 +78,7 @@ public class ShopKeeperLineView : DialogueViewBase
         // cts = new CancellationTokenSource();
         isShopKeeper = dialogueLine.CharacterName.Contains("老板");
         canvasGroup.alpha = isShopKeeper ? 1 : 0;
+        lineText.gameObject.SetActive(isShopKeeper);
         if (!isShopKeeper) return;
         AdjustDialoguePosition(dialogueLine.CharacterName);
         await RunLineInternal(dialogueLine,onDialogueLineFinished);
@@ -181,7 +186,8 @@ public class ShopKeeperLineView : DialogueViewBase
             typewriteCts = new();
             // Debug.Log($"演出打字机效果");
             await EffectsAsync.Typewriter(
-                lineText,
+                // lineText,
+                TextAnimator,
                 ()=>typewriterEffectSpeed,
                 () => onCharacterTyped.Invoke(),
                 typewriteCts);

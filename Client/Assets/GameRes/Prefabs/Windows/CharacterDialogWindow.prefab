@@ -238,6 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 6347002476001443884}
   lineText: {fileID: 6082670588436109585}
+  TextAnimator: {fileID: 5015294381311829060}
   backgroundBtn: {fileID: 716437668297886134}
   useTypewriterEffect: 1
   onCharacterTyped:
@@ -349,6 +350,7 @@ GameObject:
   - component: {fileID: 6082670588436109585}
   - component: {fileID: 1283343160893494914}
   - component: {fileID: 3921723838574931712}
+  - component: {fileID: 5015294381311829060}
   m_Layer: 5
   m_Name: Txt_Line
   m_TagString: Untagged
@@ -507,6 +509,34 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5015294381311829060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2848320317782738262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ace8ced0e81c847968cdca0aeda757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typewriterStartsAutomatically: 0
+  animationLoop: 0
+  timeScale: 0
+  _text: "\u5148\u6765\u676F\u751F\u5564\uFF0C\u8981\u51B0\u7684\uFF0C\u7136\u540E\u2026\u2026\u55EF\u2026\u2026\u70B8\u732A\u6392\uFF0C\u6709\u4EC0\u4E48\u852C\u83DC\u63A8\u8350\u5417\uFF1F"
+  useDynamicScaling: 1
+  referenceFontSize: 10
+  isResettingTimeOnNewText: 1
+  useDefaultDatabases: 1
+  databaseBehaviors: {fileID: 11400000, guid: af8b6b441e2cfc649abfdeae9d681ab0, type: 2}
+  databaseAppearances: {fileID: 11400000, guid: cd14329aa93660c42a831ad769e6b75f, type: 2}
+  databaseActions: {fileID: 11400000, guid: deac2d732829efe4fbbf8a5d724ce072, type: 2}
+  defaultAppearancesTags: []
+  defaultDisappearancesTags:
+  - fade
+  defaultBehaviorsTags: []
+  defaultTagsMode: 0
 --- !u!1 &2920484022948557426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,6 +1460,7 @@ GameObject:
   - component: {fileID: 6374942116111633240}
   - component: {fileID: 550168529078979855}
   - component: {fileID: 3695308794514128774}
+  - component: {fileID: 7283842891893995738}
   m_Layer: 5
   m_Name: Txt_Line
   m_TagString: Untagged
@@ -1588,6 +1619,33 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &7283842891893995738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6374942116111633242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ace8ced0e81c847968cdca0aeda757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typewriterStartsAutomatically: 0
+  animationLoop: 0
+  timeScale: 0
+  _text: "\u5148\u6765\u676F\u751F\u5564\uFF0C\u8981\u51B0\u7684\uFF0C\u7136\u540E\u2026\u2026\u55EF\u2026\u2026\u70B8\u732A\u6392\uFF0C\u6709\u4EC0\u4E48\u852C\u83DC\u63A8\u8350\u5417\uFF1F"
+  useDynamicScaling: 1
+  referenceFontSize: 10
+  isResettingTimeOnNewText: 1
+  useDefaultDatabases: 1
+  databaseBehaviors: {fileID: 11400000, guid: af8b6b441e2cfc649abfdeae9d681ab0, type: 2}
+  databaseAppearances: {fileID: 11400000, guid: cd14329aa93660c42a831ad769e6b75f, type: 2}
+  databaseActions: {fileID: 11400000, guid: deac2d732829efe4fbbf8a5d724ce072, type: 2}
+  defaultAppearancesTags: []
+  defaultDisappearancesTags: []
+  defaultBehaviorsTags: []
+  defaultTagsMode: 0
 --- !u!1 &6374942116568982616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,6 +2244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 6374942117335729536}
   lineText: {fileID: 6374942116111633240}
+  TextAnimator: {fileID: 7283842891893995738}
   backgroundBtn: {fileID: 6374942116777171625}
   useFadeEffect: 0
   fadeInTime: 0.25

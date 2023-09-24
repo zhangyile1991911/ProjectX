@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tagID: diagexp
   baseDuration: 0.5
-  diagonalFromBttmLeft: 0
+  diagonalFromBttmLeft: 1

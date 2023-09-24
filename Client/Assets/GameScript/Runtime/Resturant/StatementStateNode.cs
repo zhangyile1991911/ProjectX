@@ -19,6 +19,9 @@ public class StatementStateNode : IStateNode
         openData.StateMachine = _machine;
         UIManager.Instance.OpenUI(UIEnum.RestaurantStatementWindow, null, openData);
         _restaurant.RecycleAllPeople();
+
+        var phone = UIManager.Instance.Get(UIEnum.PhoneWindow) as PhoneWindow;
+        phone?.ReleaseAllApp();
     }
 
     public void OnUpdate()
