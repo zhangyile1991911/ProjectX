@@ -76,7 +76,7 @@ public class WaitStateNode : IStateNode
     
     public void OnUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow)||Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.UpArrow)||Input.GetKeyDown(KeyCode.W))
         {
             _machine.ChangeState<PrepareStateNode>();            
         }

@@ -155,6 +155,29 @@ public class  GameDateTime
         result += _seconds;
         return result;
     }
+    
+    public string WeekDayStr()
+    {
+        switch (DayOfWeek)
+        {
+            case WeekDay.Monday:
+                return "星期一";
+            case WeekDay.Tuesday:
+                return "星期二";
+            case WeekDay.Wednesday:
+                return "星期三";
+            case WeekDay.Thursday:
+                return "星期四";
+            case WeekDay.Friday:
+                return "星期五";
+            case WeekDay.Saturday:
+                return "星期六";
+            case WeekDay.Sunday:
+                return "星期日";
+        }
+        return "";
+    }
+
 
     public static GameDateTime From(long ts)
     {
@@ -178,7 +201,7 @@ public class  GameDateTime
         
         result._seconds = tmp;
         
-        result._season = (Season)(result._day/DayOfSeason);
+        result._season = (Season)(result._day/DayOfSeason) + 1;
         result._WeekDay = (WeekDay)(result._day % 7)+1;
         result._day %= DayOfSeason;
         return result;

@@ -14,4 +14,7 @@ public enum UIEnum
     RestaurantStatementWindow,
     ConfirmTipsWindow,
     BarbecueWindow,
+    CalenderWindow,
+    DayResultWindow,
+    HandleOrderWindow
 }

@@ -47,8 +47,15 @@ public partial class BootWindow : UIWindow
     
     void ClickRestaurant(Unit param)
     {
-        YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Restaurant.unity");
         var uiManager = UniModule.GetModule<UIManager>();
+        //提前加载好窗口
+        uiManager.LoadUI(UIEnum.CalenderWindow, (IUIBase) =>
+        {
+            var calenderWindow = IUIBase as CalenderWindow;
+            calenderWindow.Refresh();
+        },null);
+        //uiManager.LoadUI(UIEnum.CalenderWindow,null,null);
+        YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Restaurant.unity");
         uiManager.DestroyUI(UIEnum.BootWindow);
     }
 

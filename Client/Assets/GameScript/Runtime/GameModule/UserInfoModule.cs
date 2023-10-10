@@ -79,7 +79,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             _userTableData = new ();
             _userTableData.Id = 11111;
-            _userTableData.now = 20 * 60 * 60;
+            _userTableData.now = 20 * 60 * 60;//todo 改成读表
             _userTableData.money = 500;
             _userTableData.today_weather = (int)Weather.Sunshine;
             _userTableData.next_weather = (int)Weather.Sunshine;

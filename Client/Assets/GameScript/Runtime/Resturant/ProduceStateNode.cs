@@ -66,12 +66,12 @@ public class ProduceStateNode : IStateNode
         };
         
         _curCookModule.Init(_data,_currentRecipeDifficulty);
-        _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
+        //_restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
     }
     
     public void OnExit()
     {
-        _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
+        //_restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
         _handle.Clear();
         
         switch (_data.CookTools)
