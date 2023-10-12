@@ -5,19 +5,27 @@ using Codice.Client.ChangeTrackerService;
 using UniRx;
 
 
-
 public class Clocker : SingletonModule<Clocker>
 {
     public IObservable<GameDateTime> Topic => _subject;
     public long Now => _nowMs;
     public GameDateTime NowDateTime => _nowDate;
+    public GameDateTime PrevDateTime => _preDate;
     private Subject<GameDateTime> _subject;
     private long _nowMs;
     private GameDateTime _nowDate;
+    private GameDateTime _preDate;
     public override void OnCreate(object createParam)
     {
         _subject = new Subject<GameDateTime>();
         _nowDate = GameDateTime.From(UserInfoModule.Instance.Now);
+        var prevts = UserInfoModule.Instance.Now - 86400;
+        if (prevts <= 0)
+        {
+            //todo 改成读表
+            prevts = 20 * 60 * 60;
+        }
+        _preDate = GameDateTime.From(prevts); 
         base.OnCreate(this);
     }
 
@@ -28,8 +36,16 @@ public class Clocker : SingletonModule<Clocker>
     
     public void AddSecond(int i)
     {
+        var day = _nowDate.Day;
+        var ts = _nowDate.Timestamp;
         _nowDate.AddSeconds(i);
         UserInfoModule.Instance.AddSecond(i);
+        
+        if (_nowDate.Day != day)
+        {
+            _preDate = GameDateTime.From(ts);
+        }
+        
         _subject.OnNext(_nowDate);
     }
 
@@ -53,6 +69,7 @@ public class Clocker : SingletonModule<Clocker>
         
     }
 
+    
     public override void OnUpdate()
     {
         

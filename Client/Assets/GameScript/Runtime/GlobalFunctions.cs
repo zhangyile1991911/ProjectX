@@ -69,8 +69,6 @@ public class PickFoodAndTools
 }
 
 //炒完的菜
-
-
 public static class GlobalFunctions
 {
     // public static Action<bool> YooAssetsComplete;
@@ -108,4 +106,9 @@ public interface CookWindowUI
     public void HideQTETip(int qteId);
 
     public void SetDifficulty(RecipeDifficulty difficulty);
+}
+
+public static class GlobalContent
+{
+    public static string OrderTicketContent = "";
 }

@@ -45,6 +45,18 @@ public partial class KitchenWindow : UIWindow
 	public Toggle Toggle_C;
 	public Toggle Toggle_D;
 	public TextMeshProUGUI Txt_num;
+	public Transform Tran_refrigerator;
+	public Button Btn_A;
+	public Button Btn_B;
+	public Button Btn_C;
+	public Button Btn_D;
+	public LoopGridView Grid_Refrigerator;
+	public Image Img_highLight;
+	public Image Img_Item;
+	public TextMeshProUGUI Txt_Num;
+	public TextMeshProUGUI Txt_Name;
+	public Button Btn_order;
+	public Button Btn_Arrow;
 
 	public override void Init(GameObject go)
 	{
@@ -84,6 +96,18 @@ public partial class KitchenWindow : UIWindow
 		Toggle_C = go.transform.Find("Tran_Center/ToggleG_Flavor/Toggle_C").GetComponent<Toggle>();
 		Toggle_D = go.transform.Find("Tran_Center/ToggleG_Flavor/Toggle_D").GetComponent<Toggle>();
 		Txt_num = go.transform.Find("HideNode/FoodBtnCell/Txt_num").GetComponent<TextMeshProUGUI>();
+		Tran_refrigerator = go.transform.Find("Tran_refrigerator").GetComponent<Transform>();
+		Btn_A = go.transform.Find("Tran_refrigerator/Btn_A").GetComponent<Button>();
+		Btn_B = go.transform.Find("Tran_refrigerator/Btn_B").GetComponent<Button>();
+		Btn_C = go.transform.Find("Tran_refrigerator/Btn_C").GetComponent<Button>();
+		Btn_D = go.transform.Find("Tran_refrigerator/Btn_D").GetComponent<Button>();
+		Grid_Refrigerator = go.transform.Find("Tran_refrigerator/Grid_Refrigerator").GetComponent<LoopGridView>();
+		Img_highLight = go.transform.Find("Tran_refrigerator/Grid_Refrigerator/Viewport/Content/RefrigeratorCell/Img_highLight").GetComponent<Image>();
+		Img_Item = go.transform.Find("Tran_refrigerator/Grid_Refrigerator/Viewport/Content/RefrigeratorCell/Img_Item").GetComponent<Image>();
+		Txt_Num = go.transform.Find("Tran_refrigerator/Grid_Refrigerator/Viewport/Content/RefrigeratorCell/Txt_Num").GetComponent<TextMeshProUGUI>();
+		Txt_Name = go.transform.Find("Tran_refrigerator/Grid_Refrigerator/Viewport/Content/RefrigeratorCell/Txt_Name").GetComponent<TextMeshProUGUI>();
+		Btn_order = go.transform.Find("Btn_order").GetComponent<Button>();
+		Btn_Arrow = go.transform.Find("Btn_Arrow").GetComponent<Button>();
 
 	}
 }

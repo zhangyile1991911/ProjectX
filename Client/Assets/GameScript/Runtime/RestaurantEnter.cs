@@ -22,6 +22,7 @@ public class RestaurantEnter : MonoBehaviour
     public Transform spawnGroup;
     public Transform CookNode;
     public Transform Curtain;
+    public Transform kitchenGroup;
 
     public Transform PeopleGroup;
     public Transform[] PeopleSpawns;
@@ -74,13 +75,15 @@ public class RestaurantEnter : MonoBehaviour
         // _fiveSecondTimer = Observable.Interval(TimeSpan.FromSeconds(5)).Subscribe(fiveSecondLoop).AddTo(this);
 
         _stateMachine = new StateMachine(this);
+        _stateMachine.AddNode<CalenderStateNode>();
         _stateMachine.AddNode<WaitStateNode>();
         _stateMachine.AddNode<DialogueStateNode>();
         _stateMachine.AddNode<PrepareStateNode>();
         _stateMachine.AddNode<ProduceStateNode>();
         _stateMachine.AddNode<StatementStateNode>();
         
-        _stateMachine.Run<WaitStateNode>();
+        //_stateMachine.Run<WaitStateNode>();
+        _stateMachine.Run<CalenderStateNode>();
 
         EventModule.Instance.CharacterLeaveSub.Subscribe(CharacterLeave).AddTo(this);
         _seatStatus = new List<int>(_seatPoints.Count);
@@ -507,5 +510,15 @@ public class RestaurantEnter : MonoBehaviour
     {
         var shopKeeper = CharacterMgr.Instance.GetCharacterById(10004);
         shopKeeper.gameObject.SetActive(false);
+    }
+
+    public void ShowKitchen()
+    {
+        kitchenGroup.gameObject.SetActive(true);
+    }
+
+    public void HideKitchen()
+    {
+        kitchenGroup.gameObject.SetActive(false);
     }
 }

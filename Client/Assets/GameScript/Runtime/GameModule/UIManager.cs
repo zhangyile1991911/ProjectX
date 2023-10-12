@@ -69,6 +69,19 @@ public class UIManager : SingletonModule<UIManager>
             // },layer,isPermanent);
         }
     }
+
+    public void LoadUI(UIEnum uiName,Action<IUIBase> onComplete,UIOpenParam openParam,UILayer layer = UILayer.Bottom,bool isPermanent=false)
+    {
+        IUIBase ui = null;
+        if (!_uiCachedDic.TryGetValue(uiName, out ui))
+        {
+            LoadUIAsync(uiName,(loadUi)=>
+            {
+                loadUi.OnCreate();
+                onComplete?.Invoke(loadUi);
+            },layer,isPermanent).Forget();
+        }
+    }
     
     public UniTask OpenUI(UIEnum uiName,UIOpenParam openParam,UILayer layer = UILayer.Bottom,bool isPermanent=false)
     {
