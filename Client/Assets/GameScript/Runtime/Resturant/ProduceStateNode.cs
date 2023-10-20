@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using cfg.food;
@@ -15,8 +16,11 @@ public class ProduceStateNode : IStateNode
     private RecipeDifficulty _currentRecipeDifficulty;
     private CookModule _curCookModule;
     private CookWindowUI _curCookWindowUI;
+    private GameObject _toolNode;
     private CompositeDisposable _handle;
-    
+    private Camera _mainCamera;
+    private cookTools _curCookTools;
+    private UIEnum _curUIEnum;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
@@ -24,155 +28,205 @@ public class ProduceStateNode : IStateNode
         _handle = new CompositeDisposable();
     }
 
-    public async void OnEnter(object param)
+    public void OnEnter(object param)
     {
+        
         _data = param as PickFoodAndTools;
-        // var menuTb = DataProviderModule.Instance.GetMenuInfo(_data.MenuId);
-        GameObject go = null;
-
-
+        var menuTb = DataProviderModule.Instance.GetMenuInfo(_data.MenuId);
+        
+        _curUIEnum = (UIEnum)Enum.Parse(typeof(UIEnum), menuTb.UiName);
+        UIManager.Instance.OpenUI(_curUIEnum,OnLoadUIComplete,null,UILayer.Bottom);
+        
+        _mainCamera = _restaurant.MainCamera;
+        _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Cook);
+        _restaurant.ShowKitchen();
         loadQTEConfig();
         loadDifficultyConfig(_data.MenuId);
+        loadCookTools(menuTb.MakeMethod);
         
         // var openWindowParam = new CookWindowParamData();
         // openWindowParam.StateMachine = _machine;
         // openWindowParam.Difficulty = _currentRecipeDifficulty;
-        
-        switch (_data.CookTools)
-        {
-            case cookTools.Fry:
-                UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,OnLoadUIComplete,null,UILayer.Bottom);
-                go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
-                _curCookModule = go.GetComponent<FryModule>();
-                break;
-            case cookTools.Barbecue:
-                UIManager.Instance.OpenUI(UIEnum.BarbecueWindow, OnLoadUIComplete,null);
-                go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
-                _curCookModule = go.GetComponent<BarbecueModule>();
-                break;
-            default:
-                Debug.LogError("其他玩法暂时没有实现");
-                break;
-        }
-        
-        _curCookModule.FinishCook += result =>
-        {
-            foreach (var one in _data.CookFoods)
-            {
-                UserInfoModule.Instance.SubItemNum(one.Id,(uint)one.Num);    
-            }
-            _curCookWindowUI.ShowGameOver(result);
-            UserInfoModule.Instance.AddCookedMeal(result);
-        };
-        
-        _curCookModule.Init(_data,_currentRecipeDifficulty);
+
+        // switch (_data.CookTools)
+        // {
+        //     case cookTools.Fry:
+        //         UIManager.Instance.OpenUI(UIEnum.FryingFoodWindow,OnLoadUIComplete,null,UILayer.Bottom);
+        //         go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
+        //         _curCookModule = go.GetComponent<FryModule>();
+        //         break;
+        //     case cookTools.Barbecue:
+        //         UIManager.Instance.OpenUI(UIEnum.BarbecueWindow, OnLoadUIComplete,null);
+        //         go = await _restaurant.ShowCookGamePrefab(_data.CookTools);
+        //         _curCookModule = go.GetComponent<BarbecueModule>();
+        //         break;
+        //     default:
+        //         Debug.LogError("其他玩法暂时没有实现");
+        //         break;
+        // }
+
+        // _curCookModule.FinishCook += result =>
+        // {
+        //     foreach (var one in _data.CookFoods)
+        //     {
+        //         UserInfoModule.Instance.SubItemNum(one.Id,(uint)one.Num);    
+        //     }
+        //     _curCookWindowUI.ShowGameOver(result);
+        //     UserInfoModule.Instance.AddCookedMeal(result);
+        // };
+        //
+        // _curCookModule.Init(_data,_currentRecipeDifficulty);
+
         //_restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
     }
     
     public void OnExit()
     {
-        //_restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
-        _handle.Clear();
+        UIManager.Instance.CloseUI(_curUIEnum);
+        _restaurant.HideKitchen();
         
-        switch (_data.CookTools)
-        {
-            case cookTools.Fry:
-                UIManager.Instance.CloseUI(UIEnum.FryingFoodWindow);
-                _restaurant.HideCookGamePrefab(_data.CookTools);
-                break;
-            case cookTools.Barbecue:
-                UIManager.Instance.CloseUI(UIEnum.BarbecueWindow);
-                _restaurant.HideCookGamePrefab(_data.CookTools);
-                break;
-            default:
-                Debug.LogError("其他玩法暂时没有实现");
-                break;
-        }
-        _data = null;
+        // _handle.Clear();
+        //
+        // switch (_data.CookTools)
+        // {
+        //     case cookTools.Fry:
+        //         UIManager.Instance.CloseUI(UIEnum.FryingFoodWindow);
+        //         _restaurant.HideCookGamePrefab(_data.CookTools);
+        //         break;
+        //     case cookTools.Barbecue:
+        //         UIManager.Instance.CloseUI(UIEnum.BarbecueWindow);
+        //         _restaurant.HideCookGamePrefab(_data.CookTools);
+        //         break;
+        //     default:
+        //         Debug.LogError("其他玩法暂时没有实现");
+        //         break;
+        // }
+        // _data = null;
         
     }
     
     public void OnUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space)&&!_curCookModule.IsCooking)
+        if (Input.GetKeyDown(KeyCode.Escape)&&!_curCookModule.IsCooking)
         {
             _machine.ChangeState<PrepareStateNode>();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            // 执行射线检测
+            Vector2 mousePosition = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            if (hit.collider == null )return;
+            if(!hit.collider.CompareTag("FlavourObject"))return;
+            foreach (var one in _restaurant.Flavors)
+            {
+                if (one.gameObject == hit.transform.gameObject)
+                {
+                    if (one.IsEnable)
+                    {
+                        one.DisableTag();
+                    }
+                    else
+                    {
+                        one.EnableTag(); 
+                    }
+                    break;
+                }
+            }
         }
     }
 
     private void OnLoadUIComplete(IUIBase wnd)
     {
-        switch (_data.CookTools)
-        {
-            case cookTools.Fry:
-                var fryingWnd = wnd as FryingFoodWindow;
-                fryingWnd.ClickStart = ClickStartCook;
-                fryingWnd.ClickFinish = ClickFinishCook;
-                _curCookWindowUI = fryingWnd;
-                break;
-            case cookTools.Barbecue:
-                var barbecueWnd = wnd as BarbecueWindow;
-                barbecueWnd.ClickStart = ClickStartCook;
-                barbecueWnd.ClickFinish = ClickFinishCook;
-                _curCookWindowUI = barbecueWnd;
-                break;
-        }
-        _curCookWindowUI.SetDifficulty(_currentRecipeDifficulty);
-        _curCookWindowUI.LoadQTEConfigTips(_data.QTEConfigs);
+        // switch (_data.CookTools)
+        // {
+        //     case cookTools.Fry:
+        //         var fryingWnd = wnd as FryingFoodWindow;
+        //         fryingWnd.ClickStart = ClickStartCook;
+        //         fryingWnd.ClickFinish = ClickFinishCook;
+        //         _curCookWindowUI = fryingWnd;
+        //         break;
+        //     case cookTools.Barbecue:
+        //         var barbecueWnd = wnd as BarbecueWindow;
+        //         barbecueWnd.ClickStart = ClickStartCook;
+        //         barbecueWnd.ClickFinish = ClickFinishCook;
+        //         _curCookWindowUI = barbecueWnd;
+        //         break;
+        // }
+        
+        // _curCookWindowUI.SetDifficulty(_currentRecipeDifficulty);
+        // _curCookWindowUI.LoadQTEConfigTips(_data.QTEConfigs);
     }
 
     private void ClickStartCook()
     {
-        _curCookModule.StartCook();
+        // _curCookModule.StartCook();
     }
 
     private void ClickFinishCook()
     {
-        _machine.ChangeState<PrepareStateNode>();
+        // _machine.ChangeState<PrepareStateNode>();
     }
 
-    private void loadDifficultyConfig(int menuId)
+    private async void loadCookTools(cookTools tool)
     {
-        var tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(menuId);
-        if (tbMenuInfo == null)
-        {
-            Debug.LogError($"MenuId {menuId} == null");
-        }
-
-        string filePath = "Assets/GameRes/SOConfigs/Menu/";
-        AssetOperationHandle handler = null;
-        switch (tbMenuInfo.MakeMethod)
+        switch (tool)
         {
             case cookTools.Fry:
-                filePath += "FryMenu/";
+                _toolNode = await _restaurant.ShowCookGamePrefab(tool);
+                _curCookModule = _toolNode.GetComponent<FryModule>();        
                 break;
             case cookTools.Barbecue:
-                filePath += "BarbecueMenu/";
+                
+                break;
+            case cookTools.Steam:
                 break;
         }
-        
-        switch (tbMenuInfo.Difficulty)
-        {
-            case cookDifficulty.easy:
-                handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"Low.asset");
-                break;
-            case cookDifficulty.normal:
-                handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"Middle.asset");
-                break;
-            case cookDifficulty.hard:
-                handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"High.asset");
-                break;
-            default:
-                Debug.LogError($"handler == null");
-                break;
-        }
-        _currentRecipeDifficulty = handler.AssetObject as RecipeDifficulty;
+    }
+    
+    private void loadDifficultyConfig(int menuId)
+    {
+        // var tbMenuInfo = DataProviderModule.Instance.GetMenuInfo(menuId);
+        // if (tbMenuInfo == null)
+        // {
+        //     Debug.LogError($"MenuId {menuId} == null");
+        // }
+        //
+        // string filePath = "Assets/GameRes/SOConfigs/Menu/";
+        // AssetOperationHandle handler = null;
+        // switch (tbMenuInfo.MakeMethod)
+        // {
+        //     case cookTools.Fry:
+        //         filePath += "FryMenu/";
+        //         break;
+        //     case cookTools.Barbecue:
+        //         filePath += "BarbecueMenu/";
+        //         break;
+        // }
+        //
+        // switch (tbMenuInfo.Difficulty)
+        // {
+        //     case cookDifficulty.easy:
+        //         handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"Low.asset");
+        //         break;
+        //     case cookDifficulty.normal:
+        //         handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"Middle.asset");
+        //         break;
+        //     case cookDifficulty.hard:
+        //         handler = YooAssets.LoadAssetSync<RecipeDifficulty>(filePath+"High.asset");
+        //         break;
+        //     default:
+        //         Debug.LogError($"handler == null");
+        //         break;
+        // }
+        // _currentRecipeDifficulty = handler.AssetObject as RecipeDifficulty;
     }
 
     private void loadQTEConfig()
     {
         var groupId = DataProviderModule.Instance.GetQTEGroupId();
-        Debug.Log($"loadQTEConfig = {groupId}");
+        // Debug.Log($"loadQTEConfig = {groupId}");
         _data.QTEConfigs = new List<qte_info>();
         var tmpTb = DataProviderModule.Instance.GetQTEGroupInfo(groupId);
         for (int i = 0; i < tmpTb.Count; i++)

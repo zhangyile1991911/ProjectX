@@ -30,5 +30,13 @@
     "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
     "tag": 1020,
     "key_code": 113
+  },
+  {
+    "id": 5,
+    "name": "加酱油",
+    "desc": "按E键/n往菜里加入醋",
+    "anim_res_path": "Assets/GameRes/Prefabs/AddSaltAnim.prefab",
+    "tag": 1022,
+    "key_code": 114
   }
 ]

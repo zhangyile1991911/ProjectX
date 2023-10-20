@@ -16,22 +16,28 @@ public class RestaurantEnter : MonoBehaviour
     public enum RestaurantCamera
     {
         RestaurantMain,
-        Kitchen
+        Kitchen,
+        Cook
     }
     public Transform standGroup;
     public Transform spawnGroup;
     public Transform CookNode;
     public Transform Curtain;
     public Transform kitchenGroup;
-
+    public Transform cookToolPos;
+    
     public Transform PeopleGroup;
     public Transform[] PeopleSpawns;
 
     public Transform[] ShopKeeperStand;
+
+    public Flavor[] Flavors;
     
     public CinemachineVirtualCamera RestaurantMainCamera;
     public CinemachineVirtualCamera KitchenCamera;
-    
+    public CinemachineVirtualCamera CookCamera;
+
+    public Camera MainCamera;
     // private CharacterMgr _characterMgr;
     // Start is called before the first frame update
     private List<Transform> _seatPoints;
@@ -54,6 +60,7 @@ public class RestaurantEnter : MonoBehaviour
     // private ObjectPool<>
     void Start()
     {
+        MainCamera = Camera.main;
         _seatPoints = new List<Transform>(standGroup.childCount);
         // _emptyPoints = new List<int>(4);
         for (int i = 0; i < standGroup.childCount; i++)
@@ -98,6 +105,53 @@ public class RestaurantEnter : MonoBehaviour
         loadWaitingCharacter();
         
         initPeople();
+
+        TestRecipeTree();
+    }
+
+    private void TestRecipeTree()
+    {
+        GlobalFunctions.InitRecipe(UserInfoModule.Instance.OwnMenus);
+        foreach (var one in DataProviderModule.Instance.DataBase.TbMenuInfo.DataList)
+        {
+            GlobalFunctions.InsertRecipe(one.Id);
+        }
+        Debug.Log("food 1006 1013");
+        var result = GlobalFunctions.SearchRecipe(new List<int>() {1013,1006});
+        foreach (var recipeId in result)
+        {
+            Debug.Log(recipeId);
+        }
+        
+        Debug.Log("food 1003");
+        result = GlobalFunctions.SearchRecipe(new List<int>() {1003});
+        foreach (var recipeId in result)
+        {
+            Debug.Log(recipeId);
+        }
+        
+        Debug.Log("food 1002");
+        result = GlobalFunctions.SearchRecipe(new List<int>() {1002});
+        foreach (var recipeId in result)
+        {
+            Debug.Log(recipeId);
+        }
+        
+        Debug.Log("food 1021");
+        result = GlobalFunctions.SearchRecipe(new List<int>() {1021});
+        foreach (var recipeId in result)
+        {
+            Debug.Log(recipeId);
+        }
+        
+        Debug.Log("food 1022,1008,1026");
+        result = GlobalFunctions.SearchRecipe(new List<int>() {1008,1022,1026});
+        foreach (var recipeId in result)
+        {
+            Debug.Log(recipeId);
+        }
+        
+        
     }
 
     // private async void loadShopkeeper()
@@ -327,6 +381,8 @@ public class RestaurantEnter : MonoBehaviour
         await handle.ToUniTask();
         var prefab = handle.AssetObject as GameObject;
         var go = Instantiate(prefab, CookNode);
+        go.transform.position = cookToolPos.position;
+        
         _cookPlayDict.Add(tools,go);
         return go;
     }
@@ -377,15 +433,37 @@ public class RestaurantEnter : MonoBehaviour
         {
             case RestaurantCamera.Kitchen:
                 RestaurantMainCamera.Priority = 0;
+                CookCamera.Priority = 0;
                 KitchenCamera.Priority = 999;
+                UIManager.Instance.SyncUICameraPosition(KitchenCamera.transform.position,
+                    true,
+                    KitchenCamera.m_Lens.OrthographicSize,
+                    KitchenCamera.m_Lens.NearClipPlane,
+                    KitchenCamera.m_Lens.FarClipPlane);
                 break;
             case RestaurantCamera.RestaurantMain:
                 RestaurantMainCamera.Priority = 999;
                 KitchenCamera.Priority = 0;
+                CookCamera.Priority = 0;
+                UIManager.Instance.SyncUICameraPosition(RestaurantMainCamera.transform.position,
+                    false,
+                    KitchenCamera.m_Lens.FieldOfView,
+                    KitchenCamera.m_Lens.NearClipPlane,
+                    KitchenCamera.m_Lens.FarClipPlane);
+                break;
+            case RestaurantCamera.Cook:
+                RestaurantMainCamera.Priority = 0;
+                KitchenCamera.Priority = 0;
+                CookCamera.Priority = 999;
+                UIManager.Instance.SyncUICameraPosition(KitchenCamera.transform.position,
+                    true,
+                    KitchenCamera.m_Lens.OrthographicSize,
+                    KitchenCamera.m_Lens.NearClipPlane,
+                    KitchenCamera.m_Lens.FarClipPlane);
                 break;
         }
 
-        UIManager.Instance.UICamera.transform.position = RestaurantMainCamera.transform.position;
+        // UIManager.Instance.UICamera.transform.position = RestaurantMainCamera.transform.position;
     }
 
     public void ShowCurtain()

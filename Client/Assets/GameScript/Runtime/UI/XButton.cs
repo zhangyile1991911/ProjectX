@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class XButton : Button
 {
     public IObservable<PointerEventData> OnClick => _onClick;
-    private Subject<PointerEventData> _onClick;
+    private readonly Subject<PointerEventData> _onClick;
 
     protected XButton()
     {

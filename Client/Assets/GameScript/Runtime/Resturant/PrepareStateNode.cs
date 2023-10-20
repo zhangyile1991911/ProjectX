@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
@@ -14,11 +15,15 @@ public class PrepareStateNode : IStateNode
     private CompositeDisposable _handle;
     private bool _isMoving;
     private KitchenWindow _kitchenWindow;
+    // private Camera _mainCamera;
+    // private LayerMask _foodLayerMask;
+    // private Material _foodOutlineMaterial;
     public void OnCreate(StateMachine machine)
     {
         _machine = machine;
         _restaurant = machine.Owner as RestaurantEnter;
         _handle = new CompositeDisposable();
+
     }
 
     public void OnEnter(object param)
@@ -26,8 +31,9 @@ public class PrepareStateNode : IStateNode
         UIManager.Instance.OpenUI(UIEnum.KitchenWindow, (uiBase) =>
         {
             _kitchenWindow = uiBase as KitchenWindow;
+            _kitchenWindow.StartCook = StartCook;
         }, null);
-        EventModule.Instance.StartCookSub.Subscribe(StartCook).AddTo(_handle);
+        // EventModule.Instance.StartCookSub.Subscribe(StartCook).AddTo(_handle);
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
         _restaurant.ShowKitchen();
     }
@@ -38,26 +44,6 @@ public class PrepareStateNode : IStateNode
         {
             _machine.ChangeState<WaitStateNode>();
         }
-
-        if (!_isMoving)
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-            {
-                _isMoving = true;
-                _kitchenWindow.SwitchMode(KitchenWindow.KitchenMode.PrepareCook);
-                _restaurant.KitchenCamera.transform.DOMoveX(25f, 0.5f).OnComplete(() => { _isMoving = false;});
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            {
-                _isMoving = true;
-                _restaurant.KitchenCamera.transform.DOMoveX(0f, 0.5f).OnComplete(() =>
-                {
-                    _isMoving = false;
-                    _kitchenWindow.SwitchMode(KitchenWindow.KitchenMode.PickFoodMode);
-                });
-            }
-        }
         
         
     }
@@ -67,11 +53,24 @@ public class PrepareStateNode : IStateNode
         UIManager.Instance.CloseUI(UIEnum.KitchenWindow);
         _handle?.Clear();
         _restaurant.HideKitchen();
-        
+        // _mainCamera = null;
+
     }
 
-    private void StartCook(PickFoodAndTools foo)
+    private void StartCook(int recipeId)
     {
-        _machine.ChangeState<ProduceStateNode>(foo);
+        var data = new PickFoodAndTools
+        {
+            MenuId = recipeId,
+        };
+        data.QTESets = new HashSet<int>();
+        foreach (var one in _restaurant.Flavors)
+        {
+            if (one.IsEnable)
+            {
+                data.QTESets.Add((int)one.Tag);
+            }
+        }
+        _machine.ChangeState<ProduceStateNode>(data);
     }
 }

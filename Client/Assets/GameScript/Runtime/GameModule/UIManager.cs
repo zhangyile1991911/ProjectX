@@ -253,4 +253,22 @@ public class UIManager : SingletonModule<UIManager>
             _rootCanvas.GetComponent<RectTransform>(),screenPosition,_uiCamera,out var localPos);
         return localPos;
     }
+
+    public void SyncUICameraPosition(Vector3 position,bool isOrthographic,float size,float near,float far)
+    {
+        _uiCamera.orthographic = isOrthographic;
+        _uiCamera.transform.position = position;
+        if (isOrthographic)
+        {
+            _uiCamera.orthographicSize = size;
+            
+        }
+        else
+        {
+            _uiCamera.fieldOfView = size;
+        }
+        _uiCamera.nearClipPlane = near;
+        _uiCamera.nearClipPlane = near;
+        _uiCamera.farClipPlane = far;
+    }
 }
