@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8455989834825310476}
   - component: {fileID: 8455989834825310475}
   - component: {fileID: 8455989834825310474}
-  - component: {fileID: 8455989834825310477}
   - component: {fileID: 4430513414489430597}
   m_Layer: 6
   m_Name: vermicelli
@@ -100,22 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &8455989834825310477
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8455989834825310473}
-  serializedVersion: 2
-  m_Mass: 2
-  m_Drag: 10
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 48
-  m_CollisionDetection: 0
 --- !u!114 &4430513414489430597
 MonoBehaviour:
   m_ObjectHideFlags: 0

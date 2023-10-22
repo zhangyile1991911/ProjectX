@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2788986173325441147}
   - component: {fileID: 2788986173325441146}
   - component: {fileID: 2788986173325441141}
-  - component: {fileID: 2788986173325441144}
   - component: {fileID: 3947398117019330056}
   m_Layer: 6
   m_Name: dabaicai
@@ -100,22 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.3
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &2788986173325441144
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2788986173325441140}
-  serializedVersion: 2
-  m_Mass: 3
-  m_Drag: 10
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 48
-  m_CollisionDetection: 0
 --- !u!114 &3947398117019330056
 MonoBehaviour:
   m_ObjectHideFlags: 0

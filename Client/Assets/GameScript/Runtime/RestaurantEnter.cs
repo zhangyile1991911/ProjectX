@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks.Triggers;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 using YooAsset;
 using Random = UnityEngine.Random;
 
@@ -57,7 +58,9 @@ public class RestaurantEnter : MonoBehaviour
 
     private ObjectPool<WalkingPeople> _peoplePool;
     private List<WalkingPeople> _activedPeople;
-    // private ObjectPool<>
+    
+    private List<OutlineControl> _foodGameObjects; 
+    
     void Start()
     {
         MainCamera = Camera.main;
@@ -79,6 +82,8 @@ public class RestaurantEnter : MonoBehaviour
         _cookPlayDict = new Dictionary<cookTools, GameObject>();
         
         _cacheHandles = new List<AssetOperationHandle>(10);
+        
+        _foodGameObjects = new List<OutlineControl>(10);
         // _fiveSecondTimer = Observable.Interval(TimeSpan.FromSeconds(5)).Subscribe(fiveSecondLoop).AddTo(this);
 
         _stateMachine = new StateMachine(this);
@@ -599,4 +604,75 @@ public class RestaurantEnter : MonoBehaviour
     {
         kitchenGroup.gameObject.SetActive(false);
     }
+
+    public int CheckPickFood(Transform tran,out OutlineControl outlineControl)
+    {
+        outlineControl = null;
+        for (int index = 0;index < _foodGameObjects.Count;index++)
+        {
+            var one = _foodGameObjects[index];
+            if (one.transform == tran)
+            {
+                outlineControl = one;
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    public async void AddFoodObject(int foodId)
+    {
+        if (_foodGameObjects.Count >= 10)
+        {
+            var data = new TipCommonData();
+            data.tipstr = "超过上限";
+            UIManager.Instance.CreateTip<TipCommon>(data).Forget();
+            return;   
+        }
+        
+        var itemTb = DataProviderModule.Instance.GetItemBaseInfo(foodId);
+        if (itemTb == null)
+        {
+            Debug.Log($"foodId = {foodId} itemTb == null");
+            return;
+        }
+        var res = YooAssets.LoadAssetAsync<GameObject>(itemTb.SceneResPath);
+        await res.ToUniTask();
+        var go = res.AssetObject as GameObject;
+        var obj = GameObject.Instantiate(go);
+        obj.transform.position = new Vector3(Random.Range(7f,17f),Random.Range(1007f,997f),-6f);
+        _foodGameObjects.Add(obj.GetComponent<OutlineControl>());
+    }
+
+    public void FoodDoDisappear(float duration)
+    {
+        for(int index = 0;index < _foodGameObjects.Count;index++)
+        {
+            _foodGameObjects[index].Disappear(duration);
+        }
+    }
+    
+    public void RemoveFoodObject(GameObject go)
+    {
+        for(int index = 0;index < _foodGameObjects.Count;index++)
+        {
+            if (go == _foodGameObjects[index].gameObject)
+            {
+                Destroy(go);
+                _foodGameObjects.RemoveAt(index);
+                break;
+            }
+        }
+    }
+    
+    public void ResetFoodOutline()
+    {
+        foreach (var one in _foodGameObjects)
+        {
+            one.HideOutline();
+        }
+    }
+    
+    
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -34,5 +35,11 @@ public class OutlineControl : MonoBehaviour
         m.DisableKeyword("_SHOWOUTLINE");
         sr.material = m;
         isOutline = false;
+    }
+
+
+    public void Disappear(float duration)
+    {
+        sr.DOFade(0, duration);
     }
 }
