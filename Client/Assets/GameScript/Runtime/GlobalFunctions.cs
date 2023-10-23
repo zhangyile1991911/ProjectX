@@ -24,6 +24,11 @@ public class DialogueData:UIOpenParam
     public int MenuId;
 }
 
+public class TipCommonData : UIOpenParam
+{
+    public string tipstr;
+}
+
 
 
 public class OrderMealInfo
@@ -61,11 +66,9 @@ public enum Difficulty
 public class PickFoodAndTools
 {
     public int MenuId;
-    public cfg.food.cookTools CookTools;
     public List<ItemTableData> CookFoods;
     public HashSet<int> QTESets;
     public List<qte_info> QTEConfigs;
-
 }
 
 //炒完的菜
@@ -90,6 +93,42 @@ public static class GlobalFunctions
 
         complete?.Invoke(true);
     }
+
+    private static RecipeTrie OwnRecipe;
+
+    public static void InitRecipe(List<OwnMenu> recipeIds)
+    {
+        if (OwnRecipe != null) return;
+        OwnRecipe = new RecipeTrie();
+        foreach (var menu in recipeIds)
+        {
+            var tb = DataProviderModule.Instance.GetMenuInfo(menu.MenuId);
+            if (tb == null)
+            {
+                Debug.LogError($"menuid = {menu.MenuId} is null");
+                continue;
+            }
+            OwnRecipe.Insert(tb.RelatedMaterial,menu.MenuId);
+        }
+    }
+
+    public static HashSet<int> SearchRecipe(List<int> foods)
+    {
+        return OwnRecipe.StartsWith(foods);
+    }
+
+    public static void InsertRecipe(int recipeId)
+    {
+        var tb = DataProviderModule.Instance.GetMenuInfo(recipeId);
+        if (tb != null)
+        {
+            OwnRecipe.Insert(tb.RelatedMaterial,recipeId);    
+        }
+    }
+    
+    
+    
+    
 }
 
 public class QTEInfoRecord

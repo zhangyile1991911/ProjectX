@@ -74,6 +74,16 @@
     "collision_layer": 1
   },
   {
+    "id": 1007,
+    "name": "羊肉",
+    "type": 1,
+    "tag": [
+      1001
+    ],
+    "opposite_tag": [],
+    "collision_layer": 0
+  },
+  {
     "id": 1008,
     "name": "面粉",
     "type": 4,

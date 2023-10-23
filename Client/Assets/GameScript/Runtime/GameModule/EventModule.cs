@@ -26,9 +26,9 @@ public class EventModule : SingletonModule<EventModule>
     
     // private Subject<OrderMealInfo> _orderMeal;
 
-    public IObserver<PickFoodAndTools> StartCookTopic => _startCook;
-    public IObservable<PickFoodAndTools> StartCookSub => _startCook;
-    private Subject<PickFoodAndTools> _startCook;
+    // public IObserver<PickFoodAndTools> StartCookTopic => _startCook;
+    // public IObservable<PickFoodAndTools> StartCookSub => _startCook;
+    // private Subject<PickFoodAndTools> _startCook;
 
     // public IObserver<bool> CookGameStartTopic => _cookGameStart;
     // public IObservable<bool> CookGameStartSub => _cookGameStart;
@@ -68,7 +68,7 @@ public class EventModule : SingletonModule<EventModule>
     {
         _charBubble = new Subject<CharacterSaidInfo>();
         // _orderMeal = new Subject<OrderMealInfo>();
-        _startCook = new Subject<PickFoodAndTools>();
+        // _startCook = new Subject<PickFoodAndTools>();
         // _cookGameStart = new Subject<bool>();
         // _exitKitchen = new Subject<Unit>();
         // _cookFinish = new Subject<CookResult>();
@@ -90,7 +90,7 @@ public class EventModule : SingletonModule<EventModule>
         base.OnDestroy();
         _charBubble.OnCompleted();
         // _orderMeal.OnCompleted();
-        _startCook.OnCompleted();
+        // _startCook.OnCompleted();
         // _cookGameStart.OnCompleted();
         // _exitKitchen.OnCompleted();
         // _cookFinish.OnCompleted();

@@ -17,8 +17,8 @@
     "sell": 8,
     "type": 1,
     "desc": "牛肉",
-    "ui_res_path": "Assets/GameRes/Picture/Food/blue.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/cauliflower.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/五花肉.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/beef.prefab",
     "get_method": ""
   },
   {
@@ -28,8 +28,8 @@
     "sell": 10,
     "type": 1,
     "desc": "虾",
-    "ui_res_path": "Assets/GameRes/Picture/Food/grey.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/shrimp.prefab",
     "get_method": ""
   },
   {
@@ -39,8 +39,8 @@
     "sell": 7,
     "type": 1,
     "desc": "鸡蛋",
-    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/鸡蛋.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/egg.prefab",
     "get_method": ""
   },
   {
@@ -50,8 +50,8 @@
     "sell": 6,
     "type": 1,
     "desc": "辣椒",
-    "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/cauliflower.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/garlic.prefab",
     "get_method": ""
   },
   {
@@ -61,8 +61,8 @@
     "sell": 5,
     "type": 1,
     "desc": "土豆",
-    "ui_res_path": "Assets/GameRes/Picture/Food/maco.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/土豆.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/potato.prefab",
     "get_method": ""
   },
   {
@@ -72,8 +72,8 @@
     "sell": 10,
     "type": 1,
     "desc": "鸡胸肉",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/鸡腿.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/chickenbreast.prefab",
     "get_method": ""
   },
   {
@@ -83,8 +83,8 @@
     "sell": 10,
     "type": 1,
     "desc": "羊肉",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/Barbecue/RoastFood.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/五花肉.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/mutton.prefab",
     "get_method": ""
   },
   {
@@ -94,8 +94,8 @@
     "sell": 8,
     "type": 1,
     "desc": "面粉",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/flour.prefab",
     "get_method": ""
   },
   {
@@ -105,8 +105,8 @@
     "sell": 15,
     "type": 1,
     "desc": "蜂蜜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/honey.prefab",
     "get_method": ""
   },
   {
@@ -116,8 +116,8 @@
     "sell": 5,
     "type": 1,
     "desc": "洋葱",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -127,8 +127,8 @@
     "sell": 5,
     "type": 1,
     "desc": "南瓜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -138,8 +138,8 @@
     "sell": 5,
     "type": 1,
     "desc": "白萝卜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -149,8 +149,8 @@
     "sell": 5,
     "type": 1,
     "desc": "蘑菇",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/蘑菇.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/mushroom.prefab",
     "get_method": ""
   },
   {
@@ -160,8 +160,8 @@
     "sell": 5,
     "type": 1,
     "desc": "胡萝卜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -171,8 +171,8 @@
     "sell": 5,
     "type": 1,
     "desc": "三文鱼",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -182,8 +182,8 @@
     "sell": 5,
     "type": 1,
     "desc": "章鱼",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -193,8 +193,8 @@
     "sell": 5,
     "type": 1,
     "desc": "西红柿",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/番茄.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/tomato.prefab",
     "get_method": ""
   },
   {
@@ -204,8 +204,8 @@
     "sell": 5,
     "type": 1,
     "desc": "黄瓜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -215,8 +215,8 @@
     "sell": 5,
     "type": 1,
     "desc": "小青菜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/小青菜.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/greens.prefab",
     "get_method": ""
   },
   {
@@ -226,8 +226,8 @@
     "sell": 5,
     "type": 1,
     "desc": "白菜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/大白菜.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/cabbage.prefab",
     "get_method": ""
   },
   {
@@ -237,8 +237,8 @@
     "sell": 5,
     "type": 1,
     "desc": "酸菜",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -248,8 +248,8 @@
     "sell": 5,
     "type": 1,
     "desc": "米饭",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/rice.prefab",
     "get_method": ""
   },
   {
@@ -259,8 +259,8 @@
     "sell": 5,
     "type": 1,
     "desc": "面条",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
     "get_method": ""
   },
   {
@@ -270,8 +270,8 @@
     "sell": 5,
     "type": 1,
     "desc": "茄子",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/茄子.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/eggplant.prefab",
     "get_method": ""
   },
   {
@@ -281,8 +281,8 @@
     "sell": 5,
     "type": 1,
     "desc": "牛奶",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/milk.prefab",
     "get_method": ""
   },
   {
@@ -292,8 +292,8 @@
     "sell": 5,
     "type": 1,
     "desc": "人们圈养的家猪肉，较为常见",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/五花肉.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/pork.prefab",
     "get_method": ""
   },
   {
@@ -303,8 +303,8 @@
     "sell": 5,
     "type": 1,
     "desc": "粉丝",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/vermicelli.prefab",
     "get_method": ""
   },
   {
@@ -314,8 +314,8 @@
     "sell": 5,
     "type": 1,
     "desc": "扇贝",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/shell.prefab",
     "get_method": ""
   },
   {
@@ -325,8 +325,8 @@
     "sell": 5,
     "type": 1,
     "desc": "玉米",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/onion.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/corn.prefab",
     "get_method": ""
   },
   {
@@ -336,8 +336,8 @@
     "sell": 15,
     "type": 1,
     "desc": "芝麻",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/sesame.prefab",
     "get_method": ""
   },
   {
@@ -347,8 +347,8 @@
     "sell": 16,
     "type": 1,
     "desc": "桂花糖",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/guihuasugar.prefab",
     "get_method": ""
   },
   {
@@ -358,7 +358,7 @@
     "sell": 10,
     "type": 1,
     "desc": "甜酒",
-    "ui_res_path": "Assets/GameRes/Picture/Food/white.png",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
     "scene_res_path": "Assets/GameRes/Prefabs/AllFood/FryFood/garlic.prefab",
     "get_method": ""
   },
@@ -369,7 +369,7 @@
     "sell": 200,
     "type": 2,
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
-    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
+    "ui_res_path": "Assets/GameRes/Picture/Food/grey.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
     "get_method": ""
   },

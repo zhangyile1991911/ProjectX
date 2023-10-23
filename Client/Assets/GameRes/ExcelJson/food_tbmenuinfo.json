@@ -4,7 +4,6 @@
     "name": "蒸蛋",
     "make_method": 4,
     "related_material": [
-      1002,
       1003
     ],
     "tag": [
@@ -13,7 +12,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10002,
@@ -28,14 +28,15 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10003,
     "name": "烤羊肉",
     "make_method": 5,
     "related_material": [
-      1006
+      1007
     ],
     "tag": [
       1001,
@@ -44,7 +45,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "BarbecueWindow"
   },
   {
     "id": 10004,
@@ -59,7 +61,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10005,
@@ -74,7 +77,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "BarbecueWindow"
   },
   {
     "id": 10006,
@@ -90,15 +94,16 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10007,
     "name": "酸菜鱼",
     "make_method": 2,
     "related_material": [
-      1021,
-      1015
+      1015,
+      1021
     ],
     "tag": [
       1002,
@@ -108,7 +113,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10008,
@@ -123,15 +129,16 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10009,
     "name": "蛋炒饭",
     "make_method": 1,
     "related_material": [
-      1022,
-      1003
+      1003,
+      1022
     ],
     "tag": [
       1024,
@@ -140,7 +147,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10010,
@@ -156,15 +164,16 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10011,
     "name": "西红柿炒鸡蛋",
     "make_method": 1,
     "related_material": [
-      1017,
-      1003
+      1003,
+      1017
     ],
     "tag": [
       1011,
@@ -173,7 +182,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10012,
@@ -189,16 +199,17 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10013,
     "name": "宫保鸡丁",
     "make_method": 1,
     "related_material": [
+      1006,
       1014,
-      1018,
-      1006
+      1018
     ],
     "tag": [
       1006,
@@ -206,7 +217,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "FryingFoodWindow"
   },
   {
     "id": 10014,
@@ -223,7 +235,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10015,
@@ -240,7 +253,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10016,
@@ -256,7 +270,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "BarbecueWindow"
   },
   {
     "id": 10017,
@@ -271,7 +286,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": "BarbecueWindow"
   },
   {
     "id": 10018,
@@ -288,16 +304,17 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10019,
     "name": "南瓜米糕",
     "make_method": 4,
     "related_material": [
+      1008,
       1011,
-      1025,
-      1008
+      1025
     ],
     "tag": [
       1016,
@@ -305,15 +322,16 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10020,
     "name": "烧麦",
     "make_method": 4,
     "related_material": [
-      1022,
       1008,
+      1022,
       1026
     ],
     "tag": [
@@ -323,7 +341,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10021,
@@ -340,7 +359,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10022,
@@ -356,7 +376,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10023,
@@ -364,8 +385,8 @@
     "make_method": 4,
     "related_material": [
       1003,
-      1019,
-      1008
+      1008,
+      1019
     ],
     "tag": [
       1015,
@@ -375,7 +396,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 1,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10024,
@@ -391,7 +413,8 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   },
   {
     "id": 10025,
@@ -409,6 +432,7 @@
     ],
     "opposite_tag": [],
     "difficulty": 3,
-    "cost_time": 10
+    "cost_time": 10,
+    "ui_name": ""
   }
 ]

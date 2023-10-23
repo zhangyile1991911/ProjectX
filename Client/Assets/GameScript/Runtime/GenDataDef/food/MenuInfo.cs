@@ -26,10 +26,11 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         { var __json0 = _json["opposite_tag"]; if(!__json0.IsArray) { throw new SerializationException(); } OppositeTag = new System.Collections.Generic.List<food.flavorTag>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  OppositeTag.Add(__v0); }   }
         { if(!_json["difficulty"].IsNumber) { throw new SerializationException(); }  Difficulty = (food.cookDifficulty)_json["difficulty"].AsInt; }
         { if(!_json["cost_time"].IsNumber) { throw new SerializationException(); }  CostTime = _json["cost_time"]; }
+        { if(!_json["ui_name"].IsString) { throw new SerializationException(); }  UiName = _json["ui_name"]; }
         PostInit();
     }
 
-    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, food.cookDifficulty difficulty, int cost_time ) 
+    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, food.cookDifficulty difficulty, int cost_time, string ui_name ) 
     {
         this.Id = id;
         this.Name = name;
@@ -39,6 +40,7 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         this.OppositeTag = opposite_tag;
         this.Difficulty = difficulty;
         this.CostTime = cost_time;
+        this.UiName = ui_name;
         PostInit();
     }
 
@@ -80,6 +82,10 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
     /// 消耗时间
     /// </summary>
     public int CostTime { get; private set; }
+    /// <summary>
+    /// 对应界面
+    /// </summary>
+    public string UiName { get; private set; }
 
     public const int __ID__ = -566658467;
     public override int GetTypeId() => __ID__;
@@ -105,6 +111,7 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         + "OppositeTag:" + Bright.Common.StringUtil.CollectionToString(OppositeTag) + ","
         + "Difficulty:" + Difficulty + ","
         + "CostTime:" + CostTime + ","
+        + "UiName:" + UiName + ","
         + "}";
     }
     

@@ -27,6 +27,10 @@ namespace cfg.food
         /// 加辣
         /// </summary>
         Spicy = 4,
+        /// <summary>
+        /// 加酱油
+        /// </summary>
+        Sour = 5,
     }
 
 } 

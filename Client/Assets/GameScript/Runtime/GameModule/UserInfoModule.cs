@@ -105,7 +105,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var ownMenuQuery = $"select * from OwnMenu";
         OwnMenus = _sqLite.Query<OwnMenu>(ownMenuQuery);
         initOwnMenuData(OwnMenus);
-
+        
         initNPCOrder();
 
         initCookResult();
@@ -250,7 +250,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             {
                 _ownMenuTableDatas.Add(menu.MenuId,menu);
             }
-
+            
             return;
         }
         /*10001 10002 10003 10004 10005*/
