@@ -39,6 +39,8 @@ public class RestaurantEnter : MonoBehaviour
     public CinemachineVirtualCamera CookCamera;
 
     public Camera MainCamera;
+
+    private CinemachineBrain _mainCameraBrain;
     // private CharacterMgr _characterMgr;
     // Start is called before the first frame update
     private List<Transform> _seatPoints;
@@ -64,6 +66,11 @@ public class RestaurantEnter : MonoBehaviour
     void Start()
     {
         MainCamera = Camera.main;
+        _mainCameraBrain = MainCamera.GetComponent<CinemachineBrain>();
+        _mainCameraBrain.m_CameraCutEvent.AddListener((b) =>
+        {
+            Debug.Log($"RestaurantEnter IsLiveInBlend {b.IsLiveInBlend(KitchenCamera)} {b.IsLive(CookCamera)}");
+        });
         _seatPoints = new List<Transform>(standGroup.childCount);
         // _emptyPoints = new List<int>(4);
         for (int i = 0; i < standGroup.childCount; i++)

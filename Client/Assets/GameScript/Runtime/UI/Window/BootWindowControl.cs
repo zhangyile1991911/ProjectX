@@ -52,8 +52,9 @@ public partial class BootWindow : UIWindow
         uiManager.LoadUI(UIEnum.CalenderWindow, (IUIBase) =>
         {
             var calenderWindow = IUIBase as CalenderWindow;
+            calenderWindow.OnHide();
             calenderWindow.Refresh();
-        },null);
+        });
         //uiManager.LoadUI(UIEnum.CalenderWindow,null,null);
         YooAssets.LoadSceneAsync("Assets/GameRes/Scenes/Restaurant.unity");
         uiManager.DestroyUI(UIEnum.BootWindow);

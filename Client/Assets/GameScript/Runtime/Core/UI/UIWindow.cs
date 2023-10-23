@@ -66,8 +66,8 @@ public class UIWindow : IUIBase
     public virtual void OnHide()
     {
         uiGo.SetActive(false);
-        handles.Dispose();
-        handles.Clear();
+        handles?.Dispose();
+        handles?.Clear();
         for (int i = 0; i < _childComponent.Count; i++)
         {
             _childComponent[i]?.OnHide();

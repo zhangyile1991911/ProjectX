@@ -44,15 +44,7 @@ public class ProduceStateNode : IStateNode
         
         UIManager.Instance.OpenUI(_curUIEnum,OnLoadUIComplete,null,UILayer.Bottom);
         
-        // _curCookModule.FinishCook += result =>
-        // {
-        //     foreach (var one in _data.CookFoods)
-        //     {
-        //         UserInfoModule.Instance.SubItemNum(one.Id,(uint)one.Num);    
-        //     }
-        //     _curCookWindowUI.ShowGameOver(result);
-        //     UserInfoModule.Instance.AddCookedMeal(result);
-        // };
+       
         //
         // _curCookModule.Init(_data,_currentRecipeDifficulty);
 
@@ -116,8 +108,11 @@ public class ProduceStateNode : IStateNode
         }
     }
 
-    private void OnLoadUIComplete(IUIBase wnd)
+    private async void OnLoadUIComplete(IUIBase wnd)
     {
+        //先隐藏
+        wnd.OnHide();
+        
         var tb = DataProviderModule.Instance.GetMenuInfo(_data.MenuId);
         switch (tb.MakeMethod)
         {
@@ -137,6 +132,8 @@ public class ProduceStateNode : IStateNode
         
         _curCookWindowUI.SetDifficulty(_currentRecipeDifficulty);
         _curCookWindowUI.LoadQTEConfigTips(_data.QTEConfigs);
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        wnd.OnShow(null);
     }
 
     private async void ClickStartCook()
@@ -171,6 +168,16 @@ public class ProduceStateNode : IStateNode
             case cookTools.Steam:
                 break;
         }
+        
+        _curCookModule.FinishCook += result =>
+        {
+            // foreach (var one in _data.CookFoods)
+            // {
+            //     UserInfoModule.Instance.SubItemNum(one.Id,(uint)one.Num);    
+            // }
+            _curCookWindowUI.ShowGameOver(result);
+            UserInfoModule.Instance.AddCookedMeal(result);
+        };
     }
     
     private void loadDifficultyConfig(int menuId)

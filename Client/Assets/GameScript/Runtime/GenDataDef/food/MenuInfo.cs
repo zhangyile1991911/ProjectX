@@ -27,10 +27,11 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         { if(!_json["difficulty"].IsNumber) { throw new SerializationException(); }  Difficulty = (food.cookDifficulty)_json["difficulty"].AsInt; }
         { if(!_json["cost_time"].IsNumber) { throw new SerializationException(); }  CostTime = _json["cost_time"]; }
         { if(!_json["ui_name"].IsString) { throw new SerializationException(); }  UiName = _json["ui_name"]; }
+        { if(!_json["scene_res_path"].IsString) { throw new SerializationException(); }  SceneResPath = _json["scene_res_path"]; }
         PostInit();
     }
 
-    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, food.cookDifficulty difficulty, int cost_time, string ui_name ) 
+    public MenuInfo(int id, string name, food.cookTools make_method, System.Collections.Generic.List<int> related_material, System.Collections.Generic.List<food.flavorTag> tag, System.Collections.Generic.List<food.flavorTag> opposite_tag, food.cookDifficulty difficulty, int cost_time, string ui_name, string scene_res_path ) 
     {
         this.Id = id;
         this.Name = name;
@@ -41,6 +42,7 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         this.Difficulty = difficulty;
         this.CostTime = cost_time;
         this.UiName = ui_name;
+        this.SceneResPath = scene_res_path;
         PostInit();
     }
 
@@ -86,6 +88,10 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
     /// 对应界面
     /// </summary>
     public string UiName { get; private set; }
+    /// <summary>
+    /// 场景资源路径
+    /// </summary>
+    public string SceneResPath { get; private set; }
 
     public const int __ID__ = -566658467;
     public override int GetTypeId() => __ID__;
@@ -112,6 +118,7 @@ public sealed partial class MenuInfo :  Bright.Config.BeanBase
         + "Difficulty:" + Difficulty + ","
         + "CostTime:" + CostTime + ","
         + "UiName:" + UiName + ","
+        + "SceneResPath:" + SceneResPath + ","
         + "}";
     }
     

@@ -78,13 +78,14 @@ public class FryModule : CookModule
     //
     // }
 
-    private void loadRawFood(List<ItemTableData> foods)
+    private void loadRawFood(List<ItemTableData> foods,string resRootPath)
     {
+        
         //炒菜原材料
         foreach (var food in foods)
         {
-            var itemTB = DataProviderModule.Instance.GetItemBaseInfo(food.Id);
-            var handle = YooAssets.LoadAssetSync<GameObject>(itemTB.SceneResPath);
+            // var itemTB = DataProviderModule.Instance.GetItemBaseInfo(food.Id);
+            var handle = YooAssets.LoadAssetSync<GameObject>($"{resRootPath}/{food.Id}.prefab");
             _cacheHandles.Add(handle);
             var num = 5;
             for (int i = 0; i < num; i++)
@@ -111,7 +112,7 @@ public class FryModule : CookModule
             Debug.LogError($"recipe.MenuId {recipe.MenuId} == null");
         }
         
-        loadRawFood(recipe.CookFoods);
+        loadRawFood(recipe.CookFoods,_tbMenuInfo.SceneResPath);
         LoadQTEConfig(recipe.QTEConfigs,pan.animNode);
         _recipe = recipe;
 
@@ -141,8 +142,8 @@ public class FryModule : CookModule
 
         var min = _currentRecipeDifficulty.temperatureArea.x * _currentRecipeDifficulty.maxTemperature;
         var max = _currentRecipeDifficulty.temperatureArea.y * _currentRecipeDifficulty.maxTemperature;
-        Debug.Log($"min = {min} max = {max} _currentRecipeDifficulty.temperatureArea = {_currentRecipeDifficulty.temperatureArea} _currentRecipeDifficulty.maxTemperature = {_currentRecipeDifficulty.maxTemperature}");
-        Debug.Log($"_handler = {_handler.Count} {_handler.GetHashCode()}");
+        // Debug.Log($"min = {min} max = {max} _currentRecipeDifficulty.temperatureArea = {_currentRecipeDifficulty.temperatureArea} _currentRecipeDifficulty.maxTemperature = {_currentRecipeDifficulty.maxTemperature}");
+        // Debug.Log($"_handler = {_handler.Count} {_handler.GetHashCode()}");
         this.UpdateAsObservable()
             .Where(_=>IsCooking&&(_curTemperature.Value >= min && _curTemperature.Value <= max))
             .Subscribe(HeatFood).AddTo(_handler);
@@ -285,10 +286,9 @@ public class FryModule : CookModule
             var clocker = UniModule.GetModule<Clocker>();
             clocker.AddMinute(_tbMenuInfo.CostTime);    
         }
+        pan.transform.localPosition = Vector3.zero;
         
         FinishCook?.Invoke(_result);
-        
-        
         UnloadRes();
     }
 

@@ -150,14 +150,15 @@ public class PanSimulator : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !_isDrag)
         {
-            // Debug.Log("点击了平底锅手柄");
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             // gizomsRay = ray;
             // RaycastHit hit;
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
             // if(Physics.Raycast(ray, out hit, 100f))
-            if (hit && hit.collider.transform == panHandle)
+            // if (hit && hit.collider.transform == panHandle)
+            if (hit && hit.transform.CompareTag("GameController"))
             {
+                Debug.Log("点击了平底锅手柄");
                 Vector3 pos = ScreenToWorld(Input.mousePosition, transform);
                 _offset = transform.position - pos;
                 _isDrag = true;

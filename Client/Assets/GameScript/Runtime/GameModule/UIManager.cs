@@ -70,7 +70,7 @@ public class UIManager : SingletonModule<UIManager>
         }
     }
 
-    public void LoadUI(UIEnum uiName,Action<IUIBase> onComplete,UIOpenParam openParam,UILayer layer = UILayer.Bottom,bool isPermanent=false)
+    public void LoadUI(UIEnum uiName,Action<IUIBase> onComplete,UILayer layer = UILayer.Bottom,bool isPermanent=false)
     {
         IUIBase ui = null;
         if (!_uiCachedDic.TryGetValue(uiName, out ui))
