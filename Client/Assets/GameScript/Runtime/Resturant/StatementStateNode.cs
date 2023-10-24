@@ -17,7 +17,7 @@ public class StatementStateNode : IStateNode
     {
         var openData = new FlowControlWindowData();
         openData.StateMachine = _machine;
-        UIManager.Instance.OpenUI(UIEnum.RestaurantStatementWindow, null, openData);
+        UIManager.Instance.OpenUI(UIEnum.DayResultWindow, null, openData);
         _restaurant.RecycleAllPeople();
 
         var phone = UIManager.Instance.Get(UIEnum.PhoneWindow) as PhoneWindow;
@@ -34,7 +34,7 @@ public class StatementStateNode : IStateNode
 
     public void OnExit()
     {
-        UIManager.Instance.CloseUI(UIEnum.RestaurantStatementWindow);
+        UIManager.Instance.CloseUI(UIEnum.DayResultWindow);
         var isSunday = Clocker.Instance.NowDateTime.DayOfWeek == WeekDay.Sunday;
         //清理角色占座
         var characters = CharacterMgr.Instance.Characters;

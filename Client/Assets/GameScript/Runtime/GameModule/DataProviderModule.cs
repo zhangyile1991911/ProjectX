@@ -377,4 +377,14 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
     {
         return _database.TbGlobalConfig.DataMap["patient_max_value"].IntVal;
     }
+
+    public string DaySummaryHeader()
+    {
+        return _database.TbGlobalConfig.DataMap["day_summary_header"].StringVal;
+    }
+
+    public string CustomerComment()
+    {
+        return _database.TbGlobalConfig.DataMap["customer_comment"].StringVal;
+    }
 }

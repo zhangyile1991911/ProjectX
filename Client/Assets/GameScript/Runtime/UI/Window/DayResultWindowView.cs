@@ -18,7 +18,7 @@ public partial class DayResultWindow : UIWindow
 	{
 	    uiGo = go;
 	    
-		Txt_DailyNote = go.transform.Find("Txt_DailyNote").GetComponent<TextMeshProUGUI>();
+		Txt_DailyNote = go.transform.Find("Scroll View/Viewport/Txt_DailyNote").GetComponent<TextMeshProUGUI>();
 		Btn_NextDay = go.transform.Find("Btn_NextDay").GetComponent<Button>();
 
 	}
