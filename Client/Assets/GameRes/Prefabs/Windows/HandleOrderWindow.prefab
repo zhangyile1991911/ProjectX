@@ -228,7 +228,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -364,7 +364,7 @@ RectTransform:
   - {fileID: 3413369717742226152}
   - {fileID: 3413369716592687205}
   m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -537,7 +537,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -735,7 +735,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -795,7 +795,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3413369717011885377
 RectTransform:
   m_ObjectHideFlags: 0
@@ -808,8 +808,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3413369717274533423}
-  - {fileID: 3413369717608498224}
   - {fileID: 3413369716989497056}
   - {fileID: 3413369716332736071}
   - {fileID: 3413369717777151329}
@@ -985,17 +983,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3413369717274533420}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 0
+  m_Father: {fileID: 3413369717724928621}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -503, y: -162}
+  m_AnchoredPosition: {x: -1783, y: -162}
   m_SizeDelta: {x: 132, y: 66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3413369717274533416
@@ -1111,7 +1109,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1220,17 +1218,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3413369717608498225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 1
+  m_Father: {fileID: 3413369717724928621}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -499.99994, y: -296}
+  m_AnchoredPosition: {x: -1780, y: -296}
   m_SizeDelta: {x: 132, y: 66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3413369717608498381
@@ -1486,6 +1484,8 @@ RectTransform:
   - {fileID: 3413369717880606012}
   - {fileID: 3413369716418620010}
   - {fileID: 3413369717653619743}
+  - {fileID: 3413369717274533423}
+  - {fileID: 3413369717608498224}
   m_Father: {fileID: 3413369717520509960}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1646,7 +1646,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3413369717011885377}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1682,8 +1682,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: " ---------------\n \u6750\u6599 :\n \u7AE0\u9C7C, \u9762\u7C89, \u5305\u83DC,
-    \u6D77\u82D4\n\n ---------------\n \u505A\u6CD5 :\n \u5C0F\u706B\u70E4\u5236\n\n
-    ---------------\n \u8C03\u5473 :\n \u9171\u6CB9, \u76D0\n\n ---------------"
+    \u6D77\u82D4\n\n ---------------\n \u505A\u6CD5 :\n \u5C0F\u706B\u70E4\u5236\n\n---------------\n\u8C03\u5473
+    :\n \u9171\u6CB9, \u76D0\n\n ---------------"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 10ec43f30dd4b3548acdfbc993a653fd, type: 2}
   m_sharedMaterial: {fileID: -759948507489053647, guid: 10ec43f30dd4b3548acdfbc993a653fd, type: 2}

@@ -44,4 +44,10 @@ public class NPCOrderTable
 
     [Column("Flavor")]
     public string Flavor { get; set; }
+
+    [Column("Hour")] 
+    public int Hour { get; set; }
+
+    [Column("Minutes")]
+    public int Minutes { get; set; }
 }

@@ -109,6 +109,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         initNPCOrder();
 
         initCookResult();
+        
         // EventModule.Instance.ToNextWeekSub.Subscribe(ResetNPCWeekDay);
         // EventModule.Instance.ToNextDaySub.Subscribe(ResetNPCDaily);
     }
@@ -678,6 +679,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         result.MenuId = data.MenuId;
         result.OrderType = (cfg.common.bubbleType)data.OrderType;
         result.flavor = new();
+        result.OrderTime = Clocker.Instance.NowDateTime;
         if (!data.Flavor.IsNullOrEmpty())
         {
             var flavorStr = data.Flavor.Split(";");
@@ -689,6 +691,23 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         }
         return result;
     }
+
+    public Dictionary<int, NPCOrderTable>.ValueCollection NPCOrderList => _npcOrderDatas.Values;
+
+    public List<OrderMealInfo> CurMealInfos => mealInfos;
+    private List<OrderMealInfo> mealInfos = new List<OrderMealInfo>(10);
+    private void AddCustomerOrderMenu(OrderMealInfo newOrderInfo)
+    {
+        if (newOrderInfo == null) return;
+        mealInfos.Add(newOrderInfo);
+    }
+
+    private void RemoveCustomerOrderMenu(OrderMealInfo newOrderInfo)
+    {
+        if (newOrderInfo == null) return;
+        mealInfos.Remove(newOrderInfo);
+    }
+    
     
     // public void SaveAllData()
     // {

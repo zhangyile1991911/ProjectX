@@ -1325,7 +1325,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: d5d74989400a2be4da43643950980edf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1604,6 +1604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d045dbd303dc048b2f37968afaf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UserDataId: 0
 --- !u!61 &642530028
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3379,6 +3380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d045dbd303dc048b2f37968afaf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UserDataId: 0
 --- !u!61 &1237686750
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3909,6 +3911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d045dbd303dc048b2f37968afaf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UserDataId: 0
 --- !u!61 &1402888905
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4057,7 +4060,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1410332553}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.2, y: 3.9, z: 0}
+  m_LocalPosition: {x: -3.2, y: 3.81, z: 0}
   m_LocalScale: {x: 1.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4781,6 +4784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d045dbd303dc048b2f37968afaf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UserDataId: 0
 --- !u!61 &1621105761
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6566,6 +6570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d045dbd303dc048b2f37968afaf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UserDataId: 0
 --- !u!61 &2087564833
 BoxCollider2D:
   m_ObjectHideFlags: 0

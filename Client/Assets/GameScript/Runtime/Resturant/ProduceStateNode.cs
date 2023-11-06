@@ -142,6 +142,8 @@ public class ProduceStateNode : IStateNode
         //将食材渐隐消失
         _restaurant.FoodDoDisappear(duration);
         await UniTask.Delay(TimeSpan.FromSeconds(duration+0.2f));
+        //删除场景中的食材
+        _restaurant.ClearAllFoodObject();
         //加载锅里食物
         _curCookModule.Init(_data,_currentRecipeDifficulty);
         //开始烹饪游戏
@@ -188,7 +190,7 @@ public class ProduceStateNode : IStateNode
             Debug.LogError($"MenuId {menuId} == null");
         }
         
-        string filePath = "Assets/GameRes/SOConfigs/Menu/";
+            string filePath = "Assets/GameRes/SOConfigs/Menu/";
         AssetOperationHandle handler = null;
         switch (tbMenuInfo.MakeMethod)
         {

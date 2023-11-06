@@ -8,10 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 2dOutline
-  m_Shader: {fileID: -6465566751694194690, guid: 7b4603e9dde4ba74fa608866272ec030, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords:
+  m_Shader: {fileID: -6465566751694194690, guid: 47f0fee1491827142819893cc85861b1, type: 3}
+  m_ValidKeywords:
   - _BOOLEAN
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0

@@ -349,4 +349,9 @@ public partial class KitchenWindow : UIWindow
         List2_PreviewRecipt.RefreshAllShownItem();
     }
 
+    public void HidePreviewRecipe()
+    {
+        List2_PreviewRecipt.gameObject.SetActive(false);
+    }
+
 }

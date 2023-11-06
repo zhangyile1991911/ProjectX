@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5435046095153711684}
   - component: {fileID: 5480992636735387512}
   - component: {fileID: 6568203007228362783}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: backOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6210634106064817289}
   - component: {fileID: 6082839023477527317}
   - component: {fileID: 5077788066925215252}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: frontOver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 7232291212481306373}
   - component: {fileID: 7232291212481306375}
   - component: {fileID: 7232291212481306374}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 21
   m_Sprite: {fileID: 21300000, guid: 9173b6a776cac3f43b37c4e99722c1d4, type: 3}
   m_Color: {r: 0.990566, g: 0.53707296, b: 0, a: 1}
   m_FlipX: 0
@@ -384,7 +384,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 22
   m_Sprite: {fileID: 21300000, guid: dcfa1637198d46c4d9c7751619af619a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 7232291213014119824}
   - component: {fileID: 7232291213014119826}
   - component: {fileID: 7232291213014119825}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +544,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 22
   m_Sprite: {fileID: 21300000, guid: dcfa1637198d46c4d9c7751619af619a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 7232291213317639299}
   - component: {fileID: 7232291213317639301}
   - component: {fileID: 7232291213317639300}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -617,7 +617,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 23
   m_TargetDisplay: 0
 --- !u!114 &7232291213317639300
 MonoBehaviour:
@@ -693,7 +693,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Module: {fileID: 0}
-  FoodData: {fileID: 11400000, guid: de687806a3c3fb24e97610f22888d47f, type: 2}
   frontProgressImage: {fileID: 7232291213014119825}
   frontOverProgressImage: {fileID: 5077788066925215252}
   backProgressImage: {fileID: 7232291212481306374}
@@ -801,7 +800,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 22
   m_Sprite: {fileID: 21300000, guid: dcfa1637198d46c4d9c7751619af619a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
