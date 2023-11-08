@@ -138,7 +138,11 @@ public partial class KitchenWindow : UIWindow
             setFoodView(cfg.food.materialType.Other);
         }).AddTo(handles);
         
-      
+        XBtn_order.OnClick.Subscribe(param =>
+        {
+            UIManager.Instance.OpenUI(UIEnum.HandleOrderWindow, null, null);
+        }).AddTo(handles);
+
     }
 
     public override void OnUpdate()

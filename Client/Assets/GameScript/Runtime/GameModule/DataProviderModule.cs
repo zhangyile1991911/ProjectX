@@ -353,6 +353,26 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         return _database.TbScheduleGroup[groupId];
     }
 
+    public string FlavourStr(int flavourId)
+    {
+        if (_database.TbFlavourStrs.DataMap.ContainsKey(flavourId))
+        {
+            return _database.TbFlavourStrs.DataMap[flavourId].Desc;
+        }
+
+        return flavourId+" error";
+    }
+    
+    public string CookToolStr(int cookId)
+    {
+        if (_database.TbCookToolStrs.DataMap.ContainsKey(cookId))
+        {
+            return _database.TbCookToolStrs.DataMap[cookId].Desc;
+        }
+
+        return cookId+" error";
+    }
+    
     public int FriendValLimit()
     {
         return _database.TbGlobalConfig.DataMap["friend_val_limit"].IntVal;

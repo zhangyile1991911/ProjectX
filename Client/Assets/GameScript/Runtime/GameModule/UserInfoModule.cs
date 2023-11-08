@@ -28,6 +28,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     private Dictionary<int, DialogueTableData> _dialogueTableDatas;
 
     private Dictionary<int, NPCOrderTable> _npcOrderDatas;
+    private List<OrderMealInfo> _npcOrderList;
+    public List<OrderMealInfo>.Enumerator NpcOrderEnumerator => _npcOrderList.GetEnumerator();
 
     private Dictionary<int, OwnMenu> _ownMenuTableDatas;
     
@@ -86,6 +88,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             _sqLite.Insert(_userTableData);
         }
 
+        _npcOrderList = new List<OrderMealInfo>(10);
+        
         var npcQuery = $"select * from NPCTableData;";
         var npcList = _sqLite.Query<NPCTableData>(npcQuery);
         initNPC(npcList);
@@ -160,12 +164,30 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var npcOrderSQL = "select * from NPCOrderTable";
         var npcOrderDatas = _sqLite.Query<NPCOrderTable>(npcOrderSQL);
         _npcOrderDatas = new Dictionary<int, NPCOrderTable>(10);
+        var now = GameDateTime.From(_userTableData.now);
+        //todo 时间戳问题
         if (npcOrderDatas != null)
         {
             foreach (var one in npcOrderDatas)
             {
                 _npcOrderDatas.Add(one.CharacterId,one);
-            }    
+                OrderMealInfo m = new();
+                m.CharacterId = one.CharacterId;
+                m.OrderType = (bubbleType)one.OrderType;
+                m.flavor = new();
+                if (one.Flavor != null)
+                {
+                    var flavorStr = one.Flavor.Split(";");
+                    foreach (var str in flavorStr)
+                    {
+                        var flavorInt = Convert.ToInt32(str);
+                        m.flavor.Add((flavorTag)flavorInt);
+                    }    
+                }
+                m.MenuId = one.MenuId;
+                m.OrderTime = now;
+                _npcOrderList.Add(m);
+            }
         }
     }
 
@@ -628,6 +650,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         {
             return;
         }
+        _npcOrderList.Add(orderMealInfo);
+        // orderMealInfo.Index = _npcOrderList.Count - 1;
         
         var newData = new NPCOrderTable();
         newData.CharacterId = orderMealInfo.CharacterId;
@@ -663,6 +687,20 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var data = _npcOrderDatas[characterId];
         _npcOrderDatas.Remove(characterId);
         _sqLite.Delete(data);
+
+        for (int i = 0;i < _npcOrderList.Count;i++)
+        {
+            if (_npcOrderList[i].CharacterId == characterId)
+            {
+                _npcOrderList.RemoveAt(i);
+                break;
+            }
+        }
+
+        // for (int i = 0;i < _npcOrderList.Count;i++)
+        // {
+        //     _npcOrderList[i].Index = i;
+        // }
     }
 
     public OrderMealInfo GetNPCOrder(int characterId)
@@ -692,7 +730,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         return result;
     }
 
-    public Dictionary<int, NPCOrderTable>.ValueCollection NPCOrderList => _npcOrderDatas.Values;
+    // public Dictionary<int, NPCOrderTable>.ValueCollection NPCOrderList => _npcOrderDatas.Values;
 
     public List<OrderMealInfo> CurMealInfos => mealInfos;
     private List<OrderMealInfo> mealInfos = new List<OrderMealInfo>(10);

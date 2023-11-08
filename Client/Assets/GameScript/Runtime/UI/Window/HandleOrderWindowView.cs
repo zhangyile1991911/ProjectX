@@ -18,8 +18,8 @@ public partial class HandleOrderWindow : UIWindow
 	public Transform Tran_RightArea;
 	public Image Img_mark;
 	public TextMeshProUGUI Txt_OrderDetail;
-	public Button Btn_close;
-	public Button Btn_recipe;
+	public XButton XBtn_close;
+	public XButton XBtn_recipe;
 
 	public override void Init(GameObject go)
 	{
@@ -32,8 +32,8 @@ public partial class HandleOrderWindow : UIWindow
 		Tran_RightArea = go.transform.Find("Tran_RightArea").GetComponent<Transform>();
 		Img_mark = go.transform.Find("Tran_RightArea/Img_mark").GetComponent<Image>();
 		Txt_OrderDetail = go.transform.Find("Tran_RightArea/Txt_OrderDetail").GetComponent<TextMeshProUGUI>();
-		Btn_close = go.transform.Find("Tran_RightArea/Btn_close").GetComponent<Button>();
-		Btn_recipe = go.transform.Find("Tran_RightArea/Btn_recipe").GetComponent<Button>();
+		XBtn_close = go.transform.Find("Tran_RightArea/XBtn_close").GetComponent<XButton>();
+		XBtn_recipe = go.transform.Find("Tran_RightArea/XBtn_recipe").GetComponent<XButton>();
 
 	}
 }

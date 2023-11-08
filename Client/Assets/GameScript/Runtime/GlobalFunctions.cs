@@ -40,6 +40,9 @@ public class OrderMealInfo
     public cfg.common.bubbleType OrderType;
     // public int operation;// 0 添加 1 删除
     public HashSet<flavorTag> flavor;
+
+    public int DialogueId;
+    // public int Index;
     
     public override bool Equals(object obj)
     {
