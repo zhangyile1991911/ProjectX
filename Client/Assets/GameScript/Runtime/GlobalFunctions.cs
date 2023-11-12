@@ -36,11 +36,14 @@ public class OrderMealInfo
     // public RestaurantCharacter Customer;
     public int CharacterId;
     public int MenuId;
+    public GameDateTime OrderTime;
     public cfg.common.bubbleType OrderType;
     // public int operation;// 0 添加 1 删除
     public HashSet<flavorTag> flavor;
 
-
+    public int DialogueId;
+    // public int Index;
+    
     public override bool Equals(object obj)
     {
         if (obj == null) return false;
@@ -114,7 +117,22 @@ public static class GlobalFunctions
 
     public static HashSet<int> SearchRecipe(List<int> foods)
     {
-        return OwnRecipe.StartsWith(foods);
+        HashSet<int> answer = null;
+        for (int i = 0; i < foods.Count; i++)
+        {
+            int start = i;
+            int count = foods.Count - i;
+            var tmp = OwnRecipe.StartsWith(foods.GetRange(start,count));
+            if (answer == null)
+            {
+                answer = tmp;
+            }
+            else
+            {
+                answer.UnionWith(tmp);    
+            }
+        }
+        return answer;
     }
 
     public static void InsertRecipe(int recipeId)
@@ -125,9 +143,6 @@ public static class GlobalFunctions
             OwnRecipe.Insert(tb.RelatedMaterial,recipeId);    
         }
     }
-    
-    
-    
     
 }
 

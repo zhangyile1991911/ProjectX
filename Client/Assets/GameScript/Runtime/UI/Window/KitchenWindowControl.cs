@@ -138,7 +138,11 @@ public partial class KitchenWindow : UIWindow
             setFoodView(cfg.food.materialType.Other);
         }).AddTo(handles);
         
-      
+        XBtn_order.OnClick.Subscribe(param =>
+        {
+            UIManager.Instance.OpenUI(UIEnum.HandleOrderWindow, null, null);
+        }).AddTo(handles);
+
     }
 
     public override void OnUpdate()
@@ -347,6 +351,11 @@ public partial class KitchenWindow : UIWindow
             List2_PreviewRecipt.SetListItemCount(_previewRecipes.Count);    
         }
         List2_PreviewRecipt.RefreshAllShownItem();
+    }
+
+    public void HidePreviewRecipe()
+    {
+        List2_PreviewRecipt.gameObject.SetActive(false);
     }
 
 }

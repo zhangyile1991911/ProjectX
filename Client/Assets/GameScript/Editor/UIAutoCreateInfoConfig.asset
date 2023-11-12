@@ -39,6 +39,8 @@ MonoBehaviour:
     typeName: Toggle
   - prefixName: List2_
     typeName: LoopListView2
+  - prefixName: Go
+    typeName: GameObject
   UIWindowTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIWindowClassTemplate.txt
   UIControlTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIControlClassTemplate.txt
   UIComponentTemplatePath: Assets/GameScript/Editor/UICreator/UITemplateCode/UIComponentViewTemplate.txt

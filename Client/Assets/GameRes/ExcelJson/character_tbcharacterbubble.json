@@ -449,7 +449,7 @@
   },
   {
     "id": 100022001,
-    "title": "黄油拌饭",
+    "title": "意式茄汁焗饭",
     "comment": "",
     "npc_id": 10002,
     "repeated": true,
@@ -464,7 +464,7 @@
       "end_value": 9999
     },
     "bubble_type": 3,
-    "menu_id": 10002,
+    "menu_id": 10004,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": ""
@@ -510,7 +510,7 @@
       "end_value": 99999
     },
     "bubble_type": 5,
-    "menu_id": 10002,
+    "menu_id": 10005,
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/Miao/Miao.yarnproject",
     "dialogue_start_node": ""

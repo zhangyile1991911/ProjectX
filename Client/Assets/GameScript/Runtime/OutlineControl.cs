@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class OutlineControl : MonoBehaviour
 {
+    public int UserDataId;
     private SpriteRenderer sr;
     public bool Outline => isOutline;
 

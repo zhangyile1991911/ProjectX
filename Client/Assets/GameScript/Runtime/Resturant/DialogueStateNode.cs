@@ -127,7 +127,8 @@ public class DialogueStateNode : IStateNode
         {
             MenuId = menuId,
             CharacterId = _restaurantCharacter.CharacterId,
-            OrderType = _curBubbleTB.BubbleType
+            OrderType = _curBubbleTB.BubbleType,
+            OrderTime = Clocker.Instance.NowDateTime
         };
         // EventModule.Instance.OrderMealTopic.OnNext(info);
         info.OrderType = bubbleType.SpecifiedOrder;
@@ -149,6 +150,7 @@ public class DialogueStateNode : IStateNode
             CharacterId = _restaurantCharacter.CharacterId,
             MenuId = menuId,
             OrderType = _curBubbleTB.BubbleType,
+            OrderTime = Clocker.Instance.NowDateTime,
             flavor = new HashSet<flavorTag>(10)
         };
         var flavors = tags.Split(";");
@@ -171,6 +173,8 @@ public class DialogueStateNode : IStateNode
         {
             CharacterId = _restaurantCharacter.CharacterId,
             OrderType = _curBubbleTB.BubbleType,
+            OrderTime = Clocker.Instance.NowDateTime,
+            DialogueId = _curBubbleTB.Id,
             flavor = new HashSet<flavorTag>(10)
         };
         var flavors = desc.Split(";");
@@ -180,6 +184,7 @@ public class DialogueStateNode : IStateNode
             info.flavor.Add((flavorTag)flavorId);
         }
         info.OrderType = bubbleType.Omakase;
+        
         _restaurantCharacter.CurOrderInfo = info;
         _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();//omakase
         // EventModule.Instance.OrderMealTopic.OnNext(info);

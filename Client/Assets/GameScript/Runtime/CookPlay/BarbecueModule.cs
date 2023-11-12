@@ -70,10 +70,11 @@ namespace GameScript.CookPlay
         }
         
 
-        private async void loadRoastFood(List<ItemTableData> foods)
+        private void loadRoastFood(List<ItemTableData> foods)
         {
-            var handler = YooAssets.LoadAssetAsync<GameObject>("Assets/GameRes/Prefabs/AllFood/BarbecueFood/RoastFood.prefab");
-            await handler.ToUniTask(this);
+            // var handler = YooAssets.LoadAssetAsync<GameObject>("Assets/GameRes/Prefabs/AllFood/BarbecueFood/RoastFood.prefab");
+            // await handler.ToUniTask(this);
+            var handler = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/AllFood/BarbecueFood/RoastFood.prefab");
             var roastFoodPrefab = handler.AssetObject as GameObject;
             var mainCamera = Camera.main;
             int total = 0;
@@ -406,8 +407,8 @@ namespace GameScript.CookPlay
             _occupiedGrid = new HashSet<Vector3Int>();
             _roastFoods ??= new List<RoastFood>();
             
-            SetBarbecueInfo(foodAndTools);
             _curRecipeDifficulty = difficulty as BarbecueRecipeDifficulty;
+            SetBarbecueInfo(foodAndTools);
         }
         
         public override void StartCook()

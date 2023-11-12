@@ -46,6 +46,7 @@ public class PrepareStateNode : IStateNode
             _kitchenWindow.XBtn_pick.OnClick.Subscribe(checkPickFood).AddTo(_handle);
             _kitchenWindow.XBtn_cancel.OnClick.Subscribe(cancelPickFood).AddTo(_handle);
             _kitchenWindow.AddFoodCB = addFood;
+            recalucate();
         }, null);
         
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.Kitchen);
@@ -55,6 +56,8 @@ public class PrepareStateNode : IStateNode
         
         _foodLayerMask = 1<<6;
         _curPickInfo = new PickFoodInfo();
+        
+        _restaurant.GetAllFoodObjectId(ref _pickFoodId);
     }
 
     public void OnUpdate()
@@ -73,6 +76,8 @@ public class PrepareStateNode : IStateNode
         
         _curPickInfo.PickFood = null;
         _curPickInfo.PickIndex = -1;
+        
+        _pickFoodId.Clear();
     }
 
     private void SwitchToProduce(int recipeId)
@@ -206,6 +211,12 @@ public class PrepareStateNode : IStateNode
 
     private void recalucate()
     {
+        if (_pickFoodId.Count <= 0)
+        {
+            _kitchenWindow.HidePreviewRecipe();
+            return;   
+        }
+        
         var previewRecipe = GlobalFunctions.SearchRecipe(_pickFoodId);
         List<KitchenWindow.PreviewRecipe> recipes = new List<KitchenWindow.PreviewRecipe>();
         foreach (var recipeId in previewRecipe)

@@ -30,6 +30,8 @@ public sealed partial class Tables
     public system.TbWeatherGroup TbWeatherGroup {get; }
     public system.TbDayScheduler TbDayScheduler {get; }
     public common.TbGlobalConfig TbGlobalConfig {get; }
+    public common.TbFlavourStrs TbFlavourStrs {get; }
+    public common.TbCookToolStrs TbCookToolStrs {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -66,6 +68,10 @@ public sealed partial class Tables
         tables.Add("system.TbDayScheduler", TbDayScheduler);
         TbGlobalConfig = new common.TbGlobalConfig(loader("common_tbglobalconfig")); 
         tables.Add("common.TbGlobalConfig", TbGlobalConfig);
+        TbFlavourStrs = new common.TbFlavourStrs(loader("common_tbflavourstrs")); 
+        tables.Add("common.TbFlavourStrs", TbFlavourStrs);
+        TbCookToolStrs = new common.TbCookToolStrs(loader("common_tbcooktoolstrs")); 
+        tables.Add("common.TbCookToolStrs", TbCookToolStrs);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
@@ -84,6 +90,8 @@ public sealed partial class Tables
         TbWeatherGroup.Resolve(tables); 
         TbDayScheduler.Resolve(tables); 
         TbGlobalConfig.Resolve(tables); 
+        TbFlavourStrs.Resolve(tables); 
+        TbCookToolStrs.Resolve(tables); 
         PostResolve();
     }
 
@@ -105,6 +113,8 @@ public sealed partial class Tables
         TbWeatherGroup.TranslateText(translator); 
         TbDayScheduler.TranslateText(translator); 
         TbGlobalConfig.TranslateText(translator); 
+        TbFlavourStrs.TranslateText(translator); 
+        TbCookToolStrs.TranslateText(translator); 
     }
     
     partial void PostInit();

@@ -2400,10 +2400,10 @@
     "m_Guid": {
         "m_GuidSerialized": "ca17ee51-2f60-402a-928d-ac0ce4b66ade"
     },
-    "m_Name": "ShowOutline",
+    "m_Name": "Boolean",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "ShowOutline",
-    "m_DefaultReferenceName": "_SHOWOUTLINE",
+    "m_RefNameGeneratedByDisplayName": "Boolean",
+    "m_DefaultReferenceName": "_BOOLEAN",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -3604,7 +3604,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "ShowOutline",
+    "m_Name": "Boolean",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -3669,7 +3669,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "ShowOutline",
+    "m_Name": "Boolean",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {

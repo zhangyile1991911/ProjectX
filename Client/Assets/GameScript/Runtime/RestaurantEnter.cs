@@ -649,7 +649,9 @@ public class RestaurantEnter : MonoBehaviour
         var go = res.AssetObject as GameObject;
         var obj = GameObject.Instantiate(go);
         obj.transform.position = new Vector3(Random.Range(7f,17f),Random.Range(1007f,997f),-6f);
-        _foodGameObjects.Add(obj.GetComponent<OutlineControl>());
+        var oc = obj.GetComponent<OutlineControl>();
+        oc.UserDataId = foodId;
+        _foodGameObjects.Add(oc);
     }
 
     public void FoodDoDisappear(float duration)
@@ -671,6 +673,24 @@ public class RestaurantEnter : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void GetAllFoodObjectId(ref List<int> foodIds)
+    {
+        foodIds.Clear();
+        foreach (var one in _foodGameObjects)
+        {
+            foodIds.Add(one.UserDataId);
+        }
+    }
+    
+    public void ClearAllFoodObject()
+    {
+        foreach (var one in _foodGameObjects)
+        {
+            Destroy(one);
+        }
+        _foodGameObjects.Clear();
     }
     
     public void ResetFoodOutline()
