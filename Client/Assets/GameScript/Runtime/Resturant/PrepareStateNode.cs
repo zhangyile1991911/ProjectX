@@ -71,6 +71,7 @@ public class PrepareStateNode : IStateNode
     public void OnExit()
     {
         UIManager.Instance.CloseUI(UIEnum.KitchenWindow);
+        UIManager.Instance.CloseUI(UIEnum.HandleOrderWindow);
         _handle?.Clear();
         _restaurant.HideKitchen();
         
