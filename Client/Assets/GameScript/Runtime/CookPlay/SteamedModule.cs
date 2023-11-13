@@ -1,26 +1,22 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Security;
 using Cysharp.Text;
 using UniRx;
 using UniRx.Triggers;
-using UnityEditor.VersionControl;
 using UnityEngine;
+using YooAsset;
 using Random = UnityEngine.Random;
 
-public class SteamedModule : MonoBehaviour
+public class SteamedModule : CookModule
 {
     public Transform FoodRoot;
     public Transform SteamShelf;
-    public Transform GameOverTxt;
+    // public Transform GameOverTxt;
     private List<SteamedFoodController> _foods;
-    private CompositeDisposable _handle;
     private List<List<SteamedFoodController>> _quadtree;
-    private RecipeDifficulty _curRecipeDifficulty;
+    private SteamedRecipeDifficulty _curRecipeDifficulty;
     private bool _start;
-
+    private Animation _closeLidAnim;
     private Subject<bool> _completeTopic;
 
     private SteamedFoodController _curDragFood;
@@ -28,47 +24,95 @@ public class SteamedModule : MonoBehaviour
 
     private CircleCollider2D _boundary;
 
-    // Start is called before the first frame update
-    void Start()
+    public override void Init(PickFoodAndTools foodAndTools, RecipeDifficulty difficulty)
     {
-    }
-
-    public void Init()
-    {
+        base.Init(foodAndTools,difficulty);
+        
         _quadtree ??= new List<List<SteamedFoodController>>();
         _quadtree.Add(new List<SteamedFoodController>());
         _quadtree.Add(new List<SteamedFoodController>());
         _quadtree.Add(new List<SteamedFoodController>());
         _quadtree.Add(new List<SteamedFoodController>());
         _start = false;
-        _handle ??= new CompositeDisposable();
 
         _boundary = SteamShelf.GetComponent<CircleCollider2D>();
+        _curRecipeDifficulty = difficulty as SteamedRecipeDifficulty;
+        _closeLidAnim = GetComponent<Animation>();
+        SetRecipe(_curRecipeDifficulty,foodAndTools.MenuId);
     }
 
-    public void SetRecipe(SteamedRecipeDifficulty recipeDifficulty)
+    public override void StartCook()
     {
-        _curRecipeDifficulty = recipeDifficulty;
-        foreach (var one in recipeDifficulty.Sets)
+        _curDragFood = null;
+        _start = true;
+
+        // GameOverTxt.gameObject.SetActive(false);
+        foreach (var one in _foods)
         {
-            for (int i = 0; i < one.Key; i++)
-            {
-                var go = Instantiate(one.Value, FoodRoot);
-                var controller = go.GetComponent<SteamedFoodController>();
-                AddSteamedFood(controller);
-            }
+            one.Begin(_handler);
         }
+
+        this.UpdateAsObservable()
+            .Where(_ => _start)
+            .Subscribe(CheckAllFoodOverlap)
+            .AddTo(_handler);
+
+        var timer = Observable
+            .Timer(TimeSpan.FromSeconds(_curRecipeDifficulty.duration))
+            .Select(_ => false);
+        this.UpdateAsObservable().Subscribe(CheckGameOver).AddTo(_handler);
+        _completeTopic = new Subject<bool>();
+        Observable.Amb(timer, _completeTopic).Subscribe(GameOver).AddTo(_handler);
+    }
+
+    public override void UnloadRes()
+    {
+        foreach (var one in _foods)
+        { 
+            Destroy(one.gameObject);
+        }
+
+        foreach (var tree in _quadtree)
+        {
+            tree.Clear();
+        }
+
+    }
+
+    public void SetRecipe(SteamedRecipeDifficulty recipeDifficulty,int menuId)
+    {
+        var menuTb = DataProviderModule.Instance.GetMenuInfo(menuId);
+        var operation = YooAssets.LoadAssetSync<GameObject>(menuTb.SceneResPath);
+        var prefabRes = operation.AssetObject as GameObject;
+        for (int i = 0; i < 10; i++)
+        {
+            var go = Instantiate(prefabRes, FoodRoot);
+            var controller = go.GetComponent<SteamedFoodController>();
+            controller.Init();
+            AddSteamedFood(controller);
+        }
+        // foreach (var one in recipeDifficulty.Sets)
+        // {
+        //     for (int i = 0; i < one.Key; i++)
+        //     {
+        //         var go = Instantiate(one.Value, FoodRoot);
+        //         var controller = go.GetComponent<SteamedFoodController>();
+        //         controller.Init(1001);
+        //         AddSteamedFood(controller);
+        //     }
+        // }
+
     }
 
     private void AddSteamedFood(SteamedFoodController food)
     {
         // var position = food.transform.position;
         // position = Random.insideUnitCircle*3f;
-        food.Init();
+        
 
-        food.OnClick.Where(_ => _start && null == _curDragFood).Subscribe(click).AddTo(_handle);
-        food.OnDrag.Where(_ => _start && null != _curDragFood).Subscribe(move).AddTo(_handle);
-        food.OnPut.Where(_ => _start && null != _curDragFood).Subscribe(put).AddTo(_handle);
+        food.OnClick.Where(_ => _start && null == _curDragFood).Subscribe(click).AddTo(_handler);
+        food.OnDrag.Where(_ => _start && null != _curDragFood).Subscribe(move).AddTo(_handler);
+        food.OnPut.Where(_ => _start && null != _curDragFood).Subscribe(put).AddTo(_handler);
 
         var position = Random.insideUnitCircle * 3f;
         food.transform.position = position;
@@ -221,39 +265,22 @@ public class SteamedModule : MonoBehaviour
     }
 
     #endregion
-
-    public void StartGame()
-    {
-        _curDragFood = null;
-        _start = true;
-
-        GameOverTxt.gameObject.SetActive(false);
-        foreach (var one in _foods)
-        {
-            one.Begin(_handle);
-        }
-
-        this.UpdateAsObservable()
-            .Where(_ => _start)
-            .Subscribe(CheckAllFoodOverlap)
-            .AddTo(_handle);
-
-        var timer = Observable
-            .Timer(TimeSpan.FromSeconds(_curRecipeDifficulty.duration))
-            .Select(_ => false);
-        this.UpdateAsObservable().Subscribe(CheckGameOver).AddTo(_handle);
-        _completeTopic = new Subject<bool>();
-        Observable.Amb(timer, _completeTopic).Subscribe(GameOver).AddTo(_handle);
-    }
+    
 
     public void GameOver(bool success)
     {
         Debug.Log($"!!!!!Game Over!!!!!");
-        _handle?.Clear();
         _curDragFood = null;
-        GameOverTxt.gameObject.SetActive(true);
+        _closeLidAnim.Stop();
+        int clipCount = _closeLidAnim.GetClipCount();
+        Debug.Log("Clip count: " + clipCount);
+        // if (_closeLidAnim.GetClip("SteamedCloseLid") != null)
+        // {
+        //     _closeLidAnim.Play("SteamedCloseLid");    
+        // }
+        _closeLidAnim.Play();
     }
-
+    
     private void CheckAllFoodOverlap(Unit param)
     {
         foreach (var one in _foods)
@@ -288,45 +315,6 @@ public class SteamedModule : MonoBehaviour
                 allDepart = false;
                 break;
             }
-            // Debug.Log($"maxDistance = {maxDistance}");
-            // switch (one.ColType)
-            // {
-            //     case SteamedFoodController.ColliderType.Circle:
-            //          distance = Vector2.Distance(one.transform.position, SteamShelf.transform.position);
-            //         if (distance > maxDistance - one.CircleCollider2D.radius * 2f)
-            //         {
-            //             Debug.Log($"{one.name}不在范围内");
-            //             allDepart = false;
-            //         }
-            //         break;
-            //     case SteamedFoodController.ColliderType.Polygon:
-            //         var worldPoint = one.transform.position;
-            //         foreach (var point in one.PolygonCollider2D.points)
-            //         {
-            //             worldPoint.x += point.x;
-            //             worldPoint.y += point.y;
-            //             distance = Vector2.Distance(worldPoint, SteamShelf.transform.position);
-            //             if (distance > maxDistance)
-            //             {
-            //                 Debug.Log($"{one.name}不在范围内");
-            //                 allDepart = false;
-            //                 break;
-            //             }
-            //         }
-            //         break;
-            //     case SteamedFoodController.ColliderType.Square:
-            //         // Debug.Log($"name = {one.name} min = {one.Collider2D.bounds.min} max = {one.Collider2D.bounds.max}");
-            //         distance = Vector2.Distance(one.Collider2D.bounds.min, SteamShelf.transform.position);
-            //         bool leftBottom = distance < maxDistance;
-            //         distance = Vector2.Distance(one.Collider2D.bounds.max, SteamShelf.transform.position);
-            //         bool rightTop = distance < maxDistance;
-            //         if (!leftBottom || !rightTop)
-            //         {
-            //             Debug.Log($"{one.name}不在范围内");
-            //             allDepart = false;
-            //         }
-            //         break;
-            // }
         }
 
         if (allDepart)
@@ -428,15 +416,6 @@ public class SteamedModule : MonoBehaviour
         }
 
         InsertQuardTree(p);
-        // var inBoundary = _boundary.bounds.Intersects(p.Bounds);
-        // if (inBoundary)
-        // {
-        //     InsertQuardTree(p);
-        // }
-        // else
-        // {
-        //     p.SetOverlap(true);
-        // }
         _curDragFood = null;
     }
 }

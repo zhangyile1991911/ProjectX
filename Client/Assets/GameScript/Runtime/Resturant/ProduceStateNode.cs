@@ -128,6 +128,11 @@ public class ProduceStateNode : IStateNode
                 barbecueWnd.ClickFinish = ClickFinishCook;
                 _curCookWindowUI = barbecueWnd;
                 break;
+            case cookTools.Steam:
+                var steamWnd = wnd as SteamFoodWindow;
+                steamWnd.ClickStart = ClickStartCook;
+                steamWnd.ClickFinish = ClickFinishCook;
+                break;
         }
         
         _curCookWindowUI.SetDifficulty(_currentRecipeDifficulty);

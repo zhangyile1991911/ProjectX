@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using YooAsset;
 
 public class SteamedFoodController : MonoBehaviour
 {

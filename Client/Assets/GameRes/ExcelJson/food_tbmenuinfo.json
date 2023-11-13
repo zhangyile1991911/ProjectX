@@ -125,7 +125,7 @@
     "difficulty": 3,
     "cost_time": 10,
     "ui_name": "SteamWindow",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SteamedFood"
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SteamedFood/30001.prefab"
   },
   {
     "id": 30002,
@@ -142,7 +142,7 @@
     "difficulty": 3,
     "cost_time": 10,
     "ui_name": "SteamWindow",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SteamedFood"
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SteamedFood/30002.prefab"
   },
   {
     "id": 30003,
@@ -161,7 +161,7 @@
     "difficulty": 3,
     "cost_time": 10,
     "ui_name": "SteamWindow",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SteamedFood"
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SteamedFood/30003.prefab"
   },
   {
     "id": 10007,

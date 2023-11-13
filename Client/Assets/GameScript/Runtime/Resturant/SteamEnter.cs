@@ -7,32 +7,32 @@ using UnityEngine.Serialization;
 
 public class SteamEnter : MonoBehaviour
 {
-    public Button startBtn;
     private bool initYooAsset = false;
 
-    public SteamedModule module;
+    public CookModule module;
 
-    [FormerlySerializedAs("recipe")] public SteamedRecipeDifficulty recipeDifficulty;
+    public SteamedRecipeDifficulty recipeDifficulty;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GlobalFunctions.InitYooAssets(waitYooAssets));
-        startBtn.OnClickAsObservable()
-            .Where(_=>initYooAsset)
-            .Subscribe(_ =>
+        PickFoodAndTools foodAndTools = new PickFoodAndTools();
+        foodAndTools.MenuId = 30001;
+        UniModule.GetModule<UIManager>().OpenUI(UIEnum.SteamFoodWindow, (ui )=>
+        {
+            var sfw = ui as SteamFoodWindow;
+            // sfw.XBtn_Start.OnClick.Subscribe((param) =>
+            // {
+            //     module.StartCook();
+            // });
+            sfw.ClickStart = () =>
             {
-                module.StartGame();
-                startBtn.gameObject.SetActive(false);
-            });
-    }
-
-    private void waitYooAssets(bool success)
-    {
-        initYooAsset = success;
-        module.Init();
-        module.SetRecipe(recipeDifficulty);
+                module.StartCook();
+            };
+            module.Init(foodAndTools,recipeDifficulty);    
+        }, null);
         
     }
+    
     // Update is called once per frame
     void Update()
     {

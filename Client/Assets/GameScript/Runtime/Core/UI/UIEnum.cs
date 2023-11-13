@@ -16,5 +16,6 @@ public enum UIEnum
     BarbecueWindow,
     CalenderWindow,
     DayResultWindow,
-    HandleOrderWindow
+    HandleOrderWindow,
+    SteamFoodWindow
 }
