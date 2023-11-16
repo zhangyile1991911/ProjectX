@@ -34,14 +34,20 @@ public partial class PhoneWindow : UIWindow
         _uiManager = UniModule.GetModule<UIManager>();
         
         _appList = new List<BaseAppWidget>(10);
-        //根据功能开放
+        //todo 根据功能开放
         var newsAPP = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
-        newsAPP.SetAPPInfo("新闻",OnClickNewsApp);
-        _appIconList.Add(newsAPP);    
+        newsAPP.SetAPPInfo(10001);
+        newsAPP.XBtn_App.OnClick.Subscribe(OnClickNewsApp).AddTo(handles);
+        _appIconList.Add(newsAPP); 
         
         var airplane = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
-        airplane.SetAPPInfo("小飞机",OnClickAirPlane);
-        _appIconList.Add(airplane);    
+        airplane.SetAPPInfo(10002);
+        airplane.XBtn_App.OnClick.Subscribe(OnClickAirPlane).AddTo(handles);
+        _appIconList.Add(airplane);
+        
+        var weather = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
+        weather.SetAPPInfo(10003);
+        _appIconList.Add(weather);
         
     }
     
@@ -107,7 +113,7 @@ public partial class PhoneWindow : UIWindow
         CurRunApp?.OnUpdate();
     }
     
-    private async void OnClickNewsApp()
+    private async void OnClickNewsApp(PointerEventData param)
     {
         Debug.Log("点击了新闻应用");
         var newsApp = _appList.Find(one=>one.WidgetType==BaseAppWidget.AppType.News);
@@ -128,7 +134,7 @@ public partial class PhoneWindow : UIWindow
         CurRunApp = newsApp;
     }
 
-    private async void OnClickAirPlane()
+    private async void OnClickAirPlane(PointerEventData param)
     {
         Debug.Log("点击了小飞机");
         var airPlaneApp = _appList.Find(one=>one.WidgetType==BaseAppWidget.AppType.AirPlane);

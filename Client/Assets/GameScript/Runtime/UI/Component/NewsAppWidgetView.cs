@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using SuperScrollView;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using SuperScrollView;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -12,15 +12,17 @@ using TMPro;
 public partial class NewsAppWidget : BaseAppWidget
 {
 	public Image Img_BigNews;
-	public LoopGridView Grid_News;
+	public LoopListView2 Grid_News;
+	public Transform Ins_Detail;
 
 
 	public override void Init(GameObject go)
 	{
 	    uiGo = go;
 	    
-		Img_BigNews = go.transform.Find("Img_BigNews").GetComponent<Image>();
-		Grid_News = go.transform.Find("Grid_News").GetComponent<LoopGridView>();
+		Img_BigNews = go.transform.Find("frame/mask/Img_BigNews").GetComponent<Image>();
+		Grid_News = go.transform.Find("Grid_News").GetComponent<LoopListView2>();
+		Ins_Detail = go.transform.Find("Ins_Detail").GetComponent<Transform>();
 
 	}
 }

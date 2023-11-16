@@ -5,6 +5,7 @@ using PlasticGui.WorkspaceWindow;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using YooAsset;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -18,10 +19,7 @@ public partial class PhoneAppWidget : UIComponent
     
     public override void OnCreate()
     {
-        Btn_App.OnClickAsObservable().Subscribe(_ =>
-        {
-            onClick?.Invoke();
-        }).AddTo(uiTran);
+       
     }
     
     public override void OnDestroy()
@@ -43,11 +41,21 @@ public partial class PhoneAppWidget : UIComponent
     {
         
     }
+    
+    // public void SetAPPInfo(string appName,Action click)
+    // {
+    //     Txt_App.text = appName;
+    //     onClick = click;
+    // }
 
-    private Action onClick;
-    public void SetAPPInfo(string appName,Action click)
+    public void SetAPPInfo(int appId)
     {
-        Txt_App.text = appName;
-        onClick = click;
+        var tb = DataProviderModule.Instance.GetAppBaseInfo(appId);
+        Txt_App.text = tb.Name;
+        var handle = YooAssets.LoadAssetAsync<Sprite>(tb.AppIconRes);
+        handle.Completed += (result) =>
+        {
+            Img_App.sprite = result.AssetObject as Sprite;
+        };
     }
 }

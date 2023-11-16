@@ -32,6 +32,8 @@ public sealed partial class Tables
     public common.TbGlobalConfig TbGlobalConfig {get; }
     public common.TbFlavourStrs TbFlavourStrs {get; }
     public common.TbCookToolStrs TbCookToolStrs {get; }
+    public phone.TbAppBaseInfo TbAppBaseInfo {get; }
+    public phone.app_news app_news {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -72,6 +74,10 @@ public sealed partial class Tables
         tables.Add("common.TbFlavourStrs", TbFlavourStrs);
         TbCookToolStrs = new common.TbCookToolStrs(loader("common_tbcooktoolstrs")); 
         tables.Add("common.TbCookToolStrs", TbCookToolStrs);
+        TbAppBaseInfo = new phone.TbAppBaseInfo(loader("phone_tbappbaseinfo")); 
+        tables.Add("phone.TbAppBaseInfo", TbAppBaseInfo);
+        app_news = new phone.app_news(loader("phone_app_news")); 
+        tables.Add("phone.app_news", app_news);
         PostInit();
 
         TbBaseInfo.Resolve(tables); 
@@ -92,6 +98,8 @@ public sealed partial class Tables
         TbGlobalConfig.Resolve(tables); 
         TbFlavourStrs.Resolve(tables); 
         TbCookToolStrs.Resolve(tables); 
+        TbAppBaseInfo.Resolve(tables); 
+        app_news.Resolve(tables); 
         PostResolve();
     }
 
@@ -115,6 +123,8 @@ public sealed partial class Tables
         TbGlobalConfig.TranslateText(translator); 
         TbFlavourStrs.TranslateText(translator); 
         TbCookToolStrs.TranslateText(translator); 
+        TbAppBaseInfo.TranslateText(translator); 
+        app_news.TranslateText(translator); 
     }
     
     partial void PostInit();

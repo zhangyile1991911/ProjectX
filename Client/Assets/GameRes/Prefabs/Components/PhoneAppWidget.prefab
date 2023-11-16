@@ -184,9 +184,9 @@ GameObject:
   - component: {fileID: 6967428699820808167}
   - component: {fileID: 9004808829315201078}
   - component: {fileID: 8683374905288029932}
-  - component: {fileID: 5191113184572912430}
+  - component: {fileID: 2042972862520481681}
   m_Layer: 5
-  m_Name: Btn_App
+  m_Name: XBtn_Img_App
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5191113184572912430
+--- !u!114 &2042972862520481681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5074127642180269155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: d472eb88eb3c66d409e7eb8386f813e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:

@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using YooAsset;
 
 /// <summary>
 /// Auto Generate Class!!!
 /// </summary>
-// public class NormalNewsData
-// {
-//     public string Title;
-//     public string NewsImage;
-//     public string Follow;
-//     public string Comment;
-// };
-public partial class NewsCellWidget : UIComponent
+public partial class NewsMojiCellWidget : UIComponent
 {
-    public NewsCellWidget(GameObject go,UIWindow parent):base(go,parent)
+    public NewsMojiCellWidget(GameObject go,UIWindow parent):base(go,parent)
     {
 		
     }
@@ -46,17 +37,10 @@ public partial class NewsCellWidget : UIComponent
     {
         
     }
-
+    
     public void SetNewsDetailInfo(cfg.phone.AppNewsInfo newsData)
     {
         Txt_Title.text = newsData.Title;
         Txt_Follow.text = newsData.From;
-        
-        // var handle = YooAssets.LoadAssetAsync<Sprite>(newsData.Preview);
-        // handle.Completed += (OH) =>
-        // {
-        //     Img_News.sprite = OH.AssetObject as Sprite;
-        // };
     }
-    
 }

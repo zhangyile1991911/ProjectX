@@ -7,6 +7,7 @@ using cfg.character;
 using cfg.common;
 using cfg.food;
 using cfg.item;
+using cfg.phone;
 using cfg.system;
 using Codice.Client.BaseCommands;
 using Cysharp.Text;
@@ -343,6 +344,22 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         }
 
         return null;
+    }
+
+    public AppBaseInfo GetAppBaseInfo(int appId)
+    {
+        return _database.TbAppBaseInfo.DataMap.TryGetValue(appId, out var result) ? result : null;
+    }
+
+    public AppNewsInfo GetNewsInfo(int newsId)
+    {
+        return _database.app_news.DataMap.TryGetValue(newsId, out var result) ? result : null;
+    }
+
+    public List<AppNewsInfo> FilterNews()
+    {
+        //todo 增加过滤
+        return _database.app_news.DataList;
     }
 
     public ScheduleGroup GetCharacterPhaseSchedule(int groupId)
