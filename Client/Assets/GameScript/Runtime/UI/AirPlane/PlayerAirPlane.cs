@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAirPlane : MonoBehaviour
 {
@@ -14,10 +16,11 @@ public class PlayerAirPlane : MonoBehaviour
 
     private Vector2 newPos;
     private Vector2 destPos;
-    
-    private float shot_invertal;
 
+    private Animator _animator;
+    private float shot_invertal;
     public Action GameOver;
+
     public void Reset()
     {
          newPos = Vector3.zero;
@@ -29,10 +32,8 @@ public class PlayerAirPlane : MonoBehaviour
     public void Move()
     {
         var dist = Vector2.Distance(controller.anchoredPosition, destPos);
-        // Debug.Log($"dist = {dist}");
         if (dist <= 0.5f)
         {
-            // Debug.Log($"dist returndist returndist returndist returndist returndist return");
             return;
         }
         newPos.x += direction.x * speed;
@@ -59,24 +60,50 @@ public class PlayerAirPlane : MonoBehaviour
     }
     
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
         controller = GetComponent<RectTransform>();
+        _animator = GetComponent<Animator>();
         Reset();
+    }
+
+    public void Show()
+    {
+        _animator.enabled = true;
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        _animator.enabled = false;
+        gameObject.SetActive(false);
     }
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(tag))
-        {
-            return;
-        }
-        // Debug.Log($"PlayerAirPlane::OnTriggerEnter2D other.name = {other.name}");
-        hp -= 1;
-        if (hp <= 0)
-        {
-            GameOver.Invoke();
-        }
+        // if (other.CompareTag(tag))
+        // {
+        //     return;
+        // }
+        // // Debug.Log($"PlayerAirPlane::OnTriggerEnter2D other.name = {other.name}");
+        // hp -= 1;
+        // if (hp <= 0)
+        // {
+        //     GameOver.Invoke();
+        // }
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        // if (other.CompareTag(tag))
+        // {
+        //     return;
+        // }
+        // // Debug.Log($"PlayerAirPlane::OnTriggerEnter2D other.name = {other.name}");
+        // hp -= 1;
+        // if (hp <= 0)
+        // {
+        //     GameOver.Invoke();
+        // }
+    }
 }

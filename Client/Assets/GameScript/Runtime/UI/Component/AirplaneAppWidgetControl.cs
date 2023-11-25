@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Cysharp.Text;
+using DG.Tweening;
 using UniRx;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Pool;
@@ -15,17 +18,6 @@ using Random = UnityEngine.Random;
 /// </summary>
 public partial class AirplaneAppWidget : BaseAppWidget
 {
-    // class AirPlaneConfig
-    // {
-    //     public float create_enemy_interval = 2.0f;
-    //     public float enemy_speed = 0.7f;
-    //     public float enemy_shot_interval = 2.5f;
-    //     public int enemy_score = 1;
-    //     public int enemy_hp = 1;
-    // }
-    
-    private RectTransform bgA;
-    private RectTransform bgB;
     private float maxY;
     private float maxX;
     private PlayerAirPlane _airPlane;
@@ -45,7 +37,28 @@ public partial class AirplaneAppWidget : BaseAppWidget
     private bool isGameOver;
     private CompositeDisposable handler;
     private int score;
-    
+
+    private RectTransform bg1;
+    private RectTransform bg2;
+
+    private BeeGameState _state;
+    public BeeGameState CurState
+    {
+        get => _state;
+        set
+        {
+            if (_state != null)
+            {
+                _state.Exit();
+            }
+            _state = value;
+            _state?.Enter();       
+        }
+    }
+
+    public PlayerAirPlane BeeGirl => _airPlane;
+
+    public Animation StartPageAnimation;
     public AirplaneAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
         WidgetType = AppType.AirPlane;
@@ -53,15 +66,13 @@ public partial class AirplaneAppWidget : BaseAppWidget
     
     public override void OnCreate()
     {
-        bgA = Img_bg1.GetComponent<RectTransform>();
-        bgB = Img_bg2.GetComponent<RectTransform>();
-        
-        Debug.Log($"bgA.anchorMax = {bgA.anchorMax}");
-        Debug.Log($"bgB.anchorMax = {bgB.anchorMax}");
-
-        var go = uiTran.Find("PlayerAirPlane");
+        var go = uiTran.Find("Ins_BeeGirl");
         _airPlane = go.GetComponent<PlayerAirPlane>();
+        _airPlane.Init();
         _airPlane.GameOver = GameOver;
+
+        bg1 = Tran_Bg1.GetComponent<RectTransform>();
+        bg2 = Tran_Bg2.GetComponent<RectTransform>();
         
         activeBullects = new List<AirPlaneBullet>(20);
         activeEnemies = new(20);
@@ -98,6 +109,10 @@ public partial class AirplaneAppWidget : BaseAppWidget
         
         var high = YooAssets.LoadAssetSync<AirplaneDifficulty>("Assets/GameRes/SOConfigs/Airplane/high.asset");
         _difficulty.Add(high.AssetObject as AirplaneDifficulty);
+
+        StartPageAnimation = Tran_StartPage.GetComponent<Animation>();
+        
+        CurState = new WaitStartState(this);
     }
 
     private AirPlaneBullet onCreateBullect()
@@ -177,16 +192,32 @@ public partial class AirplaneAppWidget : BaseAppWidget
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
-        var btnRect = Btn_touch.GetComponent<RectTransform>();
+        var btnRect = XBtn_touch.GetComponent<RectTransform>();
         // Debug.Log($"sizeDelta = {btnRect.rect}");
         // Debug.Log($"sizeDelta = {btnRect.rect.height}");
         maxY = btnRect.rect.height;
         maxX = btnRect.rect.width;
         
         handler = new CompositeDisposable(5);
-        Btn_touch.OnClick.Subscribe(handletouch).AddTo(handler);
-        Btn_Restart.OnClick.Subscribe(RestartGame).AddTo(handler);
         
+        XBtn_Start.OnClick.Subscribe(onClickStart).AddTo(handler);
+        
+        XBtn_touch.OnClick.Subscribe(handletouch).AddTo(handler);
+        // Btn_Restart.OnClick.Subscribe(RestartGame).AddTo(handler);
+
+        // Sequence bg1move = DOTween.Sequence();
+        // bg1move.Append(bg1.DOAnchorPosY(-1288.8f, 10f).SetEase(Ease.Linear));
+        // bg1move.Append(bg1.DOAnchorPosY(1288.8f, 0.01f));
+        // bg1move.Append(bg1.DOAnchorPosY(0f, 10f).SetEase(Ease.Linear));
+        // bg1move.SetLoops(-1);
+        //
+        // Sequence bg2move = DOTween.Sequence();
+        // bg2move.Append(bg2.DOAnchorPosY(0f, 10f).SetEase(Ease.Linear));
+        // bg2move.Append(bg2.DOAnchorPosY(-1288.8f, 10f).SetEase(Ease.Linear));
+        // bg2move.Append(bg2.DOAnchorPosY(1288.8f, 0.01f));
+        // bg2move.SetLoops(-1);
+        
+        // XBtn_Start.OnClick.Subscribe(onClickStart).AddTo(handler);
         if (isGameOver)
         {
             ShowResult();
@@ -204,39 +235,62 @@ public partial class AirplaneAppWidget : BaseAppWidget
         handler.Clear();
     }
 
-    private float scrollSpeed = 0.2f;
+    private void onClickStart(PointerEventData param)
+    {
+        CurState = new StageState(this);
+    }
 
     private bool isVisible(Vector2 pos)
     {
         return pos.y < maxY/1.5f && pos.y > -maxY/1.5f;
     }
+
+    private readonly float bgMoveSpeed = 1228.8f/15f/60f;
+    public void ScrollBG()
+    {
+        var p1 = bg1.anchoredPosition; 
+        var tmp = p1.y - bgMoveSpeed;
+        p1.y = tmp <= -1228.8f ? 1228.8f : tmp;
+        
+        bg1.anchoredPosition = p1;
+        
+        var p2 = bg2.anchoredPosition;
+        tmp = p2.y - bgMoveSpeed;
+        p2.y = tmp <= -1228.8f ? 1228.8f : tmp;
+        
+        bg2.anchoredPosition = p2;
+    }
     
     public override void OnUpdate()
     {
-        if (isGameOver) return;
-        movebg();
-        updateBullect();
-        updateAirPlane();
-        updateEnemy();
-        //增加时间
-        Clocker.Instance.AddSecond(1);
-        if (score < 15)
-        {
-            _curDifficultyIndex = 0;
-        }
-        else if(score < 10+2*10)
-        {
-            _curDifficultyIndex = 1;
-        }
-        else
-        {
-            _curDifficultyIndex = 2;
-        }
+        CurState.EveryFrame();
+        
+        // if (isGameOver) return;
+        //
+        // movebg();
+        //
+        // // updateBullect();
+        // // updateAirPlane();
+        // // updateEnemy();
+        // //增加时间
+        // Clocker.Instance.AddSecond(1);
+        // if (score < 15)
+        // {
+        //     _curDifficultyIndex = 0;
+        // }
+        // else if(score < 10+2*10)
+        // {
+        //     _curDifficultyIndex = 1;
+        // }
+        // else
+        // {
+        //     _curDifficultyIndex = 2;
+        // }
         // Debug.Log($"bullets.CountAll = {bulletPool.CountAll} bullets.CountActive = {bulletPool.CountActive} bullets.CountInactive = {bulletPool.CountInactive}");
         // Debug.Log($"enemyPool.CountAll = {enemyPool.CountAll} enemyPool.CountActive = {enemyPool.CountActive} enemyPool.CountInactive = {enemyPool.CountInactive}");
     }
 
-    private void updateEnemy()
+    private void UpdateEnemy()
     {
         createEnemyAirplane();
         updateEnemyAirplane();
@@ -302,20 +356,20 @@ public partial class AirplaneAppWidget : BaseAppWidget
         score += _difficulty[_curDifficultyIndex].enemy_score;
     }
     
-    private void updateAirPlane()
+    public void UpdateAirPlane()
     {
         _airPlane.Move();
-        if (_airPlane.Fire())
-        {
-            var one = bulletPool.Get();
-            one.Init(_airPlane.AirPlaneRectTransform,
-                4.0f);
-            one.tag = _airPlane.tag;
-            activeBullects.Add(one);
-        }
+        // if (_airPlane.Fire())
+        // {
+        //     var one = bulletPool.Get();
+        //     one.Init(_airPlane.AirPlaneRectTransform,
+        //         4.0f);
+        //     one.tag = _airPlane.tag;
+        //     activeBullects.Add(one);
+        // }
     }
 
-    private void updateBullect()
+    public void UpdateBullect()
     {
         for (int i = activeBullects.Count - 1; i >= 0; i--)
         {
@@ -334,24 +388,24 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
     
     
-    private void movebg()
-    {
-        var pos = bgA.anchoredPosition;
-        pos.y += scrollSpeed;
-        if (pos.y >= maxY)
-        {
-            pos.y = -maxY;
-        }
-        bgA.anchoredPosition = pos;
-        
-        pos = bgB.anchoredPosition;
-        pos.y += scrollSpeed;
-        if (pos.y >= maxY)
-        {
-            pos.y = -maxY;
-        }
-        bgB.anchoredPosition = pos;
-    }
+    // private void movebg()
+    // {
+    //     var pos = bgA.anchoredPosition;
+    //     pos.y += scrollSpeed;
+    //     if (pos.y >= maxY)
+    //     {
+    //         pos.y = -maxY;
+    //     }
+    //     bgA.anchoredPosition = pos;
+    //     
+    //     pos = bgB.anchoredPosition;
+    //     pos.y += scrollSpeed;
+    //     if (pos.y >= maxY)
+    //     {
+    //         pos.y = -maxY;
+    //     }
+    //     bgB.anchoredPosition = pos;
+    // }
 
     private void handletouch(PointerEventData param)
     {
@@ -404,5 +458,18 @@ public partial class AirplaneAppWidget : BaseAppWidget
     private void HideResult()
     {
         Tran_Result.gameObject.SetActive(false);
+    }
+
+    public void ShowStartPage()
+    {
+        Tran_StartPage.gameObject.SetActive(true);
+        StartPageAnimation.enabled = true;
+        StartPageAnimation.Play();
+    }
+
+    public void HideStartPage()
+    {
+        Tran_StartPage.gameObject.SetActive(false);
+        StartPageAnimation.enabled = false;
     }
 }

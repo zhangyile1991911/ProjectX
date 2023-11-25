@@ -227,7 +227,7 @@
     "type": 1,
     "desc": "胡萝卜",
     "ui_res_path": "Assets/GameRes/Picture/Food/2007.png",
-    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/onion.prefab",
+    "scene_res_path": "Assets/GameRes/Prefabs/AllFood/SceneFood/2007.prefab",
     "get_method": ""
   },
   {

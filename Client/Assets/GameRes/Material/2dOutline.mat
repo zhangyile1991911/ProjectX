@@ -53,7 +53,7 @@ Material:
     m_Floats:
     - _BOOLEAN: 1
     - _EnableExternalAlpha: 0
-    - _Float: 0.2
+    - _Float: 0.02
     - _SHOWOUTLINE: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

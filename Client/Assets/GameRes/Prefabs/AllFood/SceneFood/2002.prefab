@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2788986173325441147}
   - component: {fileID: 2788986173325441146}
   - component: {fileID: 3947398117019330056}
+  - component: {fileID: 975535440206143429}
   m_Layer: 6
   m_Name: 2002
   m_TagString: BasketFood
@@ -98,3 +99,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UserDataId: 0
+  Thickness: 0.02
+--- !u!65 &975535440206143429
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788986173325441140}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.12, y: 4.12, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

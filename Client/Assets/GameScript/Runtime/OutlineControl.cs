@@ -7,6 +7,8 @@ using UnityEngine;
 public class OutlineControl : MonoBehaviour
 {
     public int UserDataId;
+    
+    [SerializeField]public float Thickness = 0.2f;
     private SpriteRenderer sr;
     public bool Outline => isOutline;
 
@@ -16,6 +18,8 @@ public class OutlineControl : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         isOutline = false;
+        var m = sr.material;
+        m.SetFloat("_Float",0);
     }
 
     public void ShowOutline()
@@ -23,6 +27,7 @@ public class OutlineControl : MonoBehaviour
         if (isOutline) return;
         var m = sr.material;
         m.EnableKeyword("_SHOWOUTLINE");
+        m.SetFloat("_Float",Thickness);
         sr.material = m;
         
         isOutline = true;
@@ -34,6 +39,7 @@ public class OutlineControl : MonoBehaviour
         if (!isOutline) return;
         var m = sr.material;
         m.DisableKeyword("_SHOWOUTLINE");
+        m.SetFloat("_Float",0);
         sr.material = m;
         isOutline = false;
     }

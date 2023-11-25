@@ -54,6 +54,11 @@ public partial class NewsAppWidget : BaseAppWidget
         }
         
         _clocker = UniModule.GetModule<Clocker>();
+
+        _detailWidget.XBtn_Return.OnClick.Subscribe(param =>
+        {
+            _detailWidget.PlayOutAnimation();
+        }).AddTo(_handlers);
     }
 
     public override async void OnHide()
@@ -99,6 +104,7 @@ public partial class NewsAppWidget : BaseAppWidget
                 {
                     _detailWidget.OnShow(null);
                     _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
+                    _detailWidget.PlayInAnimation();
                 }).AddTo(_handlers);
             }
             cell.SetNewsDetailInfo(_newsDataList[itemIndex]);
@@ -124,6 +130,7 @@ public partial class NewsAppWidget : BaseAppWidget
                 {
                     _detailWidget.OnShow(null);
                     _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
+                    _detailWidget.PlayInAnimation();
                 }).AddTo(_handlers);
             }
             cell.SetNewsDetailInfo(_newsDataList[itemIndex]);

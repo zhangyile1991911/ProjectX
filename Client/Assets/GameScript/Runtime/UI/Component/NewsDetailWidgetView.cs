@@ -20,8 +20,8 @@ public partial class NewsDetailWidget : UIComponent
 	public Transform Ins_CommentA;
 	public Transform Ins_CommentB;
 	public Transform Ins_CommentC;
-
-
+	public XButton XBtn_Return;
+	public ScrollRect ScrollRect;
 	public override void Init(GameObject go)
 	{
 	    uiGo = go;
@@ -35,6 +35,7 @@ public partial class NewsDetailWidget : UIComponent
 		Ins_CommentA = go.transform.Find("Scroll View/Viewport/Content/Tran_Coment/Ins_CommentA").GetComponent<Transform>();
 		Ins_CommentB = go.transform.Find("Scroll View/Viewport/Content/Tran_Coment/Ins_CommentB").GetComponent<Transform>();
 		Ins_CommentC = go.transform.Find("Scroll View/Viewport/Content/Tran_Coment/Ins_CommentC").GetComponent<Transform>();
-
+		XBtn_Return = go.transform.Find("Scroll View/Viewport/Content/XBtn_Return").GetComponent<XButton>();
+		ScrollRect = go.transform.Find("Scroll View").GetComponent<ScrollRect>();
 	}
 }

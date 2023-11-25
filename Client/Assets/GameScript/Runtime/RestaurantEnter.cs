@@ -26,6 +26,7 @@ public class RestaurantEnter : MonoBehaviour
     public Transform Curtain;
     public Transform kitchenGroup;
     public Transform cookToolPos;
+    public Transform Backet;
     
     public Transform PeopleGroup;
     public Transform[] PeopleSpawns;
@@ -61,8 +62,14 @@ public class RestaurantEnter : MonoBehaviour
     private ObjectPool<WalkingPeople> _peoplePool;
     private List<WalkingPeople> _activedPeople;
     
-    private List<OutlineControl> _foodGameObjects; 
-    
+    private List<OutlineControl> _foodGameObjects;
+    private List<Vector3> _foodPositions = new List<Vector3>()
+    {
+        new (-3,3,0),new (0,2.67f,0),new (3.27f,2.67f,0),
+        new (-3.05f,-1.65f,0),new (0.17f,-1.42f,0),new (3.23f,-1.97f,0)
+    };
+
+    private int _foodPositionIndex = 0;
     void Start()
     {
         MainCamera = Camera.main;
@@ -644,13 +651,21 @@ public class RestaurantEnter : MonoBehaviour
             Debug.Log($"foodId = {foodId} itemTb == null");
             return;
         }
+        Debug.Log($"foodId = {foodId}");
         var res = YooAssets.LoadAssetAsync<GameObject>(itemTb.SceneResPath);
         await res.ToUniTask();
         var go = res.AssetObject as GameObject;
-        var obj = GameObject.Instantiate(go);
-        obj.transform.position = new Vector3(Random.Range(7f,17f),Random.Range(1007f,997f),-6f);
+        var obj = GameObject.Instantiate(go,Backet);
         var oc = obj.GetComponent<OutlineControl>();
         oc.UserDataId = foodId;
+
+        if (_foodPositionIndex >= _foodPositions.Count)
+        {
+            _foodPositionIndex = 0;
+        }
+        var pos = _foodPositions[_foodPositionIndex++];
+        obj.transform.localPosition = pos;
+        
         _foodGameObjects.Add(oc);
     }
 
