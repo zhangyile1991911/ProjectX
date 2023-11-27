@@ -20,11 +20,15 @@ public partial class AirplaneAppWidget : BaseAppWidget
 {
     private float maxY;
     private float maxX;
+    
     private PlayerAirPlane _airPlane;
+    private BeeBoss _beeBoss;
 
-    private ObjectPool<AirPlaneBullet> bulletPool;
+    private ObjectPool<AirPlaneBullet> enmeyBulletPool;
+    private ObjectPool<AirPlaneBullet> beeBulletPool;
+    
     private ObjectPool<EnemyAirPlane> enemyPool;
-    private List<AirPlaneBullet> activeBullects;
+    private List<AirPlaneBullet> activeBullets;
     private List<EnemyAirPlane> activeEnemies;
 
     private List<RectTransform> enemySpawnPoint;
@@ -32,7 +36,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
     private List<AirplaneDifficulty> _difficulty;
 
     private int _curDifficultyIndex;
-    private float cur_create_enemy_interval = 5.0f;
+    private float cur_create_enemy_interval = 0f;
 
     private bool isGameOver;
     private CompositeDisposable handler;
@@ -57,8 +61,23 @@ public partial class AirplaneAppWidget : BaseAppWidget
     }
 
     public PlayerAirPlane BeeGirl => _airPlane;
+    public BeeBoss Boss => _beeBoss;
 
     public Animation StartPageAnimation;
+
+    public RectTransform BossRectTransform;
+    public int Level
+    {
+        get;
+        private set;
+    }
+
+    public int Kill_Enemy_Num
+    {
+        get;
+        private set;
+    }
+
     public AirplaneAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
         WidgetType = AppType.AirPlane;
@@ -71,25 +90,37 @@ public partial class AirplaneAppWidget : BaseAppWidget
         _airPlane.Init();
         _airPlane.GameOver = GameOver;
 
+        go = uiTran.Find("Ins_BeeGirlBoss");
+        _beeBoss = go.GetComponent<BeeBoss>();
+        
+
         bg1 = Tran_Bg1.GetComponent<RectTransform>();
         bg2 = Tran_Bg2.GetComponent<RectTransform>();
         
-        activeBullects = new List<AirPlaneBullet>(20);
+        activeBullets = new List<AirPlaneBullet>(30);
         activeEnemies = new(20);
         enemySpawnPoint = new List<RectTransform>(3);
         
-        bulletPool = new ObjectPool<AirPlaneBullet>(onCreateBullect,
+        enmeyBulletPool = new ObjectPool<AirPlaneBullet>(onCreateBullect,
             onGetBullect,
             onReleaseBullect,
             onDestroyBullect,
             false,
             10,
             50);
+        
+        beeBulletPool = new ObjectPool<AirPlaneBullet>(onCreateBeeBullect,
+            onGetBeeBullect,
+            onReleaseBeeBullect,
+            onDestroyBeeBullect,
+            false,
+            10,
+            50);
 
-        enemyPool = new ObjectPool<EnemyAirPlane>(onCreateEnemyAirPlane,
-            onGetEnemyAirPlane,
-            onReleaseEnemyAirPlane,
-            onDestroyEnemyAirPlane,
+        enemyPool = new ObjectPool<EnemyAirPlane>(onCreateEnemyBee,
+            onGetEnemyBee,
+            onReleaseEnemyBee,
+            onDestroyEnemyBee,
             false,
             10,
             50);
@@ -113,11 +144,24 @@ public partial class AirplaneAppWidget : BaseAppWidget
         StartPageAnimation = Tran_StartPage.GetComponent<Animation>();
         
         CurState = new WaitStartState(this);
+        Level = 1;
+        Kill_Enemy_Num = Level * 5;
     }
 
+    public void NextLevel()
+    {
+        Level += 1;
+        Kill_Enemy_Num = Level * 5;
+    }
+
+    public void ResetLevel()
+    {
+        Level = 0;
+    }
+    
     private AirPlaneBullet onCreateBullect()
     {
-        var one = YooAssets.LoadAssetSync<AirPlaneBullet>("Assets/GameRes/Prefabs/AirPlane/AirPlaneBullet.prefab");
+        var one = YooAssets.LoadAssetSync<AirPlaneBullet>("Assets/GameRes/Prefabs/BeeGame/EnemyBullet.prefab");
         var go = one.AssetObject as AirPlaneBullet;
         var bullectObj = Object.Instantiate(go,uiRectTran);
         return bullectObj.GetComponent<AirPlaneBullet>();
@@ -142,27 +186,55 @@ public partial class AirplaneAppWidget : BaseAppWidget
     }
     
     
-    private EnemyAirPlane onCreateEnemyAirPlane()
+    private AirPlaneBullet onCreateBeeBullect()
     {
-        var one = YooAssets.LoadAssetSync<EnemyAirPlane>("Assets/GameRes/Prefabs/AirPlane/EnemyAirPlane.prefab");
+        var one = YooAssets.LoadAssetSync<AirPlaneBullet>("Assets/GameRes/Prefabs/BeeGame/BeeBullet.prefab");
+        var go = one.AssetObject as AirPlaneBullet;
+        var bullectObj = Object.Instantiate(go,uiRectTran);
+        return bullectObj.GetComponent<AirPlaneBullet>();
+    }
+
+    private void onGetBeeBullect(AirPlaneBullet bullet)
+    {
+        bullet.gameObject.SetActive(true);
+        // activeBullects.Add(bullet);
+    }
+
+    private void onReleaseBeeBullect(AirPlaneBullet bullet)
+    {
+        bullet.gameObject.SetActive(false);
+        // activeBullects.Remove(bullet);
+    }
+
+    private void onDestroyBeeBullect(AirPlaneBullet bullet)
+    {
+        bullet.gameObject.SetActive(false);
+        Object.Destroy(bullet.gameObject);
+    }
+    
+    
+    private EnemyAirPlane onCreateEnemyBee()
+    {
+        var path = (int)(Time.deltaTime * 10000f)%2 == 0 ? "Assets/GameRes/Prefabs/BeeGame/BeeGirlEnemy002.prefab" : "Assets/GameRes/Prefabs/BeeGame/BeeGirlEnemy001.prefab";
+        var one = YooAssets.LoadAssetSync<EnemyAirPlane>(path);
         var go = one.AssetObject as EnemyAirPlane;
-        var enemyAirplaneObj = Object.Instantiate(go,uiRectTran);
+        var enemyAirplaneObj = Object.Instantiate(go,uiRectTran);    
         return enemyAirplaneObj;
     }
 
-    private void onGetEnemyAirPlane(EnemyAirPlane airPlane)
+    private void onGetEnemyBee(EnemyAirPlane airPlane)
     {
         airPlane.gameObject.SetActive(true);
         // activeEnemies.Add(airPlane);
     }
 
-    private void onReleaseEnemyAirPlane(EnemyAirPlane airPlane)
+    private void onReleaseEnemyBee(EnemyAirPlane airPlane)
     {
         airPlane.gameObject.SetActive(false);
         // activeEnemies.Remove(airPlane);
     }
 
-    private void onDestroyEnemyAirPlane(EnemyAirPlane airPlane)
+    private void onDestroyEnemyBee(EnemyAirPlane airPlane)
     {
         airPlane.gameObject.SetActive(false);
         Object.Destroy(airPlane.gameObject);
@@ -174,11 +246,18 @@ public partial class AirplaneAppWidget : BaseAppWidget
     {
         enemySpawnPoint.Clear();
         
-        foreach (var one in activeBullects)
+        foreach (var one in activeBullets)
         {
-            bulletPool.Release(one);
+            if (one.CompareTag("Player"))
+            {
+                beeBulletPool.Release(one);   
+            }
+            else
+            {
+                enmeyBulletPool.Release(one);    
+            }
         }
-        activeBullects.Clear();
+        activeBullets.Clear();
         foreach (var one in activeEnemies)
         {
             enemyPool.Release(one);
@@ -290,15 +369,28 @@ public partial class AirplaneAppWidget : BaseAppWidget
         // Debug.Log($"enemyPool.CountAll = {enemyPool.CountAll} enemyPool.CountActive = {enemyPool.CountActive} enemyPool.CountInactive = {enemyPool.CountInactive}");
     }
 
-    private void UpdateEnemy()
+
+    public void UpdateBoss()
     {
-        createEnemyAirplane();
-        updateEnemyAirplane();
+        if (!Boss.Move())
+        {
+            
+        }
+
+        if (Boss.Fire())
+        {
+            
+        }
+    }
+    public void UpdateEnemy()
+    {
+        createEnemyBee();
+        updateEnemyBee();
     }
 
-    private void createEnemyAirplane()
+    private void createEnemyBee()
     {
-        if (activeEnemies.Count > 2) return;
+        if (activeEnemies.Count > 5) return;
         if (cur_create_enemy_interval <= 0)
         {
             var spawnPosition = new Vector2();
@@ -327,19 +419,21 @@ public partial class AirplaneAppWidget : BaseAppWidget
         cur_create_enemy_interval -= Time.deltaTime;
     }
 
-    private void updateEnemyAirplane()
+    private void updateEnemyBee()
     {
         for (int i = activeEnemies.Count - 1;i >= 0;i--)
         {
             var enemyAirPlane = activeEnemies[i];
             if (enemyAirPlane.Fire())
             {
-                var one = bulletPool.Get();
-                one.Init(enemyAirPlane.Controller,
+                var one = enmeyBulletPool.Get();
+                
+                one.Init(enemyAirPlane.Controller.anchoredPosition + enemyAirPlane.Shot.anchoredPosition,
+                    enemyAirPlane.tag,
                     enemyAirPlane.Direction,
                     enemyAirPlane.FlySpeed*1.5f);
                 one.tag = enemyAirPlane.tag;
-                activeBullects.Add(one);
+                activeBullets.Add(one);
             }
             
             if(enemyAirPlane.Move())continue;
@@ -351,29 +445,32 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
     private void recycleEnemyAirplane(EnemyAirPlane airPlane)
     {
+        Kill_Enemy_Num--;
+        Kill_Enemy_Num = Math.Max(0, Kill_Enemy_Num);
+        
         enemyPool.Release(airPlane);
         activeEnemies.Remove(airPlane);
         score += _difficulty[_curDifficultyIndex].enemy_score;
     }
     
-    public void UpdateAirPlane()
+    public void UpdateBee()
     {
         _airPlane.Move();
-        // if (_airPlane.Fire())
-        // {
-        //     var one = bulletPool.Get();
-        //     one.Init(_airPlane.AirPlaneRectTransform,
-        //         4.0f);
-        //     one.tag = _airPlane.tag;
-        //     activeBullects.Add(one);
-        // }
+        if (_airPlane.Fire())
+        {
+            var one = beeBulletPool.Get();
+            one.Init(_airPlane.AirPlaneRectTransform,
+                4.0f);
+            one.tag = _airPlane.tag;
+            activeBullets.Add(one);
+        }
     }
 
-    public void UpdateBullect()
+    public void UpdateFlyingBullet()
     {
-        for (int i = activeBullects.Count - 1; i >= 0; i--)
+        for (int i = activeBullets.Count - 1; i >= 0; i--)
         {
-            var one = activeBullects[i];
+            var one = activeBullets[i];
             one.Move();
             if (isVisible(one.CurPos))
             {
@@ -381,8 +478,15 @@ public partial class AirplaneAppWidget : BaseAppWidget
                 continue;
             }
             // Debug.Log("updateBullect 回收");
-            activeBullects.RemoveAt(i);
-            bulletPool.Release(one);
+            activeBullets.RemoveAt(i);
+            if (one.CompareTag("Player"))
+            {
+                beeBulletPool.Release(one);   
+            }
+            else
+            {
+                enmeyBulletPool.Release(one);    
+            }
         }
     }
 
@@ -429,11 +533,19 @@ public partial class AirplaneAppWidget : BaseAppWidget
         }
         activeEnemies.Clear();
 
-        foreach (var one in activeBullects)
+        foreach (var one in activeBullets)
         {
-            bulletPool.Release(one);
+            if (one.CompareTag("Player"))
+            {
+                beeBulletPool.Release(one);
+            }
+            else
+            {
+                enmeyBulletPool.Release(one);    
+            }
+            
         }
-        activeBullects.Clear();
+        activeBullets.Clear();
         
         ShowResult();
     }

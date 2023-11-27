@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 
 public class AirPlaneBullet : MonoBehaviour
 {
-    public  RectTransform BRectTransform;
+    private  RectTransform BRectTransform;
     public Vector2 CurPos => BRectTransform.anchoredPosition;
     private Vector2 Direction;
     // private ObjectPool<AirPlaneBullet> BelongPool;
@@ -35,19 +35,22 @@ public class AirPlaneBullet : MonoBehaviour
     {
         // BelongPool = pool;
         newPos = launcher.anchoredPosition;
+        if (BRectTransform == null)
+            BRectTransform = GetComponent<RectTransform>();
+        
         BRectTransform.anchoredPosition = launcher.anchoredPosition;
         tag = launcher.tag;
-
+    
         Direction.x = launcher.anchoredPosition.x;
         Direction.y = speed;
     }
 
-    public void Init(RectTransform launcher,Vector2 dir,float sped)
+    public void Init(Vector2 shotPos,string shotTag,Vector2 dir,float sped)
     {
-        // BelongPool = pool;
-        newPos = launcher.anchoredPosition;
-        BRectTransform.anchoredPosition = launcher.anchoredPosition;
-        tag = launcher.tag;
+        if (BRectTransform == null)
+            BRectTransform = GetComponent<RectTransform>();
+        newPos = BRectTransform.anchoredPosition = shotPos;
+        tag = shotTag;
         Direction = dir;
         speed = sped;
     }

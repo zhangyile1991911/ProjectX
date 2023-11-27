@@ -81,6 +81,7 @@ public class PlayerAirPlane : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log($"PlayerAirPlane OnTriggerEnter2D {other.tag}");
         // if (other.CompareTag(tag))
         // {
         //     return;
@@ -93,17 +94,18 @@ public class PlayerAirPlane : MonoBehaviour
         // }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        // if (other.CompareTag(tag))
-        // {
-        //     return;
-        // }
-        // // Debug.Log($"PlayerAirPlane::OnTriggerEnter2D other.name = {other.name}");
-        // hp -= 1;
-        // if (hp <= 0)
-        // {
-        //     GameOver.Invoke();
-        // }
-    }
+    // private void OnCollisionEnter2D(Collision2D other)
+    // {
+    //     Debug.Log("PlayerAirPlane OnCollisionEnter2D");
+    //     // if (other.CompareTag(tag))
+    //     // {
+    //     //     return;
+    //     // }
+    //     // // Debug.Log($"PlayerAirPlane::OnTriggerEnter2D other.name = {other.name}");
+    //     // hp -= 1;
+    //     // if (hp <= 0)
+    //     // {
+    //     //     GameOver.Invoke();
+    //     // }
+    // }
 }

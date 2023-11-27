@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 public class EnemyAirPlane : MonoBehaviour
 {
     public RectTransform Controller;
+    public RectTransform Shot;
     public Vector2 CurPos => newPos;
     public Vector2 Direction => direction;
     private int healthPoint;
@@ -62,16 +63,23 @@ public class EnemyAirPlane : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(tag))
-        {
-            return;
-        }
-        // Debug.Log($"EnemyAirPlane::OnTriggerEnter2D other.tag = {other.tag}");
-
-        healthPoint -= 1;
-        if (healthPoint <= 0)
-        {
-            onRelease.Invoke(this);
-        }
+        Debug.Log($"EnemyAirPlane::OnTriggerEnter2D other.tag = {other.tag}");
+        
+        // if (other.CompareTag(tag))
+        // {
+        //     return;
+        // }
+        //
+        // healthPoint -= 1;
+        // if (healthPoint <= 0)
+        // {
+        //     onRelease.Invoke(this);
+        // }
     }
+
+    // private void OnCollisionEnter2D(Collision2D other)
+    // {
+    //     Debug.Log("EnemyAirPlane OnCollisionEnter2D");
+    // }
+
 }

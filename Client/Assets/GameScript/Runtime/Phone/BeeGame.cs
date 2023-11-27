@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -65,17 +66,19 @@ public class StageState : BeeGameState
     public override void EveryFrame()
     {
         control.ScrollBG();
-        control.UpdateAirPlane();
-        control.UpdateBullect();
+        control.UpdateBee();
+        control.UpdateFlyingBullet();
+        control.UpdateEnemy();
+        if (control.Kill_Enemy_Num <= 0)
+        {
+            control.CurState = new BossState(control);
+        }
     }
 
     public override void Exit()
     {
         
     }
-    
-    
-    
     
 }
 
@@ -87,7 +90,41 @@ public class BossState : BeeGameState
     }
     public override void Enter()
     {
+        control.Boss.gameObject.SetActive(true);
+        control.Boss.ConfigProperty(
+            new Vector2(0,1000f),
+            new Vector2(),
+            control.Level);
+    }
+
+    public override void EveryFrame()
+    {
+        if (control.Boss.IsAlive)
+        {
+            control.UpdateBoss();     
+        }
+        else
+        {
+            control.CurState = new BossExit(control);
+        }
+    }
+
+    public override void Exit()
+    {
         
+    }
+}
+
+
+public class BossExit : BeeGameState
+{
+    public BossExit(AirplaneAppWidget col):base(col)
+    {
+        
+    }
+    public override void Enter()
+    {
+        control.Boss.gameObject.SetActive(true);
     }
 
     public override void EveryFrame()
