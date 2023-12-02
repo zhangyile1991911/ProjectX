@@ -18,13 +18,16 @@ public partial class AirplaneAppWidget : BaseAppWidget
 	public Transform Tran_C;
 	public Transform Tran_Result;
 	public TextMeshProUGUI Txt_Score;
-	public Button Btn_Restart;
+	public XButton XBtn_Restart;
 	public Transform Tran_Scroll;
 	public Transform Tran_Bg2;
 	public Transform Tran_Bg1;
 	public Transform Tran_StartPage;
 	public XButton XBtn_Start;
 
+	public Transform Tran_UI;
+	public Transform Tran_hpgroup;
+	public TextMeshProUGUI Txt_curscore;
 
 	public override void Init(GameObject go)
 	{
@@ -37,12 +40,16 @@ public partial class AirplaneAppWidget : BaseAppWidget
 		Tran_C = go.transform.Find("Tran_SpawnPoint/Tran_C").GetComponent<Transform>();
 		Tran_Result = go.transform.Find("Tran_Result").GetComponent<Transform>();
 		Txt_Score = go.transform.Find("Tran_Result/Txt_Score").GetComponent<TextMeshProUGUI>();
-		Btn_Restart = go.transform.Find("Tran_Result/Btn_Restart").GetComponent<Button>();
+		XBtn_Restart = go.transform.Find("Tran_Result/XBtn_Restart").GetComponent<XButton>();
 		Tran_Scroll = go.transform.Find("Tran_Scroll").GetComponent<Transform>();
 		Tran_Bg2 = go.transform.Find("Tran_Scroll/Tran_Bg2").GetComponent<Transform>();
 		Tran_Bg1 = go.transform.Find("Tran_Scroll/Tran_Bg1").GetComponent<Transform>();
 		Tran_StartPage = go.transform.Find("Tran_StartPage").GetComponent<Transform>();
 		XBtn_Start = go.transform.Find("Tran_StartPage/XBtn_Start").GetComponent<XButton>();
+
+		Tran_UI = go.transform.Find("Tran_UI").GetComponent<Transform>();
+		Tran_hpgroup = go.transform.Find("Tran_UI/Tran_hpgroup").GetComponent<Transform>();
+		Txt_curscore = go.transform.Find("Tran_UI/Txt_curscore").GetComponent<TextMeshProUGUI>();
 
 	}
 }
