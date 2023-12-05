@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BeeBoss : MonoBehaviour
 {
@@ -28,6 +30,7 @@ public class BeeBoss : MonoBehaviour
     private Vector2 direction;
     
     private Animator _animator;
+    private Image _avatar;
     
     public void ConfigProperty(Vector2 startPos,Vector2 destPos,int hp,float speed = 0.7f,float reload = 2.5f,float shotInterval = 0.2f)
     {
@@ -47,6 +50,8 @@ public class BeeBoss : MonoBehaviour
         
         if(_animator == null)
             _animator = GetComponent<Animator>();
+        if (_avatar == null)
+            _avatar = GetComponent<Image>();
     }
     
     public void SetDestination(Vector2 dest)
@@ -104,7 +109,7 @@ public class BeeBoss : MonoBehaviour
         DialogueRT.gameObject.SetActive(false);
     }
 
-
+    private readonly Color transparent = new Color(255,255,255,0);
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag(tag))
@@ -112,6 +117,7 @@ public class BeeBoss : MonoBehaviour
             // Debug.Log("BeeBoss OnTriggerEnter2D");
             healthPoint -= 1;
             healthPoint = Mathf.Max(healthPoint,0);
+            _avatar.DOColor(transparent, 0.2f).SetLoops(2, LoopType.Yoyo);
         }
     }
 

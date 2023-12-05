@@ -560,33 +560,21 @@ public partial class AirplaneAppWidget : BaseAppWidget
                 3.0f,
                 recycleBeeBullet);
             one.tag = _airPlane.tag;
-            activeBullets.Add(one.name,one);
+            if (activeBullets.ContainsKey(one.name))
+            {
+                Debug.LogError($"activeBullets = {one.name}");
+            }
+            else
+            {
+                activeBullets.Add(one.name,one);    
+            }
+            
         }
     }
 
-    private List<string> deleteBullet = new List<string>();
+    private List<BeeBullet> deleteBullet = new List<BeeBullet>();
     public void UpdateFlyingBullet()
     {
-        // for (int i = activeBullets.Count - 1; i >= 0; i--)
-        // {
-        //     var one = activeBullets[i];
-        //     one.Move();
-        //     if (isVisible(one.CurPos))
-        //     {
-        //         // Debug.Log($"one.CurPos = {one.CurPos}");
-        //         continue;
-        //     }
-        //     // Debug.Log("updateBullect 回收");
-        //     if (one.CompareTag("PlayerBee"))
-        //     {
-        //         beeBulletPool.Release(one);   
-        //     }
-        //     else
-        //     {
-        //         enemyBulletPool.Release(one);    
-        //     }
-        //     activeBullets.RemoveAt(i);
-        // }
         deleteBullet.Clear();
         foreach (var one in activeBullets.Values)
         {
@@ -597,20 +585,13 @@ public partial class AirplaneAppWidget : BaseAppWidget
                 continue;
             }
             // Debug.Log("updateBullect 回收");
-            if (one.CompareTag("PlayerBee"))
-            {
-                beeBulletPool.Release(one);   
-            }
-            else
-            {
-                enemyBulletPool.Release(one);    
-            }
-            deleteBullet.Add(one.name);
+            deleteBullet.Add(one);
         }
 
-        foreach (var bulletName in deleteBullet)
+        
+        foreach (var one in deleteBullet)
         {
-            activeBullets.Remove(bulletName);
+            recycleBeeBullet(one);
         }
         deleteBullet.Clear();
     }
@@ -660,47 +641,14 @@ public partial class AirplaneAppWidget : BaseAppWidget
         var lp = uiRectTran.InverseTransformPoint(wp);
         // Debug.Log($"handletouch local position {lp}");
         _airPlane.SetDestination(lp);
-
-        // _airPlane.dist = lp;
+        
     }
-
-    // private void GameOver()
-    // {
-    //     isGameOver = true;
-    //     
-    //     _airPlane.Reset();
-    //     foreach (var one in activeEnemies)
-    //     {
-    //         enemyPool.Release(one);
-    //     }
-    //     activeEnemies.Clear();
-    //
-    //     foreach (var one in activeBullets)
-    //     {
-    //         if (one.CompareTag("PlayerBee"))
-    //         {
-    //             beeBulletPool.Release(one);
-    //         }
-    //         else
-    //         {
-    //             enemyBulletPool.Release(one);    
-    //         }
-    //         
-    //     }
-    //     activeBullets.Clear();
-    //     
-    //     ShowResult();
-    // }
 
     private void RestartGame(PointerEventData param)
     {
-        isGameOver = false;
-        
         _curDifficultyIndex = 0;
-        
         ScorePub.Value = 0;
-
-        HideResult();
+        CurState = new StageState(this);
     }
 
     public void ShowResult()

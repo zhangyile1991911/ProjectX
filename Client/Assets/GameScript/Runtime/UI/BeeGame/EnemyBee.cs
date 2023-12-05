@@ -1,6 +1,7 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Pool;
+using UnityEngine.UI;
 
 public class EnemyBee : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class EnemyBee : MonoBehaviour
     
     private float shot_invertal;
     private float cur_shot_invertval;
-
+    private Image _avatar;
     private Action<EnemyBee> onRelease;
     public void ConfigProperty(Action<EnemyBee> release,Vector2 startPos,Vector2 destPos,int hp,float speed = 0.7f,float shotInterval = 2.5f)
     {
@@ -61,6 +62,7 @@ public class EnemyBee : MonoBehaviour
         return false;
     }
 
+    private readonly Color transparent = new Color(255,255,255,0);
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Debug.Log($"EnemyBee::OnTriggerEnter2D other.tag = {other.tag}");
@@ -74,6 +76,10 @@ public class EnemyBee : MonoBehaviour
         if (healthPoint <= 0)
         {
             onRelease.Invoke(this);
+        }
+        else
+        {
+            _avatar.DOColor(transparent, 0.2f).SetLoops(2, LoopType.Yoyo);
         }
     }
 

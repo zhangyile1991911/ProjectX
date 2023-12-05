@@ -21,6 +21,7 @@ public class PlayerBee : MonoBehaviour
     private Vector2 destPos;
 
     private Animator _animator;
+    private Image _avatar;
     private float shot_invertal;
     
     public void Reset()
@@ -67,6 +68,7 @@ public class PlayerBee : MonoBehaviour
     {
         controller = GetComponent<RectTransform>();
         _animator = GetComponent<Animator>();
+        _avatar = GetComponent<Image>();
         hp = new IntReactiveProperty(3);
         Reset();
     }
@@ -82,11 +84,13 @@ public class PlayerBee : MonoBehaviour
         _animator.enabled = false;
         gameObject.SetActive(false);
     }
-    
+
+    private readonly Color transparent = new Color(255,255,255,0);
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag(tag))
         {
+            _avatar.DOColor(transparent, 0.2f).SetLoops(2, LoopType.Yoyo);
             // Debug.Log("BeeBoss OnTriggerEnter2D");
             hp.Value -= 1;
         }

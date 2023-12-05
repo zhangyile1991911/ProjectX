@@ -245,6 +245,9 @@ public class BeeGameOver : BeeGameState
         control.RecycleAllEnemy();
         control.XBtn_touch.gameObject.SetActive(false);
         control.Tran_Scroll.gameObject.SetActive(false);
+        
+        control.XBtn_Restart.gameObject.SetActive(true);
+        
         control.BeeGirl.Hide();
         control.Boss.Hide();
         
@@ -263,5 +266,6 @@ public class BeeGameOver : BeeGameState
     public override void Exit()
     {
         control.HideResult();
+        control.XBtn_Restart.gameObject.SetActive(false);
     }
 }
