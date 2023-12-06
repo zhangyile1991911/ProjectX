@@ -46,6 +46,7 @@ public partial class PhoneWindow : UIWindow
         _appIconList.Add(airplane);
         
         var weather = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
+        weather.XBtn_App.OnClick.Subscribe(OnClickWeather).AddTo(handles);
         weather.SetAPPInfo(10003);
         _appIconList.Add(weather);
         
@@ -156,6 +157,29 @@ public partial class PhoneWindow : UIWindow
         
         
         CurRunApp = airPlaneApp;
+    }
+    
+    private async void OnClickWeather(PointerEventData param)
+    {
+        Debug.Log("点击了天气");
+        var weatherApp = _appList.Find(one=>one.WidgetType==BaseAppWidget.AppType.Weather);
+        var costSecond = 0;
+        if (weatherApp == null)
+        {
+            weatherApp = await _uiManager.CreateUIComponent<WeatherApp>(null,Tran_AppRun,this);
+            _appList.Add(weatherApp);
+            costSecond = 60;
+        }
+        else
+        {
+            costSecond = 10;
+            weatherApp.OnShow(null);
+        }
+        Tran_AppGroup.gameObject.SetActive(false);
+        
+        CostTimeOnOpenApp(costSecond);
+        
+        CurRunApp = weatherApp;
     }
 
     private void CostTimeOnOpenApp(int costSecond)

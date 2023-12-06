@@ -8,6 +8,7 @@ public class BaseAppWidget : UIComponent
     {
         News,
         AirPlane,
+        Weather,
     }
 
     public AppType WidgetType
