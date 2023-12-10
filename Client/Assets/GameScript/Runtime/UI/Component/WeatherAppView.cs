@@ -24,7 +24,7 @@ public partial class WeatherApp : BaseAppWidget
 	public XButton XBtn_arrow;
 	public Image Img_show;
 	public TextMeshProUGUI Txt_temp;
-
+	public Animator Ani_announcer;
 
 	public override void Init(GameObject go)
 	{
@@ -43,6 +43,6 @@ public partial class WeatherApp : BaseAppWidget
 		XBtn_arrow = go.transform.Find("Tran_UI/Tran_panel/XBtn_arrow").GetComponent<XButton>();
 		Img_show = go.transform.Find("Tran_UI/Tran_panel/Img_show").GetComponent<Image>();
 		Txt_temp = go.transform.Find("Tran_UI/Tran_panel/Txt_temp").GetComponent<TextMeshProUGUI>();
-
+		Ani_announcer = go.transform.Find("Tran_announcer").GetComponent<Animator>();
 	}
 }

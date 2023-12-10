@@ -103,7 +103,7 @@ public class UIWindow : IUIBase
         complete?.Invoke(handler.AssetObject as T);
     }
     
-    public async void LoadSpriteAsync(string resPath,Action<Sprite> complete)
+    public async UniTask LoadSpriteAsync(string resPath,Action<Sprite> complete)
     {
         var handler = YooAssets.LoadAssetAsync<Sprite>(resPath);
         _resHandles.Add(handler);
