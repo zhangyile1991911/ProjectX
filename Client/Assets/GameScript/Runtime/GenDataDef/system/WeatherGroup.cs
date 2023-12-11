@@ -20,14 +20,18 @@ public sealed partial class WeatherGroup :  Bright.Config.BeanBase
     {
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["季节"].IsNumber) { throw new SerializationException(); }  季节 = (common.Season)_json["季节"].AsInt; }
+        { if(!_json["temp_start"].IsNumber) { throw new SerializationException(); }  TempStart = _json["temp_start"]; }
+        { if(!_json["temp_end"].IsNumber) { throw new SerializationException(); }  TempEnd = _json["temp_end"]; }
         { if(!_json["weather"].IsObject) { throw new SerializationException(); }  Weather = common.weather_group.Deserializeweather_group(_json["weather"]);  }
         PostInit();
     }
 
-    public WeatherGroup(int id, common.Season 季节, common.weather_group weather ) 
+    public WeatherGroup(int id, common.Season 季节, int temp_start, int temp_end, common.weather_group weather ) 
     {
         this.Id = id;
         this.季节 = 季节;
+        this.TempStart = temp_start;
+        this.TempEnd = temp_end;
         this.Weather = weather;
         PostInit();
     }
@@ -39,6 +43,8 @@ public sealed partial class WeatherGroup :  Bright.Config.BeanBase
 
     public int Id { get; private set; }
     public common.Season 季节 { get; private set; }
+    public int TempStart { get; private set; }
+    public int TempEnd { get; private set; }
     public common.weather_group Weather { get; private set; }
 
     public const int __ID__ = 752220266;
@@ -60,6 +66,8 @@ public sealed partial class WeatherGroup :  Bright.Config.BeanBase
         return "{ "
         + "Id:" + Id + ","
         + "季节:" + 季节 + ","
+        + "TempStart:" + TempStart + ","
+        + "TempEnd:" + TempEnd + ","
         + "Weather:" + Weather + ","
         + "}";
     }

@@ -66,7 +66,6 @@ public class Clocker : SingletonModule<Clocker>
         _nowDate.AddSeconds((int)addSecond);
         UserInfoModule.Instance.AddSecond((int)addSecond);
         _subject.OnNext(_nowDate);
-        
     }
 
     

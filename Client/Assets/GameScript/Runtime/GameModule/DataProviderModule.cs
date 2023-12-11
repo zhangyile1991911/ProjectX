@@ -271,6 +271,13 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
             SeasonScheduler[one.Seaon].Add(one);
         }
     }
+
+    public WeatherGroup DayWeatherGroup(Season season,int day)
+    {
+        var scheduler = SeasonScheduler[season][day];
+        var weatherGroup = _database.TbWeatherGroup.DataMap[scheduler.WeatherGroupId];
+        return weatherGroup;
+    }
     public Weather DayWeather(Season season,int day)
     {
         var scheduler = SeasonScheduler[season][day];
@@ -315,6 +322,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
 
         return 0;
     }
+    
 
     public ScheduleGroup GetScheduleGroup(int groupId)
     {

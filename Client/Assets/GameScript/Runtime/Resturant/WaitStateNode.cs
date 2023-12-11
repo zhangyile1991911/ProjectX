@@ -300,7 +300,7 @@ public class WaitStateNode : IStateNode
             var weatherNow = WeatherMgr.Instance.NowWeather;
             foreach (var one in info.WeatherLimit)
             {
-                if (one == weatherNow)
+                if (one == weatherNow.Weather)
                 {
                     weather = true;
                     break;

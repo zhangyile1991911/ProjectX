@@ -628,20 +628,20 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         return _restaurantRuntimeData.SoldMenuId;
     }
 
-    public Weather TodayWeather()
-    {
-        return (Weather)_userTableData.today_weather;
-    }
-
-    public void RefreshWeather()
-    {
-        _userTableData.today_weather = _userTableData.next_weather;
-        
-        _userTableData.next_weather = (int)DataProviderModule._instance.DayWeather(
-            Clocker.Instance.NowDateTime.Season,
-            (int)Clocker.Instance.NowDateTime.Day);
-        _sqLite.Update(_userTableData);
-    }
+    // public Weather TodayWeather()
+    // {
+    //     return (Weather)_userTableData.today_weather;
+    // }
+    //
+    // public void RefreshWeather()
+    // {
+    //     _userTableData.today_weather = _userTableData.next_weather;
+    //     
+    //     _userTableData.next_weather = (int)DataProviderModule._instance.DayWeather(
+    //         Clocker.Instance.NowDateTime.Season,
+    //         (int)Clocker.Instance.NowDateTime.Day);
+    //     _sqLite.Update(_userTableData);
+    // }
 
     public void AddNPCOrder(OrderMealInfo orderMealInfo)
     {

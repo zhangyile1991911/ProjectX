@@ -12,6 +12,10 @@ namespace cfg.common
     public enum Weather
     {
         /// <summary>
+        /// 未初始化
+        /// </summary>
+        None = 0,
+        /// <summary>
         /// 晴天
         /// </summary>
         Sunshine = 1,

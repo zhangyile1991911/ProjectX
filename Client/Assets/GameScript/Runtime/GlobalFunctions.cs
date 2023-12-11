@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using cfg.common;
 using cfg.food;
 using UnityEngine;
 using YooAsset;
@@ -74,6 +75,12 @@ public class PickFoodAndTools
     public List<qte_info> QTEConfigs;
 }
 
+public class WeatherInfo
+{
+    public Weather Weather;
+    public int temperature_start;
+    public int temperature_end;
+}
 //炒完的菜
 public static class GlobalFunctions
 {

@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -18,15 +19,17 @@ public partial class WeatherApp : BaseAppWidget
     private Tween sunRotaTween;
     // private CanvasGroup cloudCanvasGroup;
     private CanvasGroup fallCanvasGroup;
-    private Weather curWeather;
+    private bool isToday;
     private Animator fallAnimator;
     private RectTransform _panelRT;
     private static readonly int Raining = Animator.StringToHash("raining");
     private static readonly int Sunny = Animator.StringToHash("sunny");
-
+    private Weather curWeather;
+    private int start_temperature;
+    private int end_temperature;
     public WeatherApp(GameObject go,UIWindow parent):base(go,parent)
     {
-		
+        WidgetType = AppType.Weather;
     }
     
     public override void OnCreate()
@@ -46,11 +49,9 @@ public partial class WeatherApp : BaseAppWidget
 
         fallAnimator = Tran_falling.GetComponent<Animator>();
         
-        curWeather = Weather.Sunshine;
-        XBtn_arrow.OnClick.Subscribe((param) =>
-        {
-            switchWeather(Weather.Rain);
-        }).AddTo(uiGo);
+        isToday = true;
+        curWeather = Weather.None;
+        XBtn_arrow.OnClick.Subscribe(switchWeather).AddTo(uiGo);
         _panelRT = Tran_panel.GetComponent<RectTransform>();
     }
     
@@ -73,8 +74,7 @@ public partial class WeatherApp : BaseAppWidget
         {
             one.Restart();
         }
-        switchWeather(curWeather);
-        
+        switchWeather(null);
     }
 
     public override void OnHide()
@@ -168,8 +168,25 @@ public partial class WeatherApp : BaseAppWidget
         fallAnimator.enabled = false;
     }
     
-    private void switchWeather(Weather weather)
+    private void switchWeather(PointerEventData param)
     {
+        if(param != null) isToday = !isToday;
+
+        Weather weather;
+        if (isToday)
+        {
+            weather = WeatherMgr.Instance.NowWeather.Weather;
+            start_temperature = WeatherMgr.Instance.NowWeather.temperature_start;
+            end_temperature = WeatherMgr.Instance.NowWeather.temperature_end;
+        }
+        else
+        {
+            weather = WeatherMgr.Instance.NextWeather.Weather;
+            start_temperature = WeatherMgr.Instance.NextWeather.temperature_start;
+            end_temperature = WeatherMgr.Instance.NextWeather.temperature_end;
+        }
+        
+        
         playCloudFloating();
         switch (weather)
         {
@@ -358,7 +375,8 @@ public partial class WeatherApp : BaseAppWidget
 
     private void changeWeatherInfo(Weather weather)
     {
-        if (curWeather == weather) return;
+        // if (curWeather == weather) return;
+        XBtn_arrow.gameObject.SetActive(false);
         var s1 = _panelRT.DOScaleX(0, 1f).OnComplete(() =>
         {
             switch (weather)
@@ -372,7 +390,18 @@ public partial class WeatherApp : BaseAppWidget
                     ParentWindow.LoadSpriteAsync("Assets/GameRes/Picture/UI/Phone/Weather/sun_mark.png", Img_show);
                     break;
             }
-            _panelRT.DOScaleX(1f, 1f);
+
+            Txt_day.text = isToday ? "今天" : "明天";
+            if (start_temperature == end_temperature)
+            {
+                Txt_temp.text = ZString.Format("{0}°",start_temperature);
+            }
+            else
+            {
+                Txt_temp.text = ZString.Format("{0}°/{1}°",start_temperature,end_temperature);    
+            }
+            
+            _panelRT.DOScaleX(1f, 1f).OnComplete(()=>{XBtn_arrow.gameObject.SetActive(true);});
         });
         
     }

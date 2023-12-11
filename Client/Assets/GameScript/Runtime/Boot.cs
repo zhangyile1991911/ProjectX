@@ -22,12 +22,14 @@ public class Boot : MonoBehaviour
         UniModule.CreateModule<UIManager>();
         UniModule.CreateModule<DataProviderModule>();
         UniModule.CreateModule<EventModule>();
-        UniModule.CreateModule<WeatherMgr>();
         UniModule.CreateModule<UserInfoModule>();
         UniModule.CreateModule<CharacterMgr>();
         UniModule.CreateModule<Clocker>();
         UniModule.CreateModule<CharacterScheduler>();
+        UniModule.CreateModule<WeatherMgr>();
         // UniModule.CreateModule<DialogueModule>();
+
+        UniModule.GetModule<WeatherMgr>().InitWeather();
         
         UniModule.GetModule<UIManager>().OpenUI(UIEnum.BootWindow,null,null);
     }
