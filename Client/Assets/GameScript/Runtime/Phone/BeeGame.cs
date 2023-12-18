@@ -243,6 +243,7 @@ public class BeeGameOver : BeeGameState
     {
         control.RecycleAllBullet();
         control.RecycleAllEnemy();
+        control.RecycleAllExplosion();
         control.XBtn_touch.gameObject.SetActive(false);
         control.Tran_Scroll.gameObject.SetActive(false);
         

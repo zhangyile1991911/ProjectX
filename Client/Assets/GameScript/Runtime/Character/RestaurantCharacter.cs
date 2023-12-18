@@ -20,31 +20,6 @@ public class DialogueTitleInfo
 }
 public class RestaurantCharacter : RestaurantRoleBase
 {
-    // public SpriteRenderer Sprite => _spriteRenderer;
-    // private SpriteRenderer _spriteRenderer;
-    // private Transform _emojiNode;
-    //
-    // public Transform EmojiNode => _emojiNode;
-
-    // public CharacterBaseInfo TBBaseInfo => _baseInfo;
-
-    // public int SeatOccupy
-    // {
-    //     get => _seatOccupy;
-    //     set => _seatOccupy = _seatOccupy | (1 << value);
-    // }
-    //
-    // private int _seatOccupy;
-
-    // public string CharacterName => _baseInfo.Name;
-
-    //好感度
-    // public int Friendliness => _npcData.FriendlyValue;
-    // private NPCTableData _npcData;
-
-    // public int CharacterId => _baseInfo.Id;
-    // private CharacterBaseInfo _baseInfo;
-    
     //表格配置数据
     private List<CharacterBubble> _mainLineBubbleTB;
     private List<CharacterBubble> _talkBubbleTB;
@@ -58,20 +33,9 @@ public class RestaurantCharacter : RestaurantRoleBase
     private List<DialogueTitleInfo> _saidBubbles;
 
     public int SaidBubbleNum => _saidBubbles.Count;
-    // private int curCommentChatId;
-    // private int curMainLineChatId;
-    // private List<int> curTalkChatId;
-    // private int curOrderChatId;
-    
-    // private int curOrderMenuId;
-    
+
     //收到的料理
     private CookResult _receivedFood = null;
-    //记录在对话过程中产生的订单
-    // public int DialogueOrder
-    // {
-    //     set => curOrderMenuId = value;
-    // }
 
     public OrderMealInfo CurOrderInfo
     {
@@ -95,24 +59,23 @@ public class RestaurantCharacter : RestaurantRoleBase
     protected Transform _orderNode;
     
     protected OrderBoard orderBoardBoard;
-    
+
+    protected Animator _animator;
+
     
     public override void InitCharacter(CharacterBaseInfo info)
     {
-        // _baseInfo = info;
-        // _spriteRenderer = GetComponent<SpriteRenderer>();
-        // _emojiNode = transform.Find("EmojiNode");
-        // LoadCharacterSprite();
+       
         base.InitCharacter(info);
-        LoadSprite(_baseInfo.PicturePath);
+        if (!_baseInfo.PicturePath.Equals(""))
+        {
+            LoadSprite(_baseInfo.PicturePath);    
+        }
+
+        _animator = GetComponent<Animator>();
         _orderNode = transform.Find("OrderNode");
         _saidBubbles = new(10);
-        // curCommentChatId = 0;
-        // curTalkChatId = new List<int>(5);
-        // curOrderChatId = 0;
-        // curMainLineChatId = 0;
-        // curOrderMenuId = 0;
-        // foodScore = 0;
+       
         _clocker = UniModule.GetModule<Clocker>();
         
     }
@@ -120,19 +83,10 @@ public class RestaurantCharacter : RestaurantRoleBase
     public override void ReleaseCharacter()
     {
         base.ReleaseCharacter();
-        // _baseInfo = null;
-        // _spriteRenderer.sprite = null;
-        // _spriteRenderer = null;
-        _saidBubbles.Clear();
         
-        // curCommentChatId = 0;
-        // curTalkChatId = null;
-        // curOrderChatId = 0;
-        // curMainLineChatId = 0;
-        // foodScore = 0;
-        // curOrderMenuId = 0;
-        // UnLoadTableData();
-        // UnLoadDataBase();
+        _saidBubbles.Clear();
+        _animator = null;
+        
         for (int i = 0; i < _orderNode.childCount;i++)
         {
             var one = _orderNode.GetChild(i);
@@ -257,21 +211,6 @@ public class RestaurantCharacter : RestaurantRoleBase
             if (!isDay)continue;
             
             return one.Id;
-            // if (one.PreCondition == 0)
-            // {
-            //     if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition))
-            //     {
-            //         return one.Id;
-            //     }
-            //
-            //     continue;
-            // }
-
-            // if (!UserInfoModule.Instance.HaveReadDialogueId(one.PreCondition)) continue;
-            // if (!UserInfoModule.Instance.HaveReadDialogueId(one.Id))
-            // {
-            //     return one.Id;
-            // }
 
         }
 
@@ -561,7 +500,8 @@ public class RestaurantCharacter : RestaurantRoleBase
         if (orderBoardBoard == null)
         {
             var prefab = await LoadPrefab("Assets/GameRes/Prefabs/OrderBoard.prefab");
-            var go = Instantiate<GameObject>(prefab, _orderNode);
+            var go = Instantiate<GameObject>(prefab, transform);
+            go.transform.position = Restaurant.SeatOrderBoardPositionInWorld(_seatOccupy);
             orderBoardBoard = go.GetComponent<OrderBoard>();    
         }
         orderBoardBoard.Info = _orderMealInfo;
@@ -632,5 +572,29 @@ public class RestaurantCharacter : RestaurantRoleBase
         UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
     }
 
-   
+
+    public override void PlayAnimation(behaviour behaviourId)
+    {
+        switch (behaviourId)
+        {
+            case behaviour.Eating:
+                _animator.Play("eat");
+                break;
+            case behaviour.Talk:
+                _animator.Play("talk");
+                break;
+            case behaviour.WaitOrder:
+                _animator.Play("waiting");
+                break;
+            case behaviour.WaitReply:
+                _animator.Play("waiting");
+                break;
+            case behaviour.Comment:
+                _animator.Play("waiting");
+                break;
+            default:
+                _animator.Play("waiting");
+                break;
+        }
+    }
 }

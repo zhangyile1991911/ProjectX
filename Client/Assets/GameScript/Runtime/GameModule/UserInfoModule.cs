@@ -366,13 +366,13 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         if (count <= 0)
         {
             _restaurantRuntimeData.HaveArrivedCustomer.Add(characterId);
-            updateRestaurantRuntimeData();
+            // updateRestaurantRuntimeData();
         }
         count = _restaurantRuntimeData.WaitingCustomers.Count(one=>one == characterId);
         if (count <= 0)
         {
             _restaurantRuntimeData.WaitingCustomers.Add(characterId);
-            updateRestaurantRuntimeData();
+            // updateRestaurantRuntimeData();
         }
     }
     
@@ -385,7 +385,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     public void RemoveWaitingCharacter(int characterId)
     {
         _restaurantRuntimeData.WaitingCustomers.Remove(characterId);
-        updateRestaurantRuntimeData();
+        // updateRestaurantRuntimeData();
     }
 
 
@@ -446,7 +446,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
             }
         }
         _restaurantRuntimeData.SoldMenuId.Add(oneMeal.MenuId);
-        updateRestaurantRuntimeData();
+        // updateRestaurantRuntimeData();
     }
 
     public CookResult GetCookedMealByCharacterId(int characterId)
@@ -581,13 +581,13 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         var newDialogue = new DialogueTableData();
         newDialogue.Id = did;
         _dialogueTableDatas.Add(did,newDialogue);
-        _sqLite.Insert(newDialogue);
+        // _sqLite.Insert(newDialogue);
     }
 
     public void AddSecond(int sec)
     {
         _userTableData.now += sec;
-        _sqLite.Update(_userTableData);
+        // _sqLite.Update(_userTableData);
     }
 
     public void AddMoney(int num)
@@ -674,7 +674,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
                 data.Flavor = sb.ToString();
             }    
         }
-        _sqLite.Insert(data);
+        // _sqLite.Insert(data);
     }
 
     public void RemoveNPCOrder(int characterId)

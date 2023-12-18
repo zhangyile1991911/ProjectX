@@ -22,6 +22,7 @@ public class RestaurantEnter : MonoBehaviour
     }
     public Transform standGroup;
     public Transform spawnGroup;
+    public Transform orderBoardGroup;
     public Transform CookNode;
     public Transform Curtain;
     public Transform kitchenGroup;
@@ -46,6 +47,7 @@ public class RestaurantEnter : MonoBehaviour
     // Start is called before the first frame update
     private List<Transform> _seatPoints;
     private List<Transform> _spawnPoints;
+    private List<Transform> _orderBoardPoints;
 
     private List<int> _seatStatus;
 
@@ -84,6 +86,12 @@ public class RestaurantEnter : MonoBehaviour
         {
             _seatPoints.Add(standGroup.GetChild(i));
         }
+
+        _orderBoardPoints = new List<Transform>(orderBoardGroup.childCount);
+        for (int i = 0; i < orderBoardGroup.childCount; i++)
+        {
+            _orderBoardPoints.Add(orderBoardGroup.GetChild(i));
+        }
         
         _spawnPoints = new List<Transform>(4);
         for (int i = 0; i < spawnGroup.childCount; i++)
@@ -121,57 +129,58 @@ public class RestaurantEnter : MonoBehaviour
         // loadShopkeeper();
         
         //加载当前已经在店里的客人
-        loadWaitingCharacter();
+        // loadWaitingCharacter();
+        GlobalFunctions.InitRecipe(UserInfoModule.Instance.OwnMenus);
         
         initPeople();
 
-        TestRecipeTree();
+        // TestRecipeTree();
     }
 
-    private void TestRecipeTree()
-    {
-        GlobalFunctions.InitRecipe(UserInfoModule.Instance.OwnMenus);
-        foreach (var one in DataProviderModule.Instance.DataBase.TbMenuInfo.DataList)
-        {
-            GlobalFunctions.InsertRecipe(one.Id);
-        }
-        Debug.Log("food 1006 1013");
-        var result = GlobalFunctions.SearchRecipe(new List<int>() {1013,1006});
-        foreach (var recipeId in result)
-        {
-            Debug.Log(recipeId);
-        }
-        
-        Debug.Log("food 1003");
-        result = GlobalFunctions.SearchRecipe(new List<int>() {1003});
-        foreach (var recipeId in result)
-        {
-            Debug.Log(recipeId);
-        }
-        
-        Debug.Log("food 1002");
-        result = GlobalFunctions.SearchRecipe(new List<int>() {1002});
-        foreach (var recipeId in result)
-        {
-            Debug.Log(recipeId);
-        }
-        
-        Debug.Log("food 1021");
-        result = GlobalFunctions.SearchRecipe(new List<int>() {1021});
-        foreach (var recipeId in result)
-        {
-            Debug.Log(recipeId);
-        }
-        
-        Debug.Log("food 1022,1008,1026");
-        result = GlobalFunctions.SearchRecipe(new List<int>() {1008,1022,1026});
-        foreach (var recipeId in result)
-        {
-            Debug.Log(recipeId);
-        }
-        
-        
-    }
+    // private void TestRecipeTree()
+    // {
+    //     GlobalFunctions.InitRecipe(UserInfoModule.Instance.OwnMenus);
+    //     foreach (var one in DataProviderModule.Instance.DataBase.TbMenuInfo.DataList)
+    //     {
+    //         GlobalFunctions.InsertRecipe(one.Id);
+    //     }
+    //     Debug.Log("food 1006 1013");
+    //     var result = GlobalFunctions.SearchRecipe(new List<int>() {1013,1006});
+    //     foreach (var recipeId in result)
+    //     {
+    //         Debug.Log(recipeId);
+    //     }
+    //     
+    //     Debug.Log("food 1003");
+    //     result = GlobalFunctions.SearchRecipe(new List<int>() {1003});
+    //     foreach (var recipeId in result)
+    //     {
+    //         Debug.Log(recipeId);
+    //     }
+    //     
+    //     Debug.Log("food 1002");
+    //     result = GlobalFunctions.SearchRecipe(new List<int>() {1002});
+    //     foreach (var recipeId in result)
+    //     {
+    //         Debug.Log(recipeId);
+    //     }
+    //     
+    //     Debug.Log("food 1021");
+    //     result = GlobalFunctions.SearchRecipe(new List<int>() {1021});
+    //     foreach (var recipeId in result)
+    //     {
+    //         Debug.Log(recipeId);
+    //     }
+    //     
+    //     Debug.Log("food 1022,1008,1026");
+    //     result = GlobalFunctions.SearchRecipe(new List<int>() {1008,1022,1026});
+    //     foreach (var recipeId in result)
+    //     {
+    //         Debug.Log(recipeId);
+    //     }
+    //     
+    //     
+    // }
 
     // private async void loadShopkeeper()
     // {
@@ -180,65 +189,65 @@ public class RestaurantEnter : MonoBehaviour
     //     characterObj.gameObject.SetActive(false);
     // }
     
-    private async void loadWaitingCharacter()
-    {
-        foreach (var cid in UserInfoModule.Instance.RestaurantWaitingCharacter)
-        {
-            var characterBase = await CharacterMgr.Instance.CreateCharacter(cid);
-            var chara = characterBase as RestaurantCharacter;
-            // var chara = handler as RestaurantRoleBase;
-            var meal = UserInfoModule.Instance.GetCookedMealByCharacterId(chara.CharacterId);
-            if (meal != null)
-            {
-                chara.ReceiveFood(meal,false);
-            }
-
-            var order = UserInfoModule.Instance.GetNPCOrder(cid);
-            if (order != null)
-            {
-                chara.CurOrderInfo = order;
-            }
-            for (int i = 0; i < _seatPoints.Count; i++)
-            {
-                    var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, chara.SeatOccupy);
-                    chara.transform.position = seatWorldPosition;
-                    switch (chara.BehaviourID)
-                    {
-                        case behaviour.Leave:
-                            chara.CurBehaviour = new CharacterLeave();
-                            break;
-                        case behaviour.Talk:
-                            chara.CurBehaviour = new CharacterTalk();
-                            break;
-                        case behaviour.WaitReply:
-                            chara.CurBehaviour = new CharacterTalk();
-                            break;
-                        case behaviour.WaitOrder:
-                            chara.CurBehaviour = new CharacterWaitOrder();
-                            break;
-                        case behaviour.Eating:
-                            chara.CurBehaviour = new CharacterEating();
-                            break;
-                        case behaviour.OrderDrink:
-                            chara.CurBehaviour = new CharacterOrderDrink();
-                            break;
-                        case behaviour.OrderMeal:
-                            chara.CurBehaviour = new CharacterOrderMeal();
-                            break;
-                        case behaviour.Thinking:
-                            chara.CurBehaviour = new CharacterThinking();
-                            break;
-                        case behaviour.Comment:
-                            chara.CurBehaviour = new CharacterComment();
-                            break;
-                        default:
-                            Debug.Log($"waiting {chara.CharacterName} behaviour = {chara.BehaviourID} id = {(int)chara.BehaviourID}");
-                            break;
-                    }
-                    break;
-            }
-        }
-    }
+    // private async void loadWaitingCharacter()
+    // {
+    //     foreach (var cid in UserInfoModule.Instance.RestaurantWaitingCharacter)
+    //     {
+    //         var characterBase = await CharacterMgr.Instance.CreateCharacter(cid);
+    //         var chara = characterBase as RestaurantCharacter;
+    //         // var chara = handler as RestaurantRoleBase;
+    //         var meal = UserInfoModule.Instance.GetCookedMealByCharacterId(chara.CharacterId);
+    //         if (meal != null)
+    //         {
+    //             chara.ReceiveFood(meal,false);
+    //         }
+    //     
+    //         var order = UserInfoModule.Instance.GetNPCOrder(cid);
+    //         if (order != null)
+    //         {
+    //             chara.CurOrderInfo = order;
+    //         }
+    //         for (int i = 0; i < _seatPoints.Count; i++)
+    //         {
+    //                 var seatWorldPosition = CharacterTakeSeatPoint(chara.CharacterId, chara.SeatOccupy);
+    //                 chara.transform.position = seatWorldPosition;
+    //                 switch (chara.BehaviourID)
+    //                 {
+    //                     case behaviour.Leave:
+    //                         chara.CurBehaviour = new CharacterLeave();
+    //                         break;
+    //                     case behaviour.Talk:
+    //                         chara.CurBehaviour = new CharacterTalk();
+    //                         break;
+    //                     case behaviour.WaitReply:
+    //                         chara.CurBehaviour = new CharacterTalk();
+    //                         break;
+    //                     case behaviour.WaitOrder:
+    //                         chara.CurBehaviour = new CharacterWaitOrder();
+    //                         break;
+    //                     case behaviour.Eating:
+    //                         chara.CurBehaviour = new CharacterEating();
+    //                         break;
+    //                     case behaviour.OrderDrink:
+    //                         chara.CurBehaviour = new CharacterOrderDrink();
+    //                         break;
+    //                     case behaviour.OrderMeal:
+    //                         chara.CurBehaviour = new CharacterOrderMeal();
+    //                         break;
+    //                     case behaviour.Thinking:
+    //                         chara.CurBehaviour = new CharacterThinking();
+    //                         break;
+    //                     case behaviour.Comment:
+    //                         chara.CurBehaviour = new CharacterComment();
+    //                         break;
+    //                     default:
+    //                         Debug.Log($"waiting {chara.CharacterName} behaviour = {chara.BehaviourID} id = {(int)chara.BehaviourID}");
+    //                         break;
+    //                 }
+    //                 break;
+    //         }
+    //     }
+    // }
     
     private void Update()
     {
@@ -307,6 +316,11 @@ public class RestaurantEnter : MonoBehaviour
         // }
         _seatStatus[characterSeat] = 0;
         
+    }
+
+    public Vector3 SeatOrderBoardPositionInWorld(int seatIndex)
+    {
+        return _orderBoardPoints[seatIndex].position;
     }
 
     private void CharacterLeave(RestaurantRoleBase character)

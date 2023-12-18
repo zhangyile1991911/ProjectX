@@ -24,9 +24,10 @@ public partial class WeatherApp : BaseAppWidget
     private RectTransform _panelRT;
     private static readonly int Raining = Animator.StringToHash("raining");
     private static readonly int Sunny = Animator.StringToHash("sunny");
-    private Weather curWeather;
-    private int start_temperature;
-    private int end_temperature;
+    // private Weather curWeather;
+    // private int start_temperature;
+    // private int end_temperature;
+    private WeatherInfo cur_weatherInfo;
     public WeatherApp(GameObject go,UIWindow parent):base(go,parent)
     {
         WidgetType = AppType.Weather;
@@ -50,7 +51,7 @@ public partial class WeatherApp : BaseAppWidget
         fallAnimator = Tran_falling.GetComponent<Animator>();
         
         isToday = true;
-        curWeather = Weather.None;
+        cur_weatherInfo = null;
         XBtn_arrow.OnClick.Subscribe(switchWeather).AddTo(uiGo);
         _panelRT = Tran_panel.GetComponent<RectTransform>();
     }
@@ -75,6 +76,8 @@ public partial class WeatherApp : BaseAppWidget
             one.Restart();
         }
         switchWeather(null);
+        Ani_announcer.enabled = true;
+        fallAnimator.enabled = true;
     }
 
     public override void OnHide()
@@ -86,6 +89,8 @@ public partial class WeatherApp : BaseAppWidget
         }
 
         sunRotaTween?.Pause();
+        Ani_announcer.enabled = false;
+        fallAnimator.enabled = false;
     }
 
     public override void OnUpdate()
@@ -171,24 +176,11 @@ public partial class WeatherApp : BaseAppWidget
     private void switchWeather(PointerEventData param)
     {
         if(param != null) isToday = !isToday;
-
-        Weather weather;
-        if (isToday)
-        {
-            weather = WeatherMgr.Instance.NowWeather.Weather;
-            start_temperature = WeatherMgr.Instance.NowWeather.temperature_start;
-            end_temperature = WeatherMgr.Instance.NowWeather.temperature_end;
-        }
-        else
-        {
-            weather = WeatherMgr.Instance.NextWeather.Weather;
-            start_temperature = WeatherMgr.Instance.NextWeather.temperature_start;
-            end_temperature = WeatherMgr.Instance.NextWeather.temperature_end;
-        }
         
+        var tmp = isToday ? WeatherMgr.Instance.NowWeather : WeatherMgr.Instance.NextWeather;
         
         playCloudFloating();
-        switch (weather)
+        switch (tmp.Weather)
         {
             case Weather.Sunshine:
                 playSunShow();
@@ -200,12 +192,16 @@ public partial class WeatherApp : BaseAppWidget
                 break;
         }
         
-        switchCloud(weather);
-        switchSky(weather);
-        switchMoutain(weather);
-        changeWeatherInfo(weather);
-        switchAnnouncer(weather);
-        curWeather = weather;
+        switchCloud(tmp.Weather);
+        switchSky(tmp.Weather);
+        switchMoutain(tmp.Weather);
+        changeWeatherInfo(tmp);
+        switchAnnouncer(tmp.Weather);
+        cur_weatherInfo = tmp;
+        if (!GlobalFunctions.IsDebugMode)
+        {
+            Clocker.Instance.AddSecond(30);
+        }
     }
     
     private void playSunShow()
@@ -232,7 +228,7 @@ public partial class WeatherApp : BaseAppWidget
 
     private async void switchSky(Weather weather)
     {
-        if (curWeather == weather) return;
+        if (cur_weatherInfo != null &&cur_weatherInfo.Weather == weather) return;
         string sun_img_res = "";
         switch (weather)
         {
@@ -296,7 +292,7 @@ public partial class WeatherApp : BaseAppWidget
 
     private async void switchCloud(Weather weather)
     {
-        if (curWeather == weather) return;
+        if (cur_weatherInfo != null &&cur_weatherInfo.Weather == weather) return;
         string cloud_img_res = "";
         List<UniTask> alltask = new List<UniTask>(10);
         List<float> cloudMove = new List<float>(5);
@@ -336,7 +332,7 @@ public partial class WeatherApp : BaseAppWidget
 
     private async void switchMoutain(Weather weather)
     {
-        if (curWeather == weather) return;
+        if (cur_weatherInfo != null &&cur_weatherInfo.Weather == weather) return;
         string moutain_res_path = "";
         switch (weather)
         {
@@ -358,7 +354,7 @@ public partial class WeatherApp : BaseAppWidget
 
     private void switchAnnouncer(Weather weather)
     {
-        if (curWeather == weather) return;
+        if (cur_weatherInfo != null &&cur_weatherInfo.Weather == weather) return;
         switch (weather)
         {
             case Weather.Rain:
@@ -373,13 +369,13 @@ public partial class WeatherApp : BaseAppWidget
     }
 
 
-    private void changeWeatherInfo(Weather weather)
+    private void changeWeatherInfo(WeatherInfo switchInfo)
     {
-        // if (curWeather == weather) return;
+        if (cur_weatherInfo != null && cur_weatherInfo == switchInfo) return;
         XBtn_arrow.gameObject.SetActive(false);
         var s1 = _panelRT.DOScaleX(0, 1f).OnComplete(() =>
         {
-            switch (weather)
+            switch (switchInfo.Weather)
             {
                 case Weather.Rain:
                     Txt_condition.text = "雨";
@@ -392,13 +388,13 @@ public partial class WeatherApp : BaseAppWidget
             }
 
             Txt_day.text = isToday ? "今天" : "明天";
-            if (start_temperature == end_temperature)
+            if (switchInfo.temperature_start == switchInfo.temperature_end)
             {
-                Txt_temp.text = ZString.Format("{0}°",start_temperature);
+                Txt_temp.text = ZString.Format("{0}°",switchInfo.temperature_start);
             }
             else
             {
-                Txt_temp.text = ZString.Format("{0}°/{1}°",start_temperature,end_temperature);    
+                Txt_temp.text = ZString.Format("{0}°/{1}°",switchInfo.temperature_start,switchInfo.temperature_end);    
             }
             
             _panelRT.DOScaleX(1f, 1f).OnComplete(()=>{XBtn_arrow.gameObject.SetActive(true);});

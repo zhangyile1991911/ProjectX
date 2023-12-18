@@ -75,9 +75,9 @@ public partial class HandleOrderWindow : UIWindow
     加麻加辣!加麻加辣!
  */
     private const string HybridOrderInfoFormat = "    {0}点{1}分\n    顾客: {2}\n    ---------------------------------------------\n\n    菜品名称\t          \t单价\t         \t数量\t      小计\n{3}    ---------------------------------------------\n\n    备注:\n\n    {4}";
-    private const string SpecifiedOrderInfoFormat = "    {0}点{1}分\n    顾客: {2}\n    ---------------------------------------------\n\n    菜品名称\t          \t单价\t         \t数量\t      小计\n{3}    ---------------------------------------------\n\n";
+    private const string SpecifiedOrderInfoFormat = "    {0}点{1}分\n    顾客: {2}\n    ---------------------------------------------\n\n    菜品名称\t \t单价\t  \t数量\t  小计\n{3}    ---------------------------------------------\n\n";
     private const string OmakaseOrderInfoFormat = "    {0}点{1}分\\n    顾客: {2}\\n    ---------------------------------------------\\n\\n    {3}\\n\\n    ---------------------------------------------\\n\\n";
-    private const string OrderDetailFormat = "    {0}\t{1}\t\t1\t      {2}\n";
+    private const string OrderDetailFormat = "    {0}\t\t{1}\t\t1   {2}\n";
     private const string OrderFlavorFormat = "    {0}";
     private void showCurOrderInfo()
     {
@@ -114,12 +114,14 @@ public partial class HandleOrderWindow : UIWindow
         var charaTb = DataProviderModule.Instance.GetCharacterBaseInfo(info.CharacterId);
         var menuTb = DataProviderModule.Instance.GetMenuInfo(info.MenuId);
         var itemTb = DataProviderModule.Instance.GetItemBaseInfo(info.MenuId);
-        var cellStr = ZString.Format(OrderDetailFormat, menuTb.Name, itemTb.Sell,itemTb.Sell);
-        Txt_OrderDetail.text = ZString.Format(SpecifiedOrderInfoFormat,
-            info.OrderTime.Hour,
-            info.OrderTime.Minute,
-            charaTb.Name,
-            cellStr);
+        
+        Txt_time.text = ZString.Format(" {0}:{1}:{2}",info.OrderTime.Hour,info.OrderTime.Minute,info.OrderTime.Seconds);
+        Txt_customername.text = ZString.Format("顾客: {0}",menuTb.Name);
+        Txt_orderName.text = menuTb.Name; 
+        Txt_orderSale.text = itemTb.Sell.ToString();
+        Txt_orderNum.text = "1";
+        Txt_orderTotal.text = itemTb.Sell.ToString();
+        Txt_extra.gameObject.SetActive(false);
     }
 
     private void showOmakaseOrder(OrderMealInfo info)

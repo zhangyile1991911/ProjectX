@@ -48,7 +48,8 @@ public partial class CalenderWindow : UIWindow
             doPassDayAnimation();
             //canContinue = false;
         }
-        doWeatherAnimation(Weather.Sunshine);
+        
+        doWeatherAnimation(WeatherMgr.Instance.NowWeather.Weather);
         Btn_continue.OnClickAsObservable().Where(_=>canContinue).Subscribe(clickContinue).AddTo(handles);
     }
 
@@ -80,19 +81,29 @@ public partial class CalenderWindow : UIWindow
 
     private void doPassDayAnimation()
     {
-        var seq = DOTween.Sequence();
-        seq.PrependInterval(0.5f);
-        seq.Append(prevSheet.uiRectTran.DORotate(new Vector3(0,0,-30f),2f));
-        seq.Join(prevSheet.uiRectTran.DOMove(new Vector3(-800f,-1100f,0f),5f));
-        seq.InsertCallback(0.5f,() =>
+        var nowDate = Clocker.Instance.NowDateTime;
+        if (nowDate.Year == GameDateTime.InitialYear && nowDate.Season == Season.Spring && nowDate.Day == 1)
         {
+            prevSheet.OnHide();
             canContinue = true;
-            var nowDate = Clocker.Instance.NowDateTime;
             Txt_date.text = $"{(int)nowDate.Season}月{nowDate.Day}日\n{nowDate.WeekDayStr()}";
-        });
+        }
+        else
+        {
+            prevSheet.OnShow(null);
+            var seq = DOTween.Sequence();
+            seq.PrependInterval(0.5f);
+            seq.Append(prevSheet.uiRectTran.DORotate(new Vector3(0,0,-30f),2f));
+            seq.Join(prevSheet.uiRectTran.DOMove(new Vector3(-800f,-1100f,0f),5f));
+            seq.InsertCallback(0.5f,() =>
+            {
+                canContinue = true;
+                Txt_date.text = $"{(int)nowDate.Season}月{nowDate.Day}日\n{nowDate.WeekDayStr()}";
+            });    
+        }
     }
 
-    private void doWeatherAnimation(cfg.common.Weather weather)
+    private void doWeatherAnimation(Weather weather)
     {
         weatherTweener?.Kill(false);
         switch (weather)
@@ -104,6 +115,7 @@ public partial class CalenderWindow : UIWindow
                     SetLoops(-1);
                 break;
             case Weather.Rain:
+                LoadSpriteAsync("Assets/GameRes/Picture/UI/Phone/Weather/rain_mark.png", Img_weather);
                 break;
             case Weather.Snow:
                 break;

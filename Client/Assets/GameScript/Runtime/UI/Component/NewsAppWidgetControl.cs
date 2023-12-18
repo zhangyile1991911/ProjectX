@@ -58,6 +58,11 @@ public partial class NewsAppWidget : BaseAppWidget
         _detailWidget.XBtn_Return.OnClick.Subscribe(param =>
         {
             _detailWidget.PlayOutAnimation();
+            if (!GlobalFunctions.IsDebugMode)
+            {
+                //增加时间
+                Clocker.Instance.AddSecond(5);    
+            }
         }).AddTo(_handlers);
     }
 
@@ -105,7 +110,12 @@ public partial class NewsAppWidget : BaseAppWidget
                     _detailWidget.OnShow(null);
                     _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
                     _detailWidget.PlayInAnimation();
-                }).AddTo(_handlers);
+                    if (!GlobalFunctions.IsDebugMode)
+                    {
+                        //增加时间
+                        Clocker.Instance.AddSecond(10);    
+                    }
+                }).AddTo(cell.uiTran);
             }
             cell.SetNewsDetailInfo(_newsDataList[itemIndex]);
             // loopGridView.SetItemSize(new Vector2(450,80));
@@ -131,7 +141,7 @@ public partial class NewsAppWidget : BaseAppWidget
                     _detailWidget.OnShow(null);
                     _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
                     _detailWidget.PlayInAnimation();
-                }).AddTo(_handlers);
+                }).AddTo(cell.uiTran);
             }
             cell.SetNewsDetailInfo(_newsDataList[itemIndex]);
             loopListView.OnItemSizeChanged(itemIndex);
@@ -157,48 +167,7 @@ public partial class NewsAppWidget : BaseAppWidget
     void MakeNewsData()
     {
         _newsDataList = DataProviderModule.Instance.FilterNews();
-        // _newsList.Add(new NormalNewsData()
-        // {
-        //     Title = "朱珠老公晒带娃日常，喂饭...",
-        //     NewsImage = "Assets/GameRes/Picture/Icon/zhuzhu.png",
-        //     Follow = "娱絮 34跟帖",
-        //     Comment = "一直觉得朱珠会嫁给欧美人"
-        // });
-        // _newsList.Add(new NormalNewsData()
-        // {
-        //     Title = "大道之行 筑梦丝路",
-        //     NewsImage = "Assets/GameRes/Picture/Icon/dadao.png",
-        //     Follow = "荔枝新闻 3跟帖",
-        //     Comment = "中哈物流进一步发展！"
-        // });
-        // _newsList.Add(new NormalNewsData()
-        // {
-        //     Title = "世界杯抽签：中国男篮与塞尔",
-        //     NewsImage = "Assets/GameRes/Picture/Icon/lanqiu.png",
-        //     Follow = "网易体育 1849跟帖",
-        //     Comment = "这算是个上上签了"
-        // });
-        // _newsList.Add(new NormalNewsData()
-        // {
-        //     Title = "国家统计局：4月官方制造业",
-        //     NewsImage = "Assets/GameRes/Picture/Icon/zhizaoye.png",
-        //     Follow = "国家统计局 475跟帖",
-        //     Comment = "冷暖自知！"
-        // });
-        // _newsList.Add(new NormalNewsData()
-        // {
-        //     Title = "国家网信办：百度、新浪微博、",
-        //     NewsImage = "Assets/GameRes/Picture/Icon/baidu.png",
-        //     Follow = "网信中国 2476跟帖",
-        //     Comment = "抖音低俗色情打擦边球网贷广告泛滥，必须查处！"
-        // });
-        // _newsList.Add(new NormalNewsData()
-        // {
-        //     Title = "各地土拍“冷热不均”：核心城市",
-        //     NewsImage = "Assets/GameRes/Picture/Icon/tupai.png",
-        //     Follow = "澎湃新闻 75跟帖",
-        //     Comment = "都到这一步了就别再忽悠了好不好，说点实话干点实事吧"
-        // });
+        
     }
     
     

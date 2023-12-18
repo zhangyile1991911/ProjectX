@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: bc878f226ce81ad41b7cee776e03af55
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 053561912b1654d80a424bb0696a74ae, type: 3}
+  sourceScripts:
+  - {fileID: 6391573757903218779, guid: 06de8147fcb73a64e812f2f0105cf54f, type: 3}
+  - {fileID: 6391573757903218779, guid: f8bbf49e8e9ed214687c4efbf490a064, type: 3}
+  - {fileID: 6391573757903218779, guid: 036362553116b884f9241db3a6e5395e, type: 3}
+  compileErrors: []
+  serializedDeclarations: []
+  defaultLanguage: zh-CN
+  languagesToSourceAssets: []
+  useAddressableAssets: 0

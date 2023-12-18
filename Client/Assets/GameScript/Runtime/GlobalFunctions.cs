@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using cfg.common;
 using cfg.food;
-using UnityEngine;
 using YooAsset;
+using Debug = UnityEngine.Debug;
 
 
 public class CookWindowParamData:UIOpenParam
@@ -84,6 +85,7 @@ public class WeatherInfo
 //炒完的菜
 public static class GlobalFunctions
 {
+    public static bool IsDebugMode = false;
     // public static Action<bool> YooAssetsComplete;
     public static IEnumerator InitYooAssets(Action<bool> complete)
     {
@@ -103,6 +105,19 @@ public static class GlobalFunctions
 
         complete?.Invoke(true);
     }
+    
+    public static void PrintLimitedStackTrace(int frameCount)
+    {
+        frameCount++;
+        StackTrace stackTrace = new StackTrace();
+        // 循环遍历前几个堆栈帧
+        for (int i = 0; i < frameCount && i < stackTrace.FrameCount; i++)
+        {
+            StackFrame frame = stackTrace.GetFrame(i);
+            Debug.Log($"Frame {i}: {frame.GetMethod().DeclaringType}.{frame.GetMethod().Name}");
+        }
+    }
+
 
     private static RecipeTrie OwnRecipe;
 

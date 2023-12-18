@@ -600,8 +600,7 @@ public class CharacterThinking : CharacterBehaviour
         _restaurantCharacter.PlayAnimation(BehaviourID);
         
         //随机组
-        int id = _restaurantCharacter.TBBaseInfo.BehaviourGroup;
-        var tb = DataProviderModule.Instance.GetBehaviourGroup(id);
+        var tb = DataProviderModule.Instance.GetBehaviourGroup(_restaurantCharacter.BehaviourGroupId);
         int total_weight = 0;
         foreach (var one in tb.Group)
         {

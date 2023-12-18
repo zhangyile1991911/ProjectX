@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +33,10 @@ public partial class NewsDetailWidget : UIComponent
         commentWidgets.Add(new NewsCommentWidget(Ins_CommentB.gameObject,this.ParentWindow));
         commentWidgets.Add(new NewsCommentWidget(Ins_CommentC.gameObject,this.ParentWindow));
         _animations = uiTran.GetComponent<DOTweenAnimation>();
-        
+        ScrollRect.OnValueChangedAsObservable().Select(_=>!GlobalFunctions.IsDebugMode).Subscribe(param =>
+        {
+            Clocker.Instance.AddSecond(2);
+        }).AddTo(uiTran);
     }
     
     public override void OnDestroy()

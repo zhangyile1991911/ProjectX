@@ -111,7 +111,8 @@ public class WaitStateNode : IStateNode
 
     private LineupInfo fetchWaitingCharacterId()
     {
-        /*现在是链表
+        /*
+         现在是链表
          如果当前链表头的角色不满足条件,无法出场,就放到链表尾部
         */
         int emptySeatNum = _restaurant.EmptySeatNum();
@@ -189,10 +190,10 @@ public class WaitStateNode : IStateNode
             Debug.Log($"after create handleCharacter {lineup.characterIds}");
         }
         
-        var npcId = filterNPCAppear(dateTime);
-        if (npcId != null)
+        var lineupNPC = filterNPCAppear(dateTime);
+        if (lineupNPC != null)
         {
-            _waitingCharacter.AddFirst(npcId);    
+            _waitingCharacter.AddFirst(lineupNPC);    
         }
     }
 
@@ -203,7 +204,7 @@ public class WaitStateNode : IStateNode
         //一般NPC  
         var character = await CharacterMgr.Instance.CreateCharacter(CharacterId);
         Debug.Log($"await CharacterMgr.Instance.CreateCharacter");
-        
+        character.Restaurant = _restaurant;
         
         
         return character;

@@ -501,7 +501,7 @@
     "sell": 500,
     "type": 2,
     "desc": "蒸鸡蛋有很好的营养，味道也很美味，比豆腐脑还嫩滑，很多人家里经常做蒸鸡蛋吃，蒸鸡蛋做法也非常简单快速。",
-    "ui_res_path": "Assets/GameRes/Picture/Food/grey.png",
+    "ui_res_path": "Assets/GameRes/Picture/Food/red.png",
     "scene_res_path": "Assets/GameRes/Picture/Character/DeliveryMan.png",
     "get_method": ""
   },

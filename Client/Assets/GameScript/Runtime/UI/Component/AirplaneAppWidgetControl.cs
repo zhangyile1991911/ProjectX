@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using Cysharp.Text;
 using DG.Tweening;
 using UniRx;
@@ -10,6 +11,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Pool;
 using UnityEngine.UI;
 using YooAsset;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -27,7 +29,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
     private ObjectPool<BeeBullet> enemyBulletPool;
     private ObjectPool<BeeBullet> beeBulletPool;
-    private ObjectPool<AnimatorRecycle> explosionPool;
+    private ObjectPool<AnimatorAutoRecycle> explosionPool;
     
     private ObjectPool<EnemyBee> enemyPool;
     private Dictionary<string,BeeBullet> activeBullets;
@@ -134,7 +136,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
             10,
             50);
 
-        explosionPool = new ObjectPool<AnimatorRecycle>(
+        explosionPool = new ObjectPool<AnimatorAutoRecycle>(
             onCreateExplosion,
             onGetExplosion,
             onReleaseExplosion,
@@ -223,7 +225,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
         var one = YooAssets.LoadAssetSync<BeeBullet>("Assets/GameRes/Prefabs/BeeGame/BeeBullet.prefab");
         var go = one.AssetObject as BeeBullet;
         var bulletObj = Object.Instantiate(go,uiRectTran);
-        bulletObj.name = "enemyBullet"+bulletNum;
+        bulletObj.name = "playerBullet"+bulletNum;
         bulletNum++;
         return bulletObj.GetComponent<BeeBullet>();
     }
@@ -236,10 +238,13 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
     private void onReleaseBeeBullet(BeeBullet bullet)
     {
+        Debug.Log($"playerBullet release {bullet.name}");
+        GlobalFunctions.PrintLimitedStackTrace(2);
         bullet.gameObject.SetActive(false);
         // activeBullects.Remove(bullet);
     }
-
+    
+    
     private void onDestroyBeeBullet(BeeBullet bullet)
     {
         bullet.gameObject.SetActive(false);
@@ -247,26 +252,28 @@ public partial class AirplaneAppWidget : BaseAppWidget
     }
     
     
-    private AnimatorRecycle onCreateExplosion()
+    private AnimatorAutoRecycle onCreateExplosion()
     {
         var one = YooAssets.LoadAssetSync<GameObject>("Assets/GameRes/Prefabs/BeeGame/Explosion.prefab");
         var go = one.AssetObject as GameObject;
         var ar = Object.Instantiate(go,uiRectTran);
-        return ar.GetComponent<AnimatorRecycle>();
+        return ar.GetComponent<AnimatorAutoRecycle>();
     }
 
-    private void onGetExplosion(AnimatorRecycle go)
+    private void onGetExplosion(AnimatorAutoRecycle go)
     {
         go.gameObject.SetActive(true);
         go.StartAnimation("explosion",explosionPool);
+        Debug.Log($"onGetExplosion {go.GetInstanceID()}");
     }
 
-    private void onReleaseExplosion(AnimatorRecycle go)
+    private void onReleaseExplosion(AnimatorAutoRecycle go)
     {
         go.gameObject.SetActive(false);
+        Debug.Log($"onReleaseExplosion {go.GetInstanceID()}");
     }
 
-    private void onDestroyExplosion(AnimatorRecycle go)
+    private void onDestroyExplosion(AnimatorAutoRecycle go)
     {
         go.gameObject.SetActive(false);
         Object.Destroy(go);
@@ -312,19 +319,6 @@ public partial class AirplaneAppWidget : BaseAppWidget
             enemyPool.Release(one);
         }
         activeEnemies.Clear();
-
-        foreach (var one in activeBullets.Values)
-        {
-            if (one.CompareTag("PlayerBee"))
-            {
-                beeBulletPool.Release(one);
-            }
-            else
-            {
-                enemyBulletPool.Release(one);    
-            }   
-        }
-        activeBullets.Clear();
         
         enemyPool.Clear();
         enemyPool = null;
@@ -421,10 +415,11 @@ public partial class AirplaneAppWidget : BaseAppWidget
             CurState = new BeeGameOver(this);
         }
         CurState.EveryFrame();
-        //增加时间
-        // Clocker.Instance.AddSecond(1);
-        
-        
+        if (!GlobalFunctions.IsDebugMode)
+        {
+            //增加时间
+            Clocker.Instance.AddSecond(1);    
+        }
     }
 
 
@@ -490,14 +485,14 @@ public partial class AirplaneAppWidget : BaseAppWidget
             if (enemyBee.Fire())
             {
                 var one = enemyBulletPool.Get();
-                
+                activeBullets.Add(one.name,one);
                 one.Init(enemyBee.Controller.anchoredPosition + enemyBee.Shot.anchoredPosition,
                     enemyBee.tag,
                     enemyBee.Direction,
                     enemyBee.FlySpeed*1.5f,
                     recycleBeeBullet);
                 one.tag = enemyBee.tag;
-                activeBullets.Add(one.name,one);
+                
             }
             
             if(enemyBee.Move())continue;
@@ -542,6 +537,11 @@ public partial class AirplaneAppWidget : BaseAppWidget
             enemyPool.Release(one);
             activeEnemies.Remove(one);
         }
+    }
+
+    public void RecycleAllExplosion()
+    {
+        
     }
     
     public void UpdateBee()

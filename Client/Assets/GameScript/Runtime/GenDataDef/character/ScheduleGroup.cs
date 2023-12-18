@@ -21,15 +21,17 @@ public sealed partial class ScheduleGroup :  Bright.Config.BeanBase
         { if(!_json["id"].IsNumber) { throw new SerializationException(); }  Id = _json["id"]; }
         { if(!_json["name"].IsString) { throw new SerializationException(); }  Name = _json["name"]; }
         { var __json0 = _json["partner_id"]; if(!__json0.IsArray) { throw new SerializationException(); } PartnerId = new System.Collections.Generic.List<int>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { int __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = __e0; }  PartnerId.Add(__v0); }   }
+        { if(!_json["behaviour_id"].IsNumber) { throw new SerializationException(); }  BehaviourId = _json["behaviour_id"]; }
         { var __json0 = _json["character_appear_infos"]; if(!__json0.IsArray) { throw new SerializationException(); } CharacterAppearInfos = new System.Collections.Generic.List<common.appear_time>(__json0.Count); foreach(JSONNode __e0 in __json0.Children) { common.appear_time __v0;  { if(!__e0.IsObject) { throw new SerializationException(); }  __v0 = common.appear_time.Deserializeappear_time(__e0);  }  CharacterAppearInfos.Add(__v0); }   }
         PostInit();
     }
 
-    public ScheduleGroup(int id, string name, System.Collections.Generic.List<int> partner_id, System.Collections.Generic.List<common.appear_time> character_appear_infos ) 
+    public ScheduleGroup(int id, string name, System.Collections.Generic.List<int> partner_id, int behaviour_id, System.Collections.Generic.List<common.appear_time> character_appear_infos ) 
     {
         this.Id = id;
         this.Name = name;
         this.PartnerId = partner_id;
+        this.BehaviourId = behaviour_id;
         this.CharacterAppearInfos = character_appear_infos;
         PostInit();
     }
@@ -42,6 +44,7 @@ public sealed partial class ScheduleGroup :  Bright.Config.BeanBase
     public int Id { get; private set; }
     public string Name { get; private set; }
     public System.Collections.Generic.List<int> PartnerId { get; private set; }
+    public int BehaviourId { get; private set; }
     public System.Collections.Generic.List<common.appear_time> CharacterAppearInfos { get; private set; }
 
     public const int __ID__ = -320576509;
@@ -64,6 +67,7 @@ public sealed partial class ScheduleGroup :  Bright.Config.BeanBase
         + "Id:" + Id + ","
         + "Name:" + Name + ","
         + "PartnerId:" + Bright.Common.StringUtil.CollectionToString(PartnerId) + ","
+        + "BehaviourId:" + BehaviourId + ","
         + "CharacterAppearInfos:" + Bright.Common.StringUtil.CollectionToString(CharacterAppearInfos) + ","
         + "}";
     }

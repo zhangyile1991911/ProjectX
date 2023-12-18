@@ -278,6 +278,7 @@ public class DataProviderModule : SingletonModule<DataProviderModule>
         var weatherGroup = _database.TbWeatherGroup.DataMap[scheduler.WeatherGroupId];
         return weatherGroup;
     }
+    
     public Weather DayWeather(Season season,int day)
     {
         var scheduler = SeasonScheduler[season][day];

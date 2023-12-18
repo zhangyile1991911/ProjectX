@@ -22,6 +22,10 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     public int CharacterId => _baseInfo.Id;
     public CharacterBaseInfo TBBaseInfo => _baseInfo;
     protected  CharacterBaseInfo _baseInfo;
+
+    public ScheduleGroup TbsScheduleGroup => _scheduleGroup;
+    protected ScheduleGroup _scheduleGroup;
+    public int BehaviourGroupId => _scheduleGroup.BehaviourId;
     public string CharacterName => _baseInfo.Name;
     public int SeatOccupy
     {
@@ -59,7 +63,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         get => _npcData.patient;
     }
     
-    public behaviour BehaviourID => (behaviour)_npcData.Behaviour;
+    // public behaviour BehaviourID => (behaviour)_npcData.Behaviour;
     public CharacterBehaviour CurBehaviour
     {
         get => _behaviour;
@@ -77,11 +81,11 @@ public abstract class RestaurantRoleBase : MonoBehaviour
                 if (_behaviour != null)
                 {
                     _behaviour.Enter(this);
-                    _npcData.Behaviour = (int)value.BehaviourID;    
+                    // _npcData.Behaviour = (int)value.BehaviourID;    
                 }
                 else
                 {
-                    _npcData.Behaviour = 0;
+                    // _npcData.Behaviour = 0;
                 }
                 UserInfoModule.Instance.UpdateNPCData(CharacterId);
                 
@@ -97,6 +101,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
 
     protected bool isActive;
 
+    public RestaurantEnter Restaurant;
     // protected Animation _animation;
     public virtual void InitCharacter(CharacterBaseInfo info)
     {
@@ -126,7 +131,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _spriteRenderer = null;
         halfSecondTImer?.Dispose();
         halfSecondTImer = null;
-        
+        Restaurant = null;
         spriteAtlasHandle?.Dispose();
         spriteAtlasHandle = null;
         _spriteDict.Clear();
@@ -144,14 +149,19 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     protected virtual void LoadTableData()
     {
-        //当前行动组partnerid
-        var tbCharacterScheduler = CharacterScheduler.Instance.CharacterScheduleId(CharacterId);
-        if (tbCharacterScheduler == null)
+        //当前行动组
+        LoadScheduleGroup();
+    }
+
+    protected void LoadScheduleGroup()
+    {
+        _scheduleGroup = CharacterScheduler.Instance.CharacterScheduleId(CharacterId);
+        if (_scheduleGroup == null)
         {
             Debug.Log($"RestaurantRoleBase LoadTableData CharacterId = {CharacterId} CharacterScheduler == null");
             return;
         }
-        foreach (var id in tbCharacterScheduler.PartnerId)
+        foreach (var id in _scheduleGroup.PartnerId)
         {
             AddPartner(id);
         }
@@ -196,6 +206,8 @@ public abstract class RestaurantRoleBase : MonoBehaviour
             _npcData.ScheduleId = CharacterScheduler.Instance.UpdateCharacterSchedule(_npcData.Id,
                 _npcData.ScheduleId,
                 _npcData.FriendlyValue);
+            //更新日程表
+            LoadScheduleGroup();
         }
         else
         {
@@ -271,36 +283,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     public virtual void PlayAnimation(behaviour behaviourId)
     {
-        switch (behaviourId)
-        {
-            case behaviour.Eating:
-                if (_spriteRenderer.sprite == null)
-                {
-                    _spriteRenderer.sprite = _spriteDict["eat1"];
-                }
-                else if (_spriteRenderer.sprite.name == "eat1")
-                {
-                    _spriteRenderer.sprite = _spriteDict["eat2"];    
-                }
-                else
-                {
-                    _spriteRenderer.sprite = _spriteDict["eat1"];
-                }
-                break;
-            case behaviour.Talk:
-                _spriteRenderer.sprite = _spriteDict["angry"];
-                break;
-            case behaviour.WaitOrder:
-            case behaviour.WaitReply:
-                _spriteRenderer.sprite = _spriteDict["happy"];
-                break;
-            case behaviour.Comment:
-                _spriteRenderer.sprite = _spriteDict["waiting"];
-                break;
-            default:
-                _spriteRenderer.sprite = _spriteDict["waiting"];       
-                break;
-        }
+        
     }
 
     public virtual void ClearDailyData()
@@ -319,6 +302,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         if (_partnerIds.Contains(partnerId)) return;
         _partnerIds.Add(partnerId);
     }
+    
     // private void Update()
     // {
     //     CurBehaviour?.Update();

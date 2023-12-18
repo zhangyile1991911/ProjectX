@@ -26,12 +26,11 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         { if(!_json["picture_path"].IsString) { throw new SerializationException(); }  PicturePath = _json["picture_path"]; }
         { var __json0 = _json["like_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } LikeFlavour = new System.Collections.Generic.HashSet<food.flavorTag>(/*__json0.Count*/); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  LikeFlavour.Add(__v0); }   }
         { var __json0 = _json["unlike_flavour"]; if(!__json0.IsArray) { throw new SerializationException(); } UnlikeFlavour = new System.Collections.Generic.HashSet<food.flavorTag>(/*__json0.Count*/); foreach(JSONNode __e0 in __json0.Children) { food.flavorTag __v0;  { if(!__e0.IsNumber) { throw new SerializationException(); }  __v0 = (food.flavorTag)__e0.AsInt; }  UnlikeFlavour.Add(__v0); }   }
-        { if(!_json["behaviour_group"].IsNumber) { throw new SerializationException(); }  BehaviourGroup = _json["behaviour_group"]; }
         { if(!_json["schedule_group"].IsNumber) { throw new SerializationException(); }  ScheduleGroup = _json["schedule_group"]; }
         PostInit();
     }
 
-    public CharacterBaseInfo(int id, string name, string desc, int soul, string prefab_path, string picture_path, System.Collections.Generic.HashSet<food.flavorTag> like_flavour, System.Collections.Generic.HashSet<food.flavorTag> unlike_flavour, int behaviour_group, int schedule_group ) 
+    public CharacterBaseInfo(int id, string name, string desc, int soul, string prefab_path, string picture_path, System.Collections.Generic.HashSet<food.flavorTag> like_flavour, System.Collections.Generic.HashSet<food.flavorTag> unlike_flavour, int schedule_group ) 
     {
         this.Id = id;
         this.Name = name;
@@ -41,7 +40,6 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         this.PicturePath = picture_path;
         this.LikeFlavour = like_flavour;
         this.UnlikeFlavour = unlike_flavour;
-        this.BehaviourGroup = behaviour_group;
         this.ScheduleGroup = schedule_group;
         PostInit();
     }
@@ -84,10 +82,6 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
     /// </summary>
     public System.Collections.Generic.HashSet<food.flavorTag> UnlikeFlavour { get; private set; }
     /// <summary>
-    /// 行为组
-    /// </summary>
-    public int BehaviourGroup { get; private set; }
-    /// <summary>
     /// 行程组
     /// </summary>
     public int ScheduleGroup { get; private set; }
@@ -115,7 +109,6 @@ public sealed partial class CharacterBaseInfo :  Bright.Config.BeanBase
         + "PicturePath:" + PicturePath + ","
         + "LikeFlavour:" + Bright.Common.StringUtil.CollectionToString(LikeFlavour) + ","
         + "UnlikeFlavour:" + Bright.Common.StringUtil.CollectionToString(UnlikeFlavour) + ","
-        + "BehaviourGroup:" + BehaviourGroup + ","
         + "ScheduleGroup:" + ScheduleGroup + ","
         + "}";
     }

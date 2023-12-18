@@ -1318,5 +1318,279 @@
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/young/young.yarnproject",
     "dialogue_start_node": "young_comment_specify"
+  },
+  {
+    "id": 100051001,
+    "title": "好久不见",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": false,
+    "pre_condition": [],
+    "week_day": [
+      1
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_main_1"
+  },
+  {
+    "id": 100051002,
+    "title": "伊莉丝，真可爱",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": false,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      3
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_main_2"
+  },
+  {
+    "id": 100051003,
+    "title": "最近都不知道玩啥",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": false,
+    "pre_condition": [
+      100051002
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_main_3"
+  },
+  {
+    "id": 100051004,
+    "title": "PlayGround3真是经久耐用",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": false,
+    "pre_condition": [
+      100051003
+    ],
+    "week_day": [
+      1
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_main_4"
+  },
+  {
+    "id": 100051005,
+    "title": "我老爸真的很喜欢",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": false,
+    "pre_condition": [
+      100051004
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_main_5"
+  },
+  {
+    "id": 100051006,
+    "title": "我那不争气的儿子吃饭",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": false,
+    "pre_condition": [
+      100051005
+    ],
+    "week_day": [
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 1,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_main_6"
+  },
+  {
+    "id": 100052001,
+    "title": "我都忘了今天是周几了",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      1,
+      3,
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_talk_1"
+  },
+  {
+    "id": 100052002,
+    "title": "越玩越菜",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      1,
+      3,
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_talk_2"
+  },
+  {
+    "id": 100052003,
+    "title": "今天玩什么好呢",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      1,
+      3,
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_talk_3"
+  },
+  {
+    "id": 100052004,
+    "title": "手感回复不少",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      1,
+      3,
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_talk_4"
+  },
+  {
+    "id": 100052005,
+    "title": "手指运动",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      1,
+      3,
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_talk_5"
+  },
+  {
+    "id": 100052006,
+    "title": "坚持三秒",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      100051001
+    ],
+    "week_day": [
+      1,
+      3,
+      5
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 100
+    },
+    "bubble_type": 2,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_talk_6"
   }
 ]

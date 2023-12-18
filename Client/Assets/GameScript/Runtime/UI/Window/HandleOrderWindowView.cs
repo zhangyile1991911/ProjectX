@@ -20,6 +20,20 @@ public partial class HandleOrderWindow : UIWindow
 	public TextMeshProUGUI Txt_OrderDetail;
 	public XButton XBtn_close;
 	public XButton XBtn_recipe;
+	public Transform Tran_Detail;
+	public TextMeshProUGUI Txt_time;
+	public TextMeshProUGUI Txt_customername;
+	public TextMeshProUGUI Txt_up;
+	public TextMeshProUGUI Txt_titleName;
+	public TextMeshProUGUI Txt_titleSale;
+	public TextMeshProUGUI Txt_titleNum;
+	public TextMeshProUGUI Txt_titleTotal;
+	public TextMeshProUGUI Txt_orderName;
+	public TextMeshProUGUI Txt_orderSale;
+	public TextMeshProUGUI Txt_orderNum;
+	public TextMeshProUGUI Txt_orderTotal;
+	public TextMeshProUGUI Txt_down;
+	public TextMeshProUGUI Txt_extra;
 
 	public override void Init(GameObject go)
 	{
@@ -34,6 +48,20 @@ public partial class HandleOrderWindow : UIWindow
 		Txt_OrderDetail = go.transform.Find("Tran_RightArea/Txt_OrderDetail").GetComponent<TextMeshProUGUI>();
 		XBtn_close = go.transform.Find("Tran_RightArea/XBtn_close").GetComponent<XButton>();
 		XBtn_recipe = go.transform.Find("Tran_RightArea/XBtn_recipe").GetComponent<XButton>();
+		Tran_Detail = go.transform.Find("Tran_RightArea/Tran_Detail").GetComponent<Transform>();
+		Txt_time = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_time").GetComponent<TextMeshProUGUI>();
+		Txt_customername = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_customername").GetComponent<TextMeshProUGUI>();
+		Txt_up = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_splitLine_up").GetComponent<TextMeshProUGUI>();
+		Txt_titleName = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_titleName").GetComponent<TextMeshProUGUI>();
+		Txt_titleSale = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_titleSale").GetComponent<TextMeshProUGUI>();
+		Txt_titleNum = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_titleNum").GetComponent<TextMeshProUGUI>();
+		Txt_titleTotal = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_titleTotal").GetComponent<TextMeshProUGUI>();
+		Txt_orderName = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_orderName").GetComponent<TextMeshProUGUI>();
+		Txt_orderSale = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_orderSale").GetComponent<TextMeshProUGUI>();
+		Txt_orderNum = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_orderNum").GetComponent<TextMeshProUGUI>();
+		Txt_orderTotal = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_orderTotal").GetComponent<TextMeshProUGUI>();
+		Txt_down = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_splitLine_down").GetComponent<TextMeshProUGUI>();
+		Txt_extra = go.transform.Find("Tran_RightArea/Tran_Detail/Txt_extra").GetComponent<TextMeshProUGUI>();
 
 	}
 }

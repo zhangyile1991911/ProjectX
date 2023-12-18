@@ -1,0 +1,18 @@
+﻿title: Fernando_comment_specify
+tags:
+---
+<<declare $cookFoodId = 0>>
+<<declare $orderedId = 0>>
+<<declare $foodscore = 0>>
+<<if $cookFoodId == $orderedId>>
+    <<if $foodscore < 60>>
+        费南多: 老板,你这个菜做的
+        <<AddFriend -10>>
+    <<else>>
+        费南多: 我超，哥们就好这一口。
+        <<AddFriend 20>>
+    <<endif>>
+<<else>>
+    <<jump young_comment_err>>
+<<endif>>
+===

@@ -2,10 +2,10 @@
   {
     "id": 10001,
     "name": "章鱼",
-    "desc": "",
+    "desc": "小镇青年",
     "soul": 1,
-    "prefab_path": "Assets/GameRes/Prefabs/NPC/YoungFatMan.prefab",
-    "picture_path": "Assets/GameRes/Picture/Character/extra01/A1.png",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Zhangyu.prefab",
+    "picture_path": "",
     "like_flavour": [
       1006,
       1016
@@ -15,16 +15,15 @@
       1013,
       1024
     ],
-    "behaviour_group": 10001,
     "schedule_group": 30001
   },
   {
     "id": 10002,
     "name": "喵喵",
-    "desc": "",
+    "desc": "画师",
     "soul": 1,
-    "prefab_path": "Assets/GameRes/Prefabs/NPC/LittleGirl.prefab",
-    "picture_path": "Assets/GameRes/Picture/Character/extra02/A2.png",
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Miao.prefab",
+    "picture_path": "",
     "like_flavour": [
       1006,
       1016
@@ -33,7 +32,6 @@
       1013,
       1024
     ],
-    "behaviour_group": 10001,
     "schedule_group": 10001
   },
   {
@@ -42,7 +40,7 @@
     "desc": "喵老师的熊",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/Bear.prefab",
-    "picture_path": "Assets/GameRes/Picture/Character/extra03/A3.png",
+    "picture_path": "",
     "like_flavour": [
       1001,
       1004,
@@ -52,8 +50,7 @@
       1005,
       1016
     ],
-    "behaviour_group": 10001,
-    "schedule_group": 0
+    "schedule_group": 40001
   },
   {
     "id": 10004,
@@ -64,16 +61,48 @@
     "picture_path": "",
     "like_flavour": [],
     "unlike_flavour": [],
-    "behaviour_group": 10001,
     "schedule_group": 0
   },
   {
+    "id": 10005,
+    "name": "费南多",
+    "desc": "打游戏中年人",
+    "soul": 1,
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Fernando.prefab",
+    "picture_path": "",
+    "like_flavour": [],
+    "unlike_flavour": [],
+    "schedule_group": 50001
+  },
+  {
+    "id": 10006,
+    "name": "阿柯",
+    "desc": "摇滚青年",
+    "soul": 1,
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Ake.prefab",
+    "picture_path": "",
+    "like_flavour": [],
+    "unlike_flavour": [],
+    "schedule_group": 60001
+  },
+  {
+    "id": 10007,
+    "name": "夏雨",
+    "desc": "天气姐姐",
+    "soul": 1,
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Xiayu.prefab",
+    "picture_path": "",
+    "like_flavour": [],
+    "unlike_flavour": [],
+    "schedule_group": 70001
+  },
+  {
     "id": 20001,
-    "name": "年轻人",
+    "name": "宇轩",
     "desc": "有点疲惫的年轻人",
     "soul": 1,
     "prefab_path": "Assets/GameRes/Prefabs/NPC/Extra01.prefab",
-    "picture_path": "Assets/GameRes/Picture/Character/extra01/A1.png",
+    "picture_path": "",
     "like_flavour": [
       1006,
       1004,
@@ -83,7 +112,6 @@
     "unlike_flavour": [
       1005
     ],
-    "behaviour_group": 10001,
-    "schedule_group": 20001
+    "schedule_group": 80001
   }
 ]

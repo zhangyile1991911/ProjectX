@@ -8,12 +8,13 @@ public class  GameDateTime
 {
     public WeekDay DayOfWeek => _WeekDay;
     private WeekDay _WeekDay;
-    public long Year => _year+2045;
+    public long Year => _year+InitialYear;
     private long _year;
 
     public Season Season => _season;
     private Season _season;
-    public long Day => _day;
+    public long Day => _day <= 0 ? 1 : _day;
+
     private long _day;
     public long Hour => _hour;
     private long _hour;
@@ -108,7 +109,7 @@ public class  GameDateTime
     public const long SecondOfDay = 60 * 60 * (24+5);
     public const long SecondOfSeason = SecondOfDay * 30;
     public const long SecondOfYear = SecondOfSeason * 4;
-    private const int InitialYear = 2045;
+    public const int InitialYear = 2045;
     private const int InitialSeason = 1;
     private const int InitialDay = 1;
     private const int InitialHour = 8;

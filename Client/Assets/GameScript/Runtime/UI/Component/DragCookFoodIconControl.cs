@@ -90,10 +90,10 @@ public partial class DragCookFoodIcon : UIComponent
         }
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         // Debug.DrawRay(ray.origin,ray.direction*100f);
-        // RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction,20f);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction,999f);
         //todo 优化成noalloc版本
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
+        // RaycastHit hit;
+        // Physics.Raycast(ray, out hit);
         if (hit.transform != null && hit.transform.CompareTag("RestaurantCharacter"))
         {
             var character = hit.transform.GetComponent<RestaurantCharacter>();
