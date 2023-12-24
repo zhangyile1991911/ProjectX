@@ -57,7 +57,7 @@ public class UIManager : SingletonModule<UIManager>
         }
         else
         {
-            LoadUIAsync(uiName,(loadUi)=>
+            LoadUIAsync(uiName, loadUi=>
             {
                 loadUi.OnCreate();
                 OnOpenUI(loadUi,onComplete,openParam,layer);

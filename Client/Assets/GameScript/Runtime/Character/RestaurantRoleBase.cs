@@ -29,12 +29,8 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     public string CharacterName => _baseInfo.Name;
     public int SeatOccupy
     {
-        get => _npcData.SeatIndex;
-        set
-        {
-            _npcData.SeatIndex = value;
-            UserInfoModule.Instance.UpdateNPCData(CharacterId);
-        }
+        get => _seatOccupy;
+        set => _seatOccupy = value;
     }
 
     public bool HaveSoul => _baseInfo.Soul > 0;
@@ -45,15 +41,6 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     
     protected NPCTableData _npcData;
     
-    // public int PartnerID
-    // {
-    //     get => _npcData.PartnerId;
-    //     set
-    //     {
-    //         _npcData.PartnerId = value;
-    //         UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
-    //     }
-    // }
     
     public HashSet<int> Partners => _partnerIds;
     private HashSet<int> _partnerIds;
@@ -83,11 +70,11 @@ public abstract class RestaurantRoleBase : MonoBehaviour
                     _behaviour.Enter(this);
                     // _npcData.Behaviour = (int)value.BehaviourID;    
                 }
-                else
-                {
-                    // _npcData.Behaviour = 0;
-                }
-                UserInfoModule.Instance.UpdateNPCData(CharacterId);
+                // else
+                // {
+                //     // _npcData.Behaviour = 0;
+                // }
+                // UserInfoModule.Instance.UpdateNPCData(CharacterId);
                 
             }
         }
@@ -101,6 +88,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
 
     protected bool isActive;
 
+    [HideInInspector]
     public RestaurantEnter Restaurant;
     // protected Animation _animation;
     public virtual void InitCharacter(CharacterBaseInfo info)
@@ -112,12 +100,8 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         _emojiNode = transform.Find("EmojiNode");
         _chatNode = transform.Find("ChatNode");
         isActive = true;
-        halfSecondTImer = Observable.Interval(TimeSpan.FromSeconds(0.25f))
-            .Where(_=>isActive)
-            .Subscribe(_ =>
-        {
-            CurBehaviour?.Update();
-        });
+
+        halfSecondTImer = Clocker.Instance.Topic.Where(_ => isActive).Subscribe(_ => { CurBehaviour?.Update(); });
         loadResHandlers = new List<AssetOperationHandle>(10);
         _partnerIds = new(5);
         LoadTableData();
@@ -220,13 +204,13 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     public virtual void AddAppearCount()
     {
         _npcData.AppearCount += 1;
-        UserInfoModule.Instance.UpdateNPCData(CharacterId);
+        // UserInfoModule.Instance.UpdateNPCData(CharacterId);
     }
     
     public virtual void ToDark()
     {
         // _spriteRenderer.color = Color.gray;
-        _spriteRenderer.sortingOrder -= 0 ;
+        _spriteRenderer.sortingOrder = 0 - _spriteRenderer.sortingOrder;
         isActive = false;
     }
 
@@ -252,7 +236,7 @@ public abstract class RestaurantRoleBase : MonoBehaviour
         {
             _npcData.patient = result;
         }
-        UserInfoModule.Instance.UpdateNPCData(CharacterId);
+        // UserInfoModule.Instance.UpdateNPCData(CharacterId);
     }
     
     

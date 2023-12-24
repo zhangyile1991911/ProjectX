@@ -28,28 +28,27 @@ public partial class PhoneWindow : UIWindow
         }
     }
     private UIComponent _curRunApp;
+    private ReactiveProperty<bool> _isLoading;
     public override async void OnCreate()
     {
         _appIconList = new List<PhoneAppWidget>(4);
         _uiManager = UniModule.GetModule<UIManager>();
-        
+
+        _isLoading = new ReactiveProperty<bool>(false);
         _appList = new List<BaseAppWidget>(10);
         //todo 根据功能开放
         var newsAPP = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
         newsAPP.SetAPPInfo(10001);
-        newsAPP.XBtn_App.OnClick.Subscribe(OnClickNewsApp).AddTo(handles);
-        _appIconList.Add(newsAPP); 
+        _appIconList.Add(newsAPP);
         
         var airplane = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
         airplane.SetAPPInfo(10002);
-        airplane.XBtn_App.OnClick.Subscribe(OnClickAirPlane).AddTo(handles);
         _appIconList.Add(airplane);
         
         var weather = await _uiManager.CreateUIComponent<PhoneAppWidget>(null,Tran_AppGroup,this);
-        weather.XBtn_App.OnClick.Subscribe(OnClickWeather).AddTo(handles);
         weather.SetAPPInfo(10003);
         _appIconList.Add(weather);
-        
+        _isLoading.Value = true;
     }
     
     public override void OnDestroy()
@@ -66,10 +65,10 @@ public partial class PhoneWindow : UIWindow
     {
         handles = new CompositeDisposable(10);
         uiGo.SetActive(true);
-        
-        _clocker = UniModule.GetModule<Clocker>();
-        XBtn_home.OnClick.Subscribe(clickHome).AddTo(handles);
-        uiGo.UpdateAsObservable().Subscribe(UpdateApp).AddTo(handles);
+        _isLoading.Subscribe(_=>
+        {
+            bindEvent();
+        }).AddTo(handles);
     }
 
     public override void OnHide()
@@ -81,6 +80,29 @@ public partial class PhoneWindow : UIWindow
 
     public override void OnUpdate()
     {
+        
+    }
+
+    private void bindEvent()
+    {
+        uiGo.UpdateAsObservable().Subscribe(UpdateApp).AddTo(handles);
+        _clocker = UniModule.GetModule<Clocker>();
+        XBtn_home.OnClick.Subscribe(clickHome).AddTo(handles);
+        foreach (var app in _appIconList)
+        {
+            switch (app.APPID)
+            {
+                case 10001:
+                    app.XBtn_App.OnClick.Subscribe(OnClickNewsApp).AddTo(handles);
+                    break;
+                case 10002:
+                    app.XBtn_App.OnClick.Subscribe(OnClickAirPlane).AddTo(handles);
+                    break;
+                case 10003:
+                    app.XBtn_App.OnClick.Subscribe(OnClickWeather).AddTo(handles);
+                    break;
+            }
+        }
         
     }
 

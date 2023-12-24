@@ -4,6 +4,19 @@ tags:
 <<declare $cookFoodId = 0>>
 <<declare $orderedId = 0>>
 <<declare $foodscore = 0>>
+
+<<if $orderedId == 20002 >>
+    费南多: 我超，哥们就好这一口。
+    费南多: 哇哈哈，还是吃羊肉串开心。
+    费南多: 感觉吃了羊肉串又想玩游戏了，今天玩什么好呢……
+<<else>>
+    <<jump Fernando_normal_comment>>
+<<endif>>
+===
+
+title: Fernando_normal_comment
+tags:
+---
 <<if $cookFoodId == $orderedId>>
     <<if $foodscore < 60>>
         费南多: 老板,你这个菜做的
@@ -13,6 +26,40 @@ tags:
         <<AddFriend 20>>
     <<endif>>
 <<else>>
-    <<jump young_comment_err>>
+    <<jump Fernando_error_comment>>
+<<endif>>
+===
+
+title: Fernando_error_comment
+tags:
+---
+费南多: 这个不是我想要的
+费南多: 老板你脑子是被黄蜂吸走了嘛
+===
+
+
+title: Fernando_comment_blur
+tags:
+---
+
+<<if $orderedId == 20002 >>
+    费南多: 我超，哥们就好这一口。
+    费南多: 哇哈哈，还是吃羊肉串开心。
+    费南多: 感觉吃了羊肉串又想玩游戏了，今天玩什么好呢……
+<<else>>
+    <<jump Fernando_error_comment>>
+<<endif>>
+===
+
+
+title: Fernando_comment_omakase
+tags:
+---
+<<if $cookFoodId == $orderedId>>
+    <<if $matchTag >>
+        费南多: 老板,你真了解我
+    <<endif>>
+<<else>>
+    <<jump Fernando_error_comment>>
 <<endif>>
 ===

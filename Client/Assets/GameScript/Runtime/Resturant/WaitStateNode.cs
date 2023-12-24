@@ -47,15 +47,9 @@ public class WaitStateNode : IStateNode
         var openData = new FlowControlWindowData();
         openData.StateMachine = _machine;
         UIManager.Instance.OpenUI(UIEnum.RestaurantWindow, (uiBase)=>{_restaurantWindow = uiBase as RestaurantWindow;}, openData);
-        // UIManager.Instance.OpenUI(UIEnum.OrderQueueWindow,null,null,UILayer.Top);
         
         EventModule.Instance.CharBubbleSub.Subscribe(GenerateChatBubble).AddTo(_handles);
-        // EventModule.Instance.CloseRestaurantSub.Subscribe(CloseRestaurant).AddTo(_handles);
-        // EventModule.Instance.CharacterLeaveSub.Subscribe(character =>
-        // {
-        //     UserInfoModule.Instance.RemoveWaitingCharacter(character.CharacterId);
-        // }).AddTo(_handles);
-        
+
         _restaurant.CutCamera(RestaurantEnter.RestaurantCamera.RestaurantMain);
         _crowdSchedule = DataProviderModule.Instance.WeekDayHourCrowd(
             _clocker.NowDateTime.DayOfWeek,
@@ -138,10 +132,10 @@ public class WaitStateNode : IStateNode
                 continue;
             }
 
-            var existed = false;
+            // var existed = false;
             for (int x = 0;x < info.characterIds.Length; x++)
             {
-                existed = _restaurant.ExistWaitingCharacter(info.characterIds[x]);
+                var existed = _restaurant.ExistWaitingCharacter(info.characterIds[x]);
                 if (existed) break;
             }
             
@@ -165,29 +159,31 @@ public class WaitStateNode : IStateNode
         if (_waitingCharacter.Count > 0 && distance >= interval)
         {
             _previousTs = dateTime.Timestamp;
-            
-            var lineup = fetchWaitingCharacterId();
-            isLoading = true;
-            for (int i = 0; i < lineup.characterIds.Length; i++)
+
+            do
             {
-                var characterId = lineup.characterIds[i];
-                var roleBase = await loadCharacter(lineup.characterIds[i]);
-                var seatPoint = _restaurant.CharacterTakeSeat(roleBase);
-                UserInfoModule.Instance.AddCharacterArrivedAndWaiting(characterId);
-                roleBase.CurBehaviour = new CharacterEnterScene(seatPoint);
-
-                foreach (var pid in roleBase.Partners)
+                var lineup = fetchWaitingCharacterId();
+                if (lineup == null) break;
+                isLoading = true;
+                for (int i = 0; i < lineup.characterIds.Length; i++)
                 {
-                    var partnerRoleBase = await loadCharacter(pid);
-                    var partnerSeatPoint = _restaurant.CharacterTakeSeat(partnerRoleBase);
-                    UserInfoModule.Instance.AddCharacterArrivedAndWaiting(pid);
-                    partnerRoleBase.CurBehaviour = new CharacterEnterScene(partnerSeatPoint);
+                    var characterId = lineup.characterIds[i];
+                    var roleBase = await loadCharacter(lineup.characterIds[i]);
+                    var seatPoint = _restaurant.CharacterTakeSeat(roleBase);
+                    UserInfoModule.Instance.AddCharacterArrivedAndWaiting(characterId);
+                
+                    roleBase.CurBehaviour = roleBase.HaveSoul ? new CharacterEnterScene(seatPoint):new NormalGuyEnterScene(seatPoint);
+                    foreach (var pid in roleBase.Partners)
+                    {
+                        var partnerRoleBase = await loadCharacter(pid);
+                        var partnerSeatPoint = _restaurant.CharacterTakeSeat(partnerRoleBase);
+                        UserInfoModule.Instance.AddCharacterArrivedAndWaiting(pid);
+                        partnerRoleBase.CurBehaviour = new CharacterEnterScene(partnerSeatPoint);
+                    }
                 }
-            }
-
-            
-            isLoading = false;
-            Debug.Log($"after create handleCharacter {lineup.characterIds}");
+                isLoading = false;
+                Debug.Log($"after create handleCharacter {lineup.characterIds}");                
+            } while (false);
         }
         
         var lineupNPC = filterNPCAppear(dateTime);
@@ -343,8 +339,8 @@ public class WaitStateNode : IStateNode
             case bubbleType.MainLine:
             case bubbleType.Talk:
             case bubbleType.HybridComment:
-                case bubbleType.SpecifiedComment:
-                    case bubbleType.OmakaseComment:
+            case bubbleType.SpecifiedComment:
+            case bubbleType.OmakaseComment:
                 var stateData = new DialogueStateNodeData();
                 stateData.ChatId = bubble.ChatId;
                 stateData.ChatRestaurantCharacter = bubble.Owner;
@@ -358,10 +354,18 @@ public class WaitStateNode : IStateNode
                     MenuId = tbbubble.MenuId,
                     CharacterId = bubble.Owner.CharacterId,
                     OrderType = tbbubble.BubbleType,
+                    OrderTime = Clocker.Instance.NowDateTime
                 };
                 var rc = bubble.Owner as RestaurantCharacter;
                 rc.CurOrderInfo = info;
-                rc.CurBehaviour = new CharacterWaitOrder();//点击气泡
+                if (rc.HaveSoul)
+                {
+                    rc.CurBehaviour = new CharacterWaitOrder();//点击气泡 
+                }
+                else
+                {
+                    rc.CurBehaviour = new NormalGuyWaitOrder();
+                }
                 // EventModule.Instance.OrderMealTopic.OnNext(info);
                 break;
         }

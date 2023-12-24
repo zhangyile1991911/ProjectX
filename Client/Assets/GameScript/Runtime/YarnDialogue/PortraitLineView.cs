@@ -41,41 +41,6 @@ public static class EffectsAsync
             canvasGroup.blocksRaycasts = true;
         }
     }
-    // public static async UniTask Typewriter(TextMeshProUGUI text, Func<float> lettersPerSecond, Action onCharacterType,CancellationTokenSource cts)
-    // {
-    //     // Debug.Log($"开始运行 打字机效果");
-    //     text.maxVisibleCharacters = 0;
-    //     await UniTask.NextFrame(cancellationToken:cts.Token);
-    //
-    //     var characterCount = text.textInfo.characterCount;
-    //     if (lettersPerSecond() <= 0 || characterCount == 0)
-    //     {
-    //         text.maxVisibleCharacters = characterCount;
-    //         return;
-    //     }
-    //     
-    //     // Debug.Log($"每一个字需要 {secondsPerLetter}秒显示");
-    //     var accumulator = Time.deltaTime;
-    //     while (text.maxVisibleCharacters < characterCount)
-    //     {
-    //         if (cts.IsCancellationRequested)
-    //         {
-    //             return;
-    //         }
-    //         float secondsPerLetter = 1.0f / lettersPerSecond();
-    //         while (accumulator >= secondsPerLetter)
-    //         {
-    //             text.maxVisibleCharacters += 1;
-    //             onCharacterType?.Invoke();
-    //             accumulator -= secondsPerLetter;
-    //             // Debug.Log($"当前显示了 {text.maxVisibleCharacters}个字");
-    //         }
-    //         accumulator += Time.deltaTime;
-    //         await UniTask.NextFrame(cancellationToken:cts.Token);
-    //     }
-    //
-    //     text.maxVisibleCharacters = characterCount;
-    // }
     
     
     public static async UniTask Typewriter(TextAnimator_TMP text, Func<float> lettersPerSecond, Action onCharacterType,CancellationTokenSource cts)
@@ -409,7 +374,7 @@ public class PortraitLineView : DialogueViewBase
 
     private async void DismissLineInternal(Action onDismissComplete)
     {
-        var interactable = canvasGroup.interactable;
+        // var interactable = canvasGroup.interactable;
         canvasGroup.interactable = false;
         
         // if (useFadeEffect)

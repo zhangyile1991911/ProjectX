@@ -113,5 +113,59 @@
       1005
     ],
     "schedule_group": 80001
+  },
+  {
+    "id": 20002,
+    "name": "路人A",
+    "desc": "只是个路人",
+    "soul": 0,
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Extra01.prefab",
+    "picture_path": "",
+    "like_flavour": [
+      1006,
+      1004,
+      1009,
+      1012
+    ],
+    "unlike_flavour": [
+      1005
+    ],
+    "schedule_group": 90001
+  },
+  {
+    "id": 20003,
+    "name": "路人B",
+    "desc": "只是个路人",
+    "soul": 0,
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Extra02.prefab",
+    "picture_path": "",
+    "like_flavour": [
+      1006,
+      1004,
+      1009,
+      1012
+    ],
+    "unlike_flavour": [
+      1005
+    ],
+    "schedule_group": 90001
+  },
+  {
+    "id": 20004,
+    "name": "路人C",
+    "desc": "只是个路人",
+    "soul": 0,
+    "prefab_path": "Assets/GameRes/Prefabs/NPC/Extra03.prefab",
+    "picture_path": "",
+    "like_flavour": [
+      1006,
+      1004,
+      1009,
+      1012
+    ],
+    "unlike_flavour": [
+      1005
+    ],
+    "schedule_group": 90001
   }
 ]

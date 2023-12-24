@@ -54,8 +54,9 @@ public class ProduceStateNode : IStateNode
     public void OnExit()
     {
         UIManager.Instance.CloseUI(_curUIEnum);
+        _restaurant.HideCookGamePrefab(_curCookTools);
         _restaurant.HideKitchen();
-        
+
         // _handle.Clear();
         //
         // switch (_data.CookTools)
@@ -73,7 +74,7 @@ public class ProduceStateNode : IStateNode
         //         break;
         // }
         // _data = null;
-        
+
     }
     
     public void OnUpdate()
@@ -162,6 +163,7 @@ public class ProduceStateNode : IStateNode
 
     private async void loadCookTools(cookTools tool)
     {
+        _curCookTools = tool;
         switch (tool)
         {
             case cookTools.Fry:

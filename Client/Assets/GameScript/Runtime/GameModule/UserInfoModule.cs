@@ -29,7 +29,8 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
 
     private Dictionary<int, NPCOrderTable> _npcOrderDatas;
     private List<OrderMealInfo> _npcOrderList;
-    public List<OrderMealInfo>.Enumerator NpcOrderEnumerator => _npcOrderList.GetEnumerator();
+    public List<OrderMealInfo> NpcOrderList => _npcOrderList;
+    public bool HaveOrder => _npcOrderList.Count > 0;
 
     private Dictionary<int, OwnMenu> _ownMenuTableDatas;
     
@@ -620,7 +621,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         _restaurantRuntimeData.SoldMenuId ??= new List<int>();
         _restaurantRuntimeData.SoldMenuId.Add(menuId);
         
-        updateRestaurantRuntimeData();
+        // updateRestaurantRuntimeData();
     }
     
     public List<int> SoldMealIdList()
@@ -657,23 +658,23 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
         newData.CharacterId = orderMealInfo.CharacterId;
         _npcOrderDatas.Add(newData.CharacterId,newData);
         
-        var data = _npcOrderDatas[orderMealInfo.CharacterId];
-        data.OrderType = (int)orderMealInfo.OrderType;
-        data.MenuId = orderMealInfo.MenuId;
-        if (orderMealInfo.flavor != null)
-        {
-            using (var sb = ZString.CreateStringBuilder())
-            {
-                // sb.AppendJoin(';',orderMealInfo.flavor.GetEnumerator());
-                foreach (var tag in orderMealInfo.flavor)
-                {
-                    sb.Append((int)tag);
-                    sb.Append(';');
-                }
-                sb.Remove(sb.Length-1,1);
-                data.Flavor = sb.ToString();
-            }    
-        }
+        // var data = _npcOrderDatas[orderMealInfo.CharacterId];
+        // data.OrderType = (int)orderMealInfo.OrderType;
+        // data.MenuId = orderMealInfo.MenuId;
+        // if (orderMealInfo.flavor != null)
+        // {
+        //     using (var sb = ZString.CreateStringBuilder())
+        //     {
+        //         // sb.AppendJoin(';',orderMealInfo.flavor.GetEnumerator());
+        //         foreach (var tag in orderMealInfo.flavor)
+        //         {
+        //             sb.Append((int)tag);
+        //             sb.Append(';');
+        //         }
+        //         sb.Remove(sb.Length-1,1);
+        //         data.Flavor = sb.ToString();
+        //     }    
+        // }
         // _sqLite.Insert(data);
     }
 

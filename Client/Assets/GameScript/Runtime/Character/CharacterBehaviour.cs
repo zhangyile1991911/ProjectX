@@ -430,7 +430,8 @@ public class CharacterOrderMeal : CharacterBehaviour
             return;
         }
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
-        _restaurantCharacter.GenerateOrder();
+        if (_restaurantCharacter.GenerateOrder())
+            _restaurantCharacter.CurBehaviour = new CharacterWaitOrder();
     }
 }
 

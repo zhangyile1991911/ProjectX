@@ -1592,5 +1592,687 @@
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
     "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
     "dialogue_start_node": "Fernando_talk_6"
+  },
+  {
+    "id": 100053002,
+    "title": "来份羊肉串",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 500
+    },
+    "bubble_type": 3,
+    "menu_id": 20002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 100054001,
+    "title": "确定的订单评论",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_comment_specify"
+  },
+  {
+    "id": 100054002,
+    "title": "模棱两可的订单评论",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 8,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_comment_blur"
+  },
+  {
+    "id": 100054003,
+    "title": "omakase评论",
+    "comment": "",
+    "npc_id": 10005,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 7,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/Fernando.yarnproject",
+    "dialogue_start_node": "Fernando_comment_omakase"
+  },
+  {
+    "id": 200022001,
+    "title": "来份蛋炒饭",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200022002,
+    "title": "来份羊肉串",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200022003,
+    "title": "炒花蛤",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200022004,
+    "title": "蛋炒饭加点刺激的",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 5,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200022005,
+    "title": "羊肉串来点反差",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 5,
+    "menu_id": 10005,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200022006,
+    "title": "中和下炒花蛤",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 4,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200023001,
+    "title": "确定的订单评论",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_specify"
+  },
+  {
+    "id": 200023002,
+    "title": "模棱两可的订单评论",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 8,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_blur"
+  },
+  {
+    "id": 200023003,
+    "title": "omakase评论",
+    "comment": "",
+    "npc_id": 20002,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 7,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NormalGuy/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_omakase"
+  },
+  {
+    "id": 200032001,
+    "title": "来份蛋炒饭",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200032002,
+    "title": "来份羊肉串",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200032003,
+    "title": "炒花蛤",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200032004,
+    "title": "蛋炒饭加点刺激的",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 5,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200032005,
+    "title": "羊肉串来点反差",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 5,
+    "menu_id": 10005,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200032006,
+    "title": "中和下炒花蛤",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 4,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200033001,
+    "title": "确定的订单评论",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_specify"
+  },
+  {
+    "id": 200033002,
+    "title": "模棱两可的订单评论",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 8,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_blur"
+  },
+  {
+    "id": 200033003,
+    "title": "omakase评论",
+    "comment": "",
+    "npc_id": 20003,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 7,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NormalGuy/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_omakase"
+  },
+  {
+    "id": 200042001,
+    "title": "来份蛋炒饭",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200042002,
+    "title": "来份羊肉串",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200042003,
+    "title": "炒花蛤",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 3,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200042004,
+    "title": "蛋炒饭加点刺激的",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 5,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200042005,
+    "title": "羊肉串来点反差",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 5,
+    "menu_id": 10005,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200042006,
+    "title": "中和下炒花蛤",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 4,
+    "menu_id": 10002,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "",
+    "dialogue_start_node": ""
+  },
+  {
+    "id": 200043001,
+    "title": "确定的订单评论",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 6,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_specify"
+  },
+  {
+    "id": 200043002,
+    "title": "模棱两可的订单评论",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 8,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/Fernando/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_blur"
+  },
+  {
+    "id": 200043003,
+    "title": "omakase评论",
+    "comment": "",
+    "npc_id": 20004,
+    "repeated": true,
+    "pre_condition": [
+      0
+    ],
+    "week_day": [
+      8
+    ],
+    "friend_value": {
+      "start_value": 0,
+      "end_value": 999999
+    },
+    "bubble_type": 7,
+    "menu_id": 0,
+    "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
+    "dialogue_content_res": "Assets/GameRes/Story/NormalGuy/normal_guy.yarnproject",
+    "dialogue_start_node": "normal_guy_comment_omakase"
   }
 ]

@@ -192,7 +192,7 @@ public class DialogueStateNode : IStateNode
 
     private void AddNPCFriendlyValue(int val)
     {
-        var mgr = UniModule.GetModule<CharacterMgr>();
+        // var mgr = UniModule.GetModule<CharacterMgr>();
         // var chr = mgr.GetCharacterByName(name);
         // if (chr == null) return;
         _restaurantCharacter.AddFriendly(val);

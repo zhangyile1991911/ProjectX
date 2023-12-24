@@ -26,14 +26,15 @@ public partial class HandleOrderWindow : UIWindow
         base.OnDestroy();
     }
     
-    private List<OrderMealInfo>.Enumerator orderEnumerator;
+    private List<OrderMealInfo> orderList;
     private int curShowMenuId = -1;
     private int curShowRecipt = -1;
+    private int curIndex = 0;
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
-        orderEnumerator = UserInfoModule.Instance.NpcOrderEnumerator;
-        orderEnumerator.MoveNext();
+        orderList = UserInfoModule.Instance.NpcOrderList;
+        
         bindButton();
         showCurOrderInfo();
     }
@@ -46,6 +47,16 @@ public partial class HandleOrderWindow : UIWindow
     public override void OnUpdate()
     {
         base.OnUpdate();
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            curIndex = curIndex + 1 >= orderList.Count ? orderList.Count : curIndex + 1;
+            showCurOrderInfo();
+        }
+        else if (Input.GetKeyDown(KeyCode.D)||Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            curIndex = curIndex - 1 < 0 ? 0 : curIndex - 1;
+            showCurOrderInfo();
+        }
     }
 
     void bindButton()
@@ -57,6 +68,10 @@ public partial class HandleOrderWindow : UIWindow
         XBtn_recipe.OnClick.Subscribe(param =>
         {
             showRecipt();
+        }).AddTo(handles);
+        Observable.EveryUpdate().Subscribe((param)=>
+        {
+            OnUpdate();
         }).AddTo(handles);
     }
     /*
@@ -82,7 +97,7 @@ public partial class HandleOrderWindow : UIWindow
     private void showCurOrderInfo()
     {
         
-        var tmp= orderEnumerator.Current;
+        var tmp= orderList[curIndex];
         if (tmp == null)
         {
             return;
@@ -105,7 +120,7 @@ public partial class HandleOrderWindow : UIWindow
         
         if (curShowMenuId < 0)
         {
-            curShowMenuId = orderEnumerator.Current.MenuId;
+            curShowMenuId = tmp.MenuId;
         }
     }
 
@@ -116,7 +131,7 @@ public partial class HandleOrderWindow : UIWindow
         var itemTb = DataProviderModule.Instance.GetItemBaseInfo(info.MenuId);
         
         Txt_time.text = ZString.Format(" {0}:{1}:{2}",info.OrderTime.Hour,info.OrderTime.Minute,info.OrderTime.Seconds);
-        Txt_customername.text = ZString.Format("顾客: {0}",menuTb.Name);
+        Txt_customername.text = ZString.Format("顾客: {0}",charaTb.Name);
         Txt_orderName.text = menuTb.Name; 
         Txt_orderSale.text = itemTb.Sell.ToString();
         Txt_orderNum.text = "1";
@@ -161,7 +176,7 @@ public partial class HandleOrderWindow : UIWindow
         " ---------------\n 材料 :\n {0}\n\n ---------------\n 做法 :\n {1}\n\n---------------\n标签 :\n {2}\n\n反标签 :\n {3}";
     private void showRecipt()
     {
-        var tmp= orderEnumerator.Current;
+        var tmp= orderList[curIndex];
         if (tmp == null)
         {
             return;

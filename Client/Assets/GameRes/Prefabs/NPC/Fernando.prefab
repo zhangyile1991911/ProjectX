@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4313168193997688821}
   m_Layer: 0
-  m_Name: EMojiNode
+  m_Name: EmojiNode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

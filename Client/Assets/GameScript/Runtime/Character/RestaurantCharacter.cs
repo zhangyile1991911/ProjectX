@@ -21,20 +21,20 @@ public class DialogueTitleInfo
 public class RestaurantCharacter : RestaurantRoleBase
 {
     //表格配置数据
-    private List<CharacterBubble> _mainLineBubbleTB;
-    private List<CharacterBubble> _talkBubbleTB;
-    private List<CharacterBubble> _orderBubbleTB;
+    protected List<CharacterBubble> _mainLineBubbleTB;
+    protected List<CharacterBubble> _talkBubbleTB;
+    protected List<CharacterBubble> _orderBubbleTB;
     // private List<CharacterBubble> _commentBubbleTB;
 
-    public CharacterBubble OMAKASEComment { get; private set; }
-    public CharacterBubble HybridOrderComment { get; private set; }
-    public CharacterBubble SpecifiedOrderComment { get; private set;}
+    public CharacterBubble OMAKASEComment { get; protected set; }
+    public CharacterBubble HybridOrderComment { get; protected set; }
+    public CharacterBubble SpecifiedOrderComment { get; protected set;}
     //记录当前已经生成的chatid
     private List<DialogueTitleInfo> _saidBubbles;
 
     public int SaidBubbleNum => _saidBubbles.Count;
 
-    //收到的料理
+    //收到的料理ScheduleGroup
     private CookResult _receivedFood = null;
 
     public OrderMealInfo CurOrderInfo
@@ -46,6 +46,7 @@ public class RestaurantCharacter : RestaurantRoleBase
             if (_orderMealInfo != null)
             {
                 // createOrderBoard();
+                _npcData.TodayOrderCount += 1;
                 UserInfoModule.Instance.AddNPCOrder(_orderMealInfo);    
             }
         }
@@ -55,8 +56,8 @@ public class RestaurantCharacter : RestaurantRoleBase
     private Clocker _clocker;
     // private int foodScore;
     
-    public Transform OrderNode => _orderNode;
-    protected Transform _orderNode;
+    // public Transform OrderNode => _orderNode;
+    // protected Transform _orderNode;
     
     protected OrderBoard orderBoardBoard;
 
@@ -73,7 +74,7 @@ public class RestaurantCharacter : RestaurantRoleBase
         }
 
         _animator = GetComponent<Animator>();
-        _orderNode = transform.Find("OrderNode");
+        // _orderNode = transform.Find("OrderNode");
         _saidBubbles = new(10);
        
         _clocker = UniModule.GetModule<Clocker>();
@@ -87,32 +88,14 @@ public class RestaurantCharacter : RestaurantRoleBase
         _saidBubbles.Clear();
         _animator = null;
         
-        for (int i = 0; i < _orderNode.childCount;i++)
-        {
-            var one = _orderNode.GetChild(i);
-            Destroy(one.gameObject);
-        }
+        // for (int i = 0; i < _orderNode.childCount;i++)
+        // {
+        //     var one = _orderNode.GetChild(i);
+        //     Destroy(one.gameObject);
+        // }
         Destroy(gameObject);
     }
-
-    // private async void LoadCharacterSprite()
-    // {
-    //     var handler = YooAssets.LoadAssetAsync<Sprite>(_baseInfo.ResPath);
-    //     await handler.ToUniTask();
-    //     var sp = handler.AssetObject as Sprite;
-    //     _spriteRenderer.sprite = sp;
-    // }
-    // private void UnLoadTableData()
-    // {
-    //     _mainLineBubbleTB?.Clear();
-    //     _mainLineBubbleTB = null;
-    //     
-    //     _talkBubbleTB?.Clear();
-    //     _talkBubbleTB = null;
-    //     
-    //     _orderBubbleTB?.Clear();
-    //     _orderBubbleTB = null;
-    // }
+    
     protected override void LoadTableData()
     {
         base.LoadTableData();
@@ -131,6 +114,8 @@ public class RestaurantCharacter : RestaurantRoleBase
                 case bubbleType.Talk:
                     _talkBubbleTB.Add(dataList[i]);
                     break;
+                case bubbleType.Omakase:
+                case bubbleType.HybridOrder:
                 case bubbleType.SpecifiedOrder:
                     _orderBubbleTB.Add(dataList[i]);
                     break;
@@ -149,33 +134,7 @@ public class RestaurantCharacter : RestaurantRoleBase
             }
         }
     }
-
-    // private void UnLoadDataBase()
-    // {
-    //     UserInfoModule.Instance.UpdateNPCData(_npcData.Id);
-    //     _npcData = null;
-    // }
     
-    // private void LoadDataBase()
-    // {
-    //     var userInfoModule = UniModule.GetModule<UserInfoModule>();
-    //     _npcData = userInfoModule.NPCData(CharacterId);
-    //     var waitingInfo = userInfoModule.GetWaitingCharacter(CharacterId);
-    //     if(waitingInfo != null)_seatOccupy = waitingInfo.SeatOccupy;
-    // }
-
-    //增加好感度
-    // public void AddFriendly(int num)
-    // {
-    //     _npcData.FriendlyValue += num;
-    //     UserInfoModule.Instance.UpdateNPCData(CharacterId);
-    // }
-    //
-    // public void AddAppearCount()
-    // {
-    //     _npcData.AppearCount += 1;
-    //     UserInfoModule.Instance.UpdateNPCData(CharacterId);
-    // }
     private bool checkPreCondition(List<int> preConditions)
     {
         var result = true;
@@ -275,12 +234,6 @@ public class RestaurantCharacter : RestaurantRoleBase
         return false;
     }
 
-    // int haveCommentChatId()
-    // {
-    //     var result = _saidBubbles.FirstOrDefault(one=>one.Type==bubbleType.Comment);
-    //     return result?.ID ?? 0;
-    // }
-
     int haveMainLineChatId()
     {
         var result = _saidBubbles.FirstOrDefault(one=>one.Type==bubbleType.MainLine);
@@ -370,7 +323,7 @@ public class RestaurantCharacter : RestaurantRoleBase
             ChatId =  chatBubble.Id,
         };
         _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = chatBubble.BubbleType});
-        _npcData.TodayOrderCount += 1;
+        
         EventModule.Instance.CharBubbleTopic.OnNext(info);
         return true;
     }
@@ -379,16 +332,7 @@ public class RestaurantCharacter : RestaurantRoleBase
     {
         _saidBubbles.Add(new DialogueTitleInfo(){ID = chatId,Type = commentType});
     }
-
-    // public void ToDark()
-    // {
-    //     _spriteRenderer.color = Color.gray;
-    // }
-    //
-    // public void ToLight()
-    // {
-    //     _spriteRenderer.color = Color.white;
-    // }
+    
 
     public override bool Equals(object other)
     {
@@ -516,24 +460,24 @@ public class RestaurantCharacter : RestaurantRoleBase
     public override void ToDark()
     {
         base.ToDark();
-        for (int i = 0; i < _orderNode.childCount; i++)
-        {
-            var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
-            sr.sortingOrder -= 0;
-        }        
+        // for (int i = 0; i < _orderNode.childCount; i++)
+        // {
+        //     var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
+        //     sr.sortingOrder -= 0;
+        // }        
     }
 
     public override void ToLight()
     {
         base.ToLight();
-        for (int i = 0; i < _orderNode.childCount; i++)
-        {
-            var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
-            sr.sortingOrder = Mathf.Abs(sr.sortingOrder);
-        }
+        // for (int i = 0; i < _orderNode.childCount; i++)
+        // {
+        //     var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
+        //     sr.sortingOrder = Mathf.Abs(sr.sortingOrder);
+        // }
     }
     
-    public bool CanOrder()
+    public virtual bool CanOrder()
     {
         var limit = DataProviderModule.Instance.OrderCountLimit();
         return _npcData.TodayOrderCount <= limit;

@@ -30,8 +30,8 @@ public partial class TipAddFriendValue : UIComponent
         var tmp = openParam as DialogueData;
         var startPos = UIManager.Instance.WorldPositionToUI(tmp.Character.EmojiNode.position);
         uiRectTran.anchoredPosition = startPos;
-        var doTweenAnimation = uiGo.GetComponent<DOTweenAnimation>();
-        doTweenAnimation.DOPlay();
+        // var doTweenAnimation = uiGo.GetComponent<DOTweenAnimation>();
+        // doTweenAnimation.DOPlay();
     }
 
     public override void OnHide()

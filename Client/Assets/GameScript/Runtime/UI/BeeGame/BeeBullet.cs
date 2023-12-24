@@ -38,6 +38,7 @@ public class BeeBullet : MonoBehaviour
         if (!other.CompareTag(tag))
         {
             _recycle?.Invoke(this);
+            _recycle = null;
         }
         
     }

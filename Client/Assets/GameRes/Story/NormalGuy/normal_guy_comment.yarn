@@ -1,0 +1,55 @@
+﻿title: normal_guy_comment
+tags:
+---
+<<declare $cookFoodId = 0>>
+<<declare $orderedId = 0>>
+<<declare $foodscore = 0>>
+<<if $foodscore < 60>>
+    路人: 下次再也不来,烧的什么玩意
+    <<AddFriend -10>>
+<<else>>
+    路人: 手艺不错啊,下次再来
+    <<AddFriend 20>>
+<<endif>>
+===
+
+title: normal_guy_comment_omakase
+tags:
+---
+<<if $foodscore < 60>>
+    路人: 下次再也不来,烧的什么玩意
+    <<AddFriend -10>>
+<<else>>
+    路人: 手艺不错啊,下次再来
+    <<AddFriend 20>>
+<<endif>>
+===
+
+
+title: normal_guy_comment_blur
+tags:
+---
+<<if $foodscore < 60>>
+    路人: 下次再也不来,烧的什么玩意
+    <<AddFriend -10>>
+<<else>>
+    路人: 手艺不错啊,下次再来
+    <<AddFriend 20>>
+<<endif>>
+===
+
+
+
+
+title: normal_guy_comment_specify
+tags:
+---
+<<if $foodscore < 60>>
+    路人: 下次再也不来,烧的什么玩意
+    <<AddFriend -10>>
+<<else>>
+    路人: 手艺不错啊,下次再来
+    <<AddFriend 20>>
+<<endif>>
+===
+

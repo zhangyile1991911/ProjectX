@@ -12,6 +12,7 @@ using YooAsset;
 /// </summary>
 public partial class PhoneAppWidget : UIComponent
 {
+    public int APPID { get; private set; }
     public PhoneAppWidget(GameObject go,UIWindow parent):base(go,parent)
     {
 		
@@ -50,6 +51,7 @@ public partial class PhoneAppWidget : UIComponent
 
     public void SetAPPInfo(int appId)
     {
+        APPID = appId;
         var tb = DataProviderModule.Instance.GetAppBaseInfo(appId);
         Txt_App.text = tb.Name;
         var handle = YooAssets.LoadAssetAsync<Sprite>(tb.AppIconRes);
