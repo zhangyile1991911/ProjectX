@@ -151,7 +151,7 @@ public class DialogueStateNode : IStateNode
             MenuId = menuId,
             OrderType = _curBubbleTB.BubbleType,
             OrderTime = Clocker.Instance.NowDateTime,
-            flavor = new HashSet<flavorTag>(10)
+            flavor = new List<flavorTag>(10)
         };
         var flavors = tags.Split(";");
         foreach (var str in flavors)
@@ -175,7 +175,7 @@ public class DialogueStateNode : IStateNode
             OrderType = _curBubbleTB.BubbleType,
             OrderTime = Clocker.Instance.NowDateTime,
             DialogueId = _curBubbleTB.Id,
-            flavor = new HashSet<flavorTag>(10)
+            flavor = new List<flavorTag>(10)
         };
         var flavors = desc.Split(";");
         foreach (var str in flavors)

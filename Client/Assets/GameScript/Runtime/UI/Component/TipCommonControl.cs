@@ -30,9 +30,15 @@ public partial class TipCommon : UIComponent
         base.OnShow(openParam);
         var tmp = openParam as TipCommonData;
         Txt_tip.text = tmp.tipstr;
-        var doTweenAnimation = uiGo.GetComponent<DOTweenAnimation>();
-        // doTweenAnimation.onComplete.AddListener(()=>{UIManager.Instance.DestroyUIComponent(this);});
-        doTweenAnimation.DOPlay();
+        uiRectTran.DOLocalMoveY(200, 1.1f).OnComplete(() =>
+        {
+            //todo 改成用对象池
+            UIManager.Instance.DestroyUIComponent(this);
+        });
+        Txt_tip.DOFade(0, 1f);
+        // var doTweenAnimation = uiGo.GetComponent<DOTweenAnimation>();
+        // // doTweenAnimation.onComplete.AddListener(()=>{UIManager.Instance.DestroyUIComponent(this);});
+        // doTweenAnimation.DOPlay();
     }
 
     public override void OnHide()

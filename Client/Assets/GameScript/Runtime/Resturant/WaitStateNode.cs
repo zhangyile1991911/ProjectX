@@ -4,6 +4,7 @@ using System.Data;
 using System.Text;
 using cfg.character;
 using cfg.common;
+using cfg.food;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -354,8 +355,11 @@ public class WaitStateNode : IStateNode
                     MenuId = tbbubble.MenuId,
                     CharacterId = bubble.Owner.CharacterId,
                     OrderType = tbbubble.BubbleType,
-                    OrderTime = Clocker.Instance.NowDateTime
+                    OrderTime = Clocker.Instance.NowDateTime,
+                    flavor = tbbubble.FlavorTags,
+                    DialogueId = tbbubble.Id
                 };
+                
                 var rc = bubble.Owner as RestaurantCharacter;
                 rc.CurOrderInfo = info;
                 if (rc.HaveSoul)

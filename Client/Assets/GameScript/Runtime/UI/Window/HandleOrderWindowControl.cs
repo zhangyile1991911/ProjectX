@@ -49,12 +49,12 @@ public partial class HandleOrderWindow : UIWindow
         base.OnUpdate();
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            curIndex = curIndex + 1 >= orderList.Count ? orderList.Count : curIndex + 1;
+            curIndex = curIndex - 1 < 0 ? 0 : curIndex - 1;
             showCurOrderInfo();
         }
         else if (Input.GetKeyDown(KeyCode.D)||Input.GetKeyDown(KeyCode.RightArrow))
         {
-            curIndex = curIndex - 1 < 0 ? 0 : curIndex - 1;
+            curIndex = curIndex + 1 >= orderList.Count ? orderList.Count - 1 : curIndex + 1;
             showCurOrderInfo();
         }
     }
@@ -130,6 +130,8 @@ public partial class HandleOrderWindow : UIWindow
         var menuTb = DataProviderModule.Instance.GetMenuInfo(info.MenuId);
         var itemTb = DataProviderModule.Instance.GetItemBaseInfo(info.MenuId);
         
+        Tran_Detail.gameObject.SetActive(true);
+        
         Txt_time.text = ZString.Format(" {0}:{1}:{2}",info.OrderTime.Hour,info.OrderTime.Minute,info.OrderTime.Seconds);
         Txt_customername.text = ZString.Format("顾客: {0}",charaTb.Name);
         Txt_orderName.text = menuTb.Name; 
@@ -142,34 +144,49 @@ public partial class HandleOrderWindow : UIWindow
     private void showOmakaseOrder(OrderMealInfo info)
     {
         var charaTb = DataProviderModule.Instance.GetCharacterBaseInfo(info.CharacterId);
-        var menuTb = DataProviderModule.Instance.GetMenuInfo(info.MenuId);
+        // var menuTb = DataProviderModule.Instance.GetMenuInfo(info.MenuId);
         var chatTb= DataProviderModule.Instance.GetCharacterBubble(info.DialogueId);
-        Txt_OrderDetail.text = ZString.Format(OmakaseOrderInfoFormat,
-            info.OrderTime.Hour,
-            info.OrderTime.Minute,
-            charaTb.Name,
-            chatTb.Title);
+        
+        Txt_time.text = ZString.Format(" {0}:{1}:{2}",info.OrderTime.Hour,info.OrderTime.Minute,info.OrderTime.Seconds);
+        Txt_customername.text = ZString.Format("顾客: {0}",charaTb.Name);
+        
+        Txt_extra.gameObject.SetActive(true);
+        Tran_Detail.gameObject.SetActive(false);
+        Txt_extra.text = ZString.Format("{0}\n{1}",chatTb.Title,chatTb.FlavorTags);
+        Txt_extra.rectTransform.anchoredPosition = new Vector2(0,200f);
     }
 
     private void showHybridOrder(OrderMealInfo info)
     {
-        var sb = ZString.CreateStringBuilder();
-        foreach (var one in info.flavor)
-        {
-            sb.Append(one);
-        }
-        sb.Append(" ");
-        
+        // var sb = ZString.CreateStringBuilder();
+        // foreach (var one in info.flavor)
+        // {
+        //     sb.Append(one);
+        // }
+        // sb.Append(" ");
+        //
         var charaTb = DataProviderModule.Instance.GetCharacterBaseInfo(info.CharacterId);
         var menuTb = DataProviderModule.Instance.GetMenuInfo(info.MenuId);
         var itemTb = DataProviderModule.Instance.GetItemBaseInfo(info.MenuId);
-        var cellStr = ZString.Format(OrderDetailFormat, menuTb.Name, itemTb.Sell,itemTb.Sell);
-        Txt_OrderDetail.text = ZString.Format(HybridOrderInfoFormat,
-            info.OrderTime.Hour,
-            info.OrderTime.Minute,
-            charaTb.Name,
-            cellStr,
-            sb.ToString());
+        var chatTb= DataProviderModule.Instance.GetCharacterBubble(info.DialogueId);
+        // var cellStr = ZString.Format(OrderDetailFormat, menuTb.Name, itemTb.Sell,itemTb.Sell);
+        // Txt_OrderDetail.text = ZString.Format(HybridOrderInfoFormat,
+        //     info.OrderTime.Hour,
+        //     info.OrderTime.Minute,
+        //     charaTb.Name,
+        //     cellStr,
+        //     sb.ToString());
+        
+        Txt_time.text = ZString.Format(" {0}:{1}:{2}",info.OrderTime.Hour,info.OrderTime.Minute,info.OrderTime.Seconds);
+        Txt_customername.text = ZString.Format("顾客: {0}",charaTb.Name);
+        Txt_orderName.text = menuTb.Name; 
+        Txt_orderSale.text = itemTb.Sell.ToString();
+        Txt_orderNum.text = "1";
+        Txt_orderTotal.text = itemTb.Sell.ToString();
+        Txt_extra.gameObject.SetActive(true);
+        Txt_extra.text = ZString.Format("{0}",chatTb.Title);
+        Txt_extra.rectTransform.anchoredPosition = Vector2.zero;
+        
     }
 
     private const string reciptFormatStr =

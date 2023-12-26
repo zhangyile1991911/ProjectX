@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using cfg.food;
+using Cysharp.Threading.Tasks;
 using SuperScrollView;
 using UniRx;
 using UnityEngine;
@@ -140,7 +141,16 @@ public partial class KitchenWindow : UIWindow
         
         XBtn_order.OnClick.Subscribe(param =>
         {
-            UIManager.Instance.OpenUI(UIEnum.HandleOrderWindow, null, null);
+            if (UserInfoModule.Instance.HaveOrder)
+            {
+                UIManager.Instance.OpenUI(UIEnum.HandleOrderWindow, null, null);    
+            }
+            else
+            {
+                TipCommonData data = new TipCommonData();
+                data.tipstr = "当前没有订单";
+                UIManager.Instance.CreateTip<TipCommon>(data).Forget();
+            }
         }).AddTo(handles);
 
     }
