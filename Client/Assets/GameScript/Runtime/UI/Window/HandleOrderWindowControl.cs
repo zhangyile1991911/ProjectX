@@ -27,7 +27,7 @@ public partial class HandleOrderWindow : UIWindow
     }
     
     private List<OrderMealInfo> orderList;
-    private int curShowMenuId = -1;
+    private int curNPCMenuId = -1;
     private int curShowRecipt = -1;
     private int curIndex = 0;
     public override void OnShow(UIOpenParam openParam)
@@ -103,25 +103,26 @@ public partial class HandleOrderWindow : UIWindow
             return;
         }
 
-        if (curShowMenuId == tmp.MenuId) return;
+        if (curNPCMenuId == tmp.CharacterId) return;
 
         switch (tmp.OrderType)
         {
             case bubbleType.SpecifiedOrder:
                 showSpecifiedOrder(tmp);
+                showRecipt();
                 break;
             case bubbleType.Omakase:
                 showOmakaseOrder(tmp);
+                hideRecipt();
                 break;
             case bubbleType.HybridOrder:
                 showHybridOrder(tmp);
+                showRecipt();
                 break;
         }
+
+        curNPCMenuId = tmp.CharacterId;
         
-        if (curShowMenuId < 0)
-        {
-            curShowMenuId = tmp.MenuId;
-        }
     }
 
     private void showSpecifiedOrder(OrderMealInfo info)
@@ -153,9 +154,11 @@ public partial class HandleOrderWindow : UIWindow
         Txt_extra.gameObject.SetActive(true);
         Tran_Detail.gameObject.SetActive(false);
         Txt_extra.text = ZString.Format("{0}\n{1}",chatTb.Title,chatTb.FlavorTags);
-        Txt_extra.rectTransform.anchoredPosition = new Vector2(0,200f);
+        Txt_extra.rectTransform.anchoredPosition = _extraOmakasaPosition;
     }
 
+    private readonly Vector2 _extraNormalPosition = new Vector2(-496, 0);
+    private readonly Vector2 _extraOmakasaPosition = new Vector2(-496, 200);
     private void showHybridOrder(OrderMealInfo info)
     {
         // var sb = ZString.CreateStringBuilder();
@@ -185,12 +188,18 @@ public partial class HandleOrderWindow : UIWindow
         Txt_orderTotal.text = itemTb.Sell.ToString();
         Txt_extra.gameObject.SetActive(true);
         Txt_extra.text = ZString.Format("{0}",chatTb.Title);
-        Txt_extra.rectTransform.anchoredPosition = Vector2.zero;
+        Txt_extra.rectTransform.anchoredPosition = _extraNormalPosition;
         
     }
 
     private const string reciptFormatStr =
         " ---------------\n 材料 :\n {0}\n\n ---------------\n 做法 :\n {1}\n\n---------------\n标签 :\n {2}\n\n反标签 :\n {3}";
+
+    private void hideRecipt()
+    {
+        Tran_LeftArea.gameObject.SetActive(false);
+    }
+    
     private void showRecipt()
     {
         var tmp= orderList[curIndex];
@@ -198,21 +207,9 @@ public partial class HandleOrderWindow : UIWindow
         {
             return;
         }
-
+        Tran_LeftArea.gameObject.SetActive(true);
         if (curShowRecipt == tmp.MenuId) return;
         
-        switch (tmp.OrderType)
-        {
-            case bubbleType.SpecifiedOrder:
-                Tran_LeftArea.gameObject.SetActive(!Tran_LeftArea.gameObject.activeSelf);
-                break;
-            case bubbleType.Omakase:
-                Tran_LeftArea.gameObject.SetActive(false);
-                break;
-            case bubbleType.HybridOrder:
-                Tran_LeftArea.gameObject.SetActive(!Tran_LeftArea.gameObject.activeSelf);
-                break;
-        }
 
         var menuTb = DataProviderModule.Instance.GetMenuInfo(tmp.MenuId);
         Txt_Title.text = menuTb.Name;

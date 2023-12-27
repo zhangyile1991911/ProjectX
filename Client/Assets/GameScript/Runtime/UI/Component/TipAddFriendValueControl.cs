@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Text;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,11 @@ public partial class TipAddFriendValue : UIComponent
         var tmp = openParam as DialogueData;
         var startPos = UIManager.Instance.WorldPositionToUI(tmp.Character.EmojiNode.position);
         uiRectTran.anchoredPosition = startPos;
+        if (tmp.FriendValue > 0)
+        {
+            Txt_Desc.text = ZString.Format("好感度+{0}",tmp.FriendValue);    
+        }
+        
         // var doTweenAnimation = uiGo.GetComponent<DOTweenAnimation>();
         // doTweenAnimation.DOPlay();
     }
