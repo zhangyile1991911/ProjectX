@@ -279,6 +279,17 @@ public abstract class RestaurantRoleBase : MonoBehaviour
     {
         
     }
+
+
+    public virtual void PlayTalkAnimation()
+    {
+        
+    }
+
+    public virtual void PlayIdleAnimation()
+    {
+        
+    }
     
     public void AddPartner(int partnerId)
     {

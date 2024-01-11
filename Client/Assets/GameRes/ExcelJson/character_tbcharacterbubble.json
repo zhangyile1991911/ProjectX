@@ -19,7 +19,7 @@
     "menu_id": 0,
     "flavor_tags": [],
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Zhangyu/ZhangyuProject.yarnproject",
     "dialogue_start_node": "FirstTalk"
   },
   {
@@ -42,7 +42,7 @@
     "menu_id": 0,
     "flavor_tags": [],
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Zhangyu/ZhangyuProject.yarnproject",
     "dialogue_start_node": "SecondTalk"
   },
   {
@@ -111,7 +111,7 @@
     "menu_id": 0,
     "flavor_tags": [],
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Zhangyu/ZhangyuProject.yarnproject",
     "dialogue_start_node": "complaintA"
   },
   {
@@ -134,7 +134,7 @@
     "menu_id": 0,
     "flavor_tags": [],
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Zhangyu/ZhangyuProject.yarnproject",
     "dialogue_start_node": "complaintB"
   },
   {
@@ -157,7 +157,7 @@
     "menu_id": 0,
     "flavor_tags": [],
     "bubble_bg": "Assets/GameRes/Picture/UI/Dialogue/think_common.png",
-    "dialogue_content_res": "Assets/GameRes/Story/ZhangyuProject.yarnproject",
+    "dialogue_content_res": "Assets/GameRes/Story/Zhangyu/ZhangyuProject.yarnproject",
     "dialogue_start_node": "ZhangyuComment"
   },
   {

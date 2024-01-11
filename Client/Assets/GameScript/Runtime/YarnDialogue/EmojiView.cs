@@ -89,20 +89,20 @@ public class EmojiView : DialogueViewBase
         switch (emojiType)
         {
             case "whistle":
-                handle= YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/happy.png");
+                handle= YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/music.png");
                 await handle.ToUniTask();
                 var emojiSp = handle.AssetObject as Sprite;
                 Img_Emoji.sprite = emojiSp;
                 Img_Emoji.gameObject.SetActive(true);
                 
                 Rect_Emoji.anchoredPosition = localPos;
-                localPos.y += 20f;
+                localPos.y += 10f;
                 _tween = Rect_Emoji
-                    .DOLocalJump(localPos,5,2,2.5f)
+                    .DOLocalJump(localPos,5,2,1.5f)
                     .SetLoops(-1,LoopType.Yoyo);
                 break;
             case "sleep":
-                handle = YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/sleep.png");
+                handle = YooAssets.LoadAssetAsync<Sprite>("Assets/GameRes/Picture/Story/emoji/silent.png");
                 await handle.ToUniTask();
                 var emojiSpSleep = handle.AssetObject as Sprite;
                 Img_Emoji.sprite = emojiSpSleep;

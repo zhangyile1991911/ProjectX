@@ -52,6 +52,15 @@ public partial class CharacterDialogWindow : UIWindow
         
         _dialogueRunner.onDialogueComplete.AddListener(OnDialogueComplete);
         _dialogueRunner.onNodeComplete.AddListener(OnNodeComplete);
+        var lineView = _dialogueRunner.dialogueViews[0] as PortraitLineView;
+        lineView.DialogueLineStar = delegate(string s)
+        {
+            _openData.StoryCharacter.PlayTalkAnimation();
+        };
+        lineView.DialogueLineComplete = delegate(string s)
+        {
+            _openData.StoryCharacter.PlayIdleAnimation();
+        };
         
         // var dm = UniModule.GetModule<DialogueModule>();
         // dm.CurentDialogueRestaurantCharacter.InjectVariable(_dialogueRunner.VariableStorage);

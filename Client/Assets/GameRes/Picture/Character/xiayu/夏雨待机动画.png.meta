@@ -1,0 +1,395 @@
+fileFormatVersion: 2
+guid: 9bbdf72717fa2ff45a97b2ac1580df05
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 25
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "\u590F\u96E8\u5F85\u673A\u52A8\u753B_0"
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 639
+        width: 205
+        height: 333
+      alignment: 9
+      pivot: {x: 0.6170064, y: 0.0013345254}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e8ce264398b2fd4ebdcd92bb69b5a72
+      internalID: -678678571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u590F\u96E8\u5F85\u673A\u52A8\u753B_1"
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 639
+        width: 205
+        height: 333
+      alignment: 9
+      pivot: {x: 0.6169691, y: 0.001620639}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2db76dba90bca5c4d8151fe575d028a0
+      internalID: -511687275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u590F\u96E8\u5F85\u673A\u52A8\u753B_2"
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 639
+        width: 205
+        height: 333
+      alignment: 9
+      pivot: {x: 0.6169691, y: 0.001620639}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82fceb2309311c04b999dbd6d6bf50ce
+      internalID: -1256871638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u590F\u96E8\u5F85\u673A\u52A8\u753B_3"
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 640
+        width: 205
+        height: 333
+      alignment: 9
+      pivot: {x: 0.6168579, y: 0.001620639}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e12a2bdbbf8517149badd7c7662b0ffe
+      internalID: 1080537478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u590F\u96E8\u5F85\u673A\u52A8\u753B_4"
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 237
+        width: 205
+        height: 333
+      alignment: 9
+      pivot: {x: 0.6168579, y: 0.001620639}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76950f02c15e96b47969ae00cea146f8
+      internalID: 116176528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\u590F\u96E8\u5F85\u673A\u52A8\u753B_5"
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 236
+        width: 205
+        height: 333
+      alignment: 9
+      pivot: {x: 0.6169691, y: 0.001620639}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56ff6492cc2e9b84eab55711a52bd0ea
+      internalID: -1125096031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 749181fff9ef6a949ac49ace5d8859f6
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_0": -678678571
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_1": -511687275
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_10": -899142437
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_100": 1626248812
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_101": -1287677584
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_102": 525601614
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_104": -1232738502
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_105": 1284033091
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_106": -648408114
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_107": -482827617
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_108": 1160660313
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_109": 1173847912
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_11": 1063790991
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_110": -1779883169
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_111": 131135229
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_112": 2048410330
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_113": 2115278410
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_114": 1818122593
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_115": 1630561423
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_116": -1329685407
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_117": 1414629601
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_118": -299737386
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_119": 179808733
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_12": 2078393684
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_120": 1173642203
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_121": 339125872
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_122": -769194757
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_123": -445245737
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_124": -1406468828
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_125": -879236998
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_126": -727145997
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_127": -1320694645
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_128": 1904834539
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_129": 1768662293
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_13": -131103955
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_130": 128749545
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_131": 610448418
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_132": 1237759313
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_133": -321922075
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_134": 909946814
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_135": -1418528140
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_136": 1185920703
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_137": 1468238111
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_138": -1374689780
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_139": 402251244
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_14": 47603454
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_140": 1552589506
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_141": -1273204402
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_142": -1865086478
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_143": -691332198
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_144": -1064595049
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_145": -1198105052
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_146": -993417519
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_147": 659858729
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_148": -903333611
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_149": -256496894
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_16": 1233798353
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_17": -805481949
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_18": 996082418
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_19": -1841055158
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_2": -1256871638
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_20": 737909997
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_21": 967399803
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_22": -392723710
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_23": 108367359
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_24": -396191934
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_25": -964240656
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_26": -2132769507
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_27": -437841189
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_28": 2131598548
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_29": 1718131180
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_3": 1080537478
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_30": -631211107
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_31": -102837185
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_32": -771851070
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_33": 1917243472
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_34": -816500467
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_35": 323576658
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_36": -527144290
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_37": -942491996
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_38": 1542869894
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_39": -1484448989
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_4": 116176528
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_40": -1412445708
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_41": 440821733
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_42": 1218804490
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_43": 287510580
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_44": 1461774073
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_45": -323814422
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_46": 353800438
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_47": -798096815
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_48": -482688576
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_49": -1676590993
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_5": -1125096031
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_50": -58725159
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_51": 699974518
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_52": 695518964
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_53": -841289577
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_54": 807469847
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_55": -1067090030
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_56": -1321936177
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_57": -1194034691
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_58": -964905189
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_59": 1457979955
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_6": 1073151864
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_60": 1275220442
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_61": 1273906387
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_62": -1848918178
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_63": -928295482
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_64": 1214656125
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_65": 1547992867
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_66": 1446816017
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_67": 276973479
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_68": -612458327
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_69": -959712610
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_7": 1099903490
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_70": 2049490995
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_71": 1453551540
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_72": 1910587972
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_73": 1426312425
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_74": 1688287284
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_75": 466584978
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_76": -1037470546
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_77": 1241451105
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_78": 577956183
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_79": -1729662638
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_80": -1605077580
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_81": -1890396321
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_82": 1860145413
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_83": -598975156
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_84": -570020902
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_85": -1951648253
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_86": 286233741
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_87": 990423996
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_88": 1893047255
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_89": 605155157
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_9": 831027772
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_90": 1140746760
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_91": -1509400902
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_92": 2057018493
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_93": 1352945286
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_94": -1532817933
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_95": 1343276283
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_96": 774258599
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_97": 1013518110
+      "\u590F\u96E8\u5F85\u673A\u52A8\u753B_98": -1869997250
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

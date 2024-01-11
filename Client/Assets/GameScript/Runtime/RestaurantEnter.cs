@@ -480,19 +480,19 @@ public class RestaurantEnter : MonoBehaviour
                 CookCamera.Priority = 0;
                 UIManager.Instance.SyncUICameraPosition(RestaurantMainCamera.transform.position,
                     false,
-                    KitchenCamera.m_Lens.FieldOfView,
-                    KitchenCamera.m_Lens.NearClipPlane,
-                    KitchenCamera.m_Lens.FarClipPlane);
+                    RestaurantMainCamera.m_Lens.FieldOfView,
+                    RestaurantMainCamera.m_Lens.NearClipPlane,
+                    RestaurantMainCamera.m_Lens.FarClipPlane);
                 break;
             case RestaurantCamera.Cook:
                 RestaurantMainCamera.Priority = 0;
                 KitchenCamera.Priority = 0;
                 CookCamera.Priority = 999;
-                UIManager.Instance.SyncUICameraPosition(KitchenCamera.transform.position,
+                UIManager.Instance.SyncUICameraPosition(CookCamera.transform.position,
                     true,
-                    KitchenCamera.m_Lens.OrthographicSize,
-                    KitchenCamera.m_Lens.NearClipPlane,
-                    KitchenCamera.m_Lens.FarClipPlane);
+                    CookCamera.m_Lens.OrthographicSize,
+                    CookCamera.m_Lens.NearClipPlane,
+                    CookCamera.m_Lens.FarClipPlane);
                 break;
         }
 

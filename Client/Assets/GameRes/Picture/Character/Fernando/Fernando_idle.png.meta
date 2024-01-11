@@ -1,0 +1,334 @@
+fileFormatVersion: 2
+guid: 0ddc0392363545c4a8c5197dcc1fecab
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 25
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fernando_idle_1
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 635
+        width: 265
+        height: 334
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8325de284e97d3840918ebe1788ccfde
+      internalID: 1188188267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_2
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 636
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87f187fca17596d48bfc2d14028b83b2
+      internalID: -1276709606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 636
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aeb5d39ea20d284da4cec41664bb0a2
+      internalID: 963604528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_3
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 233
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3989a56a27928c24da539ddd062a3b66
+      internalID: -934521700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_4
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 232
+        width: 265
+        height: 334
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea0c1caff19ee1a4cb240f2ae1b08fc2
+      internalID: -407942677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_5
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 233
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cba0818543aa136429883ac385b2531c
+      internalID: -1663423974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: f62d14d96de01ff43a12a03e6a87eb7b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Fernando_idle_0: 963604528
+      Fernando_idle_1: 1188188267
+      Fernando_idle_10: 1262388527
+      Fernando_idle_11: 343938453
+      Fernando_idle_12: 1968310749
+      Fernando_idle_13: 2063204025
+      Fernando_idle_14: 819509207
+      Fernando_idle_15: 704698499
+      Fernando_idle_16: 1290173314
+      Fernando_idle_17: -100164766
+      Fernando_idle_19: 376922556
+      Fernando_idle_2: -1276709606
+      Fernando_idle_20: 1232698462
+      Fernando_idle_21: -701540286
+      Fernando_idle_22: -431286767
+      Fernando_idle_23: 1844588590
+      Fernando_idle_24: -516823684
+      Fernando_idle_25: -1941820917
+      Fernando_idle_26: 428823036
+      Fernando_idle_27: -1703727106
+      Fernando_idle_28: 269648505
+      Fernando_idle_29: -258547156
+      Fernando_idle_3: -934521700
+      Fernando_idle_30: -580353894
+      Fernando_idle_31: 842782629
+      Fernando_idle_32: -1267656767
+      Fernando_idle_33: -2133047969
+      Fernando_idle_34: -1124714842
+      Fernando_idle_35: -2004170700
+      Fernando_idle_36: -638206747
+      Fernando_idle_37: 1503875757
+      Fernando_idle_4: -407942677
+      Fernando_idle_40: 21021670
+      Fernando_idle_41: -1142469344
+      Fernando_idle_42: 773664619
+      Fernando_idle_43: -2035066058
+      Fernando_idle_44: 1478685332
+      Fernando_idle_45: 116622236
+      Fernando_idle_46: 2075933137
+      Fernando_idle_47: 1995191026
+      Fernando_idle_48: -357608271
+      Fernando_idle_49: -972467853
+      Fernando_idle_5: -1663423974
+      Fernando_idle_50: 1079902042
+      Fernando_idle_51: 80937273
+      Fernando_idle_52: 732726148
+      Fernando_idle_53: 162856295
+      Fernando_idle_55: 482079572
+      Fernando_idle_56: -721624544
+      Fernando_idle_57: 1093307023
+      Fernando_idle_58: 527326937
+      Fernando_idle_59: 1385886610
+      Fernando_idle_6: 751169644
+      Fernando_idle_60: 1248138252
+      Fernando_idle_61: 827465592
+      Fernando_idle_62: 1833013036
+      Fernando_idle_63: -1943084339
+      Fernando_idle_64: -231293099
+      Fernando_idle_65: -784442475
+      Fernando_idle_66: -2139266436
+      Fernando_idle_67: -1380230926
+      Fernando_idle_68: 1396475429
+      Fernando_idle_69: 672970726
+      Fernando_idle_7: 1738210231
+      Fernando_idle_70: -1596319388
+      Fernando_idle_71: 1780258583
+      Fernando_idle_72: -1367486935
+      Fernando_idle_73: 2119851611
+      Fernando_idle_74: 145173440
+      Fernando_idle_75: 289062539
+      Fernando_idle_76: 1139329367
+      Fernando_idle_77: -502155081
+      Fernando_idle_78: -1645790755
+      Fernando_idle_79: -2025547847
+      Fernando_idle_8: 2138186360
+      Fernando_idle_80: -2050466020
+      Fernando_idle_81: 319261982
+      Fernando_idle_82: 209378018
+      Fernando_idle_83: 2040946470
+      Fernando_idle_84: 538011677
+      Fernando_idle_85: 895631593
+      Fernando_idle_86: -506454469
+      Fernando_idle_87: -214609363
+      Fernando_idle_88: -542293424
+      Fernando_idle_9: -1820314837
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

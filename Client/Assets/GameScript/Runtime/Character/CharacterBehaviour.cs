@@ -242,7 +242,7 @@ public class CharacterTalk : CharacterBehaviour
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter as RestaurantCharacter;
-        _restaurantCharacter.PlayAnimation(BehaviourID);
+        // _restaurantCharacter.PlayAnimation(BehaviourID);
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
         Debug.Log($"-----{_restaurantCharacter.CharacterName} 进入讲话状态-----");
     }

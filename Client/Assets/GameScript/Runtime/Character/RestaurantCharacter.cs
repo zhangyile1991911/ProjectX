@@ -517,27 +517,39 @@ public class RestaurantCharacter : RestaurantRoleBase
     }
 
 
+    public override void PlayIdleAnimation()
+    {
+        PlayAnimation(behaviour.WaitReply);
+    }
+    
+
+    public override void PlayTalkAnimation()
+    {
+        PlayAnimation(behaviour.Talk);
+    }
+    
+
     public override void PlayAnimation(behaviour behaviourId)
     {
         switch (behaviourId)
         {
             case behaviour.Eating:
-                _animator.Play("eat");
+                _animator.Play("idle");
                 break;
             case behaviour.Talk:
                 _animator.Play("talk");
                 break;
             case behaviour.WaitOrder:
-                _animator.Play("waiting");
+                _animator.Play("idle");
                 break;
             case behaviour.WaitReply:
-                _animator.Play("waiting");
+                _animator.Play("idle");
                 break;
             case behaviour.Comment:
-                _animator.Play("waiting");
+                _animator.Play("idle");
                 break;
             default:
-                _animator.Play("waiting");
+                _animator.Play("idle");
                 break;
         }
     }

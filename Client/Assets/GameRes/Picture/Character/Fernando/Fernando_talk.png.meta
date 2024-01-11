@@ -1,0 +1,319 @@
+fileFormatVersion: 2
+guid: 40db4ccfaee61b34e8a8a0225ea7d03b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 25
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fernando_talk_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 636
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e78a35b3f24a496479eb78d2d54d8024
+      internalID: -1512289945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_talk_1
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 635
+        width: 265
+        height: 334
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e0a3cc0effe9f346b1ea97990fe1dbf
+      internalID: -384979032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_talk_2
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 636
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dd07304bfff3244a958fcbc9e8700ca
+      internalID: -1372281550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_talk_3
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 233
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 601761272a811934589c72b4b8fd1840
+      internalID: 255701550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_talk_4
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 232
+        width: 265
+        height: 334
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b11b860c0110737439ba54a082caa012
+      internalID: -593910152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_talk_5
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 233
+        width: 265
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea95aa3c45d872341a2c5b618d11aea6
+      internalID: -1514442585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 14c35b03fc6463e478ccf2c7f4ff4651
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Fernando_talk_0: -1512289945
+      Fernando_talk_1: -384979032
+      Fernando_talk_10: -916356186
+      Fernando_talk_11: -1433981314
+      Fernando_talk_12: 183713695
+      Fernando_talk_14: -1796534666
+      Fernando_talk_15: -1356576674
+      Fernando_talk_16: 269627327
+      Fernando_talk_17: 1204594009
+      Fernando_talk_18: -2084215403
+      Fernando_talk_19: -353530597
+      Fernando_talk_2: -1372281550
+      Fernando_talk_20: -474111454
+      Fernando_talk_21: 394272662
+      Fernando_talk_22: -1423416385
+      Fernando_talk_23: -2027801969
+      Fernando_talk_24: 925862030
+      Fernando_talk_25: 899759647
+      Fernando_talk_26: -37913541
+      Fernando_talk_27: 393319543
+      Fernando_talk_28: 692981279
+      Fernando_talk_29: -1632857174
+      Fernando_talk_3: 255701550
+      Fernando_talk_30: 649410856
+      Fernando_talk_31: 71404602
+      Fernando_talk_32: 1145719766
+      Fernando_talk_33: -1343621596
+      Fernando_talk_34: 1018072879
+      Fernando_talk_35: 1647580616
+      Fernando_talk_36: 94547937
+      Fernando_talk_39: 2123772001
+      Fernando_talk_4: -593910152
+      Fernando_talk_40: -709256327
+      Fernando_talk_41: 1601599130
+      Fernando_talk_42: 1608131863
+      Fernando_talk_43: -488019884
+      Fernando_talk_44: 1894611577
+      Fernando_talk_45: -187845830
+      Fernando_talk_46: 1583538480
+      Fernando_talk_47: -1440894642
+      Fernando_talk_48: -1129878087
+      Fernando_talk_49: -2047069721
+      Fernando_talk_5: -1514442585
+      Fernando_talk_51: 727389840
+      Fernando_talk_52: -1950801616
+      Fernando_talk_53: 849757877
+      Fernando_talk_54: 1879817946
+      Fernando_talk_55: -2133777041
+      Fernando_talk_56: 124183782
+      Fernando_talk_57: 991078381
+      Fernando_talk_58: -758044463
+      Fernando_talk_59: -879066886
+      Fernando_talk_6: 1046184431
+      Fernando_talk_60: 1602271866
+      Fernando_talk_61: -1644467641
+      Fernando_talk_62: -1504290080
+      Fernando_talk_63: 1588844943
+      Fernando_talk_64: 1089642838
+      Fernando_talk_65: 2041704158
+      Fernando_talk_66: 1624737387
+      Fernando_talk_67: 1649597915
+      Fernando_talk_68: -877907620
+      Fernando_talk_69: 1029543091
+      Fernando_talk_7: -1419405278
+      Fernando_talk_70: -616419279
+      Fernando_talk_71: 124190122
+      Fernando_talk_72: 509945204
+      Fernando_talk_73: -780986322
+      Fernando_talk_8: -798092105
+      Fernando_talk_9: 179555222
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
