@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0ddc0392363545c4a8c5197dcc1fecab
+guid: 50cdf31c4dd28144aa3739610acd41c9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,12 +105,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fernando_idle_1
+      name: Fernando_idle_0
       rect:
         serializedVersion: 2
-        x: 304
-        y: 635
-        width: 265
+        x: 24
+        y: 636
+        width: 258
         height: 334
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -119,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8325de284e97d3840918ebe1788ccfde
-      internalID: 1188188267
+      spriteID: 7b2441abf49edf347a15f20835a012f0
+      internalID: -1346537436
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Fernando_idle_2
+      name: Fernando_idle_1
       rect:
         serializedVersion: 2
-        x: 596
+        x: 307
         y: 636
-        width: 265
-        height: 333
+        width: 258
+        height: 334
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,29 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 87f187fca17596d48bfc2d14028b83b2
-      internalID: -1276709606
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fernando_idle_0
-      rect:
-        serializedVersion: 2
-        x: 22
-        y: 636
-        width: 265
-        height: 333
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5aeb5d39ea20d284da4cec41664bb0a2
-      internalID: 963604528
+      spriteID: f6fb025abce633845bf8a59768816f1e
+      internalID: -654792609
       vertices: []
       indices: 
       edges: []
@@ -171,30 +150,9 @@ TextureImporter:
       name: Fernando_idle_3
       rect:
         serializedVersion: 2
-        x: 20
-        y: 233
-        width: 265
-        height: 333
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3989a56a27928c24da539ddd062a3b66
-      internalID: -934521700
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fernando_idle_4
-      rect:
-        serializedVersion: 2
-        x: 306
-        y: 232
-        width: 265
+        x: 590
+        y: 636
+        width: 258
         height: 334
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -203,8 +161,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ea0c1caff19ee1a4cb240f2ae1b08fc2
-      internalID: -407942677
+      spriteID: 6ab6c24faac56ae4196e6ffe5add47f0
+      internalID: -788719612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_4
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 233
+        width: 258
+        height: 334
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e97f7e5a15bd124419e24867cc47acfa
+      internalID: 42055934
       vertices: []
       indices: 
       edges: []
@@ -213,10 +192,10 @@ TextureImporter:
       name: Fernando_idle_5
       rect:
         serializedVersion: 2
-        x: 596
-        y: 233
-        width: 265
-        height: 333
+        x: 306
+        y: 234
+        width: 258
+        height: 332
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,8 +203,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cba0818543aa136429883ac385b2531c
-      internalID: -1663423974
+      spriteID: 6a7aaa45570cb754a914c0f76a81b236
+      internalID: -113485913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_idle_6
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 233
+        width: 258
+        height: 334
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dffb1eda6455914f98128f0f8daf5ca
+      internalID: 950581131
       vertices: []
       indices: 
       edges: []
@@ -233,7 +233,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f62d14d96de01ff43a12a03e6a87eb7b
+    spriteID: 33e7031954b65414ba36d3b034069d3c
     internalID: 0
     vertices: []
     indices: 
@@ -241,91 +241,154 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Fernando_idle_0: 963604528
-      Fernando_idle_1: 1188188267
-      Fernando_idle_10: 1262388527
-      Fernando_idle_11: 343938453
-      Fernando_idle_12: 1968310749
-      Fernando_idle_13: 2063204025
-      Fernando_idle_14: 819509207
-      Fernando_idle_15: 704698499
-      Fernando_idle_16: 1290173314
-      Fernando_idle_17: -100164766
-      Fernando_idle_19: 376922556
-      Fernando_idle_2: -1276709606
-      Fernando_idle_20: 1232698462
-      Fernando_idle_21: -701540286
-      Fernando_idle_22: -431286767
-      Fernando_idle_23: 1844588590
-      Fernando_idle_24: -516823684
-      Fernando_idle_25: -1941820917
-      Fernando_idle_26: 428823036
-      Fernando_idle_27: -1703727106
-      Fernando_idle_28: 269648505
-      Fernando_idle_29: -258547156
-      Fernando_idle_3: -934521700
-      Fernando_idle_30: -580353894
-      Fernando_idle_31: 842782629
-      Fernando_idle_32: -1267656767
-      Fernando_idle_33: -2133047969
-      Fernando_idle_34: -1124714842
-      Fernando_idle_35: -2004170700
-      Fernando_idle_36: -638206747
-      Fernando_idle_37: 1503875757
-      Fernando_idle_4: -407942677
-      Fernando_idle_40: 21021670
-      Fernando_idle_41: -1142469344
-      Fernando_idle_42: 773664619
-      Fernando_idle_43: -2035066058
-      Fernando_idle_44: 1478685332
-      Fernando_idle_45: 116622236
-      Fernando_idle_46: 2075933137
-      Fernando_idle_47: 1995191026
-      Fernando_idle_48: -357608271
-      Fernando_idle_49: -972467853
-      Fernando_idle_5: -1663423974
-      Fernando_idle_50: 1079902042
-      Fernando_idle_51: 80937273
-      Fernando_idle_52: 732726148
-      Fernando_idle_53: 162856295
-      Fernando_idle_55: 482079572
-      Fernando_idle_56: -721624544
-      Fernando_idle_57: 1093307023
-      Fernando_idle_58: 527326937
-      Fernando_idle_59: 1385886610
-      Fernando_idle_6: 751169644
-      Fernando_idle_60: 1248138252
-      Fernando_idle_61: 827465592
-      Fernando_idle_62: 1833013036
-      Fernando_idle_63: -1943084339
-      Fernando_idle_64: -231293099
-      Fernando_idle_65: -784442475
-      Fernando_idle_66: -2139266436
-      Fernando_idle_67: -1380230926
-      Fernando_idle_68: 1396475429
-      Fernando_idle_69: 672970726
-      Fernando_idle_7: 1738210231
-      Fernando_idle_70: -1596319388
-      Fernando_idle_71: 1780258583
-      Fernando_idle_72: -1367486935
-      Fernando_idle_73: 2119851611
-      Fernando_idle_74: 145173440
-      Fernando_idle_75: 289062539
-      Fernando_idle_76: 1139329367
-      Fernando_idle_77: -502155081
-      Fernando_idle_78: -1645790755
-      Fernando_idle_79: -2025547847
-      Fernando_idle_8: 2138186360
-      Fernando_idle_80: -2050466020
-      Fernando_idle_81: 319261982
-      Fernando_idle_82: 209378018
-      Fernando_idle_83: 2040946470
-      Fernando_idle_84: 538011677
-      Fernando_idle_85: 895631593
-      Fernando_idle_86: -506454469
-      Fernando_idle_87: -214609363
-      Fernando_idle_88: -542293424
-      Fernando_idle_9: -1820314837
+      Fernando_idle_0: -1346537436
+      Fernando_idle_1: -654792609
+      Fernando_idle_10: -140774321
+      Fernando_idle_11: -1949159296
+      Fernando_idle_12: -1383752612
+      Fernando_idle_13: -1810998949
+      Fernando_idle_14: 799097146
+      Fernando_idle_15: 2116458010
+      Fernando_idle_16: 1065735176
+      Fernando_idle_17: 658252763
+      Fernando_idle_18: -1889008048
+      Fernando_idle_19: 494134585
+      Fernando_idle_20: -87335627
+      Fernando_idle_21: -1318726766
+      Fernando_idle_22: -512668424
+      Fernando_idle_23: 1796521833
+      Fernando_idle_24: 2064177320
+      Fernando_idle_25: -876982249
+      Fernando_idle_26: -735961305
+      Fernando_idle_27: -1678084300
+      Fernando_idle_28: 940979488
+      Fernando_idle_29: 1054538227
+      Fernando_idle_3: -788719612
+      Fernando_idle_30: 1070082551
+      Fernando_idle_31: -403280036
+      Fernando_idle_32: -763220029
+      Fernando_idle_33: -1047557885
+      Fernando_idle_34: -796632453
+      Fernando_idle_35: 470769460
+      Fernando_idle_36: 1014006484
+      Fernando_idle_37: -666465031
+      Fernando_idle_38: -258083048
+      Fernando_idle_4: 42055934
+      Fernando_idle_42: 1979487517
+      Fernando_idle_43: -481798064
+      Fernando_idle_44: -1904533240
+      Fernando_idle_45: -1718628981
+      Fernando_idle_46: 1862975141
+      Fernando_idle_47: 1979810194
+      Fernando_idle_48: -1429217648
+      Fernando_idle_49: -417273249
+      Fernando_idle_5: -113485913
+      Fernando_idle_50: 1775484945
+      Fernando_idle_51: -1569401609
+      Fernando_idle_52: -1487811034
+      Fernando_idle_53: -809495730
+      Fernando_idle_54: 1197186255
+      Fernando_idle_55: 1179784524
+      Fernando_idle_56: 1888276099
+      Fernando_idle_57: -80310237
+      Fernando_idle_58: -2059723958
+      Fernando_idle_59: 2065194485
+      Fernando_idle_6: 950581131
+      Fernando_idle_60: -866006537
+      Fernando_idle_61: -1897370263
+      Fernando_idle_62: -1685402708
+      Fernando_idle_63: 568192160
+      Fernando_idle_64: 1728324659
+      Fernando_idle_65: 323495186
+      Fernando_idle_66: 455803094
+      Fernando_idle_67: -562465127
+      Fernando_idle_68: -618876693
+      Fernando_idle_69: 1168887675
+      Fernando_idle_7: 835012516
+      Fernando_idle_70: -1458033722
+      Fernando_idle_71: 1937018121
+      Fernando_idle_72: 564464114
+      Fernando_idle_73: 311373502
+      Fernando_idle_74: 1234309889
+      Fernando_idle_75: 924216899
+      Fernando_idle_8: 826367655
+      Fernando_idle_9: 718239101
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_0": 434021726
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_1": -1452984202
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_10": -2026744039
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_11": 1050065926
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_12": 220049901
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_13": 1232783692
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_14": -655949256
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_15": -1785097198
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_16": -855594865
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_17": -1073955785
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_18": 1912171063
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_19": -692662494
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_2": -94093298
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_20": -1312747105
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_21": 1664597537
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_22": -442600774
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_23": -804998452
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_24": -1382304152
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_25": -616206559
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_26": 1802641963
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_27": 644796281
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_28": 1215476966
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_29": 1861750175
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_3": 604692852
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_30": 1732863115
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_31": -732238859
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_32": 1450109601
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_33": 403548485
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_34": -860797518
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_35": -683975769
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_36": 1799140295
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_37": -632118987
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_38": -2099997741
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_39": 659799660
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_4": -1179703859
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_40": -1896363354
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_41": -1989255812
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_42": 1674724830
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_43": 621059916
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_44": 1038969879
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_45": -904634819
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_46": 1986278118
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_47": 1105558661
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_48": -907677376
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_49": -508788889
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_5": -341520594
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_50": 1334627622
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_51": 1865335496
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_52": -1828342452
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_53": -879004948
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_54": 372681028
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_55": 2109596120
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_56": 107227519
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_57": -1077432222
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_58": -307293654
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_59": 1451076771
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_6": -499114366
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_60": 1909212956
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_61": 2058770385
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_62": 612614177
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_63": -223553488
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_64": -620283820
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_65": 1340471156
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_66": -1268864349
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_67": 547835142
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_68": -1540093557
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_69": -619933866
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_7": -1952120789
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_70": -1055721678
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_71": -1263618235
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_72": 1166534486
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_73": -1141425789
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_74": 2057168613
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_75": 609973342
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_8": 1968425682
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u5F85\u673A\u52A8\u753B_9": -323779051
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

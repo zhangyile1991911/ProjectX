@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 40db4ccfaee61b34e8a8a0225ea7d03b
+guid: aec50b554397bc44dac2de252a1981cb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -108,9 +108,9 @@ TextureImporter:
       name: Fernando_talk_0
       rect:
         serializedVersion: 2
-        x: 20
+        x: 23
         y: 636
-        width: 265
+        width: 258
         height: 333
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -119,8 +119,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e78a35b3f24a496479eb78d2d54d8024
-      internalID: -1512289945
+      spriteID: d4bae3b01fed250439201816172244ba
+      internalID: 2094460382
       vertices: []
       indices: 
       edges: []
@@ -130,9 +130,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 306
-        y: 635
-        width: 265
-        height: 334
+        y: 636
+        width: 258
+        height: 333
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5e0a3cc0effe9f346b1ea97990fe1dbf
-      internalID: -384979032
+      spriteID: 763b12ffb07cbcf40b02a6bf54d00664
+      internalID: 1265885445
       vertices: []
       indices: 
       edges: []
@@ -150,9 +150,9 @@ TextureImporter:
       name: Fernando_talk_2
       rect:
         serializedVersion: 2
-        x: 596
+        x: 590
         y: 636
-        width: 265
+        width: 258
         height: 333
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -161,8 +161,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2dd07304bfff3244a958fcbc9e8700ca
-      internalID: -1372281550
+      spriteID: 4f45995b78e593243b238825cf42c862
+      internalID: -1176943144
       vertices: []
       indices: 
       edges: []
@@ -171,9 +171,9 @@ TextureImporter:
       name: Fernando_talk_3
       rect:
         serializedVersion: 2
-        x: 20
+        x: 23
         y: 233
-        width: 265
+        width: 258
         height: 333
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -182,8 +182,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 601761272a811934589c72b4b8fd1840
-      internalID: 255701550
+      spriteID: 84ee38c89c7b29a4ba27dfb47c5cfff0
+      internalID: 1874237641
       vertices: []
       indices: 
       edges: []
@@ -193,29 +193,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 306
-        y: 232
-        width: 265
-        height: 334
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b11b860c0110737439ba54a082caa012
-      internalID: -593910152
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Fernando_talk_5
-      rect:
-        serializedVersion: 2
-        x: 596
         y: 233
-        width: 265
+        width: 258
         height: 333
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -224,8 +203,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ea95aa3c45d872341a2c5b618d11aea6
-      internalID: -1514442585
+      spriteID: bf5f6679bd2f8d2498bcbdef18eb527e
+      internalID: -887370632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fernando_talk_5
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 233
+        width: 258
+        height: 333
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b4776ca12b55264bb32ab7abe5713ce
+      internalID: 1339339117
       vertices: []
       indices: 
       edges: []
@@ -233,7 +233,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 14c35b03fc6463e478ccf2c7f4ff4651
+    spriteID: 92ed335d7d441f3409a2153ad3163a3e
     internalID: 0
     vertices: []
     indices: 
@@ -241,76 +241,77 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Fernando_talk_0: -1512289945
-      Fernando_talk_1: -384979032
-      Fernando_talk_10: -916356186
-      Fernando_talk_11: -1433981314
-      Fernando_talk_12: 183713695
-      Fernando_talk_14: -1796534666
-      Fernando_talk_15: -1356576674
-      Fernando_talk_16: 269627327
-      Fernando_talk_17: 1204594009
-      Fernando_talk_18: -2084215403
-      Fernando_talk_19: -353530597
-      Fernando_talk_2: -1372281550
-      Fernando_talk_20: -474111454
-      Fernando_talk_21: 394272662
-      Fernando_talk_22: -1423416385
-      Fernando_talk_23: -2027801969
-      Fernando_talk_24: 925862030
-      Fernando_talk_25: 899759647
-      Fernando_talk_26: -37913541
-      Fernando_talk_27: 393319543
-      Fernando_talk_28: 692981279
-      Fernando_talk_29: -1632857174
-      Fernando_talk_3: 255701550
-      Fernando_talk_30: 649410856
-      Fernando_talk_31: 71404602
-      Fernando_talk_32: 1145719766
-      Fernando_talk_33: -1343621596
-      Fernando_talk_34: 1018072879
-      Fernando_talk_35: 1647580616
-      Fernando_talk_36: 94547937
-      Fernando_talk_39: 2123772001
-      Fernando_talk_4: -593910152
-      Fernando_talk_40: -709256327
-      Fernando_talk_41: 1601599130
-      Fernando_talk_42: 1608131863
-      Fernando_talk_43: -488019884
-      Fernando_talk_44: 1894611577
-      Fernando_talk_45: -187845830
-      Fernando_talk_46: 1583538480
-      Fernando_talk_47: -1440894642
-      Fernando_talk_48: -1129878087
-      Fernando_talk_49: -2047069721
-      Fernando_talk_5: -1514442585
-      Fernando_talk_51: 727389840
-      Fernando_talk_52: -1950801616
-      Fernando_talk_53: 849757877
-      Fernando_talk_54: 1879817946
-      Fernando_talk_55: -2133777041
-      Fernando_talk_56: 124183782
-      Fernando_talk_57: 991078381
-      Fernando_talk_58: -758044463
-      Fernando_talk_59: -879066886
-      Fernando_talk_6: 1046184431
-      Fernando_talk_60: 1602271866
-      Fernando_talk_61: -1644467641
-      Fernando_talk_62: -1504290080
-      Fernando_talk_63: 1588844943
-      Fernando_talk_64: 1089642838
-      Fernando_talk_65: 2041704158
-      Fernando_talk_66: 1624737387
-      Fernando_talk_67: 1649597915
-      Fernando_talk_68: -877907620
-      Fernando_talk_69: 1029543091
-      Fernando_talk_7: -1419405278
-      Fernando_talk_70: -616419279
-      Fernando_talk_71: 124190122
-      Fernando_talk_72: 509945204
-      Fernando_talk_73: -780986322
-      Fernando_talk_8: -798092105
-      Fernando_talk_9: 179555222
+      Fernando_talk_0: 2094460382
+      Fernando_talk_1: 1265885445
+      Fernando_talk_2: -1176943144
+      Fernando_talk_3: 1874237641
+      Fernando_talk_4: -887370632
+      Fernando_talk_5: 1339339117
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_10": -2111633492
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_11": 1596596594
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_12": -1871620411
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_14": 1575269525
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_15": -224393368
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_16": -1071306390
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_17": 2007058074
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_18": 208933962
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_19": 1035185168
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_20": -820891291
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_21": 1562927055
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_22": -2127423443
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_23": 1440159278
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_24": -1767453329
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_25": 1610398257
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_26": 1265954419
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_27": -472165259
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_28": -871950874
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_29": 29430233
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_30": -589668295
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_31": 509580867
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_32": 431586786
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_33": 118227568
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_34": -921407651
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_35": -1438633256
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_36": 1652252307
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_37": 621992308
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_39": -1950138671
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_40": -1572951856
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_41": 967028066
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_43": -1029832145
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_44": -397980264
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_45": 721912939
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_46": -329765311
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_47": 648853176
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_48": 2138943349
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_49": -2116033790
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_50": 1962230243
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_52": -2047275148
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_53": 1578878139
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_54": 419306836
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_55": -1066616548
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_56": -420330212
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_57": -468246461
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_58": -1044594829
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_59": 1180494648
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_6": 681564979
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_60": 1210543796
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_61": -2044846786
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_62": 58387417
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_63": -465504479
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_64": 76081336
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_65": -839175615
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_66": 1060376308
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_67": -2088263950
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_68": 1082776462
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_69": 334230482
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_7": 359816846
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_70": 1062170156
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_71": 375385937
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_72": -290317923
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_73": 1667553817
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_74": 1392891929
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_8": 1092492979
+      "\u8D39\u5C14\u5357\u5FB7\u65AF\u8BF4\u8BDD\u52A8\u753B_9": 1723241657
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

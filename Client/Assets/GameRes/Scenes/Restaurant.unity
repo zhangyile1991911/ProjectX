@@ -1087,6 +1087,7 @@ GameObject:
   m_Component:
   - component: {fileID: 594065399}
   - component: {fileID: 594065400}
+  - component: {fileID: 594065401}
   m_Layer: 0
   m_Name: curtain03
   m_TagString: Untagged
@@ -1129,7 +1130,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5dae443ce19f7014290f9cc587afab17, type: 2}
+  - {fileID: 2100000, guid: 2870a956dead29c41b18664fb4684a91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1161,6 +1162,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &594065401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594065398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192fea1eb340c4749a1ccaee8dd4d5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _strength: 0
+  _sinOrCos: 0
 --- !u!1 &607610715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,6 +1642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 654148148}
   - component: {fileID: 654148149}
+  - component: {fileID: 654148150}
   m_Layer: 0
   m_Name: curtain05
   m_TagString: Untagged
@@ -1669,7 +1685,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 122727ef9c6e53c44b507005d6cfb027, type: 2}
+  - {fileID: 2100000, guid: 2870a956dead29c41b18664fb4684a91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1701,6 +1717,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &654148150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654148147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192fea1eb340c4749a1ccaee8dd4d5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _strength: 0
+  _sinOrCos: 0
 --- !u!1 &681391612
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,6 +2403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 988810257}
   - component: {fileID: 988810258}
+  - component: {fileID: 988810259}
   m_Layer: 0
   m_Name: curtain02
   m_TagString: Untagged
@@ -2415,7 +2446,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 122727ef9c6e53c44b507005d6cfb027, type: 2}
+  - {fileID: 2100000, guid: 2870a956dead29c41b18664fb4684a91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2447,6 +2478,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &988810259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988810256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192fea1eb340c4749a1ccaee8dd4d5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _strength: 0
+  _sinOrCos: 0
 --- !u!1 &998191416
 GameObject:
   m_ObjectHideFlags: 0
@@ -3683,6 +3728,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1293660926}
   - component: {fileID: 1293660927}
+  - component: {fileID: 1293660928}
   m_Layer: 0
   m_Name: curtain06
   m_TagString: Untagged
@@ -3725,7 +3771,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5dae443ce19f7014290f9cc587afab17, type: 2}
+  - {fileID: 2100000, guid: 2870a956dead29c41b18664fb4684a91, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3757,6 +3803,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1293660928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293660925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192fea1eb340c4749a1ccaee8dd4d5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _strength: 0
+  _sinOrCos: 0
 --- !u!1 &1317254813
 GameObject:
   m_ObjectHideFlags: 0
@@ -4916,6 +4976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1641851909}
   - component: {fileID: 1641851910}
+  - component: {fileID: 1641851911}
   m_Layer: 0
   m_Name: curtain04
   m_TagString: Untagged
@@ -4990,6 +5051,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1641851911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641851908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192fea1eb340c4749a1ccaee8dd4d5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _strength: 0
+  _sinOrCos: 0
 --- !u!1 &1681251323
 GameObject:
   m_ObjectHideFlags: 0
@@ -5319,6 +5394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1893133672}
   - component: {fileID: 1893133673}
+  - component: {fileID: 1893133674}
   m_Layer: 0
   m_Name: curtain01
   m_TagString: Untagged
@@ -5393,6 +5469,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1893133674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893133671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 192fea1eb340c4749a1ccaee8dd4d5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _strength: 0
+  _sinOrCos: 0
 --- !u!1 &1897257892
 GameObject:
   m_ObjectHideFlags: 0

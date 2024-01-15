@@ -19,7 +19,7 @@ public partial class DragCookFoodIcon : UIComponent
     private ReactiveProperty<bool> _canDrag;
     private Camera _mainCamera;
     private CookResult _cookResult;
-
+    private RaycastHit[] _raycastHits;
     public Action<CookResult,int> GiveAction;
     public override void OnCreate()
     {
@@ -90,22 +90,29 @@ public partial class DragCookFoodIcon : UIComponent
         }
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         // Debug.DrawRay(ray.origin,ray.direction*100f);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction,999f);
+        // RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction,999f);
+        _raycastHits ??= new RaycastHit[2];
+        Physics.RaycastNonAlloc(ray, _raycastHits);
         //todo 优化成noalloc版本
         // RaycastHit hit;
         // Physics.Raycast(ray, out hit);
-        if (hit.transform != null && hit.transform.CompareTag("RestaurantCharacter"))
+        foreach (var hit in _raycastHits)
         {
-            var character = hit.transform.GetComponent<RestaurantCharacter>();
-            if (!character.IsWaitForOrder())
+            if (hit.transform != null && hit.transform.CompareTag("RestaurantCharacter"))
             {
-                Debug.Log($"当前角色{character.CharacterName} 没有进入等餐状态");
-                return;
+                var character = hit.transform.GetComponent<RestaurantCharacter>();
+                if (!character.IsWaitForOrder())
+                {
+                    Debug.Log($"当前角色{character.CharacterName} 没有进入等餐状态");
+                    return;
+                }
+                character.ReceiveFood(_cookResult);
+                GiveAction?.Invoke(_cookResult,character.CharacterId);
+                ClearFoodIcon();
+                break;
             }
-            character.ReceiveFood(_cookResult);
-            GiveAction?.Invoke(_cookResult,character.CharacterId);
-            ClearFoodIcon();
         }
+        
     }
     
 }

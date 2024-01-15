@@ -620,7 +620,7 @@ public class UserInfoModule : SingletonModule<UserInfoModule>
     {
         _restaurantRuntimeData.SoldMenuId ??= new List<int>();
         _restaurantRuntimeData.SoldMenuId.Add(menuId);
-        
+
         // updateRestaurantRuntimeData();
     }
     

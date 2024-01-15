@@ -104,8 +104,8 @@ GameObject:
   - component: {fileID: 1581330759322677748}
   - component: {fileID: 7731145823407207417}
   - component: {fileID: 4253098190158577856}
-  - component: {fileID: -2501002271504300477}
   - component: {fileID: 8987364804571288148}
+  - component: {fileID: 8287800064138987992}
   m_Layer: 0
   m_Name: Zhangyu
   m_TagString: RestaurantCharacter
@@ -197,32 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Restaurant: {fileID: 0}
---- !u!61 &-2501002271504300477
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6568124290698103737}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -1.0963173, y: -0.38371086}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 12.08, y: 12.96}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 16.710648, y: 19.62733}
-  m_EdgeRadius: 0
 --- !u!95 &8987364804571288148
 Animator:
   serializedVersion: 5
@@ -244,6 +218,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &8287800064138987992
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6568124290698103737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 12.04, y: 12.96, z: 0.2}
+  m_Center: {x: 0, y: 6.48, z: 0}
 --- !u!1 &9135416429401958459
 GameObject:
   m_ObjectHideFlags: 0

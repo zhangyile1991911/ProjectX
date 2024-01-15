@@ -375,6 +375,8 @@ public class RestaurantCharacter : RestaurantRoleBase
             _saidBubbles.RemoveAt(i);
             break;
         }
+        UserInfoModule.Instance.PayCookedMeal(_receivedFood);
+        UserInfoModule.Instance.RemoveNPCOrder(CharacterId);
 
         if (switchStatus)
         {
@@ -384,9 +386,7 @@ public class RestaurantCharacter : RestaurantRoleBase
 
     public void ClearReceiveFood()
     {
-        UserInfoModule.Instance.PayCookedMeal(_receivedFood);
         _receivedFood = null;
-        UserInfoModule.Instance.RemoveNPCOrder(CharacterId);
         CurOrderInfo = null;
     }
 
@@ -464,12 +464,14 @@ public class RestaurantCharacter : RestaurantRoleBase
         // {
         //     var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
         //     sr.sortingOrder -= 0;
-        // }        
+        // } 
+        _animator.enabled = false;
     }
 
     public override void ToLight()
     {
         base.ToLight();
+        _animator.enabled = true;
         // for (int i = 0; i < _orderNode.childCount; i++)
         // {
         //     var sr = _orderNode.GetChild(i).GetComponent<SpriteRenderer>();
