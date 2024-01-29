@@ -11,6 +11,8 @@ using SuperScrollView;
 [UI(0,"Assets/GameRes/Prefabs/Components/CalenderSheetWidget.prefab")]
 public partial class CalenderSheetWidget : UIComponent
 {
+	public Image Img_bg;
+	public Transform Tran_Date;
 	public TextMeshProUGUI Txt_month;
 	public TextMeshProUGUI Txt_tips;
 	public TextMeshProUGUI Txt_day;
@@ -21,10 +23,12 @@ public partial class CalenderSheetWidget : UIComponent
 	{
 	    uiGo = go;
 	    
-		Txt_month = go.transform.Find("Txt_month").GetComponent<TextMeshProUGUI>();
-		Txt_tips = go.transform.Find("Txt_tips").GetComponent<TextMeshProUGUI>();
-		Txt_day = go.transform.Find("Txt_day").GetComponent<TextMeshProUGUI>();
-		Txt_weekday = go.transform.Find("Txt_weekday").GetComponent<TextMeshProUGUI>();
+		Img_bg = go.transform.Find("Img_bg").GetComponent<Image>();
+		Tran_Date = go.transform.Find("Tran_Date").GetComponent<Transform>();
+		Txt_month = go.transform.Find("Tran_Date/Txt_month").GetComponent<TextMeshProUGUI>();
+		Txt_tips = go.transform.Find("Tran_Date/Txt_tips").GetComponent<TextMeshProUGUI>();
+		Txt_day = go.transform.Find("Tran_Date/Txt_day").GetComponent<TextMeshProUGUI>();
+		Txt_weekday = go.transform.Find("Tran_Date/Txt_weekday").GetComponent<TextMeshProUGUI>();
 
 	}
 }

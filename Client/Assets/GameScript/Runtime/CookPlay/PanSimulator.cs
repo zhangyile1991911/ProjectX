@@ -39,6 +39,7 @@ public class PanSimulator : MonoBehaviour
         // Init();
     }
 
+    private RaycastHit[] _raycastHits;
     public void Init()
     {
         _mainCamera = Camera.main;
@@ -69,7 +70,8 @@ public class PanSimulator : MonoBehaviour
         {
             tree.Clear();
         }
-        
+
+        _raycastHits ??= new RaycastHit[5];
     }
 
     private Vector2 leftTop = new Vector2();
@@ -153,15 +155,21 @@ public class PanSimulator : MonoBehaviour
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             // gizomsRay = ray;
             // RaycastHit hit;
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            // RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
             // if(Physics.Raycast(ray, out hit, 100f))
             // if (hit && hit.collider.transform == panHandle)
-            if (hit && hit.transform.CompareTag("GameController"))
+            var hitCount = Physics.RaycastNonAlloc(ray, _raycastHits);
+            if (hitCount <= 0) return;
+            foreach (var hit in _raycastHits)
             {
-                Debug.Log("点击了平底锅手柄");
-                Vector3 pos = ScreenToWorld(Input.mousePosition, transform);
-                _offset = transform.position - pos;
-                _isDrag = true;
+                if (hit.transform.CompareTag("GameController"))
+                {
+                    Debug.Log("点击了平底锅手柄");
+                    Vector3 pos = ScreenToWorld(Input.mousePosition, transform);
+                    _offset = transform.position - pos;
+                    _isDrag = true;
+                    break;
+                }    
             }
         }
 

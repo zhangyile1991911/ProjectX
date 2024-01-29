@@ -42,10 +42,15 @@ public partial class CalenderSheetWidget : UIComponent
 
     public void SetDate(Season season, int day, string weekday)
     {
+        Tran_Date.gameObject.SetActive(true);
         Txt_month.text = SeasonStr(season);
         Txt_day.text = day.ToString();
         Txt_weekday.text = weekday;
-        
+    }
+
+    public void ShowBlank()
+    {
+        Tran_Date.gameObject.SetActive(false);
     }
 
     private string SeasonStr(Season season)

@@ -167,12 +167,12 @@ public class ShopKeeperLineView : DialogueViewBase
         sizeDelta.y += 60f;
         _backgroundRectTransform.sizeDelta = sizeDelta;
         
-        canvasGroup.alpha = 1f;
+        canvasGroup.alpha = 0f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
         
         
-        await EffectsAsync.ShowFrameBounce(_backgroundRectTransform,1f,0.8f);
+        await EffectsAsync.ShowFrameBounce(_backgroundRectTransform,canvasGroup,1f,0.8f);
         
         Debug.Log($"ShopKeeperLineView::PresentLine lineText.sizeDelta = {lineText.rectTransform.sizeDelta} ");
         Debug.Log($"_backgroundRectTransform.sizeDelta = {sizeDelta} ");
@@ -207,7 +207,7 @@ public class ShopKeeperLineView : DialogueViewBase
     {
         canvasGroup.interactable = false;
 
-        await EffectsAsync.PrepareNextWord(_backgroundRectTransform, lineText,0.3f, 0.5f);
+        await EffectsAsync.PrepareNextWord(_backgroundRectTransform, canvasGroup,lineText,0.3f, 0.5f);
         
         Debug.Log($"结束DismissLineInternal当前文字展示渐出效果");
         

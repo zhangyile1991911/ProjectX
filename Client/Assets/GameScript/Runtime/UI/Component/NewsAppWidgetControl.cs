@@ -69,7 +69,7 @@ public partial class NewsAppWidget : BaseAppWidget
     public override async void OnHide()
     {
         _animation.Play("AppOnHide");
-        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        await UniTask.Delay(TimeSpan.FromMilliseconds(500f));
         base.OnHide();
         foreach (var one in _handlers)
         {

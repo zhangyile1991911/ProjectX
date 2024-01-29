@@ -17,6 +17,7 @@ public partial class PhoneWindow : UIWindow
     private Clocker _clocker;
     private UIManager _uiManager;
     private List<BaseAppWidget> _appList;
+    
     // private NewsAppWidget NewsApp;
     private UIComponent CurRunApp
     {

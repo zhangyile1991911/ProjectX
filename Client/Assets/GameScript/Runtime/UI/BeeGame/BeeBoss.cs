@@ -127,6 +127,7 @@ public class BeeBoss : MonoBehaviour
         destinationPos = Vector3.zero;
         cur_reload_interval = reload_bullet_interval;
         cur_shot_invertval = shot_invertal;
+        _avatar.color = Color.white;
         
         HideDialogue();
         flySpeed = 0.5f;

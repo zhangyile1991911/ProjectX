@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using cfg.common;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
@@ -7,6 +8,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Auto Generate Class!!!
@@ -28,6 +30,7 @@ public partial class WeatherApp : BaseAppWidget
     // private int start_temperature;
     // private int end_temperature;
     private WeatherInfo cur_weatherInfo;
+    private Animation _appAnimation;
     public WeatherApp(GameObject go,UIWindow parent):base(go,parent)
     {
         WidgetType = AppType.Weather;
@@ -49,7 +52,7 @@ public partial class WeatherApp : BaseAppWidget
         fallCanvasGroup = Tran_falling.GetComponent<CanvasGroup>();
 
         fallAnimator = Tran_falling.GetComponent<Animator>();
-        
+        _appAnimation = uiGo.GetComponent<Animation>();
         isToday = true;
         cur_weatherInfo = null;
         XBtn_arrow.OnClick.Subscribe(switchWeather).AddTo(uiGo);
@@ -78,11 +81,11 @@ public partial class WeatherApp : BaseAppWidget
         switchWeather(null);
         Ani_announcer.enabled = true;
         fallAnimator.enabled = true;
+        _appAnimation.Play("AppOnLoad");
     }
 
-    public override void OnHide()
+    public override async void OnHide()
     {
-        base.OnHide();
         foreach (var one in cloudTweens)
         {
             one.Pause();
@@ -91,6 +94,9 @@ public partial class WeatherApp : BaseAppWidget
         sunRotaTween?.Pause();
         Ani_announcer.enabled = false;
         fallAnimator.enabled = false;
+        _appAnimation.Play("AppOnHide");
+        await UniTask.Delay(TimeSpan.FromMilliseconds(500f));
+        base.OnHide();
     }
 
     public override void OnUpdate()

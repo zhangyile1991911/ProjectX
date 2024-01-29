@@ -31,6 +31,7 @@ public class PlayerBee : MonoBehaviour
          speed = 0.5f;
          shot_invertal = 0.8f;
          hp.Value = 3;
+         _avatar.color = Color.white;
     }
     public bool Move()
     {

@@ -5067,6 +5067,8 @@ GameObject:
   m_Component:
   - component: {fileID: 239151082966530621}
   - component: {fileID: 885275099070141808}
+  - component: {fileID: 5286345481879566046}
+  - component: {fileID: 6543838411461586090}
   m_Layer: 5
   m_Name: AirplaneAppWidget
   m_TagString: Untagged
@@ -5154,6 +5156,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!111 &5286345481879566046
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109907931907144856}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 96d42f4326aa81740b5b8f01c5c9b797, type: 2}
+  - {fileID: 7400000, guid: 226cd17668054264bb52d350f1723476, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!114 &6543838411461586090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109907931907144856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &8210397613900305872
 GameObject:
   m_ObjectHideFlags: 0

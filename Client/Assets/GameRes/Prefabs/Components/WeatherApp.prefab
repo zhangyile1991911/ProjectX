@@ -1145,6 +1145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3121485781875792828}
+  - component: {fileID: 127337202541272022}
   m_Layer: 5
   m_Name: WeatherApp
   m_TagString: Untagged
@@ -1181,6 +1182,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 576, y: 1024}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!111 &127337202541272022
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3121485781875792831}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 96d42f4326aa81740b5b8f01c5c9b797, type: 2}
+  - {fileID: 7400000, guid: 226cd17668054264bb52d350f1723476, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &3121485781925039704
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using Cysharp.Text;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
@@ -52,6 +53,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
     private RectTransform bg2;
 
     private BeeGameState _state;
+
+    private Animation _appStartAnim;
     public BeeGameState CurState
     {
         get => _state;
@@ -111,6 +114,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
         activeBullets = new Dictionary<string, BeeBullet>();
         activeEnemies = new(20);
         enemySpawnPoint = new List<RectTransform>(3);
+
+        _appStartAnim = uiGo.GetComponent<Animation>();
         
         enemyBulletPool = new ObjectPool<BeeBullet>(onCreateEnemyBullet,
             onGetBullet,
@@ -188,7 +193,8 @@ public partial class AirplaneAppWidget : BaseAppWidget
 
     public void ResetLevel()
     {
-        Level = 0;
+        Level = 1;
+        Kill_Enemy_Num = Level * 1;
     }
 
     private int bulletNum = 0;
@@ -340,6 +346,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
     public override void OnShow(UIOpenParam openParam)
     {
         base.OnShow(openParam);
+        
         var btnRect = XBtn_touch.GetComponent<RectTransform>();
         // Debug.Log($"sizeDelta = {btnRect.rect}");
         // Debug.Log($"sizeDelta = {btnRect.rect.height}");
@@ -372,13 +379,18 @@ public partial class AirplaneAppWidget : BaseAppWidget
             }
             
         }).AddTo(handler);
+        
+        // Debug.Log($"GetClipCount = {_appStartAnim.GetClipCount()} GetClip = {_appStartAnim.GetClip("AppOnLoad")}");
+        _appStartAnim.Play("AppOnLoad");
     }
 
-    public override void OnHide()
+    public override async void OnHide()
     {
-        base.OnHide();
         handler.Dispose();
         handler.Clear();
+        _appStartAnim.Play("AppOnHide");
+        await UniTask.Delay(TimeSpan.FromMilliseconds(500f));
+        base.OnHide();
     }
 
     private void onClickStart(PointerEventData param)
@@ -648,6 +660,7 @@ public partial class AirplaneAppWidget : BaseAppWidget
     {
         _curDifficultyIndex = 0;
         ScorePub.Value = 0;
+        ResetLevel();
         CurState = new StageState(this);
     }
 

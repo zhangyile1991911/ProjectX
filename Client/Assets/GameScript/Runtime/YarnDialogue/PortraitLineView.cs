@@ -81,15 +81,17 @@ public static class EffectsAsync
         text.TMProComponent.maxVisibleCharacters = characterCount;
     }
     
-    public static async UniTask ShowFrameBounce(RectTransform rectTransform,float to,float time)
+    public static async UniTask ShowFrameBounce(RectTransform rectTransform,CanvasGroup canvasGroup,float to,float time)
     {
         rectTransform.DOScale(to, time).SetEase(Ease.OutBack);
+        canvasGroup.DOFade(to, time).SetEase(Ease.Linear);
         await UniTask.Delay(TimeSpan.FromSeconds(time*0.4f));
     }
 
-    public static async UniTask PrepareNextWord(RectTransform rectTransform,TextMeshProUGUI  lineText,float to,float time)
+    public static async UniTask PrepareNextWord(RectTransform rectTransform,CanvasGroup canvasGroup,TextMeshProUGUI  lineText,float to,float time)
     {
         rectTransform.DOScale(to, time).SetEase(Ease.InBack);
+        canvasGroup.DOFade(0, time).SetEase(Ease.Linear);
         var pre = time * 0.4f;
         var remain = time - pre;
         await UniTask.Delay(TimeSpan.FromSeconds(time * 0.4f));
@@ -333,12 +335,12 @@ public class PortraitLineView : DialogueViewBase
         //     Debug.Log($"结束演出渐入效果");
         // }
         
-        canvasGroup.alpha = 1f;
+        canvasGroup.alpha = 0f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
         
         
-        await EffectsAsync.ShowFrameBounce(_backgroundRectTransform,1f,0.8f);
+        await EffectsAsync.ShowFrameBounce(_backgroundRectTransform,canvasGroup,1f,0.8f);
         
         Debug.Log($"PortraitLineView::PresentLine lineText.sizeDelta = {lineText.rectTransform.sizeDelta} ");
         Debug.Log($"_backgroundRectTransform.sizeDelta = {sizeDelta} ");
@@ -384,7 +386,7 @@ public class PortraitLineView : DialogueViewBase
         //     await EffectsAsync.FadeAlpha(canvasGroup, 1, 0, fadeOutTime,fadeEffectCts);
         // }
 
-        await EffectsAsync.PrepareNextWord(_backgroundRectTransform, lineText,0.3f, 0.5f);
+        await EffectsAsync.PrepareNextWord(_backgroundRectTransform, canvasGroup,lineText,0.3f, 0.5f);
         
         Debug.Log($"结束DismissLineInternal当前文字展示渐出效果");
 
