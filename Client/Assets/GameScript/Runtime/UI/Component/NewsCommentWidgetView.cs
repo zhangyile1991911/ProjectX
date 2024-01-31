@@ -11,20 +11,22 @@ using SuperScrollView;
 [UI(0,"Assets/GameRes/Prefabs/Components/NewsCommentWidget.prefab")]
 public partial class NewsCommentWidget : UIComponent
 {
+	public Image Img_Icon;
 	public TextMeshProUGUI Txt_Name;
+	public RectTransform RT_Comment;
 	public TextMeshProUGUI Txt_Comment;
-	public TextMeshProUGUI Txt_like;
-	public TextMeshProUGUI Txt_dislike;
+	public RectTransform RT_line;
 
 
 	public override void Init(GameObject go)
 	{
 	    uiGo = go;
 	    
+		Img_Icon = go.transform.Find("Img_Icon").GetComponent<Image>();
 		Txt_Name = go.transform.Find("Txt_Name").GetComponent<TextMeshProUGUI>();
-		Txt_Comment = go.transform.Find("Txt_Comment").GetComponent<TextMeshProUGUI>();
-		Txt_like = go.transform.Find("Txt_like").GetComponent<TextMeshProUGUI>();
-		Txt_dislike = go.transform.Find("Txt_dislike").GetComponent<TextMeshProUGUI>();
+		RT_Comment = go.transform.Find("RT_Txt_Comment").GetComponent<RectTransform>();
+		Txt_Comment = go.transform.Find("RT_Txt_Comment").GetComponent<TextMeshProUGUI>();
+		RT_line = go.transform.Find("RT_line").GetComponent<RectTransform>();
 
 	}
 }

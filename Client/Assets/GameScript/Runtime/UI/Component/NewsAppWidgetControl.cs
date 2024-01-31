@@ -55,7 +55,7 @@ public partial class NewsAppWidget : BaseAppWidget
         
         _clocker = UniModule.GetModule<Clocker>();
 
-        _detailWidget.XBtn_Return.OnClick.Subscribe(param =>
+        _detailWidget.XBtn_return.OnClick.Subscribe(param =>
         {
             _detailWidget.PlayOutAnimation();
             if (!GlobalFunctions.IsDebugMode)
@@ -91,63 +91,30 @@ public partial class NewsAppWidget : BaseAppWidget
             return null;
         }
         
-        if (string.IsNullOrEmpty(_newsDataList[itemIndex].Preview))
+        var item = loopListView.NewListViewItem("NewsCellWidget");
+        NewsCellWidget cell;
+        if (item.IsInitHandlerCalled)
         {
-            var item = loopListView.NewListViewItem("NewsMojiCellWidget");
-            NewsMojiCellWidget cell;
-            if (item.IsInitHandlerCalled)
-            {
-                cell = item.UserObjectData as NewsMojiCellWidget;
-                _clocker.AddSecond(30);
-            }
-            else
-            {
-                cell = new NewsMojiCellWidget(item.gameObject, ParentWindow);
-                item.UserObjectData = cell;
-                item.IsInitHandlerCalled = true;
-                cell.XBtn_bg.OnClick.Subscribe((param) =>
-                {
-                    _detailWidget.OnShow(null);
-                    _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
-                    _detailWidget.PlayInAnimation();
-                    if (!GlobalFunctions.IsDebugMode)
-                    {
-                        //增加时间
-                        Clocker.Instance.AddSecond(10);    
-                    }
-                }).AddTo(cell.uiTran);
-            }
-            cell.SetNewsDetailInfo(_newsDataList[itemIndex]);
-            // loopGridView.SetItemSize(new Vector2(450,80));
-            loopListView.OnItemSizeChanged(itemIndex);
-            return item;
+            cell = item.UserObjectData as NewsCellWidget;
+            _clocker.AddSecond(30);
         }
         else
         {
-            var item = loopListView.NewListViewItem("NewsCellWidget");
-            NewsCellWidget cell;
-            if (item.IsInitHandlerCalled)
+            cell = new NewsCellWidget(item.gameObject, ParentWindow);
+            item.UserObjectData = cell;
+            item.IsInitHandlerCalled = true;
+            cell.XBtn_bg.OnClick.Subscribe((param) =>
             {
-                cell = item.UserObjectData as NewsCellWidget;
-                _clocker.AddSecond(30);
-            }
-            else
-            {
-                cell = new NewsCellWidget(item.gameObject, ParentWindow);
-                item.UserObjectData = cell;
-                item.IsInitHandlerCalled = true;
-                cell.XBtn_bg.OnClick.Subscribe((param) =>
-                {
-                    _detailWidget.OnShow(null);
-                    _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
-                    _detailWidget.PlayInAnimation();
-                }).AddTo(cell.uiTran);
-            }
-            cell.SetNewsDetailInfo(_newsDataList[itemIndex]);
-            loopListView.OnItemSizeChanged(itemIndex);
-            // loopGridView.SetItemSize(new Vector2(450,150));
-            return item;
+                _detailWidget.OnShow(null);
+                _detailWidget.SetNewDetail(_newsDataList[itemIndex]);
+                _detailWidget.PlayInAnimation();
+            }).AddTo(cell.uiTran);
         }
+        cell.SetNewsDetailInfo(_newsDataList[itemIndex]);
+        loopListView.OnItemSizeChanged(itemIndex);
+        // loopGridView.SetItemSize(new Vector2(450,150));
+        return item;
+        
     }
 
     public override void OnUpdate()

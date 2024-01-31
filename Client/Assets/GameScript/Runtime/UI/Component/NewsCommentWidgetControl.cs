@@ -38,14 +38,18 @@ public partial class NewsCommentWidget : UIComponent
         
     }
 
-    public void SetCommentInfo(cfg.phone.news_comment comment)
+    public float SetCommentInfo(cfg.phone.news_comment comment)
     {
         Txt_Name.text = comment.NickName;
         Txt_Comment.text = comment.Comment;
-        Txt_like.gameObject.SetActive(comment.Like > 0);
-        Txt_like.text = comment.Like.ToString();
-        Txt_dislike.gameObject.SetActive(comment.Like > 0);
-        Txt_dislike.text = comment.Unlike.ToString();
+        float preferHeight = Txt_Comment.GetPreferredValues().y;
+
+        //重新计算组件高度
+        float height = Mathf.Abs(RT_Comment.anchoredPosition.y) + preferHeight + 16f;
+        float oldWidth = uiRectTran.sizeDelta.x;
+        uiRectTran.sizeDelta = new Vector2(oldWidth,height);
+        
+        return uiRectTran.sizeDelta.y;
     }
     
 }
