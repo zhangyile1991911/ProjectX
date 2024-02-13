@@ -37,4 +37,20 @@ public partial class StarWidget : UIComponent
     {
         
     }
+
+    public void Light()
+    {
+        Img_starlight.gameObject.SetActive(true);
+    }
+
+    public void UnLight()
+    {
+        Img_starlight.gameObject.SetActive(false);
+    }
+
+    public void HalfLight(float val)
+    {
+        Img_starlight.gameObject.SetActive(true);
+        Img_starlight.fillAmount = Mathf.Clamp01(val);
+    }
 }

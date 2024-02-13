@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using YooAsset;
 using UniRx;
+using UnityEngine.Pool;
+
 public class BarbecueEnter : MonoBehaviour
 {
     public Canvas TestCanvas;
@@ -137,7 +139,8 @@ public class BarbecueEnter : MonoBehaviour
         };
         
 
-        var cookItems = new List<ItemTableData>(5);
+        // var cookItems = new List<ItemTableData>(5);
+        var cookItems = ListPool<ItemTableData>.Get();
         foreach (var one in tbMenuInfo.RelatedMaterial)
         {
             var foodItem = new ItemTableData();

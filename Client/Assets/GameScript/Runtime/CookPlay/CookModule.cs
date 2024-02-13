@@ -5,6 +5,7 @@ using cfg.food;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Pool;
 using YooAsset;
 
 public class CookModule : MonoBehaviour
@@ -37,6 +38,8 @@ public class CookModule : MonoBehaviour
         _result.MenuId = foodAndTools.MenuId;
         _result.Tags = new HashSet<flavorTag>(5);
         _result.QTEResult = new Dictionary<int, bool>();
+
+        _recipe = foodAndTools;
     }
 
     public virtual void StartCook()
@@ -103,6 +106,8 @@ public class CookModule : MonoBehaviour
         
         _handler.Dispose();
         _handler.Clear();
+        
+        ListPool<ItemTableData>.Release(_recipe.CookFoods);
     }
 
 }

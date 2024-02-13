@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using YooAsset;
 using System.Linq;
+using UnityEngine.Pool;
 
 public class PrepareStateNode : IStateNode
 {
@@ -116,7 +117,8 @@ public class PrepareStateNode : IStateNode
         }
         
         //1 尝试补全材料
-        List<int> lack = new List<int>(5);
+        // List<int> lack = new List<int>(5);
+        List<int> lack = ListPool<int>.Get();
         var tb = DataProviderModule.Instance.GetMenuInfo(recipeId);
         foreach (var needFoodId in tb.RelatedMaterial)
         {
@@ -147,6 +149,7 @@ public class PrepareStateNode : IStateNode
             data.tipstr = "材料不足";
             UIManager.Instance.CreateTip<TipCommon>(data).Forget();
         }
+        ListPool<int>.Release(lack);
     }
     
     private void checkPickFood(PointerEventData param)
@@ -219,14 +222,7 @@ public class PrepareStateNode : IStateNode
         }
         
         var previewRecipe = GlobalFunctions.SearchRecipe(_pickFoodId);
-        List<KitchenWindow.PreviewRecipe> recipes = new List<KitchenWindow.PreviewRecipe>();
-        foreach (var recipeId in previewRecipe)
-        {
-            var tb = DataProviderModule.Instance.GetMenuInfo(recipeId);
-            var isFull = checkRecipeFull(tb.RelatedMaterial);   
-            recipes.Add(new KitchenWindow.PreviewRecipe(){IsFull = isFull,RecipeId = recipeId});
-        }
-        _kitchenWindow.RefreshPreviewRecipe(recipes);
+        _kitchenWindow.RefreshPreviewRecipe(previewRecipe.ToList());
     }
 
     private bool checkRecipeFull(List<int> material)

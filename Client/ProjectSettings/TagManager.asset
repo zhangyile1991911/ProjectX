@@ -5,8 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - RestaurantCharacter
-  - EnemyAirPlane
   - OrderBoard
+  - BasketFood
+  - FlavourObject
+  - EnemyBee
+  - PlayerBee
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - SceneFood
   - 
   - 
   - 

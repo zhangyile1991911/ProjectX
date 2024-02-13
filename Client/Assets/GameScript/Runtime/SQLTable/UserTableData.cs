@@ -85,6 +85,7 @@ public class CookResult
 {
     public int MenuId;
     public float Score;
+    public float MaxScore;
     public HashSet<cfg.food.flavorTag> Tags;
     public Dictionary<int, bool> QTEResult;//int = QTEId
     public int characterId;

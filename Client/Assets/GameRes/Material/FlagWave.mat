@@ -52,6 +52,8 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _Float: 0
+    - _SinOrCos: 0
+    - _strength: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

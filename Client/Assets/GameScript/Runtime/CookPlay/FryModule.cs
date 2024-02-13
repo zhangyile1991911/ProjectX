@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
+using UnityEngine.Pool;
 using YooAsset;
 using Random = UnityEngine.Random;
 
@@ -114,7 +115,6 @@ public class FryModule : CookModule
         
         loadRawFood(recipe.CookFoods,_tbMenuInfo.SceneResPath);
         LoadQTEConfig(recipe.QTEConfigs,pan.animNode);
-        _recipe = recipe;
 
         _uiWindow = UIManager.Instance.Get(UIEnum.FryingFoodWindow) as FryingFoodWindow;
     }
@@ -155,6 +155,7 @@ public class FryModule : CookModule
 
         _uiWindow.SetProgressListener(_curProgress);
         _uiWindow.SetTemperatureListener(_curTemperature,IsDebugMode);
+
         
         Observable.Amb(
             _finishTopic,
@@ -260,6 +261,7 @@ public class FryModule : CookModule
 
         _result.MenuId = _tbMenuInfo.Id;
         _result.Score = _curProgress.Value;
+        _result.MaxScore = _currentRecipeDifficulty.finishValue;
         //计算标签
         for (int i = 0;i < _recipe.CookFoods.Count;i++)
         {
@@ -296,6 +298,7 @@ public class FryModule : CookModule
     {
         base.UnloadRes();
         pan.RemoveAllFood();
+        
         // foreach (var oil in oil_steaming_pools)
         // {
         //     Destroy(oil.gameObject);

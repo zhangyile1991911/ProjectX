@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using cfg.food;
 using Cysharp.Text;
+using DG.Tweening;
 using UniRx;
 using UnityEngine;
 using YooAsset;
@@ -18,6 +19,7 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
     private RectTransform rect_qteArea;
     // private StateMachine _stateMachine;
     private CookResultWidget _resultWidget;
+    private float _duration;
     private bool isDebugMode = false;
     public override void OnCreate()
     {
@@ -110,6 +112,8 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         var max = tmp.temperatureArea.y;
         Img_Temperature.material.SetFloat("_low",min);
         Img_Temperature.material.SetFloat("_medium",max);
+
+        _duration = tmp.duration;
     }
 
     public void SetProgressListener(IReadOnlyReactiveProperty<float> progressVal)
@@ -148,6 +152,23 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
             }
         }
     }
+
+    
+    public void ShowClock()
+    {
+        Tran_Clock.gameObject.SetActive(true);
+        // Tran_minus.rotation = new Quaternion(0, 0, -180f, 1f);
+        Tran_minus.DOLocalRotate(new Vector3(0, 0, -540f), _duration,RotateMode.FastBeyond360)
+            .From(new Vector3(0,0,-180f))
+            .SetEase(Ease.Linear);
+        Debug.Log($"show clock duration {_duration}");
+    }
+
+    public void HideClock()
+    {
+        Tran_minus.DOKill(false);
+        Tran_Clock.gameObject.SetActive(false);
+    }
     
     private void clickStart(Unit param)
     {
@@ -156,6 +177,9 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
         Slider_Progress.gameObject.SetActive(true);
         Slider_Temperature.gameObject.SetActive(true);
         Tran_QTEArea.gameObject.SetActive(true);
+        Slider_Progress.gameObject.SetActive(true);
+        Slider_Temperature.gameObject.SetActive(true);
+        ShowClock();
         ClickStart?.Invoke();
     }
     
@@ -200,6 +224,9 @@ public partial class FryingFoodWindow : UIWindow,CookWindowUI
     {
         _resultWidget.OnShow(null);
         _resultWidget.ShowGameOver(cookResult);
+        Slider_Progress.gameObject.SetActive(false);
+        Slider_Temperature.gameObject.SetActive(false);
+        HideClock();
     }
 
 }

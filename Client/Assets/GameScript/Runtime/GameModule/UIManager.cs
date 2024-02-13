@@ -254,21 +254,20 @@ public class UIManager : SingletonModule<UIManager>
         return localPos;
     }
 
-    public void SyncUICameraPosition(Vector3 position,bool isOrthographic,float size,float near,float far)
-    {
-        _uiCamera.orthographic = isOrthographic;
-        _uiCamera.transform.position = position;
-        if (isOrthographic)
-        {
-            _uiCamera.orthographicSize = size;
-            
-        }
-        else
-        {
-            _uiCamera.fieldOfView = size;
-        }
-        _uiCamera.nearClipPlane = near;
-        _uiCamera.nearClipPlane = near;
-        _uiCamera.farClipPlane = far;
-    }
+    // public void SyncUICameraPosition(Vector3 position,bool isOrthographic,float size,float near,float far)
+    // {
+    //     _uiCamera.orthographic = isOrthographic;
+    //     _uiCamera.transform.position = position;
+    //     if (isOrthographic)
+    //     {
+    //         _uiCamera.orthographicSize = size;
+    //         
+    //     }
+    //     else
+    //     {
+    //         _uiCamera.fieldOfView = size;
+    //     }
+    //     _uiCamera.nearClipPlane = near;
+    //     _uiCamera.farClipPlane = far;
+    // }
 }

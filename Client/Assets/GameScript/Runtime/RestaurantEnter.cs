@@ -468,31 +468,31 @@ public class RestaurantEnter : MonoBehaviour
                 RestaurantMainCamera.Priority = 0;
                 CookCamera.Priority = 0;
                 KitchenCamera.Priority = 999;
-                UIManager.Instance.SyncUICameraPosition(KitchenCamera.transform.position,
-                    true,
-                    KitchenCamera.m_Lens.OrthographicSize,
-                    KitchenCamera.m_Lens.NearClipPlane,
-                    KitchenCamera.m_Lens.FarClipPlane);
+                // UIManager.Instance.SyncUICameraPosition(KitchenCamera.transform.position,
+                //     true,
+                //     KitchenCamera.m_Lens.OrthographicSize,
+                //     KitchenCamera.m_Lens.NearClipPlane,
+                //     KitchenCamera.m_Lens.FarClipPlane);
                 break;
             case RestaurantCamera.RestaurantMain:
                 RestaurantMainCamera.Priority = 999;
                 KitchenCamera.Priority = 0;
                 CookCamera.Priority = 0;
-                UIManager.Instance.SyncUICameraPosition(RestaurantMainCamera.transform.position,
-                    false,
-                    RestaurantMainCamera.m_Lens.FieldOfView,
-                    RestaurantMainCamera.m_Lens.NearClipPlane,
-                    RestaurantMainCamera.m_Lens.FarClipPlane);
+                // UIManager.Instance.SyncUICameraPosition(RestaurantMainCamera.transform.position,
+                //     false,
+                //     RestaurantMainCamera.m_Lens.FieldOfView,
+                //     RestaurantMainCamera.m_Lens.NearClipPlane,
+                //     RestaurantMainCamera.m_Lens.FarClipPlane);
                 break;
             case RestaurantCamera.Cook:
                 RestaurantMainCamera.Priority = 0;
                 KitchenCamera.Priority = 0;
                 CookCamera.Priority = 999;
-                UIManager.Instance.SyncUICameraPosition(CookCamera.transform.position,
-                    true,
-                    CookCamera.m_Lens.OrthographicSize,
-                    CookCamera.m_Lens.NearClipPlane,
-                    CookCamera.m_Lens.FarClipPlane);
+                // UIManager.Instance.SyncUICameraPosition(CookCamera.transform.position,
+                //     true,
+                //     CookCamera.m_Lens.OrthographicSize,
+                //     CookCamera.m_Lens.NearClipPlane,
+                //     CookCamera.m_Lens.FarClipPlane);
                 break;
         }
 

@@ -121,11 +121,13 @@ public class UIWindow : IUIBase
         };
     }
 
-    public UniTask LoadPrefabAsync(string prefabPath)
+    public async UniTask<GameObject> LoadPrefabAsync(string prefabPath)
     {
         var handler = YooAssets.LoadAssetAsync<GameObject>(prefabPath);
         _resHandles.Add(handler);
-        return handler.ToUniTask();
+        
+        await handler.ToUniTask();
+        return (GameObject)handler.AssetObject;
     }
 
     public void LoadPrefabAsync(string prefabPath,Action<GameObject> complete)

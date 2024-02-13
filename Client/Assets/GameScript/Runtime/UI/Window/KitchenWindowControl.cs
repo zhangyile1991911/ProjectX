@@ -5,6 +5,8 @@ using Cysharp.Threading.Tasks;
 using SuperScrollView;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Pool;
 
 
 /// <summary>
@@ -15,17 +17,12 @@ public partial class KitchenWindow : UIWindow
     public Action<int,bool> StartCook;
     public Action<int> AddFoodCB;
     private List<RefrigeratorCell> _refrigeratorCells;
-    private List<PreviewRecipeCell> _previewRecipeCells;
-    private cfg.food.materialType _showMaterialType = materialType.Other;
-
+    private List<OptionalReceipt> _optionalMenuCells;
+    private List<int> _choicedMaterial;
+    private materialType _showMaterialType = materialType.Other;
     
-    public class PreviewRecipe
-    {
-        public int RecipeId;
-        public bool IsFull;
-    }
 
-    private List<PreviewRecipe> _previewRecipes;
+    private List<int> _previewReceiptId;
     private List<ItemTableData> _showFoodItems;
     private List<ItemTableData> _ownedFoodItems;
     
@@ -36,29 +33,26 @@ public partial class KitchenWindow : UIWindow
         base.OnCreate();
         Grid_Refrigerator.InitGridView(0,RefrigeratorItems);
         List2_PreviewRecipt.InitListView(10,PreviewRecipes);
-        // Grid_FoodItem.InitGridView(0,getFoodItem);
-        //
-        // _cacheCells = new List<FoodBtnCell>(10);
-        _showFoodItems = new List<ItemTableData>(10);
-        _refrigeratorCells = new(10);
         
-        
-        
-        _previewRecipes = new(10);
-        _previewRecipeCells = new List<PreviewRecipeCell>(10);
-
+        _choicedMaterial = ListPool<int>.Get();
+        _optionalMenuCells = ListPool<OptionalReceipt>.Get();
+        _showFoodItems = ListPool<ItemTableData>.Get();
+        _ownedFoodItems = ListPool<ItemTableData>.Get();
+        _refrigeratorCells = ListPool<RefrigeratorCell>.Get();
+        _previewReceiptId = ListPool<int>.Get();
     }
     
     public override void OnDestroy()
     {
         base.OnDestroy();
-        // foreach (var one in _cacheCells)
-        // {
-        //     one.OnDestroy();
-        // }
-        // _cacheCells.Clear();
-        _refrigeratorCells.Clear();
-        _previewRecipeCells.Clear();
+
+        ListPool<int>.Release(_choicedMaterial);
+        ListPool<OptionalReceipt>.Release(_optionalMenuCells);
+        ListPool<ItemTableData>.Release(_showFoodItems);
+        ListPool<ItemTableData>.Release(_ownedFoodItems);
+        ListPool<RefrigeratorCell>.Release(_refrigeratorCells);
+        ListPool<int>.Release(_previewReceiptId);
+        
     }
     
     public override void OnShow(UIOpenParam openParam)
@@ -88,34 +82,35 @@ public partial class KitchenWindow : UIWindow
     
     void LateUpdate(long param)
     {
-        List2_PreviewRecipt.UpdateAllShownItemSnapData();
-        int count = List2_PreviewRecipt.ShownItemCount;
-        for (int i = 0; i < count; ++i)
-        {
-            LoopListViewItem2 item = List2_PreviewRecipt.GetShownItemByIndex(i);
-            // ListItem2 itemScript = item.GetComponent<ListItem2>();
-            float scale = 1 - Mathf.Abs(item.DistanceWithViewPortSnapCenter)/ 350f;
-            scale = Mathf.Clamp(scale, 0.4f, 1);
-            item.gameObject.GetComponent<CanvasGroup>().alpha = scale;
-            item.gameObject.transform.localScale = new Vector3(scale, scale, 1);
-        }
-        // Debug.Log($"anchoredPosition = {List2_PreviewRecipt.ContainerTrans.anchoredPosition}");
-        var vec = List2_PreviewRecipt.ContainerTrans.anchoredPosition;
-        float maxY = List2_PreviewRecipt.ContainerTrans.sizeDelta.y - 200f;
-        if (vec.y <= -200f)
-        {
-            List2_PreviewRecipt.ContainerTrans.anchoredPosition = new Vector2(0,-200f);
-        }
-        else if(vec.y >= maxY)
-        {
-            List2_PreviewRecipt.ContainerTrans.anchoredPosition = new Vector2(0,maxY);
-        }
+        // List2_PreviewRecipt.UpdateAllShownItemSnapData();
+        // int count = List2_PreviewRecipt.ShownItemCount;
+        // for (int i = 0; i < count; ++i)
+        // {
+        //     LoopListViewItem2 item = List2_PreviewRecipt.GetShownItemByIndex(i);
+        //
+        //     float scale = 1 - Mathf.Abs(item.DistanceWithViewPortSnapCenter)/ 350f;
+        //     scale = Mathf.Clamp(scale, 0.4f, 1);
+        //     item.gameObject.GetComponent<CanvasGroup>().alpha = scale;
+        //     item.gameObject.transform.localScale = new Vector3(scale, scale, 1);
+        // }
+        //
+        // var vec = List2_PreviewRecipt.ContainerTrans.anchoredPosition;
+        // float maxY = List2_PreviewRecipt.ContainerTrans.sizeDelta.y - 200f;
+        // if (vec.y <= -200f)
+        // {
+        //     List2_PreviewRecipt.ContainerTrans.anchoredPosition = new Vector2(0,-200f);
+        // }
+        // else if(vec.y >= maxY)
+        // {
+        //     List2_PreviewRecipt.ContainerTrans.anchoredPosition = new Vector2(0,maxY);
+        // }
     }
 
     public override void OnHide()
     {
         base.OnHide();
         XBtn_cancel.gameObject.SetActive(false);
+        
     }
     
     private void ButtonClickBind()
@@ -222,145 +217,56 @@ public partial class KitchenWindow : UIWindow
 
     private LoopListViewItem2 PreviewRecipes(LoopListView2 listView, int index)
     {
-        if (index < 0 || index >= _previewRecipes.Count)
+        if (index < 0 || index >= _previewReceiptId.Count)
             return null;
        
-        LoopListViewItem2 item = listView.NewListViewItem("PreviewRecipeCell");
-        PreviewRecipeCell cell = null;
+        LoopListViewItem2 item = listView.NewListViewItem("OptionalReceipt");
+        OptionalReceipt cell = null;
         if (item.IsInitHandlerCalled == false)
         {
-            cell = new PreviewRecipeCell(item.gameObject, this);
+            cell = new OptionalReceipt(item.gameObject, this);
+            // cell.BgButton.OnClick.Subscribe((PointerEventData param) =>
+            // {
+            //     StartCook(cell.ReceiptId,cell.IsFull);
+            // }).AddTo(handles);
             item.IsInitHandlerCalled = true;
-            _previewRecipeCells.Add(cell);
+            _optionalMenuCells.Add(cell);
             item.UserObjectData = cell;
         }
         else
         {
-            cell = item.UserObjectData as PreviewRecipeCell;
+            cell = item.UserObjectData as OptionalReceipt;
         }
-
-        var data = _previewRecipes[index];
-        var tb = DataProviderModule.Instance.GetMenuInfo(data.RecipeId);
-        cell.SetRecipe(data.RecipeId,tb.Name,data.IsFull,StartCook);
         
-        // ListItem2 itemScript = item.GetComponent<ListItem2>();
-        // if (item.IsInitHandlerCalled == false)
-        // {
-        //     item.IsInitHandlerCalled = true;
-        //     itemScript.Init();
-        // }
-        // itemScript.SetItemData(itemData, index);
+        var receiptId = _previewReceiptId[index];
+        cell.StartCook = StartCook;
+        cell.SetReceipt(receiptId,_choicedMaterial);
+        
         return item;
-    }
-    
-    private void clickRecipe(int recipeId,bool isFull)
-    {
-        // StartCook?.Invoke(recipeId);
-        // if (isFull)
-        // {//跳转到做菜
-        //     
-        // }
-        // else
-        // {
-        //     var data = new TipCommonData();
-        //     data.tipstr = "材料不足";
-        //     UIManager.Instance.CreateTip<TipCommon>(data).Forget();
-        // }
-        
-        //1 尝试补全材料
-        // List<int> lack = new List<int>(5);
-        // var tb = DataProviderModule.Instance.GetMenuInfo(recipeId);
-        // for (int i = 0; i < tb.RelatedMaterial.Count; i++)
-        // {
-        //     var needFoodId = tb.RelatedMaterial[i];
-        //     if (_pickFoodId.Count(x => x == needFoodId) <= 0)
-        //     {
-        //         lack.Add(needFoodId);
-        //     }
-        // }
-
-        // var isEnough = true;
-        // for (int i = 0; i < lack.Count; i++)
-        // {
-        //     isEnough = UserInfoModule.Instance.IsEnoughItem(lack[i], 1);
-        //     if (!isEnough) break;
-        // }
-        
-        // if (isEnough)
-        // {//先添加原材料
-        //     for (int i = 0; i < lack.Count; i++)
-        //     {
-        //         // _pickFoodId.Add(lack[i]);
-        //         AddFoodCB?.Invoke(lack[i]);
-        //     }
-        //     // checkPreviewRecipe();
-        //     StartCook?.Invoke(recipeId);
-        // }
-        // else
-        // {//2 提示材料不足
-        //     var data = new TipCommonData();
-        //     data.tipstr = "材料不足";
-        //     UIManager.Instance.CreateTip<TipCommon>(data).Forget();
-        // }
     }
     
     private void clickIcon(int itemId)
     {
-        AddFoodCB?.Invoke(itemId);
-        // _pickFoodId.Add(itemId);
-
-        // checkPreviewRecipe();
-    }
-    
-
-    // private void checkPreviewRecipe()
-    // {
-    //     var recipe = GlobalFunctions.SearchRecipe(_pickFoodId);
-    //     if (recipe.Count <= 0)
-    //     {
-    //         _previewRecipes.Clear();
-    //         List2_PreviewRecipt.SetListItemCount(0);
-    //         return;
-    //     }
-    //     
-    //     //先剔除掉 失效的
-    //     for (int i = _previewRecipes.Count - 1; i >= 0; i--)
-    //     {
-    //         var one = _previewRecipes[i];
-    //         if (!recipe.Contains(one.RecipeId))
-    //         {
-    //             _previewRecipes.RemoveAt(i);
-    //         }
-    //     }
-    //
-    //     foreach (var one in recipe)
-    //     {
-    //         var ret = _previewRecipes.Find(x => x.RecipeId == one);
-    //         if (ret == null)
-    //         {
-    //             PreviewRecipe newOne = new();
-    //             newOne.RecipeId = one;
-    //             newOne.IsFull = false;
-    //             _previewRecipes.Add(newOne);
-    //         }
-    //     }
-    //     List2_PreviewRecipt.gameObject.SetActive(_previewRecipes.Count > 0);
-    //     if (List2_PreviewRecipt.ItemTotalCount != _previewRecipes.Count)
-    //     {
-    //         List2_PreviewRecipt.SetListItemCount(_previewRecipes.Count);    
-    //     }
-    //     List2_PreviewRecipt.RefreshAllShownItem();
-    // }
-
-    public void RefreshPreviewRecipe(List<PreviewRecipe> recipes)
-    {
-        _previewRecipes = recipes;
-        List2_PreviewRecipt.gameObject.SetActive(_previewRecipes.Count > 0);
-        if (List2_PreviewRecipt.ItemTotalCount != _previewRecipes.Count)
+        _choicedMaterial.Add(itemId);
+        foreach (var one in _optionalMenuCells)
         {
-            List2_PreviewRecipt.SetListItemCount(_previewRecipes.Count);    
+            one.RefreshMaterial(_choicedMaterial);
         }
-        List2_PreviewRecipt.RefreshAllShownItem();
+        AddFoodCB?.Invoke(itemId);
+    }
+
+    public void RefreshPreviewRecipe(List<int> recipes)
+    {
+        _previewReceiptId = recipes;
+        List2_PreviewRecipt.gameObject.SetActive(_previewReceiptId.Count > 0);
+        if (List2_PreviewRecipt.ItemTotalCount != _previewReceiptId.Count)
+        {
+            List2_PreviewRecipt.SetListItemCount(_previewReceiptId.Count);    
+        }
+        else
+        {
+            List2_PreviewRecipt.RefreshAllShownItem();
+        }
     }
 
     public void HidePreviewRecipe()
