@@ -9,6 +9,7 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Pool;
 using Yarn.Unity;
 using YooAsset;
 using Random = UnityEngine.Random;
@@ -24,6 +25,8 @@ public class RestaurantCharacter : RestaurantRoleBase
     protected List<CharacterBubble> _mainLineBubbleTB;
     protected List<CharacterBubble> _talkBubbleTB;
     protected List<CharacterBubble> _orderBubbleTB;
+
+    protected List<CharacterBubble> _aftermealBubbleTB;
     // private List<CharacterBubble> _commentBubbleTB;
 
     public CharacterBubble OMAKASEComment { get; protected set; }
@@ -88,20 +91,28 @@ public class RestaurantCharacter : RestaurantRoleBase
         _saidBubbles.Clear();
         _animator = null;
         
+        ListPool<CharacterBubble>.Release(_mainLineBubbleTB);
+        ListPool<CharacterBubble>.Release(_talkBubbleTB);
+        ListPool<CharacterBubble>.Release(_orderBubbleTB);
+        ListPool<CharacterBubble>.Release(_aftermealBubbleTB);
+        
         // for (int i = 0; i < _orderNode.childCount;i++)
         // {
         //     var one = _orderNode.GetChild(i);
         //     Destroy(one.gameObject);
         // }
+        
         Destroy(gameObject);
     }
     
     protected override void LoadTableData()
     {
         base.LoadTableData();
-        _mainLineBubbleTB = new(10);
-        _talkBubbleTB = new(10);
-        _orderBubbleTB = new(10);
+        
+        _mainLineBubbleTB = ListPool<CharacterBubble>.Get();
+        _talkBubbleTB = ListPool<CharacterBubble>.Get();
+        _orderBubbleTB = ListPool<CharacterBubble>.Get();
+        _aftermealBubbleTB = ListPool<CharacterBubble>.Get();
         // _commentBubbleTB = new(10);
         
         if (_baseInfo.Soul == 0) return;
@@ -252,17 +263,17 @@ public class RestaurantCharacter : RestaurantRoleBase
         return result?.ID ?? 0;
     }
     
-    public void GenerateChatId()
-    {
-        //气泡生成规则
-       
-        //1 主线剧情
-        GenerateMain();
-
-        GenerateTalkId();
-
-        GenerateOrder();
-    }
+    // public void GenerateChatId()
+    // {
+    //     //气泡生成规则
+    //    
+    //     //1 主线剧情
+    //     GenerateMain();
+    //
+    //     GenerateTalkId();
+    //
+    //     GenerateOrder();
+    // }
 
     public bool GenerateMain()
     {
@@ -325,6 +336,11 @@ public class RestaurantCharacter : RestaurantRoleBase
         _saidBubbles.Add(new DialogueTitleInfo(){ID = info.ChatId,Type = chatBubble.BubbleType});
         
         EventModule.Instance.CharBubbleTopic.OnNext(info);
+        return true;
+    }
+
+    public bool GenerateAfterMeal()
+    {
         return true;
     }
 

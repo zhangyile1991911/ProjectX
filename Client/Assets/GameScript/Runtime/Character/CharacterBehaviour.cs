@@ -16,6 +16,11 @@ public interface CharacterBehaviour
         get;
     }
 
+    public behaviour PreBehaviourID
+    {
+        get;
+    }
+
     public void Enter(RestaurantRoleBase restaurantCharacter);
 
     public void Update();
@@ -188,6 +193,7 @@ public class CharacterEnterScene : CharacterBehaviour
 {
     // public RestaurantRoleBase Char => _restaurantCharacter;
     public behaviour BehaviourID => behaviour.Enter;
+    public behaviour PreBehaviourID => behaviour.Enter;
     private RestaurantRoleBase _restaurantCharacter;
     
     private Vector3 destPoint;
@@ -232,7 +238,7 @@ public class CharacterTalk : CharacterBehaviour
     // public RestaurantRoleBase Char => _restaurantCharacter;
     public behaviour BehaviourID => behaviour.Talk;
     private RestaurantCharacter _restaurantCharacter;
-
+    public behaviour PreBehaviourID => behaviour.Talk;
     private long _preDateTime;
     public CharacterTalk()
     {
@@ -262,7 +268,7 @@ public class CharacterTalk : CharacterBehaviour
         _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
         var success = _restaurantCharacter.GenerateMain();
         if (!success) success = _restaurantCharacter.GenerateTalkId();
-        if (success) _restaurantCharacter.CurBehaviour = new CharacterWaitReply();
+        if (success) _restaurantCharacter.CurBehaviour = new CharacterWaitReply(BehaviourID);
     }
 }
 
@@ -273,9 +279,12 @@ public class CharacterWaitReply : CharacterBehaviour
     private RestaurantCharacter _restaurantCharacter;
     private long timestamp;
     private int attenuation;
-    public CharacterWaitReply()
+    
+    private behaviour _preBehaviour;
+    public behaviour PreBehaviourID => _preBehaviour;
+    public CharacterWaitReply(behaviour preBehaviour)
     {
-        
+        _preBehaviour = preBehaviour;
     }
     
     public void Enter(RestaurantRoleBase restaurantCharacter)
@@ -315,6 +324,7 @@ public class CharacterWaitOrder : CharacterBehaviour
     // public RestaurantRoleBase Char => _restaurantCharacter;
     public behaviour BehaviourID => behaviour.WaitOrder;
     private RestaurantCharacter _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.WaitOrder;
     private long timestamp;
     private int attenuation;
     public CharacterWaitOrder()
@@ -365,6 +375,7 @@ public enum CharacterOrderType
 public class CharacterOrder : CharacterBehaviour
 {
     public behaviour BehaviourID => behaviour.Order;
+    public behaviour PreBehaviourID => behaviour.Order;
     public CharacterOrder()
     {
         
@@ -393,6 +404,7 @@ public class CharacterOrderMeal : CharacterBehaviour
     public behaviour BehaviourID => behaviour.OrderMeal;
     private long _preDateTime;
     private RestaurantCharacter _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.OrderMeal;
     // private CharacterOrderType _orderType;
     public CharacterOrderMeal()
     {
@@ -441,6 +453,7 @@ public class CharacterOrderDrink : CharacterBehaviour
     public behaviour BehaviourID => behaviour.OrderDrink;
     private long _preDateTime;
     private RestaurantCharacter _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.OrderDrink;
     // private CharacterOrderType _orderType;
     public CharacterOrderDrink()
     {
@@ -492,6 +505,7 @@ public class CharacterEating : CharacterBehaviour
     private long start_eating_timestamp;
     private long start_chow_timestamp;
     private IDisposable eatingTimer;
+    public behaviour PreBehaviourID => behaviour.Eating;
     public CharacterEating()
     {
         
@@ -539,6 +553,7 @@ public class CharacterComment : CharacterBehaviour
 {
     public behaviour BehaviourID => behaviour.Comment;
     private RestaurantCharacter _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.Comment;
     public CharacterComment()
     {
     }
@@ -584,11 +599,49 @@ public class CharacterComment : CharacterBehaviour
     }
 }
 
+
+public class CharacterTalkAfterMeal : CharacterBehaviour
+{
+    public behaviour BehaviourID => behaviour.TalkAfterMeal;
+    private RestaurantCharacter _restaurantCharacter;
+    private long _preDateTime;
+    public behaviour PreBehaviourID => behaviour.TalkAfterMeal;
+    public CharacterTalkAfterMeal()
+    {
+        
+    }
+
+    public void Enter(RestaurantRoleBase restaurantRoleBase)
+    {
+        _restaurantCharacter = restaurantRoleBase as RestaurantCharacter;
+        _restaurantCharacter.PlayAnimation(BehaviourID);
+    }
+
+    public void Exit()
+    {
+        
+    }
+
+    public void Update()
+    {
+        var minutes = (Clocker.Instance.NowDateTime.Timestamp - _preDateTime)/60L;
+        if (minutes < 2)
+        {
+            return;
+        }
+        _preDateTime = Clocker.Instance.NowDateTime.Timestamp;
+        var success = _restaurantCharacter.GenerateAfterMeal();
+        if (success) _restaurantCharacter.CurBehaviour = new CharacterWaitReply(BehaviourID);
+    }
+    
+}
+
 public class CharacterThinking : CharacterBehaviour
 {
     // public RestaurantRoleBase Char { get; }
     public behaviour BehaviourID => behaviour.Thinking;
     private RestaurantCharacter _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.Thinking;
     public CharacterThinking()
     {
         
@@ -658,6 +711,7 @@ public class CharacterLeave : CharacterBehaviour
     // public RestaurantRoleBase Char => _restaurantCharacter;
     public behaviour BehaviourID => behaviour.Leave;
     private RestaurantRoleBase _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.Leave;
     public void Enter(RestaurantRoleBase restaurantCharacter)
     {
         _restaurantCharacter = restaurantCharacter;

@@ -55,6 +55,10 @@ namespace cfg.character
         /// 评论
         /// </summary>
         Comment = 11,
+        /// <summary>
+        /// 吃完饭之后对话
+        /// </summary>
+        TalkAfterMeal = 12,
     }
 
 } 

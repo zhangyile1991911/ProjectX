@@ -7,6 +7,8 @@ public class NormalGuyEnterScene : CharacterBehaviour
 {
     public behaviour BehaviourID => behaviour.Enter;
     private RestaurantRoleBase _restaurantCharacter;
+
+    public behaviour PreBehaviourID => behaviour.Enter;
     
     private Vector3 destPoint;
     public NormalGuyEnterScene(Vector3 dest)
@@ -49,6 +51,8 @@ public class NormalGuyOrderMeal : CharacterBehaviour
     public behaviour BehaviourID => behaviour.OrderMeal;
     private long _preDateTime;
     private RestaurantCharacter _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.OrderMeal;
+
 
     public NormalGuyOrderMeal()
     {
@@ -97,6 +101,7 @@ public class NormalGuyWaitOrder : CharacterBehaviour
 {
     public behaviour BehaviourID => behaviour.WaitOrder;
     private RestaurantNPC _restaurantCharacter;
+    public behaviour PreBehaviourID => behaviour.WaitOrder;
     private long timestamp;
     private int attenuation;
     public NormalGuyWaitOrder()

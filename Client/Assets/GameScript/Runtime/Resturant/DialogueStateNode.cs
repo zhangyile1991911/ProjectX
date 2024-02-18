@@ -81,11 +81,19 @@ public class DialogueStateNode : IStateNode
     {
         if (_restaurantCharacter.CurBehaviour.BehaviourID == behaviour.WaitReply)
         {
-            _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
+            if (_restaurantCharacter.CurBehaviour.PreBehaviourID == behaviour.Talk)
+            {
+                _restaurantCharacter.CurBehaviour = new CharacterOrderMeal();
+            }
+
+            if (_restaurantCharacter.CurBehaviour.PreBehaviourID == behaviour.TalkAfterMeal)
+            {
+                _restaurantCharacter.CurBehaviour = new CharacterThinking();
+            }
         }
         else if (_restaurantCharacter.CurBehaviour.BehaviourID == behaviour.Comment)
         {
-            _restaurantCharacter.CurBehaviour = new CharacterThinking();
+            _restaurantCharacter.CurBehaviour = new CharacterTalkAfterMeal();
         }
         
         _restaurantEnter.NoFocusOnCharacter();
